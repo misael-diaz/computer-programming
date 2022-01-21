@@ -1,7 +1,7 @@
 % Computer Programming for ME                            December 10, 2020
 % ME 2010 WI20
 % Prof. M. Diaz-Maldonado
-% 
+%
 % Synopsis:
 % Shows how to use arrays to compute (truncated) series in MATLAB.
 % Series examples: arithmetic series, sum of squares, alternating series,
@@ -16,7 +16,7 @@ format long g
 
 fprintf("example 1: arithmetic sequence")
 % example 1:  arithmetic sequence
-%         for j = 1:100 sum(j) to obtain the sum of the 
+%         for j = 1:100 sum(j) to obtain the sum of the
 % natural numbers from one to a hundred.
 
 % defines the index of the sequence
@@ -30,8 +30,8 @@ sum(sn)
 
 fprintf("example 2: sum of squares")
 % example 2: sum of squares
-%         for n = 1:100 sum(n^2) 
-% to obtain the sum of the squares of the natural numbers from 
+%         for n = 1:100 sum(n^2)
+% to obtain the sum of the squares of the natural numbers from
 % one to a hundred.
 
 % defines the index of the sequence
@@ -45,7 +45,7 @@ sum(sn)
 
 fprintf("example 3: alternating series")
 % example 3: alternating series
-%         for n = 0:99, sum( (-1)^(n) / (n+1) ) 
+%         for n = 0:99, sum( (-1)^(n) / (n+1) )
 
 % defines the index of the sequence
 n = 0:99;
@@ -71,14 +71,14 @@ sum(sn)
 
 
 fprintf("example 5: Taylor series")
-% example 5: Taylor series, 
+% example 5: Taylor series,
 % compute the first 16 elements of the series
-%         for n = 0:15 sum(2^n / n!), 
-% where n! is the factorial of n 
+%         for n = 0:15 sum(2^n / n!),
+% where n! is the factorial of n
 
 % note that the index n = 0:15 has 16 elements,
 % you may want to check that numel(n) returns 16 elements
-% when invoked on the command window 
+% when invoked on the command window
 
 % defines the index of the series
 n = 0:15;
