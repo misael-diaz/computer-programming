@@ -5,6 +5,9 @@
 % Synopsis:
 % Code shows how to perform some arithmetic operations.
 %
+% Sinopsis:
+% El programa muestra como realizar algunas operaciones aritmeticas en
+% MATLAB.
 %
 % Copyright (c) 2021 Misael Diaz-Maldonado
 % This file is released under the GNU General Public License as published
