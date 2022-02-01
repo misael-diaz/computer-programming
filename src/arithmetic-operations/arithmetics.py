@@ -7,7 +7,14 @@ Prof. M. Diaz-Maldonado
 
 
 Synopsis:
-Code shows how to perform some arithmetic operations in Python 3.
+Code shows how to perform some arithmetic operations in Python 3
+and to display numeric answers in decimal notation using the f-string.
+
+
+Sinopsis:
+El codigo muestra como realizar algunas operaciones aritmeticas en Python 3
+y tambien muestra como imprimir respuestas numericas en notacion decimal
+a traves de los f-strings.
 
 
 Copyright (c) 2021 Misael Diaz-Maldonado
@@ -20,9 +27,12 @@ References:
 [0] R Johansson, Numerical Python: Scientific Computing and Data
     Science Applications with NumPy, SciPy, and Matplotlib, 2nd edition.
 [1] The Style Guide for Python Code: https://pep8.org/
+[2] www.geeksforgeeks.org/formatted-string-literals-f-strings-python/
+[3] realpython.com/python-f-strings/
 """
 
 
+# imports numpy facilities used by the code
 from numpy import exp, sqrt, cbrt, log10
 from numpy import pi, cos, sin, tan, deg2rad
 
@@ -56,15 +66,15 @@ x14d = (
 x15a = sin(0.2 * pi) / cos(pi / 6) + tand(72)
 
 
-# displays answers
+# creates output via multiline f-string
 ans = (
     f"\n\n"
-    f"example 1.1-A: {x11a:10.4f}\n"
-    f"example 1.1-B: {x11b:10.4f}\n"
-    f"example 1.2-A: {x12a:10.4f}\n"
-    f"example 1.3-A: {x13a:10.4f}\n"
-    f"example 1.4-D: {x14d:10.4f}\n"
-    f"example 1.5-A: {x15a:10.4f}\n"
+    f"example 1.1-A: {x11a:.6f}\n"
+    f"example 1.1-B: {x11b:.6f}\n"
+    f"example 1.2-A: {x12a:.6f}\n"
+    f"example 1.3-A: {x13a:.6f}\n"
+    f"example 1.4-D: {x14d:.6f}\n"
+    f"example 1.5-A: {x15a:.6f}\n"
     f"\n\n"
 )
 
