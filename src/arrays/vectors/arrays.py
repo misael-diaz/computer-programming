@@ -57,15 +57,17 @@ increase the last value by the increment to obtain the desired sequence,
 in this example the increment is one (hence the end point is 7+1=8).
 """
 x = r_[0:8]
-# references (or addresses) the element at the 4th position
-print(f'\nexample 1.6-C:\n4th element of array x: {x[3]}')
 
 """
 The python interpreter assumes elementwise operations by default, thus
 the code looks cleaner than its MATLAB counterpart.
 """
 y = 0.4 * x**4 + 3.1 * x**2 - 162.3 * x - 80.7
-print(f'4th element of array y: {y[3]:.6f}')
+
+# references (or addresses) the element at the 4th position
+print(f'\nexample 1.6-C:')
+print(f'references the 4th element of array x: {x[3]}')
+print(f'references the 4th element of array y: {y[3]:.6f}')
 
 
 """
@@ -74,8 +76,9 @@ Creates a sequence that increases in steps of two:
 """
 x = r_[0:16:2]  # x = begin:end:step, note: non-inclusive end-point
 y = 0.4 * x**4 + 3.1 * x**2 - 162.3 * x - 80.7
-print(f'\nexample 1.6-D:\n7th element of array x: {x[6]}')
-print(f'7th element of array y: {y[6]:.6f}')
+print(f'\nexample 1.6-D:')
+print(f'references the 7th element of array x: {x[6]}')
+print(f'references the 7th element of array y: {y[6]:.6f}')
 
 
 """
