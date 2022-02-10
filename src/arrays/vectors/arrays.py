@@ -38,7 +38,7 @@ x = 4.5
 y = 0.4 * x**4 + 3.1 * x**2 - 162.3 * x - 80.7
 
 # uses f-string to display the numerical result
-print(f"f(x = {x}) = {y}")
+# print(f"f(x = {x}) = {y}")
 
 
 """
@@ -46,7 +46,7 @@ Example 1.6-B: Recycling variables
 Reuses variable `x` to evaluate another function, y = f(x):
 """
 y = (x**3 - 23) / cbrt(x**2 + 17.5)
-print(f"f(x = {x}) = {y:6.2f}")
+# print(f"f(x = {x}) = {y:6.2f}")
 
 
 """
