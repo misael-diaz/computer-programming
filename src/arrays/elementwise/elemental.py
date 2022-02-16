@@ -79,3 +79,31 @@ for i in range(x.size):
 data = concatenate([x, y], axis=1)
 df = DataFrame(data)    # creates a data frame from numpy array
 print(df)               # displays the data frame to the console
+
+
+"""
+Sum of Squares Example
+"""
+n = zeros([8, 1])       # preallocates series index as a column vector
+
+n[0] = 1
+for i in range(1, n.size):
+    n[i] = n[i - 1] + 1
+
+
+s = zeros_like(n)       # preallocates sequence as a column vector
+
+for i in range(8):
+    s[i] = n[i]**2
+
+cumsum = zeros_like(n)  # preallocates `cumulative sum' as a column vector
+
+cumsum[0] = s[0]
+for i in range(1, n.size):
+    cumsum[i] = cumsum[i - 1] + s[i]
+
+print('\nSum of Squares:\n')
+# prints the series index, sequence, and cumulative sum arrays
+data = concatenate([n, s, cumsum], axis=1).astype(int)
+df = DataFrame(data)
+print(df)
