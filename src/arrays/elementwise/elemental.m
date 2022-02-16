@@ -70,5 +70,10 @@ for i = 1:7
 end
 
 fprintf('\nexample 1.6-D: i = 14, 12, 10, ..., 4, 2\n')
-x
-y
+
+% displays the array index, and the `x' and `y' arrays in tabulated form
+i = (1:7)';
+fprintf('\n\t\t\t i \t\t\t   x \t\t\t y\n')
+fprintf('----------------------------------------------------------------')
+fprintf('------------------\n')
+disp([i, x, y])
