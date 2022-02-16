@@ -77,3 +77,36 @@ fprintf('\n\t\t\t i \t\t\t   x \t\t\t y\n')
 fprintf('----------------------------------------------------------------')
 fprintf('------------------\n')
 disp([i, x, y])
+
+
+
+% Example: Sum of Squares
+
+n = zeros(8, 1);	% preallocates the series index array
+n(1) = 1;
+for i = 2:8
+	n(i) = n(i-1) + 1;
+end
+
+s = zeros(8, 1);	% preallocates the sequence array
+
+for i = 1:8
+	s(i) = n(i) .^ 2;
+end
+
+
+cumsum = zeros(8, 1);	% preallocates the cumulative sum array
+
+cumsum(1) = s(1);
+for i = 2:8
+	cumsum(i) = cumsum(i-1) + s(i);
+end
+
+
+fprintf('\nSum of Squares:\n')
+
+% tabulates results (array index, series index, sequence, cumulative sum)
+i = (1:8)';
+fprintf('\n     i \t   n    s(n)  sum')
+fprintf('\n----------------------------\n')
+disp([i, n, s, cumsum])
