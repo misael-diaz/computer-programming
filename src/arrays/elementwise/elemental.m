@@ -31,7 +31,7 @@ format long g
 
 % Example 1.6-C: Incrementing sequences
 % i 0, 1, 2, 3, ..., 6, 7
-x = zeros(1, 8);
+x = zeros(8, 1);
 x(1) = 0;
 for i = 2:8
 	x(i) = x(i - 1) + 1;
@@ -43,7 +43,7 @@ x
 
 % Example 1.6-D: Non-unit, step, incrementing sequences
 % i = 0, 2, 4, ..., 12, 14
-x = zeros(1, 8);
+x = zeros(8, 1);
 
 x(1) = 0;
 for i = 2:8
@@ -56,7 +56,7 @@ x
 % Example 1.6-E: Decrementing sequences
 % Generates a sequence of decreasing values (step: -2)
 % x = 14:-2:2, x = begin:step:end
-x = zeros(1, 7);
+x = zeros(7, 1);
 
 x(1) = 14;
 for i = 2:7
