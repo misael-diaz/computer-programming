@@ -24,6 +24,8 @@ References:
 
 from numpy import r_
 from numpy import zeros, zeros_like
+from numpy import concatenate
+from pandas import DataFrame
 
 
 """
@@ -61,17 +63,19 @@ Example 1.6-E: Decrementing sequences
 i = 14, 12, 10, ..., 4, 2
 """
 
-x = zeros(7)
+x = zeros([7, 1])   # preallocates as a column vector of 7 rows
 x[0] = 14
 for i in range(1, 7):
     x[i] = x[i-1] - 2
 
-print('\nExample 1.6-E: i = 14, 12, 10, ..., 4, 2')
-print(x)    # equivalent to print(r_[14:0:-2])
+print('\nExample 1.6-E: i = 14, 12, 10, ..., 4, 2\n')
 
 # calculates the function y = f(x) element-by-element in a for-loop
 y = zeros_like(x)
 for i in range(x.size):
     y[i] = 0.4 * x[i]**4 + 3.1 * x[i]**2 - 162.3 * x[i] - 80.7
 
-print(y)
+# joins x and y into a 2D array or matrix for printing
+data = concatenate([x, y], axis=1)
+df = DataFrame(data)    # creates a data frame from numpy array
+print(df)               # displays the data frame to the console
