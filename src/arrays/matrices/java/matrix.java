@@ -36,6 +36,10 @@ class Matrix
 
 		// initializes a matrix with zeroes
 		Zeroes();
+		// creates identity matrix
+		Identity();
+		// creates symmetric matrix A[i][j] = A[j][i]
+		Symmetric();
 		// initializes a matrix with a sequence
 		Sequence();
 		// Trace of a matrix
@@ -67,6 +71,25 @@ class Matrix
 	}
 
 
+	public static void Identity()
+	/*
+	 * Synopsis:
+	 * Creates a N x N identity matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = ROWS;
+		double I[][] = mIdentity(ROWS);
+
+		System.out.println("Identity Matrix:");
+		mPrint(ROWS, COLS, I);
+
+		return;
+	}
+
+
 	public static void Sequence()
 	/*
 	 * Synopsis:
@@ -92,6 +115,31 @@ class Matrix
 		return;
 	}
 
+
+	public static void Symmetric()
+	/*
+	 * Synopsis:
+	 * Creates a N x N symmetric matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = ROWS;
+
+		double A[][] = new double [ROWS][COLS];
+
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				A[i][j] = ( (double) (j + i) );
+		}
+
+		System.out.println("Symmetric Matrix:");
+		mPrint(ROWS, COLS, A);
+
+		return;
+	}
 
 	public static void Trace()
 	/*
@@ -252,6 +300,23 @@ class Matrix
 
 		return A;
 	}
+
+
+	public static double [][] mIdentity(int N)
+	/*
+	 * Synopsis:
+	 * Creates a N x N identity matrix.
+	 *
+	 */
+	{
+		double I[][] = mZeros(N, N);
+
+		for (int k = 0; k != N; ++k)
+			I[k][k] = 1.0;
+
+		return I;
+	}
+
 }
 
 
