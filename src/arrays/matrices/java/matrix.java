@@ -69,6 +69,36 @@ class Matrix
 		System.out.printf("tr(B) = %f \n",   mTrace(N, M, B) );
 		System.out.printf("tr(C) = %f \n\n", mTrace(N, M, C) );
 
+
+		// initializes a matrix with zeroes
+		mZeroes();
+
+		return;
+	}
+
+
+	public static void mZeroes()
+	/*
+	 * Synopsis:
+	 * Creates a N x M matrix of zeroes.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = 4;
+
+		double A[][] = new double [ROWS][COLS];
+
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				A[i][j] = 0.0;
+		}
+
+		System.out.println("Matrix of zeroes:");
+		mPrint(ROWS, COLS, A);
+
 		return;
 	}
 
