@@ -63,17 +63,12 @@ class Matrix
 		mPrint(N, M, C);
 
 
-		// obtains the trace of matrices A, B, and C
-		System.out.println("Trace of Square Matrix:");
-		System.out.printf("tr(A) = %f \n",   mTrace(N, M, A) );
-		System.out.printf("tr(B) = %f \n",   mTrace(N, M, B) );
-		System.out.printf("tr(C) = %f \n\n", mTrace(N, M, C) );
-
-
 		// initializes a matrix with zeroes
 		Zeroes();
 		// initializes a matrix with a sequence
 		Sequence();
+		// Trace of a matrix
+		Trace();
 
 		return;
 	}
@@ -126,6 +121,24 @@ class Matrix
 
 		System.out.println("Matrix storing the sequence [0, 16):");
 		mPrint(ROWS, COLS, A);
+
+		return;
+	}
+
+
+	public static void Trace()
+	/*
+	 * Synopsis:
+	 * Calculates the trace of the square matrix A.
+	 *
+	 */
+	{
+		double A[][] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+		int ROWS = A.length;
+		int COLS = A[0].length;
+
+		System.out.println("Trace of Square Matrix:");
+		System.out.printf("tr(A) = %f \n", mTrace(ROWS, COLS, A) );
 
 		return;
 	}
