@@ -72,6 +72,8 @@ class Matrix
 
 		// initializes a matrix with zeroes
 		mZeroes();
+		// initializes a matrix with a sequence
+		mSequence();
 
 		return;
 	}
@@ -97,6 +99,32 @@ class Matrix
 		}
 
 		System.out.println("Matrix of zeroes:");
+		mPrint(ROWS, COLS, A);
+
+		return;
+	}
+
+
+	public static void mSequence()
+	/*
+	 * Synopsis:
+	 * Creates a N x M matrix storing the asymmetric range [0, 16).
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = 4;
+
+		double A[][] = new double [ROWS][COLS];
+
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				A[i][j] = ( (double) (j + COLS * i) );
+		}
+
+		System.out.println("Matrix storing the sequence [0, 16):");
 		mPrint(ROWS, COLS, A);
 
 		return;
