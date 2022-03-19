@@ -58,13 +58,7 @@ class Matrix
 		int ROWS = 4;
 		int COLS = 4;
 
-		double A[][] = new double [ROWS][COLS];
-
-		for (int i = 0; i != ROWS; ++i)
-		{
-			for (int j = 0; j != COLS; ++j)
-				A[i][j] = 0.0;
-		}
+		double A[][] = mZeros(ROWS, COLS);
 
 		System.out.println("Matrix of zeroes:");
 		mPrint(ROWS, COLS, A);
@@ -237,6 +231,26 @@ class Matrix
 		System.out.println("");
 
 		return;
+	}
+
+
+	public static double [][] mZeros(int N, int M)
+	/*
+	 * Synopsis:
+	 * Creates a N x M matrix of zeroes.
+	 *
+	 */
+	{
+
+		double A[][] = new double [N][M];
+
+		for (int i = 0; i != N; ++i)
+		{
+			for (int j = 0; j != M; ++j)
+				A[i][j] = 0.0;
+		}
+
+		return A;
 	}
 }
 
