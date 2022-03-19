@@ -38,6 +38,10 @@ class Matrix
 		Zeroes();
 		// creates identity matrix
 		Identity();
+		// creates diagonal matrix
+		Diagonal();
+		// creates tridiagonal matrix
+		Tridiagonal();
 		// creates symmetric matrix A[i][j] = A[j][i]
 		Symmetric();
 		// creates upper triangular matrix
@@ -89,6 +93,67 @@ class Matrix
 
 		System.out.println("Identity Matrix:");
 		mPrint(ROWS, COLS, I);
+
+		return;
+	}
+
+
+	public static void Diagonal()
+	/*
+	 * Synopsis:
+	 * Creates a N x N diagonal matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = ROWS;
+
+		double D[][] = mZeros(ROWS, COLS);
+
+		int n = 0;
+		for (int i = 0; i != ROWS; ++i)
+			D[i][i] = ( (double) (++n) );
+
+		System.out.println("Diagonal Matrix:");
+		mPrint(ROWS, COLS, D);
+
+		return;
+	}
+
+
+	public static void Tridiagonal()
+	/*
+	 * Synopsis:
+	 * Creates a N x N tridiagonal matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 8;
+		int COLS = ROWS;
+
+		double T[][] = mZeros(ROWS, COLS);
+
+		int n = 0;
+		// first row (two non-zero elements)
+		T[0][0] = ( (double) (++n) );
+		T[0][1] = ( (double) (++n) );
+
+		// intermediate rows (three non-zero elements)
+		for (int i = 1; i != (ROWS - 1); ++i)
+		{
+			for (int j = (i - 1); j <= (i + 1); ++j)
+				T[i][j] = ( (double) (++n) );
+		}
+
+		// last row (two non-zero elements)
+		T[ROWS - 1][ROWS - 2] = ( (double) (++n) );
+		T[ROWS - 1][ROWS - 1] = ( (double) (++n) );
+
+
+		System.out.println("Tridiagonal Matrix:");
+		mPrint(ROWS, COLS, T);
 
 		return;
 	}
