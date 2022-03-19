@@ -341,9 +341,7 @@ class Matrix
 		for (int i = 0; i != N; ++i)
 		{
 			for (int j = 0; j != M; ++j)
-			{
 				C[i][j] = A[i][j] + B[i][j];
-			}
 		}
 
 		return C;
@@ -394,9 +392,7 @@ class Matrix
 		{
 			// prints all but the last element of the ith row
 			for (j = 0; j != M - 1; ++j)
-			{
 				System.out.printf("%8.2f", A[i][j]);
-			}
 			// prints the last element of the ith row
 			System.out.printf("%8.2f\n", A[i][j]);
 		}
