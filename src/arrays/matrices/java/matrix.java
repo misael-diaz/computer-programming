@@ -71,15 +71,15 @@ class Matrix
 
 
 		// initializes a matrix with zeroes
-		mZeroes();
+		Zeroes();
 		// initializes a matrix with a sequence
-		mSequence();
+		Sequence();
 
 		return;
 	}
 
 
-	public static void mZeroes()
+	public static void Zeroes()
 	/*
 	 * Synopsis:
 	 * Creates a N x M matrix of zeroes.
@@ -105,7 +105,7 @@ class Matrix
 	}
 
 
-	public static void mSequence()
+	public static void Sequence()
 	/*
 	 * Synopsis:
 	 * Creates a N x M matrix storing the asymmetric range [0, 16).
