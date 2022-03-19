@@ -32,36 +32,7 @@ class Matrix
 
 	public static void main (String[] args)
 	{
-
-
-		// initializes 3 x 3 matrices A and B
-		double A[][] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
-		double B[][] = { {1, 4, 7}, {2, 5, 8}, {3, 6, 9} };
-
-
-		/* gets shape (rows, cols) of matrix A */
-		int N = A.length;	// rows of matrix A
-		int M = A[0].length;	// columns of matrix A
-
-
-		// sums matrices A and B and places the result in matrix C
-		double C[][] = mSum(N, M, A, B);
-
 		System.out.println("\nMatrix Examples\n");
-		System.out.println("Matrix Summation:");
-
-		// prints matrix A
-		System.out.println("A:");
-		mPrint(N, M, A);
-
-		// prints matrix B
-		System.out.println("B:");
-		mPrint(N, M, B);
-
-		// prints matrix C = A + B
-		System.out.println("C = A + B:");
-		mPrint(N, M, C);
-
 
 		// initializes a matrix with zeroes
 		Zeroes();
@@ -69,6 +40,8 @@ class Matrix
 		Sequence();
 		// Trace of a matrix
 		Trace();
+		// Matrix Summation
+		Sum();
 
 		return;
 	}
@@ -139,6 +112,43 @@ class Matrix
 
 		System.out.println("Trace of Square Matrix:");
 		System.out.printf("tr(A) = %f \n", mTrace(ROWS, COLS, A) );
+
+		return;
+	}
+
+
+	public static void Sum()
+	/*
+	 * Synopsis:
+	 * Sums matrices A and B and stores the result in matrix C.
+	 *
+	 */
+	{
+		// initializes 3 x 3 matrices A and B
+		double A[][] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+		double B[][] = { {1, 4, 7}, {2, 5, 8}, {3, 6, 9} };
+
+		/* gets shape (rows, cols) of matrix A */
+		int N = A.length;	// rows of matrix A
+		int M = A[0].length;	// columns of matrix A
+
+		// sums matrices A and B and places the result in matrix C
+		double C[][] = mSum(N, M, A, B);
+
+
+		System.out.println("\nMatrix Summation:\n");
+
+		// prints matrix A
+		System.out.println("A:");
+		mPrint(N, M, A);
+
+		// prints matrix B
+		System.out.println("B:");
+		mPrint(N, M, B);
+
+		// prints matrix C = A + B
+		System.out.println("C = A + B:");
+		mPrint(N, M, C);
 
 		return;
 	}
