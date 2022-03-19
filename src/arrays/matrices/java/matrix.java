@@ -40,6 +40,10 @@ class Matrix
 		Identity();
 		// creates symmetric matrix A[i][j] = A[j][i]
 		Symmetric();
+		// creates upper triangular matrix
+		uTriangular();
+		// creates lower triangular matrix
+		lTriangular();
 		// initializes a matrix with a sequence
 		Sequence();
 		// Trace of a matrix
@@ -140,6 +144,61 @@ class Matrix
 
 		return;
 	}
+
+
+	public static void uTriangular()
+	/*
+	 * Synopsis:
+	 * Creates a N x N upper triangular matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = ROWS;
+
+		double U[][] = mZeros(ROWS, COLS);
+
+		int n = 0;
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = i; j != COLS; ++j)
+				U[i][j] = ( (double) (++n) );
+		}
+
+		System.out.println("Upper Triangular Matrix:");
+		mPrint(ROWS, COLS, U);
+
+		return;
+	}
+
+
+	public static void lTriangular()
+	/*
+	 * Synopsis:
+	 * Creates a N x N lower triangular matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 4;
+		int COLS = ROWS;
+
+		double L[][] = mZeros(ROWS, COLS);
+
+		int n = 0;
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j <= i; ++j)
+				L[i][j] = ( (double) (++n) );
+		}
+
+		System.out.println("Lower Triangular Matrix:");
+		mPrint(ROWS, COLS, L);
+
+		return;
+	}
+
 
 	public static void Trace()
 	/*
