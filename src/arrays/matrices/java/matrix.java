@@ -51,6 +51,8 @@ class Matrix
 		lTriangular();
 		// initializes a matrix with a sequence
 		Sequence();
+		// transpose of a matrix
+		Transpose();
 		// Trace of a matrix
 		Trace();
 		// Matrix Summation
@@ -218,6 +220,45 @@ class Matrix
 
 		System.out.println("Matrix storing the sequence [0, 16):");
 		mPrint(ROWS, COLS, A);
+
+		return;
+	}
+
+
+	public static void Transpose()
+	/*
+	 * Synopsis:
+	 * Creates a N x M matrix storing the asymmetric range [0, 32),
+	 * and obtains it tranpose.
+	 *
+	 */
+	{
+		int ROWS = 4;
+		int COLS = 8;
+
+		// generates matrix A storing the arange [0, 32)
+		double A[][] = new double [ROWS][COLS];
+
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				A[i][j] = ( (double) (j + COLS * i) );
+		}
+
+		System.out.println("Matrix storing the sequence [0, 32):");
+		mPrint(ROWS, COLS, A);
+
+
+		// transposes matrix A and stores it in matrix B
+		double B[][] = new double [COLS][ROWS];
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				B[j][i] = A[i][j];
+		}
+
+		System.out.println("Transposed Matrix:");
+		mPrint(COLS, ROWS, B);
 
 		return;
 	}
