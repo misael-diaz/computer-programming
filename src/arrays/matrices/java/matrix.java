@@ -42,6 +42,7 @@ class Matrix
 		Diagonal();
 		// creates tridiagonal matrix
 		Tridiagonal();
+		Tridiagonal2();
 		// creates symmetric matrix A[i][j] = A[j][i]
 		Symmetric();
 		// creates upper triangular matrix
@@ -150,6 +151,43 @@ class Matrix
 		// last row (two non-zero elements)
 		T[ROWS - 1][ROWS - 2] = ( (double) (++n) );
 		T[ROWS - 1][ROWS - 1] = ( (double) (++n) );
+
+
+		System.out.println("Tridiagonal Matrix:");
+		mPrint(ROWS, COLS, T);
+
+		return;
+	}
+
+
+	public static void Tridiagonal2()
+	/*
+	 * Synopsis:
+	 * Creates a N x N tridiagonal matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 8;
+		int COLS = ROWS;
+
+		double T[][] = mZeros(ROWS, COLS);
+
+		// first row (two non-zero elements)
+		T[0][0] = 2.0;
+		T[0][1] = 1.0;
+
+		// intermediate rows (three non-zero elements)
+		for (int i = 1; i != (ROWS - 1); ++i)
+		{
+			T[i][i - 1] = 1.0;
+			T[i][i]     = 2.0;
+			T[i][i + 1] = 1.0;
+		}
+
+		// last row (two non-zero elements)
+		T[ROWS - 1][ROWS - 2] = 1.0;
+		T[ROWS - 1][ROWS - 1] = 2.0;
 
 
 		System.out.println("Tridiagonal Matrix:");
