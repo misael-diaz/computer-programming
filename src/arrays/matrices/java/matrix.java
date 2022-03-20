@@ -42,6 +42,7 @@ class Matrix
 		Diagonal();
 		// creates tridiagonal matrix
 		Tridiagonal();
+		Tridiagonal2();
 		// creates symmetric matrix A[i][j] = A[j][i]
 		Symmetric();
 		// creates upper triangular matrix
@@ -50,6 +51,8 @@ class Matrix
 		lTriangular();
 		// initializes a matrix with a sequence
 		Sequence();
+		// transpose of a matrix
+		Transpose();
 		// Trace of a matrix
 		Trace();
 		// Matrix Summation
@@ -159,6 +162,43 @@ class Matrix
 	}
 
 
+	public static void Tridiagonal2()
+	/*
+	 * Synopsis:
+	 * Creates a N x N tridiagonal matrix.
+	 *
+	 */
+	{
+
+		int ROWS = 8;
+		int COLS = ROWS;
+
+		double T[][] = mZeros(ROWS, COLS);
+
+		// first row (two non-zero elements)
+		T[0][0] = 2.0;
+		T[0][1] = 1.0;
+
+		// intermediate rows (three non-zero elements)
+		for (int i = 1; i != (ROWS - 1); ++i)
+		{
+			T[i][i - 1] = 1.0;
+			T[i][i]     = 2.0;
+			T[i][i + 1] = 1.0;
+		}
+
+		// last row (two non-zero elements)
+		T[ROWS - 1][ROWS - 2] = 1.0;
+		T[ROWS - 1][ROWS - 1] = 2.0;
+
+
+		System.out.println("Tridiagonal Matrix:");
+		mPrint(ROWS, COLS, T);
+
+		return;
+	}
+
+
 	public static void Sequence()
 	/*
 	 * Synopsis:
@@ -180,6 +220,45 @@ class Matrix
 
 		System.out.println("Matrix storing the sequence [0, 16):");
 		mPrint(ROWS, COLS, A);
+
+		return;
+	}
+
+
+	public static void Transpose()
+	/*
+	 * Synopsis:
+	 * Creates a N x M matrix storing the asymmetric range [0, 32),
+	 * and obtains it tranpose.
+	 *
+	 */
+	{
+		int ROWS = 4;
+		int COLS = 8;
+
+		// generates matrix A storing the arange [0, 32)
+		double A[][] = new double [ROWS][COLS];
+
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				A[i][j] = ( (double) (j + COLS * i) );
+		}
+
+		System.out.println("Matrix storing the sequence [0, 32):");
+		mPrint(ROWS, COLS, A);
+
+
+		// transposes matrix A and stores it in matrix B
+		double B[][] = new double [COLS][ROWS];
+		for (int i = 0; i != ROWS; ++i)
+		{
+			for (int j = 0; j != COLS; ++j)
+				B[j][i] = A[i][j];
+		}
+
+		System.out.println("Transposed Matrix:");
+		mPrint(COLS, ROWS, B);
 
 		return;
 	}
