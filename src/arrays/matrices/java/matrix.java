@@ -416,6 +416,11 @@ class Matrix
 	 *
 	 */
 	{
+		// complains if the matrix shapes are inconsistent
+		String method = "mSum(): ";
+		isConsistent(method, N, M, A);
+		isConsistent(method, N, M, B);
+
 		double C[][] = new double [N][M];
 		for (int i = 0; i != N; ++i)
 		{
@@ -445,6 +450,8 @@ class Matrix
 		// complains if matrix is not square
 		String method = "mTrace(): ";
 		isSquare(method, A);
+		// complains if the matrix shape is inconsistent
+		isConsistent(method, N, M, A);
 
 		double tr = 0;
 		for (int i = 0; i != N; ++i)
@@ -469,6 +476,10 @@ class Matrix
 	 *
 	 */
 	{
+		// complains if the matrix shape is inconsistent
+		String method = "mPrint(): ";
+		isConsistent(method, N, M, A);
+
 		int j = 0;
 		System.out.println("");
 		for (int i = 0; i != N; ++i)
@@ -540,15 +551,39 @@ class Matrix
 					);
 		}
 	}
+
+	private static void isConsistent(String method, int Rows, int Cols,
+		                         double [][] A)
+	/*
+	 * Synopsis:
+	 * Complains if the shape passed by the caller is inconsistent
+	 * with the shape of the passed matrix A.
+	 *
+	 */
+	{
+		if (Rows != A.length)
+		{
+			throw new RuntimeException(
+				method + "inconsistent number of rows"
+			);
+		}
+
+		if (Cols != A[0].length)
+		{
+			throw new RuntimeException(
+				method + "inconsistent number of columns"
+			);
+		}
+	}
 }
 
 
 /*
  * COMMENTS:
  *
- * The methods do not check that the matrix shapes are consistent, this
+ * The methods check that the matrix shapes are consistent, this
  * matters when performing matrix summation, multiplication, trace,
- * concatenation, etc. A more robust implementation should raise an
+ * concatenation, etc. A robust implementation raises an
  * exception to inform the user what went wrong, as for example an
  * invalid operation exception due to inconsistent shapes of matrices
  * A and B.
