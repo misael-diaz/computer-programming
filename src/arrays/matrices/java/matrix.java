@@ -442,6 +442,10 @@ class Matrix
 	 *
 	 */
 	{
+		// complains if matrix is not square
+		String method = "mTrace(): ";
+		isSquare(method, A);
+
 		double tr = 0;
 		for (int i = 0; i != N; ++i)
 			tr += A[i][i];
@@ -516,6 +520,26 @@ class Matrix
 		return I;
 	}
 
+
+	// internal procedures
+	private static void isSquare(String method, double [][] A)
+	/*
+	 * Synopsis:
+	 * Complains if matrix A is not square, that is, a matrix having
+	 * an unequal number of rows and columns.
+	 *
+	 */
+	{
+		// gets rows and cols, respectively
+		int N = A.length, M = A[0].length;
+
+		if (N != M)
+		{
+			throw new RuntimeException(
+				method + "expects a square matrix"
+					);
+		}
+	}
 }
 
 
