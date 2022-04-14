@@ -53,6 +53,7 @@ public class SortingAlgorithms
 
 	// examples:
 	public static void sort()
+	// sorts a list that contains duplicates
 	{
 		int list [] = {6, 2, 4, 7, 1, 3, 8, 5, 1};
 		boolean iters = true;
