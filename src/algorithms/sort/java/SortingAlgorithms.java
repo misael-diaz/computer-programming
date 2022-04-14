@@ -16,16 +16,34 @@
  *
  * References:
  * [0] JJ McConnell, Analysis of Algorithms, 2nd edition
+ * [1] lambdas: www.geeksforgeeks.org/java-lambda-expressions-parameters
  *
  */
 
+
+interface comparator
+{
+	// defines abstract comparison function f(x, y)
+	public boolean f(int x, int y);
+}
+
+
 public class SortingAlgorithms
 {
+
+	// implements comparison (lambda) functions
+	static comparator isGreater = (int x, int y) -> {return (x > y);};
+	static comparator isSmaller = (int x, int y) -> {return (x < y);};
+
 
 	public static void main (String[] args)
 	{
 		/* sorts a list with duplicates */
 		sort();
+		// sorts a list in ascending order
+		ascend();
+		// sorts a list in descending order
+		descend();
 
 		// tests the implementation
 		testInsertionSort();
@@ -35,6 +53,7 @@ public class SortingAlgorithms
 
 	// examples:
 	public static void sort()
+	// sorts a list that contains duplicates
 	{
 		int list [] = {6, 2, 4, 7, 1, 3, 8, 5, 1};
 		boolean iters = true;
@@ -48,6 +67,44 @@ public class SortingAlgorithms
 		InsertionSort (list, iters);
 
 		// prints the sorted list
+		System.out.printf("\n\nSorted List:\n\n");
+		print (list);
+
+		return;
+	}
+
+
+	public static void ascend()
+	// sorts in ascending order example
+	{
+		int list [] = {6, 2, 4, 7, 1, 3, 8, 5};
+
+		System.out.printf("\n\nSorts in Ascending Order:\n\n");
+		System.out.printf("\n\nOriginal List:\n\n");
+		print (list);
+
+		// passes the respective comparison function
+		InsertionSort (list, isGreater);
+
+		System.out.printf("\n\nSorted List:\n\n");
+		print (list);
+
+		return;
+	}
+
+
+	public static void descend()
+	// sorts in descending order example
+	{
+		int list [] = {6, 2, 4, 7, 1, 3, 8, 5};
+
+		System.out.printf("\n\nSorts in Descending Order:\n\n");
+		System.out.printf("\n\nOriginal List:\n\n");
+		print (list);
+
+		// passes the respective comparison function
+		InsertionSort (list, isSmaller);
+
 		System.out.printf("\n\nSorted List:\n\n");
 		print (list);
 
@@ -172,6 +229,32 @@ public class SortingAlgorithms
 	}
 
 
+	public static void InsertionSort (int [] list, comparator compare)
+	/*
+	 * Synopsis:
+	 * Possible implementation of the Insertion Sort Algorithm.
+	 *
+	 * Inputs
+	 * list		array of (presumed) unsorted integers
+	 * compare	function that defines comparison of list elements
+	 *
+	 * Output
+	 * list		the sorted list
+	 *
+	 */
+	{
+		int ins, loc;
+		for (int i = 1; i != list.length; ++i)
+		{
+			ins = list[i];
+			loc = (i - 1);
+			shift (list, compare, ins, loc);
+		}
+
+		return;
+	}
+
+
 	private static void shift (int [] list, int ins, int loc)
 	/*
 	 * Synopsis:
@@ -192,6 +275,39 @@ public class SortingAlgorithms
 	{
 		// shifts larger elements to the right
 		while ( (loc >= 0) && (list[loc] > ins) )
+		{
+			list[loc + 1] = list[loc];
+			--loc;
+		}
+
+		// inserts element in the correct location
+		list[loc + 1] = ins;
+		return;
+	}
+
+
+	private static void shift (int [] list, comparator compare,
+				   int ins, int loc)
+	/*
+	 * Synopsis:
+	 * Shifts elements in the list. Delegates the comparison of list
+	 * elements to the passed comparator method. Returns the list
+	 * having the new element in its rigthful location so that the
+	 * (sought) ordered structure of the list is preserved.
+	 *
+	 * Inputs
+	 * list		the list with sorted elements in the range [0, loc]
+	 * compare	function that defines comparison of list elements
+	 * ins		insertion (or new) element
+	 * loc		index indicating the sorted portion of the list
+	 *
+	 * Ouput
+	 * list		the ordered list containing the new element
+	 *
+	 */
+	{
+		// shifts targets (either smaller or larger) to the right
+		while ( (loc >= 0) && compare.f(list[loc], ins) )
 		{
 			list[loc + 1] = list[loc];
 			--loc;
