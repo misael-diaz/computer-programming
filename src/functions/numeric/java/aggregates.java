@@ -49,20 +49,20 @@ class Aggregates
 
 
 	public static double[] linspace (double xi, double xf, int numel)
+	/*
+	 * Synopsis:
+	 * Implements the linspace function.
+	 *
+	 * Inputs:
+	 * xi		initial value of the array
+	 * xf		final value of the array
+	 * numel	number of elements of the array
+	 *
+	 * Output:
+	 * x		array [xi, xf] with equally spaced elements
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the linspace function.
-		 *
-		 * Inputs:
-		 * xi		initial value of the array
-		 * xf		final value of the array
-		 * numel	number of elements of the array
-		 *
-		 * Output:
-		 * x		array [xi, xf] with equally spaced elements
-		 *
-		 */
 
 		// caters invalid number of elements
 		if (numel <= 1)
@@ -85,18 +85,18 @@ class Aggregates
 
 
 	public static double min (double [] x)
+	/*
+	 * Synopsis:
+	 * Implements the min function.
+	 *
+	 * Input:
+	 * x		array of doubles
+	 *
+	 * Output:
+	 * small	smallest value in the array of doubles
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the min function.
-		 *
-		 * Input:
-		 * x		array of doubles
-		 *
-		 * Output:
-		 * small	smallest value in the array of doubles
-		 *
-		 */
 
 
 		int numel = x.length;
@@ -113,18 +113,18 @@ class Aggregates
 
 
 	public static double max (double [] x)
+	/*
+	 * Synopsis:
+	 * Implements the max function.
+	 *
+	 * Input:
+	 * x		array of doubles
+	 *
+	 * Output:
+	 * small	largest value in the array of doubles
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the max function.
-		 *
-		 * Input:
-		 * x		array of doubles
-		 *
-		 * Output:
-		 * small	largest value in the array of doubles
-		 *
-		 */
 
 
 		int numel = x.length;
@@ -141,18 +141,18 @@ class Aggregates
 
 
 	public static double sum (double [] x)
+	/*
+	 * Synopsis:
+	 * Implements the sum function.
+	 *
+	 * Input:
+	 * x		array of doubles
+	 *
+	 * Output:
+	 * small	sums the elements in the array of doubles
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the sum function.
-		 *
-		 * Input:
-		 * x		array of doubles
-		 *
-		 * Output:
-		 * small	sums the elements in the array of doubles
-		 *
-		 */
 
 
 		int numel = x.length;
@@ -166,18 +166,18 @@ class Aggregates
 
 
 	public static double mean (double [] x)
+	/*
+	 * Synopsis:
+	 * Implements the mean function.
+	 *
+	 * Input:
+	 * x		array of doubles
+	 *
+	 * Output:
+	 * avg		average of the array of doubles
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the mean function.
-		 *
-		 * Input:
-		 * x		array of doubles
-		 *
-		 * Output:
-		 * avg		average of the array of doubles
-		 *
-		 */
 
 		int numel = x.length;
 
@@ -186,18 +186,18 @@ class Aggregates
 
 
 	public static double std (double [] x)
+	/*
+	 * Synopsis:
+	 * Implements the standard deviation function.
+	 *
+	 * Input:
+	 * x		array of doubles
+	 *
+	 * Output:
+	 * stdev	standard deviation of the array of doubles
+	 *
+	 */
 	{
-		/*
-		 * Synopsis:
-		 * Implements the standard deviation function.
-		 *
-		 * Input:
-		 * x		array of doubles
-		 *
-		 * Output:
-		 * stdev	standard deviation of the array of doubles
-		 *
-		 */
 
 
 		int numel = x.length;
