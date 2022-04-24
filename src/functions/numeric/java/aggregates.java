@@ -23,6 +23,7 @@
  * [1] www.javatpoint.com/throw-keyword
  */
 
+import java.util.Random;
 
 class Aggregates
 {
@@ -46,6 +47,7 @@ class Aggregates
 		System.out.printf("std: %20.15f %21.15f\n\n",
 			std(x), 18.618986725025255);
 
+		testMedian();
 	}
 
 
@@ -342,6 +344,7 @@ class Aggregates
 
 		int n = 0;				// comparisons
 		int i = ( (p - 1) > b )? (p - 1) : b;	// index
+		int l = b;				// list lower limit
 		// swaps elements smaller than pivot in the range [b, m)
 		while ( n < ( (m - b) - 1) )
 		{
@@ -351,7 +354,7 @@ class Aggregates
 				swap (list, i--, p--);
 			}
 			else
-				--i;	// decrements to consider the next
+				swap (list, i, l++);
 			++n;
 		}
 
@@ -461,6 +464,75 @@ class Aggregates
 			ls[i] = list[i];
 
 		return ls;
+	}
+
+
+        private static void print (double [] list)
+	// prints the elements of a list to the console
+	{
+		int i;
+		for (i = 0; i != list.length - 1; ++i)
+			System.out.printf("%4.1f ", list[i]);
+		System.out.printf("%4.1f\n", list[i]);
+
+		return;
+	}
+
+
+	// tests:
+	private static void isAscending(double [] list)
+	// complains if the list is not sorted in ascending order
+	{
+		for (int i = 0; i != (list.length - 1); ++i)
+		{
+			if (list[i] > list[i + 1])
+				throw new RuntimeException(
+					"list is not in ascending order"
+				);
+		}
+	}
+
+
+	private static void testMedian()
+	// finds the median of a list of random numbers for testing
+	{
+		int size = 255;
+		double [] list = new double [size];
+		double [] sort = new double [size];
+		Random rand = new Random();
+
+		// fills the list with random values in the range [0, 1024)
+		for (int i = 0; i != size; ++i)
+			list[i] = ( (double) rand.nextInt(1024) );
+
+		for (int k = 0; k != size; ++k)
+			sort[k] = FindKthLargest(size - (k + 1), list);
+
+		isAscending (sort);	// complains if list is not sorted
+
+
+		/* computes median from the sorted list */
+		double middle;
+		int mid = size / 2;
+		if (size % 2 == 1)
+			middle = sort[mid];
+		else
+			middle = (sort[mid] + sort[mid - 1]) / 2.0;
+
+
+		// prints the median on the console
+		System.out.printf("median: %f\n", middle);
+		System.out.printf("median: %f\n", median(list));
+
+
+		// informs the user about the test results (pass or fail)
+		System.out.printf("median.test(): ");
+		if ( Math.abs(median(list) - middle) > 1.0e-12 )
+			System.out.printf("FAIL\n");
+		else
+			System.out.printf("pass\n");
+
+		return;
 	}
 
 }
