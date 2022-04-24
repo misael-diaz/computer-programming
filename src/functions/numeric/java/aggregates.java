@@ -264,11 +264,13 @@ class Aggregates
 		int p;			// pivot
 		int b = 0;		// begin
 		int e = list.length;	// end, non-inclusive
+		/* creates a shallow copy of the list */
+		double [] ls = copy(list);
 
 		do
 		// partitions the list until it reaches the middle element
 		{
-			p = partition (list, b, e);
+			p = partition (ls, b, e);
 
 			if (p > K)
 				e = p;		// removes [p, e) elements
@@ -277,7 +279,7 @@ class Aggregates
 
 		} while (p != K);
 
-		return list[p];
+		return ls[p];
 	}
 
 
@@ -445,4 +447,20 @@ class Aggregates
 		list[j] = smaller;
 		return;
 	}
+
+
+        private static double [] copy (double [] list)
+	/*
+	 * Synopsis:
+	 * Creates a shallow copy of a list.
+	 *
+	 */
+	{
+		double ls [] = new double [list.length];
+		for (int i = 0; i != list.length; ++i)
+			ls[i] = list[i];
+
+		return ls;
+	}
+
 }
