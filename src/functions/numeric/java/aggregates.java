@@ -323,9 +323,7 @@ class Aggregates
 			if (list[i] < pivot)
 			{
 				// swaps smaller element with pivot element
-				swap (list, i, p--);
-				// moves the pivot to its new location
-				swap (list, i, p);
+				swap (list, i--, p--);
 			}
 			else
 				--i;	// decrements to consider the next
