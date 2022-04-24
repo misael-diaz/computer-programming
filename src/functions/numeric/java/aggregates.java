@@ -371,10 +371,7 @@ class Aggregates
 		while (n < M)
 		{
 			if (list[l] > pivot)
-			{
-				swap (list, l, p++);	// swaps larger
-				swap (list, l++, p);	// swaps pivot
-			}
+				swap (list, l++, p++);	// swaps larger
 			else
 				swap(list, l, u--);	// swaps smaller
 			++n;
