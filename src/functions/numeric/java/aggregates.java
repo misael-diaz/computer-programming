@@ -19,8 +19,12 @@
  *
  *
  * References:
- * [0] www.javatpoint.com/how-to-return-an-array-in-java
- * [1] www.javatpoint.com/throw-keyword
+ * [0] JJ McConnell, Analysis of Algorithms, 2nd edition
+ * [1] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
+ * [2] www.javatpoint.com/how-to-return-an-array-in-java
+ * [3] www.javatpoint.com/throw-keyword
+ * [4] www.javatpoint.com/post/java-random
+ *
  */
 
 import java.util.Random;
