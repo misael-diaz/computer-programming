@@ -315,10 +315,6 @@ class Aggregates
 		int m = (b + e) / 2;			// middle
 		double pivot = list[p];			// pivot value
 
-		// sets limits of sublist [b, m)
-		int l = b;				// lower limit
-		int u = m;				// upper limit
-
 		int n = 0;				// comparisons
 		int i = ( (p - 1) > b )? (p - 1) : b;	// index
 		// swaps elements smaller than pivot in the range [b, m)
@@ -330,8 +326,6 @@ class Aggregates
 				swap (list, i, p--);
 				// moves the pivot to its new location
 				swap (list, i, p);
-				// effectively removes smaller element
-				--u;
 			}
 			else
 				--i;	// decrements to consider the next
