@@ -23,6 +23,7 @@
  * [1] www.javatpoint.com/throw-keyword
  */
 
+import java.util.Random;
 
 class Aggregates
 {
@@ -45,7 +46,6 @@ class Aggregates
 		System.out.printf("avg: %20.15f %21.2f\n", mean(x), 32.5);
 		System.out.printf("std: %20.15f %21.15f\n\n",
 			std(x), 18.618986725025255);
-
 	}
 
 
@@ -232,32 +232,57 @@ class Aggregates
 		int b = 0;		// begin
 		int e = list.length;	// end, non-inclusive
 		int M = (b + e) / 2;	// middle
-		int p;			// pivot
-
-		do
-		// partitions the list until it reaches the middle element
-		{
-			p = partition (list, b, e);
-
-			if (p > M)
-				e = p;		// removes [p, e) elements
-			else
-				b = (p + 1);	// removes [b, p) elements
-
-		} while (p != M);
 
 		// obtains the middle value
 		double mid;
 		if (list.length % 2 == 0)
-			mid = (list[p] + list[p - 1]) / 2;
+			mid = ( FindKthLargest(M, list) +
+			        FindKthLargest(M - 1, list) ) / 2.0;
 		else
-			mid = list[p];
+			mid = FindKthLargest(M, list);
 
 		return mid;
 	}
 
 
 	// implementations:
+	private static double FindKthLargest (int K, double [] list)
+	/*
+	 * Synopsis:
+	 * Possible implementation of the Find Kth Largest Algorithm.
+	 *
+	 * Inputs
+	 * K		integer indicating 0th, 1st, 2nd, or kth largest
+	 * list		array of (presumed) unsorted elements
+	 *
+	 * Ouput
+	 * list[p]	returns the pivot element, the kth largest element
+	 * 		counting from zero.
+	 *
+	 */
+	{
+		int p;			// pivot
+		int b = 0;		// begin
+		int e = list.length;	// end, non-inclusive
+		/* creates a shallow copy of the list */
+		double [] ls = copy(list);
+
+		do
+		// partitions the list until it reaches the middle element
+		{
+			p = partition (ls, b, e);
+
+			if (p > K)
+				e = p;		// removes [p, e) elements
+			else
+				b = (p + 1);	// removes [b, p] elements
+
+		} while (p != K);
+
+		return ls[p];
+	}
+
+
 	private static int partition (double [] list, int b, int e)
 	/*
 	 * Synopsis:
@@ -315,26 +340,19 @@ class Aggregates
 		int m = (b + e) / 2;			// middle
 		double pivot = list[p];			// pivot value
 
-		// sets limits of sublist [b, m)
-		int l = b;				// lower limit
-		int u = m;				// upper limit
-
 		int n = 0;				// comparisons
 		int i = ( (p - 1) > b )? (p - 1) : b;	// index
+		int l = b;				// list lower limit
 		// swaps elements smaller than pivot in the range [b, m)
 		while ( n < ( (m - b) - 1) )
 		{
 			if (list[i] < pivot)
 			{
 				// swaps smaller element with pivot element
-				swap (list, i, p--);
-				// moves the pivot to its new location
-				swap (list, i, p);
-				// effectively removes smaller element
-				--u;
+				swap (list, i--, p--);
 			}
 			else
-				--i;	// decrements to consider the next
+				swap (list, i, l++);
 			++n;
 		}
 
@@ -379,10 +397,7 @@ class Aggregates
 		while (n < M)
 		{
 			if (list[l] > pivot)
-			{
-				swap (list, l, p++);	// swaps larger
-				swap (list, l++, p);	// swaps pivot
-			}
+				swap (list, l++, p++);	// swaps larger
 			else
 				swap(list, l, u--);	// swaps smaller
 			++n;
@@ -433,4 +448,89 @@ class Aggregates
 		list[j] = smaller;
 		return;
 	}
+
+
+        private static double [] copy (double [] list)
+	/*
+	 * Synopsis:
+	 * Creates a shallow copy of a list.
+	 *
+	 */
+	{
+		double ls [] = new double [list.length];
+		for (int i = 0; i != list.length; ++i)
+			ls[i] = list[i];
+
+		return ls;
+	}
+
+
+        private static void print (double [] list)
+	// prints the elements of a list to the console
+	{
+		int i;
+		for (i = 0; i != list.length - 1; ++i)
+			System.out.printf("%4.1f ", list[i]);
+		System.out.printf("%4.1f\n", list[i]);
+
+		return;
+	}
+
+
+	// tests:
+	private static void isAscending(double [] list)
+	// complains if the list is not sorted in ascending order
+	{
+		for (int i = 0; i != (list.length - 1); ++i)
+		{
+			if (list[i] > list[i + 1])
+				throw new RuntimeException(
+					"list is not in ascending order"
+				);
+		}
+	}
+
+
+	private static void testMedian()
+	// finds the median of a list of random numbers for testing
+	{
+		int size = 255;
+		double [] list = new double [size];
+		double [] sort = new double [size];
+		Random rand = new Random();
+
+		// fills the list with random values in the range [0, 1024)
+		for (int i = 0; i != size; ++i)
+			list[i] = ( (double) rand.nextInt(1024) );
+
+		for (int k = 0; k != size; ++k)
+			sort[k] = FindKthLargest(size - (k + 1), list);
+
+		isAscending (sort);	// complains if list is not sorted
+
+
+		/* computes median from the sorted list */
+		double middle;
+		int mid = size / 2;
+		if (size % 2 == 1)
+			middle = sort[mid];
+		else
+			middle = (sort[mid] + sort[mid - 1]) / 2.0;
+
+
+		// prints the median on the console
+		System.out.printf("median: %f\n", middle);
+		System.out.printf("median: %f\n", median(list));
+
+
+		// informs the user about the test results (pass or fail)
+		System.out.printf("median.test(): ");
+		if ( Math.abs(median(list) - middle) > 1.0e-12 )
+			System.out.printf("FAIL\n");
+		else
+			System.out.printf("pass\n");
+
+		return;
+	}
+
 }
