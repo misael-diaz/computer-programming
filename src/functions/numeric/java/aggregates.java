@@ -46,8 +46,6 @@ class Aggregates
 		System.out.printf("avg: %20.15f %21.2f\n", mean(x), 32.5);
 		System.out.printf("std: %20.15f %21.15f\n\n",
 			std(x), 18.618986725025255);
-
-		testMedian();
 	}
 
 
