@@ -232,32 +232,55 @@ class Aggregates
 		int b = 0;		// begin
 		int e = list.length;	// end, non-inclusive
 		int M = (b + e) / 2;	// middle
-		int p;			// pivot
-
-		do
-		// partitions the list until it reaches the middle element
-		{
-			p = partition (list, b, e);
-
-			if (p > M)
-				e = p;		// removes [p, e) elements
-			else
-				b = (p + 1);	// removes [b, p) elements
-
-		} while (p != M);
 
 		// obtains the middle value
 		double mid;
 		if (list.length % 2 == 0)
-			mid = (list[p] + list[p - 1]) / 2;
+			mid = ( FindKthLargest(M, list) +
+			        FindKthLargest(M - 1, list) ) / 2.0;
 		else
-			mid = list[p];
+			mid = FindKthLargest(M, list);
 
 		return mid;
 	}
 
 
 	// implementations:
+	private static double FindKthLargest (int K, double [] list)
+	/*
+	 * Synopsis:
+	 * Possible implementation of the Find Kth Largest Algorithm.
+	 *
+	 * Inputs
+	 * K		integer indicating 0th, 1st, 2nd, or kth largest
+	 * list		array of (presumed) unsorted elements
+	 *
+	 * Ouput
+	 * list[p]	returns the pivot element, the kth largest element
+	 * 		counting from zero.
+	 *
+	 */
+	{
+		int p;			// pivot
+		int b = 0;		// begin
+		int e = list.length;	// end, non-inclusive
+
+		do
+		// partitions the list until it reaches the middle element
+		{
+			p = partition (list, b, e);
+
+			if (p > K)
+				e = p;		// removes [p, e) elements
+			else
+				b = (p + 1);	// removes [b, p] elements
+
+		} while (p != K);
+
+		return list[p];
+	}
+
+
 	private static int partition (double [] list, int b, int e)
 	/*
 	 * Synopsis:
