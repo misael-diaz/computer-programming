@@ -169,6 +169,7 @@ public class Map
 
 	public static void main (String[] args)
 	{
+		// counts number of duplicates in a list of random numbers
 		duplicates();
 		return;
 	}
