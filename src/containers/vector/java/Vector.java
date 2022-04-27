@@ -27,10 +27,10 @@ import java.util.Random;
 public class Vector
 {
 
-	int begin = 0;			// beginning of vector
-	int avail = 0;			// available for writing
-	int limit = 16;			// default vector size limit
-	int array [] = new int [limit];	// data placeholder
+	private int begin = 0;			// beginning of vector
+	private int avail = 0;			// available for writing
+	private int limit = 16;			// default size limit
+	private int array [] = new int [limit];	// data placeholder
 
 
 	// interfaces:
