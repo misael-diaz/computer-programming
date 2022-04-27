@@ -1,0 +1,40 @@
+student00  78  69  79  74  81
+student01  63  67  85  70  62  92
+student02  80  60  68  90
+student03  96  94  75  97  60  88  69
+student04  71  68  68  86  97  90
+student05  81  86  61
+student06  65  93  95  98  81  97
+student07  95  68  99  99  90  76  63
+student08  73  80  84  64  81  86  64
+student09  97  70  92  96  63  68
+student10  82  74  98  84  72  60  80
+student11  75  80  95  88  78  74  95
+student12  72  64  84
+student13  71  84  75  68
+student14  73  60  77  68  91  72  66
+student15  80  85  90
+student16  95  70  79
+student17  96  71  75  64  85  70
+student18  86  81  67  90
+student19  68  88  72  90  71  88
+student20  90  63  99  61
+student21  71  95  63  77  85  80  68
+student22  82  83  97  61  84
+student23  90  68  99  92
+student24  92  96  68  60  95
+student25  68  72  66  94
+student26  69  95  82  85  72  90
+student27  91  86  67  69  66  85  61
+student28  69  90  60  78  60
+student29  86  92  73  78  69
+student30  89  95  70
+student31  68  88  85
+student32  67  89  71  77
+student33  65  91  82  90  69  87
+student34  94  60  72  62  67  60
+student35  71  90  83  66  61
+student36  87  65  82  94
+student37  86  87  84  97  60  97  67
+student38  64  82  88  69  79  70  68
+student39  97  87  62  65  72  86
