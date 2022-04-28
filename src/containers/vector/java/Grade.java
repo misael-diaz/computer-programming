@@ -121,6 +121,8 @@ public class Grade
 			int grade;
 			int missed;
 
+			System.out.println("Name     \tmedian");
+			System.out.println("======================");
 			// reads until the end-of-file EOF
 			while ( in.hasNext() )
 			{
@@ -144,7 +146,8 @@ public class Grade
 				// obtains the median homework grade
 				grade = homeworks.median(homeworks);
 				// prints student name and grade
-				System.out.println(student + "  " + grade);
+				System.out.printf("%s\t%4d\n", student,
+					          grade);
 			}
 
 		}
