@@ -84,6 +84,25 @@ public class Vector
 	}
 
 
+	public static int pop (Vector vector, int target)
+	// pops target element, complains if it does not exist
+	{
+
+		int popped = 0;	// caters compiler initialization warning
+
+		// searches for the target
+		int pos = search (vector, target);
+		if (pos == 0)
+			throw new RuntimeException(
+				"Vector.pop(): target not found in vector"
+			);
+		else
+			popped = popit (vector, pos);	// pops target
+
+		return popped;	// returns a copy of the target
+	}
+
+
 	public static void print (Vector vector)
 	// prints the elements of the vector on the console
 	{
@@ -181,6 +200,31 @@ public class Vector
 			throw new RuntimeException(
 				"cannot obtain median of an empty vector"
 			);
+	}
+
+
+	private static int popit (Vector vector, int pos)
+	// pops element by its positional index [1, N]
+	{
+		int p = (pos - 1);
+		int avail = vector.avail;
+		int popped = vector.array[p];
+
+		if (pos != avail)
+		{
+			// copies invalidated slice in [pos, avail)
+			int size = (avail - pos);
+			int [] array = new int [size];
+			for (int i = 0; i != size; ++i)
+				array[i] = vector.array[i + pos];
+
+			// shifts slice to fill vacant location
+			for (int i = 0; i != size; ++i)
+				vector.array[i + p] = array[i];
+		}
+
+		--vector.avail;	// decrements #stored elements
+		return popped;	// returns copy of popped element
 	}
 
 
@@ -387,6 +431,8 @@ public class Vector
 		test_vectorClear();
 		// pops elements
 		test_vectorPop();
+		// pops elements by their value
+		test_vectorPopByValue();
 		// searches the last element
 		test_vectorSearch();
 		// selects the largest element
@@ -480,6 +526,32 @@ public class Vector
 		System.out.println();
 
 		return;
+	}
+
+
+	private static void test_vectorPopByValue ()
+	// test pop by value method
+	{
+		Vector vector = new Vector();
+		// pushes integers in the range [0, 32) unto back of vector
+		for (int i = 0; i != 32; ++i)
+			vector.push_back (vector, i);
+
+		// creates a list of elements to be popped from vector
+		int [] odd = new int [16];
+		for (int i = 0; i != 16; ++i)
+			odd[i] = 2 * i + 1;
+
+		// pops selected elements
+		System.out.println("popping the odd elements:");
+		for (int i = 0; i != 16; ++i)
+			System.out.println( vector.pop (vector, odd[i]) );
+
+		System.out.println();
+		// shows the vector elements after the removals
+		System.out.println("remaining (even) elements in vector:");
+		print (vector);
+		System.out.println();
 	}
 
 
