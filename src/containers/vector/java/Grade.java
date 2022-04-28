@@ -120,9 +120,11 @@ public class Grade
 			String student;
 			int grade;
 			int missed;
+			double avg;
+			String border = ("==============================");
 
-			System.out.println("Name     \tmedian");
-			System.out.println("======================");
+			System.out.println("Name     \tmean\tmedian");
+			System.out.println(border);
 			// reads until the end-of-file EOF
 			while ( in.hasNext() )
 			{
@@ -145,9 +147,16 @@ public class Grade
 
 				// obtains the median homework grade
 				grade = homeworks.median(homeworks);
+
+				// calculates the average homework grade
+				avg = ( (double)
+					homeworks.sum(homeworks) );
+				avg /= ( (double)
+					homeworks.size(homeworks) );
+
 				// prints student name and grade
-				System.out.printf("%s\t%4d\n", student,
-					          grade);
+				System.out.printf("%s\t%4.1f\t%4d\n",
+					          student, avg, grade);
 			}
 
 		}
