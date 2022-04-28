@@ -73,7 +73,7 @@ public class Grade
 
 
 			int g;		// grade
-			int min = 3;	// min number of homeworks done
+			int min = 4;	// min number of homeworks done
 			int max = 8;	// max number of homeworks done
 			int hws;	// number of homeworks done
 			int homework;	// homework score
@@ -90,7 +90,7 @@ public class Grade
 				hws = min + homeworks.nextInt(max - min);
 				for (int j = 0; j != hws; ++j)
 				{
-					g = 60 + grade.nextInt(40);
+					g = 50 + grade.nextInt(45);
 					out.printf("%4d", g);
 				}
 				out.println();
@@ -119,7 +119,12 @@ public class Grade
 
 			String student;
 			int grade;
+			int missed;
+			double avg;
+			String border = ("==============================");
 
+			System.out.println("Name     \tmean\tmedian");
+			System.out.println(border);
 			// reads until the end-of-file EOF
 			while ( in.hasNext() )
 			{
@@ -134,10 +139,24 @@ public class Grade
 					homeworks.push_back(homeworks,
 							    in.nextInt());
 				}
+
+				// inserts score for unsubmitted homework
+				missed = 7 - homeworks.size(homeworks);
+				for (int i = 0; i != missed; ++i)
+					homeworks.push_back(homeworks, 0);
+
 				// obtains the median homework grade
 				grade = homeworks.median(homeworks);
+
+				// calculates the average homework grade
+				avg = ( (double)
+					homeworks.sum(homeworks) );
+				avg /= ( (double)
+					homeworks.size(homeworks) );
+
 				// prints student name and grade
-				System.out.println(student + "  " + grade);
+				System.out.printf("%s\t%4.1f\t%4d\n",
+					          student, avg, grade);
 			}
 
 		}

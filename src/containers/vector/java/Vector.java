@@ -140,6 +140,18 @@ public class Vector
 	}
 
 
+	public static int sum (Vector vector)
+	// sums the vector elements
+	{
+		int s = 0;
+		int avail = vector.avail;
+		for (int i = 0; i != avail; ++i)
+			s += vector.array[i];
+
+		return s;
+	}
+
+
 	// implementations:
 	private static void grow (Vector vector)
 	// doubles the vector size limit
