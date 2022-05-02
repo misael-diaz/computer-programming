@@ -717,7 +717,7 @@ public class Vector
 	}
 
 
-	static Coord.Comparator comparator = (Coord P, Coord Q) -> {
+	public static Coord.Comparator comparator = (Coord P, Coord Q) -> {
 	/*
 	 * Synopsis:
 	 * User-defined comparator of coordinates which compares primarily
