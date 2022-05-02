@@ -55,6 +55,13 @@ public class Vector
 		}
 
 
+		interface Comparator
+		// defines abstract comparison method
+		{
+			public int compare (Coord P, Coord Q);
+		}
+
+
 		public static int [] toArray (Coord coord)
 		// returns a 2nd rank array with a copy of the coordinates
 		{
@@ -271,6 +278,17 @@ public class Vector
 		int numel = size (vector);
 		// delegates the task to the Insertion Sort Algorithm
 		InsertionSort (numel, vector.array);
+		vector.sorted = true;
+	}
+
+
+	public static void sort (Vector vector, Coord.Comparator comp)
+	// sorts elements in vector based on the comparator function
+	{
+
+		int numel = size (vector);
+		// delegates the task to the Insertion Sort Algorithm
+		InsertionSort (numel, vector.array, comp);
 		vector.sorted = true;
 	}
 
@@ -575,6 +593,37 @@ public class Vector
 	}
 
 
+	private static void InsertionSort (int N, Coord [] coords,
+					   Coord.Comparator comp)
+	/*
+	 * Synopsis:
+	 * Possible implementation of the Insertion Sort Algorithm.
+	 *
+	 * Inputs
+	 * comp		function that defines comparison of coordinates
+	 * N		number of elements
+	 * coords	array of (presumed) unsorted coordinates
+	 *
+	 * Output
+	 * array	the sorted array of coordinates
+	 *
+	 */
+	{
+		int loc;
+		Coord ins;
+		for (int i = 1; i != N; ++i)
+		{
+			ins = coords[i];	// insertion element
+			loc = (i - 1);		// sorted range [0, loc]
+
+			// inserts in the correct location
+			shift (comp, coords, ins, loc);
+		}
+
+		return;
+	}
+
+
 	private static void shift (Coord [] ary, Coord in, int loc)
 	/*
 	 * Synopsis:
@@ -606,6 +655,66 @@ public class Vector
 		ary[loc + 1] = in;
 		return;
 	}
+
+
+	private static void shift (Coord.Comparator f, Coord [] ary,
+				   Coord in, int loc)
+	/*
+	 * Synopsis:
+	 * Shifts elements in the array to sort them in accordance with
+	 * the supplied comparator method.
+	 *
+	 * Inputs
+	 * f		function that defines comparison of coordinates
+	 * ary		array with sorted elements in the range [0, loc]
+	 * in		insertion (or new) element
+	 * loc		index indicating the sorted portion of the array
+	 *
+	 * Ouput
+	 * array	the ordered array containing the new element
+	 *
+	 */
+	{
+		// shifts larger elements to the right
+		while ( (loc >= 0) && (f.compare(ary[loc], in) == 1) )
+		{
+			ary[loc + 1] = ary[loc];
+			--loc;
+		}
+
+		// inserts element in the correct location
+		ary[loc + 1] = in;
+		return;
+	}
+
+
+	static Coord.Comparator comparator = (Coord P, Coord Q) -> {
+	/*
+	 * Synopsis:
+	 * User-defined comparator of coordinates which compares primarily
+	 * with respect to the y-coordinate and secondarily with respect to
+	 * the x-coordinate:
+	 *
+	 * 	Returns 1 if P > Q, 0 if P == Q, and -1 if P < Q
+	 *
+	 */
+		if (P.y > Q.y)
+			return 1;
+		else
+		{
+			if ( P.y == Q.y )
+			{
+				if ( P.x == Q.x )
+					return  0;
+				else if ( P.x > Q.x )
+					return  1;
+				else
+					return -1;
+			}
+				else
+					return -1;
+			}
+	};
 
 
 	public static void main (String[] args)
@@ -770,10 +879,20 @@ public class Vector
 		System.out.println("\noriginal dataset:\n");
 		coords.print(coords);
 
-		System.out.println("\nsorted dataset:\n");
+		// sorts primarily with respect to the x-coordinate and
+		// secondarily with respect to the y-coordinate
+		System.out.println("\nx-y sorted dataset:\n");
 		coords.sort(coords);
 		coords.print(coords);
 		System.out.println();
+
+		// sorts primarily with respect to the y-coordinate and
+		// secondarily with respect to the x-coordinate
+		System.out.println("\ny-x sorted dataset:\n");
+		coords.sort(coords, comparator);
+		coords.print(coords);
+		System.out.println();
+
 		return;
 	}
 
