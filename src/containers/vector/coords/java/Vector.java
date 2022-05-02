@@ -126,6 +126,35 @@ public class Vector
 	}
 
 
+	public static int capacity (Vector vector)
+	// returns the storage capacity of the vector
+	{
+		return (vector.limit - vector.begin);
+	}
+
+
+	public static void fit (Vector vector)
+	// fits the vector to size (limit == avail)
+	{
+		int size = vector.size (vector);
+		if (size != 0)
+		// backups, destroys, and restores data in a fitted array
+		{
+			Coord [] placeholder = new Coord [size];
+			for (int i = 0; i != size; ++i)
+				placeholder[i] = vector.array[i];
+
+			// fits to size
+			vector.array = null;
+			vector.limit = vector.avail;
+			vector.array = new Coord [vector.limit];
+
+			for (int i = 0; i != size; ++i)
+				vector.array[i] = placeholder[i];
+		}
+	}
+
+
 	public static void push_back (Vector vector, int x, int y)
 	// pushes coordinates unto the back of vector
 	{
@@ -892,6 +921,14 @@ public class Vector
 		coords.sort(coords, comparator);
 		coords.print(coords);
 		System.out.println();
+
+		// fits to size
+		System.out.println("\nfits vector to size:\n");
+		coords.fit(coords);
+		System.out.println("size:     " + coords.size(coords));
+		System.out.println("capacity: " + coords.capacity(coords));
+		System.out.println("\ny-x sorted dataset:\n");
+		coords.print(coords);
 
 		return;
 	}
