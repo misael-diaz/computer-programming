@@ -81,18 +81,20 @@ public class BinarySearchAlgorithm
 
 		if (t == mid)		// if the target is found:
 
-			return m;	// uses direct solution
+			return m;	/* uses direct solution */
 
-		else if (t > mid)	// discards first half:
+		else			/* divides */
 		{
-			b = (m + 1);	// divides list
-			return BinarySearch (b, e, list, t);	// recurses
+			if (t > mid)		// discards first half:
+
+				b = (m + 1);	// divides list
+
+			else // (t < mid)	// discards second half:
+
+				e = (m - 1);	// divides list
 		}
-		else // (t < mid)	// discards second half:
-		{
-			e = (m - 1);	// divides list
-			return BinarySearch (b, e, list, t);	// recurses
-		}
+
+		return BinarySearch (b, e, list, t);	/* recurses */
 	}
 
 
