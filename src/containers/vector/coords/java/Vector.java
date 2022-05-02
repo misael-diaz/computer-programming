@@ -318,7 +318,7 @@ public class Vector
 		int numel = size (vector);
 		// delegates the task to the Insertion Sort Algorithm
 		InsertionSort (numel, vector.array, comp);
-		vector.sorted = true;
+		vector.sorted = false;
 	}
 
 
