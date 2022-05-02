@@ -228,7 +228,7 @@ public class Vector
 	{
 
 		// bounds check
-		if (begin < vector.begin || end >= vector.avail)
+		if (begin < vector.begin || end > vector.avail)
 			throw new RuntimeException("out-of-bounds error");
 
 		// gets elements to be popped
@@ -318,7 +318,7 @@ public class Vector
 		int numel = size (vector);
 		// delegates the task to the Insertion Sort Algorithm
 		InsertionSort (numel, vector.array, comp);
-		vector.sorted = true;
+		vector.sorted = false;
 	}
 
 
@@ -717,7 +717,7 @@ public class Vector
 	}
 
 
-	static Coord.Comparator comparator = (Coord P, Coord Q) -> {
+	public static Coord.Comparator comparator = (Coord P, Coord Q) -> {
 	/*
 	 * Synopsis:
 	 * User-defined comparator of coordinates which compares primarily
