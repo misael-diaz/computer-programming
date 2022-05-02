@@ -228,7 +228,7 @@ public class Vector
 	{
 
 		// bounds check
-		if (begin < vector.begin || end >= vector.avail)
+		if (begin < vector.begin || end > vector.avail)
 			throw new RuntimeException("out-of-bounds error");
 
 		// gets elements to be popped
