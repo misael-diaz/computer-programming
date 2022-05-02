@@ -78,24 +78,17 @@ public class Solvers
 
 		if (f < tol)		// if meets convergence criterion:
 
-			return m;	// uses direct solution
+			return m;	/* uses direct solution */
 
-		else
+		else			/* divides */
 		{
-
 			if (objf.f(m) * objf.f(u) < 0.0)
-			// discards first half:
-			{
-				l = m;				// divides
-				return bisect (l, u, objf);	// recurses
-			}
+				l = m;	// divides by removing first half
 			else
-			// discards second half:
-			{
-				u = m;				// divides
-				return bisect (l, u, objf);	// recurses
-			}
+				u = m;	// divides by removing second half
 		}
+
+		return bisect (l, u, objf);	/* recurses */
 	}
 
 
@@ -129,24 +122,17 @@ public class Solvers
 
 		if (f < tol)		// if meets convergence criterion:
 
-			return m;	// uses direct solution
+			return m;	/* uses direct solution */
 
-		else
+		else			/* divides */
 		{
-
 			if (objf.f(m) * objf.f(u) < 0.0)
-			// discards first part:
-			{
-				l = m;				// divides
-				return regfal (l, u, objf);	// recurses
-			}
+				l = m;	// divides by removing first part
 			else
-			// discards second part:
-			{
-				u = m;				// divides
-				return regfal (l, u, objf);	// recurses
-			}
+				u = m;	// divides by removing second part
 		}
+
+		return regfal (l, u, objf);	/* recurses */
 	}
 
 
