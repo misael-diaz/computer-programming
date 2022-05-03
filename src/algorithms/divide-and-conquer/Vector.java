@@ -186,8 +186,9 @@ public class Vector
 	// returns indexed coordinates as an array of two elements
 	{
 		// bounds check
+		String errmsg = ("vector.index(): out-of-bounds error");
 		if (i < vector.begin || i >= vector.avail)
-			throw new RuntimeException("out-of-bounds error");
+			throw new RuntimeException(errmsg);
 
 		// delegates the task to the Coord's method toArray()
 		return vector.array[i].toArray (vector.array[i]);

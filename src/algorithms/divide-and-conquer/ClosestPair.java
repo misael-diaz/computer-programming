@@ -339,12 +339,33 @@ class ClosestPair_DivideAndConquerAlgorithm
 		Ly.sort (Ly, Ly.comparator);
 		Ly.print(Ly);
 
-		size = Rx.size (Rx);
+
+		int pos;
+		int idx = 0;
+		size = Ly.size (Ly);
 		Vector Ry = new Vector ();
-		// pops elements in Py matching Rx to insert into Ry
-		Ry.push_back (Ry, Ly.pop (Ly, Rx.index(Rx, 0, size) ) );
-		// sorts Ry so that it can be partitioned into quadrants
-		Ry.sort (Ry, Ry.comparator);
+		int [] coord = new int [2];
+		// pops elements in Py matching Rx while inserting into Ry
+		// to obtain both Ly and Ry
+		for (int n = 0; n != size; ++n)
+		// NOTE: pops elements in Py in order (beginning to end)
+		//       so that Ry ends up with the same ordering of Py
+		{
+			coord = Ly.index(Ly, idx);
+			// Note that when popping elements from beginning
+			// to end it is not necessary to increment the
+			// index when an element is popped because the next
+			// element in the vector ends up in the popped
+			// location. On the other hand, if the current
+			// element is not popped, the index needs to be
+			// incremented to consider the next element on the
+			// next iteration.
+			pos = Rx.search(Rx, coord);
+			if (pos != 0)
+				Ry.push_back( Ry, Ly.pop(Ly, coord) );
+			else
+				++idx;
+		}
 
 		System.out.println("\nLy:\n");
 		Ly.print(Ly);
