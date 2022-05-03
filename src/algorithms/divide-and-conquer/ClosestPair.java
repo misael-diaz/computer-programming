@@ -341,9 +341,8 @@ class ClosestPair_DivideAndConquerAlgorithm
 
 		size = Rx.size (Rx);
 		Vector Ry = new Vector ();
-		// constructs Ly and Ry by popping elements from Py
-		for (int i = 0; i != size; ++i)
-			Ry.push_back (Ry, Ly.pop (Ly, Rx.index(Rx, i) ) );
+		// pops elements in Py matching Rx to insert into Ry
+		Ry.push_back (Ry, Ly.pop (Ly, Rx.index(Rx, 0, size) ) );
 		// sorts Ry so that it can be partitioned into quadrants
 		Ry.sort (Ry, Ry.comparator);
 
