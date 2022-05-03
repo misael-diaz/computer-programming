@@ -194,6 +194,26 @@ public class Vector
 	}
 
 
+	public static int [][] index (Vector vec, int begin, int end)
+	// returns indexed coordinates as a 2nd-rank array
+	{
+		// bounds check
+		String errmsg = ("vector.index(): out-of-bounds error");
+		if (begin < vec.begin || end > vec.avail)
+			throw new RuntimeException (errmsg);
+
+		errmsg = ("vector.index(): empty range");
+		int size = (end - begin);
+		if (size == 0)
+			throw new RuntimeException (errmsg);
+
+		int [][] coords = new int [size][2];
+		for (int i = begin; i != end; ++i)
+			coords[i] = vec.array[i].toArray (vec.array[i]);
+
+		return coords;
+	}
+
 
 	public static void delete (Vector vector)
 	// effectively deletes the last element
@@ -220,6 +240,20 @@ public class Vector
 	{
 		Coord coord = vector.popper ( vector, new Coord(coords) );
 		return coord.toArray(coord);
+	}
+
+
+	public static int [][] pop (Vector vec, int [][] coordinates)
+	// pops selected coordinates from vector
+	{
+		Coord coord = new Coord();
+		int [][] coords = new int [coordinates.length][2];
+		for (int i = 0; i != coordinates.length; ++i)
+		{
+			coord = vec.popper(vec, new Coord(coordinates[i]));
+			coords[i] = coord.toArray(coord);
+		}
+		return coords;
 	}
 
 
