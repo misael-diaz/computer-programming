@@ -52,8 +52,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 		};
 
 		Vector coords = new Vector();
-		for (int i = 0; i != P.length; ++i)
-			coords.push_back(coords, P[i]);
+		coords.push_back(coords, P);
 
 		return coords;
 	}
