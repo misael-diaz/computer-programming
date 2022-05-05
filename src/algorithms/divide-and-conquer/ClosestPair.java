@@ -435,5 +435,61 @@ class ClosestPair_DivideAndConquerAlgorithm
 		System.out.printf("coordinates:\n");
 		first.print(first);
 		second.print(second);
+
+
+		// finds the closest pair on the right half
+		double minDistanceRight;
+		int [][] closestPairRight = new int [2][2];
+		if (dI < dIV)
+		{
+			minDistanceRight = dI;
+			closestPairRight = pairI;
+		}
+		else
+		{
+			minDistanceRight = dIV;
+			closestPairRight = pairIV;
+		}
+
+
+		// finds the closest pair on the left half
+		double minDistanceLeft;
+		int [][] closestPairLeft = new int [2][2];
+		if (dII < dIII)
+		{
+			minDistanceLeft = dII;
+			closestPairLeft = pairII;
+		}
+		else
+		{
+			minDistanceLeft = dIII;
+			closestPairLeft = pairIII;
+		}
+
+
+		// finds the closest pair from the quadrants
+		double d_min;
+		int [][] closestPair = new int [2][2];
+		if (minDistanceLeft < minDistanceRight)
+		{
+			d_min = minDistanceLeft;
+			closestPair = closestPairLeft;
+		}
+		else
+		{
+			d_min = minDistanceRight;
+			closestPair = closestPairRight;
+		}
+
+
+		System.out.println();
+		System.out.printf("closest pair in quadrants:\n");
+		System.out.printf("distance: %.4f\n", d_min);
+		// prints coordinates of closest pair in the quadrant
+		first  = new Vector.Coord(closestPair[0]);
+		second = new Vector.Coord(closestPair[1]);
+		System.out.printf("coordinates:\n");
+		first.print(first);
+		second.print(second);
 	}
 }
