@@ -811,7 +811,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 		// returns if Left subset has no elements after pruning,
 		// meaning that there are no closest-pair candidates
 		if ( L.size(L) == 0 )
-			return Double.MAX_DOUBLE;
+			return Double.MAX_VALUE;
 
 
 		/* prunes particles on the Right (or upper) subset */
