@@ -413,18 +413,17 @@ class recursiveClosestPair
 
 		int [] coord;
 		// gets coordinates of the particle closest to boundary
-		// NOTE: The first particle in the upper quadrant is closer
+		// NOTE: The first particle in the Right (upper) subset
+		//       is closer
 		int [] middle = R.index (R, 0);
 		// gets the x or y-coordinate of the selected particle
 		int ax_m = middle[axis];
 
-		int idx = 0;
+		int idx = (L.size (L) - 1);
 		int size = L.size (L);
 		for (int n = 0; n != size; ++n)
 		// pops particles farther than the closest pair in `Left'
-		// NOTE: vector is sorted so no need to traverse it fully
-		//       and no need to update index since pop does that
-		//       behind scenes.
+		// NOTE: Removes elements from the back for speed.
 		{
 			coord = L.index (L, idx);
 			ax = coord[axis];
@@ -432,8 +431,7 @@ class recursiveClosestPair
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
 				L.pop (L, coord);
-			else
-				break;
+			--idx;
 		}
 
 
@@ -464,12 +462,10 @@ class recursiveClosestPair
 
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
-			{
 				R.pop (R, coord);
-				--idx;
-			}
 			else
 				break;
+			--idx;
 		}
 
 		if ( L.size(L) != 0 && R.size(R) != 0 )
