@@ -155,6 +155,30 @@ public class Vector
 	}
 
 
+	public static Vector copy (Vector vec)
+	// returns a shallow copy of a vector
+	{
+		Vector ret = new Vector();
+		int avail  = vec.size (vec);
+		int limit  = vec.capacity (vec);
+		ret.array  = null;
+		ret.array  = new Coord [limit];
+
+		int [] coord = new int [2];
+		for (int i = 0; i != avail; ++i)
+		{
+			coord = vec.array[i].toArray (vec.array[i]);
+			ret.array[i] = new Coord (coord);
+		}
+
+		ret.begin  = 0;
+		ret.avail  = avail;
+		ret.limit  = limit;
+		ret.sorted = vec.sorted;
+		return ret;
+	}
+
+
 	public static void push_back (Vector vector, int x, int y)
 	// pushes coordinates unto the back of vector
 	{
