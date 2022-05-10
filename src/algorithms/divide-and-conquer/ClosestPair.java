@@ -808,6 +808,12 @@ class ClosestPair_DivideAndConquerAlgorithm
 		}
 
 
+		// returns if Left subset has no elements after pruning,
+		// meaning that there are no closest-pair candidates
+		if ( L.size(L) == 0 )
+			return Double.MAX_DOUBLE;
+
+
 		/* prunes particles on the Right (or upper) subset */
 
 		// pops elements from the back of vector since these are
