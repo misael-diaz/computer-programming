@@ -205,30 +205,29 @@ class recursiveClosestPair
 		Vector Ry = new Vector();	// placeholder for Ry
 
 		int pos;			// positional index
-		int idx = 0;			// element index
 		int size = Ly.size (Ly);	// number of elements
 		int [] coord = new int [2];	// coordinate placeholder
-		// pops elements in Py matching Rx while inserting into Ry
-		// to obtain both Ly and Ry subsets
-		for (int n = 0; n != size; ++n)
-		// NOTE: pops elements in Py in order (beginning to end)
-		//       so that Ry ends up with the same ordering of Py
+		for (int idx = 0; idx != size; ++idx)
+		// copies elements in Py in order (beginning to end)
+		// so that Ry ends up with the same ordering of Py
 		{
 			coord = Ly.index(Ly, idx);
-			// Note that when popping elements from beginning
-			// to end it is not necessary to increment the
-			// index when an element is popped because the next
-			// element in the vector ends up in the popped
-			// location. On the other hand, if the current
-			// element is not popped, the index needs to be
-			// incremented to consider the next element on the
-			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, coord) );
-			else
-				++idx;
+				Ry.push_back( Ry, coord );
 		}
+
+		int idx;
+		for (int i = 0; i != size; ++i)
+		// pops elements present in Rx from Ly from back to front
+		{
+			idx = size - (i + 1);
+			coord = Ly.index(Ly, idx);
+			pos = Rx.search(Rx, coord);
+			if (pos != 0)
+				Ly.pop (Ly, idx);
+		}
+
 
 		// fits vectors to size to reduce memory usage
 		Ly.fit(Ly);
@@ -413,27 +412,25 @@ class recursiveClosestPair
 
 		int [] coord;
 		// gets coordinates of the particle closest to boundary
-		// NOTE: The first particle in the upper quadrant is closer
+		// NOTE: The first particle in the Right (upper) subset
+		//       is closer
 		int [] middle = R.index (R, 0);
 		// gets the x or y-coordinate of the selected particle
 		int ax_m = middle[axis];
 
-		int idx = 0;
+		int idx = (L.size (L) - 1);
 		int size = L.size (L);
 		for (int n = 0; n != size; ++n)
 		// pops particles farther than the closest pair in `Left'
-		// NOTE: vector is sorted so no need to traverse it fully
-		//       and no need to update index since pop does that
-		//       behind scenes.
+		// NOTE: Removes elements from the back for speed.
 		{
 			coord = L.index (L, idx);
 			ax = coord[axis];
 
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
-				L.pop (L, coord);
-			else
-				break;
+				L.pop (L, idx);
+			--idx;
 		}
 
 
@@ -464,12 +461,10 @@ class recursiveClosestPair
 
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
-			{
-				R.pop (R, coord);
-				--idx;
-			}
+				R.pop (R, idx);
 			else
 				break;
+			--idx;
 		}
 
 		if ( L.size(L) != 0 && R.size(R) != 0 )

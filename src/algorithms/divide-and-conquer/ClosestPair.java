@@ -459,7 +459,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, coord) );
+				Ry.push_back( Ry, Ly.pop(Ly, idx) );
 			else
 				++idx;
 		}
@@ -642,7 +642,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, coord) );
+				Ry.push_back( Ry, Ly.pop(Ly, idx) );
 			else
 				++idx;
 		}
@@ -786,13 +786,10 @@ class ClosestPair_DivideAndConquerAlgorithm
 		// gets the x or y-coordinate of the selected particle
 		int ax_m = middle[axis];
 
-		int idx = 0;
+		int idx = (L.size(L) - 1);
 		int size = L.size (L);
 		for (int n = 0; n != size; ++n)
 		// pops particles farther than the closest pair in `Left'
-		// NOTE: vector is sorted so no need to traverse it fully
-		//       and no need to update index since pop does that
-		//       behind scenes.
 		{
 			// gets x (y) coordinate of the referenced particle
 			coord = L.index (L, idx);
@@ -802,9 +799,8 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// calculates distance (magnitude) and prunes those
 			// too far to be closest-pair candidates
 			if (d > d_min)
-				L.pop (L, coord);
-			else
-				break;
+				L.pop (L, idx);
+			--idx;
 		}
 
 
@@ -836,14 +832,10 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// to be closest-pair candidates
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
-			{
-				R.pop (R, coord);
-				// decrements index to consider the next
-				// from back to front of the vector
-				--idx;
-			}
+				R.pop (R, idx);
 			else
 				break;
+			--idx;
 		}
 
 		// returns the closest pair in the boundary if there is any
