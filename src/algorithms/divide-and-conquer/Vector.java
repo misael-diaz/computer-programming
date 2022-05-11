@@ -260,6 +260,19 @@ public class Vector
 	}
 
 
+	public static int [] pop (Vector vector, int idx)
+	// pops vector element by index
+	{
+		String errmsg = ("pop(): out-of-bounds error");
+		if (idx < vector.begin || idx >= vector.avail)
+			throw new RuntimeException (errmsg);
+
+		int pos = (idx + 1);
+		Coord coord = popit (vector, pos);
+		return coord.toArray(coord);
+	}
+
+
 	public static int [] pop (Vector vector, int [] coords)
 	// pops selected coordinates from vector
 	{
