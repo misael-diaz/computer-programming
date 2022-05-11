@@ -438,30 +438,27 @@ class ClosestPair_DivideAndConquerAlgorithm
 
 
 		int pos;
-		int idx = 0;
 		size = Ly.size (Ly);
 		Vector Ry = new Vector ();
 		int [] coord = new int [2];
-		// pops elements in Py matching Rx while inserting into Ry
-		// to obtain both Ly and Ry
-		for (int n = 0; n != size; ++n)
-		// NOTE: pops elements in Py in order (beginning to end)
-		//       so that Ry ends up with the same ordering of Py
+		for (int idx = 0; idx != size; ++idx)
+		// pushes Rx elements in Py into Ry
 		{
 			coord = Ly.index(Ly, idx);
-			// Note that when popping elements from beginning
-			// to end it is not necessary to increment the
-			// index when an element is popped because the next
-			// element in the vector ends up in the popped
-			// location. On the other hand, if the current
-			// element is not popped, the index needs to be
-			// incremented to consider the next element on the
-			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, idx) );
-			else
-				++idx;
+				Ry.push_back( Ry, coord );
+		}
+
+		int idx;
+		for (int i = 0; i != size; ++i)
+		// pops Rx elements in Py from back to front to obtain Ly
+		{
+			idx = size - (i + 1);
+			coord = Ly.index(Ly, idx);
+			pos = Rx.search(Rx, coord);
+			if (pos != 0)
+				Ly.pop(Ry, idx);
 		}
 
 		System.out.println("\nLy:\n");
@@ -622,29 +619,26 @@ class ClosestPair_DivideAndConquerAlgorithm
 		Vector Ry = new Vector();	// placeholder for Ry
 
 		int pos;			// positional index
-		int idx = 0;			// element index
 		int size = Ly.size (Ly);	// number of elements
 		int [] coord = new int [2];	// coordinate placeholder
-		// pops elements in Py matching Rx while inserting into Ry
-		// to obtain both Ly and Ry subsets
-		for (int n = 0; n != size; ++n)
-		// NOTE: pops elements in Py in order (beginning to end)
-		//       so that Ry ends up with the same ordering of Py
+		for (int idx = 0; idx != size; ++idx)
+		// pops Rx elements in Py from back to front to obtain Ly
 		{
 			coord = Ly.index(Ly, idx);
-			// Note that when popping elements from beginning
-			// to end it is not necessary to increment the
-			// index when an element is popped because the next
-			// element in the vector ends up in the popped
-			// location. On the other hand, if the current
-			// element is not popped, the index needs to be
-			// incremented to consider the next element on the
-			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, idx) );
-			else
-				++idx;
+				Ry.push_back( Ry, coord );
+		}
+
+		int idx;
+		for (int i = 0; i != size; ++i)
+		// pops Rx elements in Py from back to front to obtain Ly
+		{
+			idx = size - (i + 1);
+			coord = Ly.index(Ly, idx);
+			pos = Rx.search(Rx, coord);
+			if (pos != 0)
+				Ly.pop(Ly, idx);
 		}
 
 		// fits vectors to size to reduce memory usage
