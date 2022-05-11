@@ -459,7 +459,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, coord) );
+				Ry.push_back( Ry, Ly.pop(Ly, idx) );
 			else
 				++idx;
 		}
@@ -642,7 +642,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// next iteration.
 			pos = Rx.search(Rx, coord);
 			if (pos != 0)
-				Ry.push_back( Ry, Ly.pop(Ly, coord) );
+				Ry.push_back( Ry, Ly.pop(Ly, idx) );
 			else
 				++idx;
 		}
@@ -799,7 +799,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// calculates distance (magnitude) and prunes those
 			// too far to be closest-pair candidates
 			if (d > d_min)
-				L.pop (L, coord);
+				L.pop (L, idx);
 			--idx;
 		}
 
@@ -832,7 +832,7 @@ class ClosestPair_DivideAndConquerAlgorithm
 			// to be closest-pair candidates
 			d = (ax > ax_m)? (ax - ax_m): (ax_m - ax);
 			if (d > d_min)
-				R.pop (R, coord);
+				R.pop (R, idx);
 			else
 				break;
 			--idx;
