@@ -84,7 +84,6 @@ N = 255                         # number of integration time-steps
 ti, tf = (0, 5 * tau)           # initial time ti and final time tf
 tspan  = (ti, tf)               # time span tuple
 yi     = 0                      # initial value: yi = y(t = ti) = 0
-odesol = empty([2, N+1])        # preallocates array for speed
 
 
 """ solves the ODE with Euler's explicit method """
