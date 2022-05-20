@@ -25,6 +25,8 @@ import static java.lang.Math.ceil;
 
 class recursiveClosestPair
 {
+	// initializes global counter for counting comparisons
+	static int gCounter = 0;
 
 	public static void main (String[] args)
 	{
@@ -47,10 +49,14 @@ class recursiveClosestPair
 		first.print(first);
 		second.print(second);
 
+		// prints the total number of comparisons performed by the
+		// Divide and Conquer Algorithm
+		System.out.printf("\nComparisons: %d\n", gCounter);
 
 		/* Brute Force Algorithm */
 
-
+		// resets global counter
+		gCounter = 0;
 		d_min = distance (P, closestPair);
 
 		// prints distance and coordinates of closest pair
@@ -63,11 +69,16 @@ class recursiveClosestPair
 		first.print(first);
 		second.print(second);
 
+		// prints the total number of comparisons done by the
+		// Brute Force Algorithm
+		System.out.printf("\nComparisons: %d\n", gCounter);
+
 		return;
 	}
 
 
-	private static double ClosestPair (Vector P, int [][] closestPair)
+	// interfaces:
+	public static double ClosestPair (Vector P, int [][] closestPair)
 	/*
 	 * Synopsis:
 	 * Closest Pair Method.
@@ -108,6 +119,7 @@ class recursiveClosestPair
 	}
 
 
+	// implementations:
 	private static double recurse (Vector Px, Vector Py, int [][] Pair)
 	// implements Divide and Conquer Algorithm
 	{
@@ -518,6 +530,9 @@ class recursiveClosestPair
 
 		}
 
+		// increments counter by the number of comparisons done
+		gCounter += N * (N - 1) / 2;
+
 		return sqrt(d_min);	// returns min distance
 	}
 
@@ -576,6 +591,9 @@ class recursiveClosestPair
 			}
 
 		}
+
+		// increments counter by the number of comparisons done
+		gCounter += N * M;
 
 		return sqrt(d_min);	// returns min distance
 	}
