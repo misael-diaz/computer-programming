@@ -88,13 +88,14 @@ class time
 	 * avg		average number of comparisons done
 	 */
 	{
-		Vector P = Dataset (size);
+		Vector P = new Vector();
 		int [][] closestPair = new int [2][2];
 
 		int count = 0;
 		for (int i = 0; i != reps; ++i)
 		// increments counter by number of comparisons done
 		{
+			P = Dataset (size);
 			recursiveClosestPair.gCounter = 0;
 			recursiveClosestPair.ClosestPair (P, closestPair);
 			count += recursiveClosestPair.gCounter;
