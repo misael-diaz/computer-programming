@@ -26,7 +26,7 @@ import static java.lang.Math.ceil;
 class recursiveClosestPair
 {
 	// initializes global counter for counting comparisons
-	static int gCounter = 0;
+	public static int gCounter = 0;
 
 	public static void main (String[] args)
 	{
