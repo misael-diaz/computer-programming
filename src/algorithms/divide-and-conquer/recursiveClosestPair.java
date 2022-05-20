@@ -77,7 +77,8 @@ class recursiveClosestPair
 	}
 
 
-	private static double ClosestPair (Vector P, int [][] closestPair)
+	// interfaces:
+	public static double ClosestPair (Vector P, int [][] closestPair)
 	/*
 	 * Synopsis:
 	 * Closest Pair Method.
@@ -118,6 +119,7 @@ class recursiveClosestPair
 	}
 
 
+	// implementations:
 	private static double recurse (Vector Px, Vector Py, int [][] Pair)
 	// implements Divide and Conquer Algorithm
 	{
