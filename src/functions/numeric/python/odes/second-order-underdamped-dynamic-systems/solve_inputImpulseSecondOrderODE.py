@@ -31,6 +31,7 @@ References:
 """
 
 
+from numpy import array
 from numpy import empty
 from numpy import zeros
 from numpy import vstack
@@ -186,16 +187,11 @@ a0, a1, b0, _, _ = underdamped (prms)
 u = lambda t: P
 
 
-def odefun(t, y):
-    """
-    Synopsis:
-    Defines the right-hand side of the system of first-order ODEs that
-    result from expressing the model equation in its standard form.
-    """
-    f = empty_like(y)
-    f[0] = y[1]
-    f[1] = b0 * u(t) - a1 * y[1] - a0 * y[0]
-    return f
+"""
+Defines the right-hand side of the system of first-order ODEs that
+result from expressing the model equation in its standard form.
+"""
+odefun = lambda t, y: array([ y[1], b0 * u(t) - a1 * y[1] - a0 * y[0] ])
 
 
 """ defines the solver parameters for Euler's Method """
