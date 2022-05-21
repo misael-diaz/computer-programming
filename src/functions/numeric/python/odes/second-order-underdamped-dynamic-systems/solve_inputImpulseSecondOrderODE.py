@@ -229,8 +229,8 @@ ax.plot(t_RK[::14], y2_RK[::14], linestyle="", marker="*", markersize=8,
 title = ('Impulse Response of an Underdamped Second Order Dynamic System')
 #ax.set_title(title)
 ax.legend()
-figure = 'plots/impulse-response-underdamped-mechanical-system.png'
-fig.savefig(figure, dpi=300)
+#figure = 'plots/impulse-response-underdamped-mechanical-system.png'
+#fig.savefig(figure, dpi=300)
 
 
 """
