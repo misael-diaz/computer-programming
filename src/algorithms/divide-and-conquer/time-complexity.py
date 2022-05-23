@@ -40,10 +40,12 @@ fig, ax = plt.subplots()
 # approximates the constant proportion between the measured and theoretical
 # time-complexity for ease of visualization
 c = (t / ( N * log(N) ) ).mean()
-ax.loglog(N, c * ( N * log(N) ), color='black')
+ax.loglog(N, c * ( N * log(N) ), color='black', label='theory')
 # plots measured time-complexity
-ax.loglog(N, t, color='red', linestyle='', marker='*', markersize=12)
+ax.loglog(N, t, color='red', linestyle='', marker='*', markersize=12,
+    label='experimental')
 ax.set_xlabel('size, N')
 ax.set_ylabel('time, t')
 ax.set_title('Time Complexity of the Divide and Conquer Algorithm')
-fig.savefig('plots/time-complexity.png', dpi=300)
+ax.legend()
+#fig.savefig('plots/time-complexity.png', dpi=300)
