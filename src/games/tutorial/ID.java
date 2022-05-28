@@ -25,5 +25,5 @@
 public enum ID
 // provides Identifiers IDs for our game objects
 {
-	Player(), Enemy();
+	Player(), BasicEnemy();
 }

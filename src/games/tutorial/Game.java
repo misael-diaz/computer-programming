@@ -42,10 +42,12 @@ public class Game extends Canvas implements Runnable
 
 	private Handler handler;// handler object utility
 	private Random rand;	// pseudo random number generator PRNG
+	private HUD hud;	// heads-up display
 
 	public Game ()	// defines default constructor for the game
 	{
 
+		hud = new HUD ();		// instantiates HUD
 		rand = new Random ();		// instantiates PRNG
 		handler = new Handler ();	// instantiates handler
 
@@ -59,9 +61,19 @@ public class Game extends Canvas implements Runnable
 		int W = WIDTH, H = HEIGHT;	// aliases width and height
 
 		// spawns player at the center of the window
-		Player p = new Player (W/2 - 32, H/2 - 32, ID.Player);
+		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player);
+		handler.addObject (player);	// adds player to handler
 
-		handler.addObject (p);	// adds player to handler
+		// spawns basic enemies "bouncers"
+		for (int i = 0; i != 5; ++i)
+		{
+			BasicEnemy enemy;
+			enemy = new BasicEnemy (rand.nextInt(W/2),
+						rand.nextInt(H/2),
+						ID.BasicEnemy);
+
+			handler.addObject (enemy);
+		}
 
 		// creates a window of specified dimensions and title
 		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
@@ -96,6 +108,10 @@ public class Game extends Canvas implements Runnable
 	public void run ()
 	/* implements game loop, borrowed code */
 	{
+		// request focus so that we don't have to click the game
+		// window to be able to control the player, with this
+		// option the player responds to commands right away
+		this.requestFocus();
 		// gets current time in nanoseconds
 		long lastTime = System.nanoTime();
 		// defines the number of ticks in a second
@@ -166,6 +182,7 @@ public class Game extends Canvas implements Runnable
 	private void tick ()		// tick method
 	{
 		handler.tick();		// updates game object positions
+		hud.tick();		// updates HUD
 		return;
 	}
 
@@ -179,7 +196,7 @@ public class Game extends Canvas implements Runnable
 		// creates graphics buffer if it does not exist
 		{
 			// the tutorial author recommended using 3 or 4
-			this.createBufferStrategy(3);
+			this.createBufferStrategy(2);
 			return;
 		}
 
@@ -187,9 +204,36 @@ public class Game extends Canvas implements Runnable
 		g.setColor(Color.black);		// black background
 		g.fillRect(0, 0, WIDTH, HEIGHT);	// fills window
 		handler.render(g);			// renders objects
+		hud.render(g);				// renders heads-up
 		g.dispose();				// frees resources
 		bs.show();				// displays graphic
 	}
+
+
+	public static int clamp (int val, int min, int max)
+	/*
+	 * Synopsis:
+	 * General purpose method for imposing limits on variables.
+	 * Clamps values to the range [min, max].
+	 *
+	 * Inputs:
+	 * val		value
+	 * min		minimum allowed value
+	 * max		maximum allowed value
+	 *
+	 * Ouput
+	 * val		returns min, max, or the original value
+	 *
+	 */
+	{
+		if (val < min)
+			return min;
+		else if (val > max)
+			return max;
+		else
+			return val;
+	}
+
 
 	public static void main (String [] args)
 	// creates instance of our game

@@ -38,6 +38,17 @@ public class Player extends GameObject
 	{
 		x += v_x;
 		y += v_y;
+
+		/* simulates rigid boundaries */
+
+		int min_x = 0;
+		int max_x = (Game.WIDTH - 32);
+
+		int min_y = 0;
+		int max_y = (Game.HEIGHT - 64);
+
+		x = clamp (x, min_x, max_x);
+		y = clamp (y, min_y, max_y);
 	}
 
 	public void render (Graphics g)
@@ -45,6 +56,58 @@ public class Player extends GameObject
 	{
 		g.setColor (Color.blue);
 		g.fillOval (x, y, 32, 32);
+	}
+
+
+	private int clamp (int pos, int min, int max)
+	/*
+	 * Synopsis:
+	 * Possible implementation of a rigid boundary.
+	 *
+	 * Inputs:
+	 * pos		position coordinate
+	 * min		minimum allowed position
+	 * max		maximum allowed position
+	 *
+	 * Ouput
+	 * pos		the position after applying boundary condition
+	 *
+	 */
+	{
+		if (pos < min)
+			return min;
+		else if (pos > max)
+			return max;
+		else
+			return pos;
+	}
+
+
+	private int periodic (int pos, int min, int max)
+	/*
+	 * Synopsis:
+	 * Possible implementation of a periodic boundary.
+	 *
+	 * Inputs:
+	 * pos		position coordinate
+	 * min		minimum allowed position
+	 * max		maximum allowed position
+	 *
+	 * Ouput
+	 * pos		the position after applying boundary condition
+	 *
+	 */
+	{
+		// gets dimension lenght
+		int L = (max - min);
+
+		// applies periodic condition to the object position
+		if (pos < min)
+			return (pos + L);
+		else if (pos > max)
+			return (pos - L);
+		else
+			return pos;
 	}
 }
 
