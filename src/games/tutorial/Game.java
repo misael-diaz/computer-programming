@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable
 {
@@ -39,10 +40,31 @@ public class Game extends Canvas implements Runnable
 	// initializes game running state to false
 	private boolean running = false;
 
+	private Handler handler;// handler object utility
+	private Random rand;	// pseudo random number generator PRNG
+
 	public Game ()	// defines default constructor for the game
 	{
 		// creates a window of specified dimensions and title
 		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
+
+		rand = new Random ();		// instantiates PRNG
+		handler = new Handler ();	// instantiates handler
+
+
+		/* Demo (this will possibly change in a future revision) */
+
+
+		int W = WIDTH, H = HEIGHT;	// aliases width and height
+		for (int i = 0; i != 4; ++i)
+		/* spawns players at random locations */
+		{
+			Player p = new Player (
+				rand.nextInt(W), rand.nextInt(H), ID.Player
+			);
+
+			handler.addObject (p);	// adds player to handler
+		}
 	}
 
 
@@ -80,36 +102,53 @@ public class Game extends Canvas implements Runnable
 		double amountOfTicks = 60;
 		// defines the ticking period in nanoseconds
 		double ns = 1e9 / amountOfTicks;
-		// initializes tick counter
+		// initializes tick accumulator
 		double delta = 0;
 
-		// gets current time in milliseconds
+		// gets the current system time in milliseconds
 		long timer = System.currentTimeMillis();
 		// frames counter
 		int frames = 0;
 
 		while (running)
 		{
+
+			/* implements our game clock */
+
+
 			// gets the current time with nanosecond resolution
 			long now = System.nanoTime();
-			// increments number of ticks on each pass
+			// accumulates ticks in the current timespan
 			delta += (now - lastTime) / ns;
 			// updates last known time
 			lastTime = now;
-			while (delta >= 1)
-			// possibly creates a delay
-			{
-				tick();		// unimplemented
-				--delta;
-			}
-			// NOTE: after the while-loop, delta ~ 0
+
+
+			/* updates the positions of the game objects */
+
+
+			// gets (integral) number of elapsed ticks thus far
+			long ticks = ( (long) Math.floor (delta) );
+			// moves objects according to the number of ticks
+			for (long n = 0; n != ticks; ++n)
+				tick();
+
+			// decrements tick accumulator for the next pass
+			delta -= ( (double) ticks );
+
+
+			/* renders game objects */
 
 
 			if (running)
-			// renders buffer to control the framerate
+			// renders objects while controlling the framerate
 				render();
 
 			++frames;	// increments frame counter
+
+
+			/* reports framerate */
+
 
 			if (System.currentTimeMillis() - timer > 1000)
 			// prints frames per second FPS every second
@@ -124,14 +163,16 @@ public class Game extends Canvas implements Runnable
 	}
 
 
-	private void tick ()		// unimplemented
+	private void tick ()		// tick method
 	{
+		handler.tick();		// updates game object positions
 		return;
 	}
 
 
 	private void render ()
-	// renders graphics buffer to throttle the frame rate to ~4000 FPS
+	// renders game objects, note that a graphics buffer is also
+	// rendered to throttle the frame rate to about 4000 FPS
 	{
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null)
@@ -145,6 +186,7 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();	// renders graphic
 		g.setColor(Color.black);		// black background
 		g.fillRect(0, 0, WIDTH, HEIGHT);	// fills window
+		handler.render(g);			// renders objects
 		g.dispose();				// frees resources
 		bs.show();				// displays graphic
 	}
