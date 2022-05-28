@@ -31,8 +31,6 @@ public class Player extends GameObject
 	// constructor
 	{
 		super (x, y, id);
-		v_x = 1;
-		v_y = 0;
 	}
 
 	public void tick ()

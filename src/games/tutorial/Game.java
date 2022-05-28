@@ -45,26 +45,26 @@ public class Game extends Canvas implements Runnable
 
 	public Game ()	// defines default constructor for the game
 	{
-		// creates a window of specified dimensions and title
-		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
 
 		rand = new Random ();		// instantiates PRNG
 		handler = new Handler ();	// instantiates handler
+
+		// adds key listener to the game for capturing player input
+		this.addKeyListener ( new KeyInput (handler) );
 
 
 		/* Demo (this will possibly change in a future revision) */
 
 
 		int W = WIDTH, H = HEIGHT;	// aliases width and height
-		for (int i = 0; i != 4; ++i)
-		/* spawns players at random locations */
-		{
-			Player p = new Player (
-				rand.nextInt(W), rand.nextInt(H), ID.Player
-			);
 
-			handler.addObject (p);	// adds player to handler
-		}
+		// spawns player at the center of the window
+		Player p = new Player (W/2 - 32, H/2 - 32, ID.Player);
+
+		handler.addObject (p);	// adds player to handler
+
+		// creates a window of specified dimensions and title
+		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
 	}
 
 
@@ -172,14 +172,14 @@ public class Game extends Canvas implements Runnable
 
 	private void render ()
 	// renders game objects, note that a graphics buffer is also
-	// rendered to throttle the frame rate to about 4000 FPS
+	// rendered to throttle the frame rate to about 8000 FPS
 	{
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null)
 		// creates graphics buffer if it does not exist
 		{
 			// the tutorial author recommended using 3 or 4
-			this.createBufferStrategy(4);
+			this.createBufferStrategy(3);
 			return;
 		}
 
