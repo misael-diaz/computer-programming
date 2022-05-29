@@ -70,4 +70,11 @@ public class Handler
 			object.render(g);
 		}
 	}
+
+
+	public void garbageCollector ()
+	// removes garbage objects from game
+	{
+		this.objects.removeIf ( object -> object.isGarbage() );
+	}
 }

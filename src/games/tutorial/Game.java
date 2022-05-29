@@ -61,7 +61,8 @@ public class Game extends Canvas implements Runnable
 		int W = WIDTH, H = HEIGHT;	// aliases width and height
 
 		// spawns player at the center of the window
-		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player);
+		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player,
+				            handler);
 		handler.addObject (player);	// adds player to handler
 
 		// spawns basic enemies "bouncers"
@@ -70,7 +71,9 @@ public class Game extends Canvas implements Runnable
 			BasicEnemy enemy;
 			enemy = new BasicEnemy (rand.nextInt(W/2),
 						rand.nextInt(H/2),
-						ID.BasicEnemy);
+						ID.BasicEnemy,
+						Color.red,
+						handler);
 
 			handler.addObject (enemy);
 		}
@@ -153,6 +156,12 @@ public class Game extends Canvas implements Runnable
 			delta -= ( (double) ticks );
 
 
+			/* removes garbage objects from game */
+
+
+			garbageCollector ();
+
+
 			/* renders game objects */
 
 
@@ -176,6 +185,13 @@ public class Game extends Canvas implements Runnable
 		}
 
 		stop();			// stops thread
+	}
+
+
+	private void garbageCollector ()
+	// delegates the task of removing garbage objects to the handler
+	{
+		handler.garbageCollector ();
 	}
 
 
@@ -211,6 +227,56 @@ public class Game extends Canvas implements Runnable
 
 
 	public static int clamp (int val, int min, int max)
+	/*
+	 * Synopsis:
+	 * General purpose method for imposing limits on variables.
+	 * Clamps values to the range [min, max].
+	 *
+	 * Inputs:
+	 * val		value
+	 * min		minimum allowed value
+	 * max		maximum allowed value
+	 *
+	 * Ouput
+	 * val		returns min, max, or the original value
+	 *
+	 */
+	{
+		if (val < min)
+			return min;
+		else if (val > max)
+			return max;
+		else
+			return val;
+	}
+
+
+	public static float clamp (float val, float min, float max)
+	/*
+	 * Synopsis:
+	 * General purpose method for imposing limits on variables.
+	 * Clamps values to the range [min, max].
+	 *
+	 * Inputs:
+	 * val		value
+	 * min		minimum allowed value
+	 * max		maximum allowed value
+	 *
+	 * Ouput
+	 * val		returns min, max, or the original value
+	 *
+	 */
+	{
+		if (val < min)
+			return min;
+		else if (val > max)
+			return max;
+		else
+			return val;
+	}
+
+
+	public static double clamp (double val, double min, double max)
 	/*
 	 * Synopsis:
 	 * General purpose method for imposing limits on variables.

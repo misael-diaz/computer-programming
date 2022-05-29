@@ -22,6 +22,7 @@
  */
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public abstract class GameObject
 // players, enemies, items, etc. are instances of the Game Object Class
@@ -30,9 +31,11 @@ public abstract class GameObject
 	/* game object attributes */
 
 
-	protected int x, y;	// position (x, y - Cartesian coordinates)
-	protected int v_x, v_y;	// velocity
-	protected ID id;	// game object ID
+	protected int x, y;		// position vector components
+	protected int v_x, v_y;		// velocity vector components
+	protected ID id;		// game object ID
+
+	protected boolean garbage;	// garbage state
 
 
 	/* constructors */
@@ -43,6 +46,7 @@ public abstract class GameObject
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		this.garbage = false;
 	}
 
 
@@ -51,6 +55,7 @@ public abstract class GameObject
 
 	public abstract void tick();			// tick method
 	public abstract void render (Graphics g);	// render method
+	public abstract Rectangle getBounds();		// rectangle bounds
 
 
 	/* setters */
@@ -109,6 +114,11 @@ public abstract class GameObject
 	public ID getID ()		// gets object ID
 	{
 		return id;
+	}
+
+	public boolean isGarbage ()
+	{
+		return garbage;
 	}
 
 }

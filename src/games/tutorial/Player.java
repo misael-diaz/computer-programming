@@ -23,39 +23,78 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Player extends GameObject
 // defines the Player with attributes inherited from the Game Object Class
 {
-	public Player (int x, int y, ID id)
+
+	// defines the shape of our player (circle or square)
+	private boolean shape = true;
+	// defines the color of our player
+	private Color color = Color.blue;
+	// defines the trailspan of our player
+	private float trailspan = 0.15f;
+	// defines the dimensions of our player
+	private int width = 32, height = 32;
+	// defines limits for the coordinates of our player
+	private int min_x = 0, max_x = (Game.WIDTH - 32);
+	private int min_y = 0, max_y = (Game.HEIGHT - 64);
+	// collision handler
+	private Handler handler;
+
+
+	public Player (int x, int y, ID id, Handler handler)
 	// constructor
 	{
 		super (x, y, id);
+		this.handler = handler;
 	}
 
 	public void tick ()
 	// initial tick method, updates position by a constant velocity
+	// confines the player to the game boundaries, handles damage from
+	// enemies, and simulates the player trail (after image).
 	{
+		/* updates player position */
+
 		x += v_x;
 		y += v_y;
 
 		/* simulates rigid boundaries */
 
-		int min_x = 0;
-		int max_x = (Game.WIDTH - 32);
-
-		int min_y = 0;
-		int max_y = (Game.HEIGHT - 64);
-
 		x = clamp (x, min_x, max_x);
 		y = clamp (y, min_y, max_y);
+
+		/* simulates player trail */
+
+		Trail trail = new Trail(x, y, ID.Trail, color, shape,
+					trailspan, width, height, handler);
+
+		handler.addObject (trail);
+
+		/* drains player health upon collisions with enemies */
+
+		collision();
 	}
 
 	public void render (Graphics g)
 	// initial render method
 	{
-		g.setColor (Color.blue);
-		g.fillOval (x, y, 32, 32);
+		// sets player color
+		g.setColor (color);
+
+		// renders player according to its shape
+		if (shape)
+			g.fillOval (x, y, width, height);	// circle
+		else
+			g.fillRect (x, y, width, height);	// square
+	}
+
+
+	public Rectangle getBounds ()
+	{
+		return new Rectangle (x, y, width, height);
 	}
 
 
@@ -108,6 +147,23 @@ public class Player extends GameObject
 			return (pos - L);
 		else
 			return pos;
+	}
+
+
+	private void collision ()
+	// decrements player health upon collisions with enemies
+	{
+		for (int i = 0; i != handler.objects.size(); ++i)
+		{
+			GameObject obj = handler.objects.get(i);
+
+			if (obj.getID() == ID.BasicEnemy)
+			{
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+					--HUD.HEALTH;
+			}
+		}
 	}
 }
 

@@ -38,7 +38,6 @@ public class HUD
 	public void tick ()
 	// demo tick method that drains health points from player
 	{
-		--HEALTH;
 		HEALTH = Game.clamp (HEALTH, MIN_HEALTH, MAX_HEALTH);
 	}
 
