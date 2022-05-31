@@ -51,32 +51,38 @@ public class KeyInput extends KeyAdapter
 	{
 		int key = e.getKeyCode();	// gets code of pressed key
 
-		for (int i = 0; i != handler.objects.size(); ++i)
-		// searches sequentially for the player object
-		{
-			GameObject object = handler.objects.get(i);
+		// gets the player
+		GameObject object = handler.objects.get(0);
 
-			if (object.getID() == ID.Player)
-			// handles key events for player
-			{
-				switch (key)
-				// maps pressed keys to player movements
-				// sets velocity according to pressed key
-				{
-					case KeyEvent.VK_UP:
-						object.setVelY (-5);
-						break;
-					case KeyEvent.VK_DOWN:
-						object.setVelY (+5);
-						break;
-					case KeyEvent.VK_LEFT:
-						object.setVelX (-5);
-						break;
-					case (KeyEvent.VK_RIGHT):
-						object.setVelX (+5);
-						break;
-				}
-			}
+
+		// complains if the player is not at the front of the
+		// linked-list
+		String errMSG = ("KeyInput(): expects the player at " +
+				 "the front of the linked-list");
+		if (object.getID() != ID.Player)
+			throw new RuntimeException(errMSG);
+
+
+		// handles key events for player
+		switch (key)
+		// maps pressed keys to player movements
+		// sets velocity according to pressed key
+		{
+			case KeyEvent.VK_UP:
+				object.setVelY (-5);
+				break;
+			case KeyEvent.VK_DOWN:
+				object.setVelY (+5);
+				break;
+			case KeyEvent.VK_LEFT:
+				object.setVelX (-5);
+				break;
+			case (KeyEvent.VK_RIGHT):
+				object.setVelX (+5);
+				break;
+			case (KeyEvent.VK_SPACE):
+				object.shoot ();
+				break;
 		}
 	}
 
@@ -87,31 +93,36 @@ public class KeyInput extends KeyAdapter
 	{
 		int key = e.getKeyCode();	// gets released key code
 
-		for (int i = 0; i != handler.objects.size(); ++i)
-		// searches sequentially for the player object
-		{
-			GameObject object = handler.objects.get(i);
+		// gets the player
+		GameObject object = handler.objects.get(0);
 
-			if (object.getID() == ID.Player)
-			// handles key events for player
-			{
-				switch (key)
-				// resets velocity to default (stationary)
-				{
-					case KeyEvent.VK_UP:
-						object.setVelY (0);
-						break;
-					case KeyEvent.VK_DOWN:
-						object.setVelY (0);
-						break;
-					case KeyEvent.VK_LEFT:
-						object.setVelX (0);
-						break;
-					case (KeyEvent.VK_RIGHT):
-						object.setVelX (0);
-						break;
-				}
-			}
+
+		// complains if the player is not at the front of the
+		// linked-list
+		String errMSG = ("KeyInput(): expects the player at " +
+				 "the front of the linked-list");
+		if (object.getID() != ID.Player)
+			throw new RuntimeException(errMSG);
+
+
+		// handles key events for player
+		switch (key)
+		// resets velocity to default (stationary)
+		{
+			case KeyEvent.VK_UP:
+				object.setVelY (0);
+				break;
+			case KeyEvent.VK_DOWN:
+				object.setVelY (0);
+				break;
+			case KeyEvent.VK_LEFT:
+				object.setVelX (0);
+				break;
+			case (KeyEvent.VK_RIGHT):
+				object.setVelX (0);
+				break;
+			case (KeyEvent.VK_SPACE):
+				break;
 		}
 	}
 }
@@ -122,5 +133,8 @@ public class KeyInput extends KeyAdapter
  * The class that extends KeyAdapter only has to override the methods
  * it needs. The Override keyword expresses that we are modifying the
  * implementation of the method that follows it.
+ *
+ * By design we expect the player to be at the front of the linked-list
+ * (that is, to be the first object in the linked-list).
  *
  */

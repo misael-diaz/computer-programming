@@ -35,6 +35,7 @@ public abstract class GameObject
 	protected int v_x, v_y;		// velocity vector components
 	protected ID id;		// game object ID
 
+	protected boolean destroy;	// destroyed state
 	protected boolean garbage;	// garbage state
 
 
@@ -47,12 +48,14 @@ public abstract class GameObject
 		this.y = y;
 		this.id = id;
 		this.garbage = false;
+		this.destroy = false;
 	}
 
 
 	/* abstract methods */
 
 
+	public abstract void shoot();			// shoot method
 	public abstract void tick();			// tick method
 	public abstract void render (Graphics g);	// render method
 	public abstract Rectangle getBounds();		// rectangle bounds
@@ -86,6 +89,15 @@ public abstract class GameObject
 		this.id = id;
 	}
 
+	public void setGarbage ()	// sets garbage state
+	{
+		this.garbage = true;
+	}
+
+	public void setDestroyed ()	// sets destroyed state
+	{
+		this.destroy = true;
+	}
 
 
 	/* getters */
@@ -116,11 +128,15 @@ public abstract class GameObject
 		return id;
 	}
 
-	public boolean isGarbage ()
+	public boolean isGarbage ()	// gets garbage state
 	{
 		return garbage;
 	}
 
+	public boolean isDestroyed ()	// gets destroyed state
+	{
+		return destroy;
+	}
 }
 
 

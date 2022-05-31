@@ -31,14 +31,16 @@ public class Trail extends GameObject
 // defines a basic trail
 {
 
-	private int ticks = 0;
-	private float alpha = 1;	// defines alpha composite
-	private boolean shape;		// circle, otherwise rectangle
+	/* Trail Attributes */
+
+
 	private Color color;		// trail color
+	private float alpha = 1;	// defines alpha composite
 	private float span;		// trail lifespan
 	private float min_span = 0.05f;	// minimum trail lifespan
 	private float max_span = 1.00f;	// maximum trail lifespan
 	private int width, height;	// trail dimensions
+	private boolean shape;		// circle, otherwise rectangle
 	private Handler handler;	// fading handler
 
 
@@ -62,6 +64,14 @@ public class Trail extends GameObject
 
 
 	/* Methods */
+
+
+	public void shoot ()
+	// we need to define this method because objects derived from the
+	// Game Object class must define it.
+	{
+		return;
+	}
 
 
 	public void tick ()
@@ -123,5 +133,7 @@ public class Trail extends GameObject
  * restore the alpha composite value to `one' to render other non-trail
  * (or `solid') objects; otherwise we would be making transparent other
  * objects we do not intend to fade.
+ *
+ * Abstract methods of a super class must be defined by derived objects.
  *
  */

@@ -29,8 +29,10 @@ public class BasicEnemy extends GameObject
 // defines Basic Enemy with attributes inherited from the Game Object Class
 {
 
-	private boolean shape = false;		// enemy shape (rectangle)
+	/* Basic Enemy Attributes */
+
 	private Color color;			// enemy color
+	private boolean shape = false;		// enemy shape (rectangle)
 	private float trailspan = 0.25f;	// defines enemy trail span
 	private int width = 16, height = 16;	// defines enemy dimensions
 	private Handler handler;		// enemy trail handler
@@ -42,7 +44,10 @@ public class BasicEnemy extends GameObject
 	public BasicEnemy (int x, int y, ID id, Color color,
 			   Handler handler)
 	{
+		// creates basic enemy object
 		super (x, y, id);
+
+		// defines attributes
 		this.color = color;
 		this.handler = handler;
 		v_x = 5;
@@ -53,27 +58,48 @@ public class BasicEnemy extends GameObject
 	/* Methods */
 
 
-	public void tick ()
-	// initial tick method, constant velocity
+	public void shoot ()	/* unimplemented */
+	// we need to define this method because objects derived from the
+	// Game Object class must define the abstract methods of the class
 	{
-		x += v_x;
-		y += v_y;
-
-		/* simulates elastic collisions with the boundaries */
-
-		if ( x <= 0 || x >= (Game.WIDTH - 16) )
-			v_x *= -1;
-
-		if ( y <= 0 || y >= (Game.HEIGHT - 64) )
-			v_y *= -1;
-
-		/* simulates enemy trail */
-
-		Trail trail = new Trail(x, y, ID.Trail, color, shape,
-					trailspan, width, height, handler);
-
-		handler.addObject (trail);
+		return;
 	}
+
+
+	public void tick ()
+	// initial tick method
+	{
+
+		// marks enemy as garbage if it has been destroyed,
+		// otherwise updates its position and velocity
+		if ( isDestroyed() )
+			setGarbage();	// sets garbage state to true
+		else
+		{
+			/* updates position */
+
+			x += v_x;
+			y += v_y;
+
+			/* simulates elastic collisions with boundaries */
+
+			if ( x <= 0 || x >= (Game.WIDTH - 16) )
+				v_x *= -1;
+
+			if ( y <= 0 || y >= (Game.HEIGHT - 64) )
+				v_y *= -1;
+
+			/* simulates enemy trail */
+
+			Trail trail = new Trail(x, y, ID.Trail, color,
+						shape, trailspan, width,
+						height, handler);
+
+			handler.addObject (trail);
+		}
+
+	}
+
 
 	public void render (Graphics g)
 	// initial render method
@@ -88,7 +114,9 @@ public class BasicEnemy extends GameObject
 			g.fillRect (x, y, width, height);	// square
 	}
 
+
 	public Rectangle getBounds ()
+	// we need this for collision detection
 	{
 		return new Rectangle (x, y, width, height);
 	}
@@ -101,5 +129,9 @@ public class BasicEnemy extends GameObject
  *
  * The trail of the enemy is simulated by spawning trail objects that
  * fade with time (via calls to the trail tick method).
+ *
+ * Note that the garbage collector will subsequently remove enemies
+ * marked as garbage. We do not remove enemies right away to avert
+ * serious issues while traversing the linked-list.
  *
  */

@@ -40,16 +40,36 @@ public class Game extends Canvas implements Runnable
 	// initializes game running state to false
 	private boolean running = false;
 
+	private Spawner spawner;// spawner object utility
 	private Handler handler;// handler object utility
 	private Random rand;	// pseudo random number generator PRNG
 	private HUD hud;	// heads-up display
 
+
 	public Game ()	// defines default constructor for the game
 	{
 
-		hud = new HUD ();		// instantiates HUD
-		rand = new Random ();		// instantiates PRNG
-		handler = new Handler ();	// instantiates handler
+		/* Aliases */
+
+
+		int W = WIDTH, H = HEIGHT;
+
+
+		/* Instantiations */
+
+		hud = new HUD ();
+		rand = new Random ();
+		handler = new Handler ();
+
+
+		// puts player at the front of the linked-list
+		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player,
+				            handler);
+		handler.addObject (player);
+
+
+		spawner = new Spawner (hud, handler);
+
 
 		// adds key listener to the game for capturing player input
 		this.addKeyListener ( new KeyInput (handler) );
@@ -57,13 +77,6 @@ public class Game extends Canvas implements Runnable
 
 		/* Demo (this will possibly change in a future revision) */
 
-
-		int W = WIDTH, H = HEIGHT;	// aliases width and height
-
-		// spawns player at the center of the window
-		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player,
-				            handler);
-		handler.addObject (player);	// adds player to handler
 
 		// spawns basic enemies "bouncers"
 		for (int i = 0; i != 5; ++i)
@@ -77,6 +90,7 @@ public class Game extends Canvas implements Runnable
 
 			handler.addObject (enemy);
 		}
+
 
 		// creates a window of specified dimensions and title
 		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
@@ -155,11 +169,15 @@ public class Game extends Canvas implements Runnable
 			// decrements tick accumulator for the next pass
 			delta -= ( (double) ticks );
 
-
 			/* removes garbage objects from game */
 
 
 			garbageCollector ();
+
+
+			/* spawns enemies */
+
+			spawn ();
 
 
 			/* renders game objects */
@@ -195,17 +213,25 @@ public class Game extends Canvas implements Runnable
 	}
 
 
+	private void spawn ()
+	// delegates the task of spawning enemies to the spawner
+	{
+		spawner.spawn ();
+	}
+
+
 	private void tick ()		// tick method
 	{
 		handler.tick();		// updates game object positions
 		hud.tick();		// updates HUD
+		spawner.tick();		// updates score and level in HUD
 		return;
 	}
 
 
 	private void render ()
 	// renders game objects, note that a graphics buffer is also
-	// rendered to throttle the frame rate to about 8000 FPS
+	// rendered to throttle the frame rate to about 4000 FPS
 	{
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null)
@@ -315,5 +341,12 @@ public class Game extends Canvas implements Runnable
  * SerialVersionUID other than it's needed. Digging around should lead to
  * some answers but for the time being simply go along with the flow, it
  * might be explained later.
+ *
+ * By design we are making the player the first object in the linked-list
+ * of the Handler so that we do not have to search for it when processing
+ * key events from the user. Note that objects are being created and
+ * destroyed continuously during the game so that the safest thing to do
+ * is to put the player at the front of the linked-list so that we do not
+ * run into potential issues later on.
  *
  */

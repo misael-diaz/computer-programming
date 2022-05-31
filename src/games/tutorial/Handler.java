@@ -53,10 +53,12 @@ public class Handler
 	public void tick ()
 	// invokes the tick method on behalf of each game object
 	{
-		for (int i = 0; i != objects.size(); ++i)
+		int i = 0;
+		while ( i != objects.size() )
 		{
 			GameObject object = objects.get(i);
 			object.tick();
+			++i;
 		}
 	}
 
@@ -78,3 +80,17 @@ public class Handler
 		this.objects.removeIf ( object -> object.isGarbage() );
 	}
 }
+
+
+/*
+ * COMMENTS:
+ * A while-loop is used to invoke the tick() method because some of the
+ * game objects create other game objects such as the player and enemies.
+ * Enemies create after images of themselves to simulate a trail. The
+ * player can shoot at enemies by means of projectiles and these are also
+ * implemented as game objects. Note that it is safe to do this because
+ * new objects are inserted at the end of the linked-list. The while-loop
+ * is necessary to properly account for the change in size of the
+ * linked-list.
+ *
+ */

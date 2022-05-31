@@ -26,19 +26,29 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class HUD
-// defines the heads-up display
+// defines the heads-up display HUD
 {
+
+	/* HUD Attributes */
+
 
 	// defines health limits
 	private static int MIN_HEALTH = 0, MAX_HEALTH = 100;
 	// initializes the player health
 	public static int HEALTH = MAX_HEALTH;
 
+	private int score = 0;	// initializes score
+	private int level = 1;	// initializes level
+
+
+	/* Methods */
+
 
 	public void tick ()
 	// demo tick method that drains health points from player
 	{
 		HEALTH = Game.clamp (HEALTH, MIN_HEALTH, MAX_HEALTH);
+		++score;
 	}
 
 	public void render (Graphics g)
@@ -47,12 +57,49 @@ public class HUD
 		// renders hud background
 		g.setColor (Color.gray);
 		g.fillRect (15, 15, 200, 32);
-		// renders health bar
-		g.setColor (Color.green);
+
+		// renders health bar according to player state
+		if (HEALTH > 25)
+			g.setColor (Color.green);	// normal
+		else
+			g.setColor (Color.red);		// critical
+
 		g.fillRect (15, 15, 2 * HEALTH, 32);
 		// renders hud frame
 		g.setColor (Color.black);
 		g.drawRect (15, 15, 200, 32);
+
+
+		g.setColor (Color.white);
+		String Score = String.format("Score: %d", score);
+		String Level = String.format("Level: %d", level);
+		g.drawString (Score, 15, 64);
+		g.drawString (Level, 15, 80);
+	}
+
+
+	/* setters */
+
+	public void setScore (int score)
+	{
+		this.score = score;
+	}
+
+	public void setLevel (int level)
+	{
+		this.level = level;
+	}
+
+	/* getters */
+
+	public int getScore ()
+	{
+		return score;
+	}
+
+	public int getLevel ()
+	{
+		return level;
 	}
 }
 

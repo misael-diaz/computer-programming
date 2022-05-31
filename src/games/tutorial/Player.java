@@ -29,6 +29,11 @@ public class Player extends GameObject
 // defines the Player with attributes inherited from the Game Object Class
 {
 
+	/* Player Attributes */
+
+
+	// locks player weapons
+	private boolean attack = false;
 	// defines the shape of our player (circle or square)
 	private boolean shape = true;
 	// defines the color of our player
@@ -44,12 +49,61 @@ public class Player extends GameObject
 	private Handler handler;
 
 
+	/* Constructors */
+
+
 	public Player (int x, int y, ID id, Handler handler)
-	// constructor
 	{
 		super (x, y, id);
 		this.handler = handler;
 	}
+
+
+	/* Methods */
+
+
+	public void shoot ()
+	// toggles attack mode
+	{
+		if (attack)
+			attack = false;
+		else
+			attack = true;
+	}
+
+
+	private void fire ()
+	// fires projectiles in the vertical direction (bottom to top)
+	{
+		if (attack)
+		{
+			// left cannon
+			Projectile bullet;
+			bullet = new Projectile(x, y, ID.Projectile,
+						Color.cyan, false, 8, 8,
+						handler);
+
+			handler.addObject (bullet);
+
+
+			// center cannon
+			bullet = new Projectile(x + (width / 2), y,
+						ID.Projectile,
+						Color.magenta, false, 8, 8,
+						handler);
+
+			handler.addObject (bullet);
+
+
+			// right cannon
+			bullet = new Projectile(x + width, y,
+						ID.Projectile, Color.cyan,
+						false, 8, 8, handler);
+
+			handler.addObject (bullet);
+		}
+	}
+
 
 	public void tick ()
 	// initial tick method, updates position by a constant velocity
@@ -73,10 +127,15 @@ public class Player extends GameObject
 
 		handler.addObject (trail);
 
+		/* fires at enemies */
+
+		fire();
+
 		/* drains player health upon collisions with enemies */
 
 		collision();
 	}
+
 
 	public void render (Graphics g)
 	// initial render method
@@ -93,6 +152,7 @@ public class Player extends GameObject
 
 
 	public Rectangle getBounds ()
+	// we need this for collision detection
 	{
 		return new Rectangle (x, y, width, height);
 	}
@@ -163,6 +223,12 @@ public class Player extends GameObject
 				if ( getBounds().intersects(mask) )
 					--HUD.HEALTH;
 			}
+			else if (obj.getID() == ID.FastEnemy)
+			{
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+					HUD.HEALTH -= 4;
+			}
 		}
 	}
 }
@@ -171,5 +237,7 @@ public class Player extends GameObject
  * COMMENTS:
  * The `super' keyword is used here to invoke the constructor of the
  * parent class, which in this case refers to the GameObject class.
+ *
+ * Note: fast enemies hit harder than basic enemies.
  *
  */
