@@ -34,7 +34,6 @@ public class Projectile extends GameObject
 
 	private boolean shape;		// circle, otherwise rectangle
 	private Color color;		// projectile color
-	private int width, height;	// projectile dimensions
 	private Handler handler;	// collisions handler
 
 	// defines the game boundaries for the projectiles
@@ -48,17 +47,15 @@ public class Projectile extends GameObject
 			   int width, int height, Handler handler)
 	{
 		// creates projectile object
-		super (x, y, id);
+		super (x, y, id, width, height);
 
 		// defines its attributes
 		this.shape = shape;
 		this.color = color;
-		this.width = width;
-		this.height = height;
 		this.handler = handler;
 
-		// sets upward velocity
-		v_x =   0;
+		// sets projectile velocity
+		v_x = this.handler.objects.get(0).getVelX();
 		v_y = -10;
 	}
 
@@ -140,6 +137,20 @@ public class Projectile extends GameObject
 			GameObject obj = handler.objects.get(i);
 
 			if (obj.getID() == ID.BasicEnemy)
+			{
+				// detects collision
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+				{
+					// destroys enemy and projectile
+					if ( !obj.isDestroyed() )
+					{
+						obj.setDestroyed();
+						this.setDestroyed();
+					}
+				}
+			}
+			else if (obj.getID() == ID.SmartEnemy)
 			{
 				// detects collision
 				Rectangle mask = obj.getBounds();

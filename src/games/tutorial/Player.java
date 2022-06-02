@@ -40,8 +40,6 @@ public class Player extends GameObject
 	private Color color = Color.blue;
 	// defines the trailspan of our player
 	private float trailspan = 0.15f;
-	// defines the dimensions of our player
-	private int width = 32, height = 32;
 	// defines limits for the coordinates of our player
 	private int min_x = 0, max_x = (Game.WIDTH - 32);
 	private int min_y = 0, max_y = (Game.HEIGHT - 64);
@@ -75,7 +73,7 @@ public class Player extends GameObject
 	private void fire ()
 	// fires projectiles in the vertical direction (bottom to top)
 	{
-		if (attack)
+		if (attack && (HUD.HEALTH != 0) )
 		{
 			// left cannon
 			Projectile bullet;
@@ -112,8 +110,16 @@ public class Player extends GameObject
 	{
 		/* updates player position */
 
-		x += v_x;
-		y += v_y;
+		if (HUD.HEALTH != 0)
+		{
+			x += v_x;
+			y += v_y;
+		}
+		else
+		{
+			x += 0;
+			y += 0;
+		}
 
 		/* simulates rigid boundaries */
 
@@ -218,6 +224,12 @@ public class Player extends GameObject
 			GameObject obj = handler.objects.get(i);
 
 			if (obj.getID() == ID.BasicEnemy)
+			{
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+					--HUD.HEALTH;
+			}
+			else if (obj.getID() == ID.SmartEnemy)
 			{
 				Rectangle mask = obj.getBounds();
 				if ( getBounds().intersects(mask) )

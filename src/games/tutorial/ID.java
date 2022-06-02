@@ -25,5 +25,6 @@
 public enum ID
 // provides Identifiers IDs for our game objects
 {
-	Player(), Projectile(), Trail(), BasicEnemy(), FastEnemy();
+	Player(), Projectile(), Trail(), BasicEnemy(), FastEnemy(),
+	SmartEnemy();
 }

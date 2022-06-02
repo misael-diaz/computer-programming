@@ -83,8 +83,9 @@ public class Spawner
 		Color color;
 		FastEnemy fast;
 		BasicEnemy basic;
+		SmartEnemy smart;
 		if ( hud.getLevel() >= 5 )
-		// spawns a group of fast enemies and a basic enemy
+		// spawns a group of fast enemies and a smart enemy
 		{
 			int count = Game.clamp(hud.getLevel() - 4, 1, 31);
 			for (int i = 0; i != count; ++i)
@@ -101,14 +102,14 @@ public class Spawner
 
 			x = rand.nextInt(Game.WIDTH / 2);
 			y = rand.nextInt(Game.HEIGHT / 2);
-			id = ID.BasicEnemy;
-			color = Color.red;
-			basic = new BasicEnemy (x, y, id, color,
+			id = ID.SmartEnemy;
+			color = Color.green;
+			smart = new SmartEnemy (x, y, id, color,
 						handler);
-			handler.addObject (basic);
+			handler.addObject (smart);
 		}
 		else
-		// spawns a basic enemy
+		// spawns a basic enemy and a smart enemy
 		{
 			x = rand.nextInt(Game.WIDTH / 2);
 			y = rand.nextInt(Game.HEIGHT / 2);
@@ -117,6 +118,14 @@ public class Spawner
 			basic = new BasicEnemy (x, y, id, color,
 						handler);
 			handler.addObject (basic);
+
+			x = rand.nextInt(Game.WIDTH / 2);
+			y = rand.nextInt(Game.HEIGHT / 2);
+			id = ID.SmartEnemy;
+			color = Color.green;
+			smart = new SmartEnemy (x, y, id, color,
+						handler);
+			handler.addObject (smart);
 		}
 
 		// sets the spawned state so that we know that the spawner

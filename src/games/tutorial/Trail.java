@@ -39,7 +39,6 @@ public class Trail extends GameObject
 	private float span;		// trail lifespan
 	private float min_span = 0.05f;	// minimum trail lifespan
 	private float max_span = 1.00f;	// maximum trail lifespan
-	private int width, height;	// trail dimensions
 	private boolean shape;		// circle, otherwise rectangle
 	private Handler handler;	// fading handler
 
@@ -51,14 +50,12 @@ public class Trail extends GameObject
 		      float span, int width, int height, Handler handler)
 	{
 		// creates trail object
-		super (x, y, id);
+		super (x, y, id, width, height);
 
 		// defines its attributes
 		this.span = Game.clamp (span, min_span, max_span);
 		this.shape = shape;
 		this.color = color;
-		this.width = width;
-		this.height = height;
 		this.handler = handler;
 	}
 

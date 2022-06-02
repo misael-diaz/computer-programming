@@ -89,6 +89,9 @@ public class KeyInput extends KeyAdapter
 			case (KeyEvent.VK_SPACE):
 				object.shoot ();
 				break;
+			case (KeyEvent.VK_R):
+				HUD.HEALTH = 100;
+				break;
 		}
 	}
 
@@ -128,6 +131,8 @@ public class KeyInput extends KeyAdapter
 				keyDown[3] = false;
 				break;
 			case (KeyEvent.VK_SPACE):
+				break;
+			case (KeyEvent.VK_R):
 				break;
 		}
 

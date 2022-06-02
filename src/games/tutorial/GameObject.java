@@ -31,10 +31,16 @@ public abstract class GameObject
 	/* game object attributes */
 
 
+	// sets the default width and height of game objects
+	private int default_GameObjectWidth = 16;
+	private int default_GameObjectHeight = 16;
+
+
 	protected int x, y;		// position vector components
 	protected int v_x, v_y;		// velocity vector components
 	protected ID id;		// game object ID
 
+	protected int width, height;	// width and height of object
 	protected boolean destroy;	// destroyed state
 	protected boolean garbage;	// garbage state
 
@@ -42,11 +48,45 @@ public abstract class GameObject
 	/* constructors */
 
 
-	public GameObject (int x, int y, ID id)		// constructor
+	public GameObject (int x, int y, ID id)
 	{
 		this.x = x;
 		this.y = y;
 		this.id = id;
+
+		if (this.id == ID.BasicEnemy)
+		{
+			this.width  = default_GameObjectWidth;
+			this.height = default_GameObjectHeight;
+		}
+		else if (this.id == ID.FastEnemy)
+		{
+			this.width  = default_GameObjectWidth;
+			this.height = default_GameObjectHeight;
+		}
+		else if (this.id == ID.SmartEnemy)
+		{
+			this.width  = default_GameObjectWidth;
+			this.height = default_GameObjectHeight;
+		}
+		if (this.id == ID.Player)
+		{
+			this.width  = 2 * default_GameObjectWidth;
+			this.height = 2 * default_GameObjectHeight;
+		}
+
+		this.garbage = false;
+		this.destroy = false;
+	}
+
+
+	public GameObject (int x, int y, ID id, int width, int height)
+	{
+		this.x = x;
+		this.y = y;
+		this.id = id;
+		this.width = width;
+		this.height = height;
 		this.garbage = false;
 		this.destroy = false;
 	}
@@ -126,6 +166,16 @@ public abstract class GameObject
 	public ID getID ()		// gets object ID
 	{
 		return id;
+	}
+
+	public int getWidth ()		// gets object width
+	{
+		return width;
+	}
+
+	public int getHeight ()		// gets object height
+	{
+		return height;
 	}
 
 	public boolean isGarbage ()	// gets garbage state
