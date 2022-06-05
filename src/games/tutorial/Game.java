@@ -34,7 +34,8 @@ public class Game extends Canvas implements Runnable
 	private static final long serialVersionUID = 1550691097823471818L;
 
 	// defines window dimensions
-	public static final int WIDTH = 640, HEIGHT = 3 * WIDTH / 4;
+	public static final int WIDTH = 3 * 640 / 2;
+	public static final int HEIGHT = 3 * WIDTH / 4;
 	// creates thread instance for the (serial) game
 	private Thread thread;
 	// initializes game running state to false

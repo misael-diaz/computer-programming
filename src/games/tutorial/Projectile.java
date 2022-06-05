@@ -178,6 +178,16 @@ public class Projectile extends GameObject
 					}
 				}
 			}
+			else if (obj.getID() == ID.BossEnemy)
+			{
+				// detects collision
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+				{
+					// destroys projectile
+					this.setDestroyed();
+				}
+			}
 		}
 	}
 }

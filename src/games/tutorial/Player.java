@@ -77,7 +77,7 @@ public class Player extends GameObject
 		{
 			// left cannon
 			Projectile bullet;
-			bullet = new Projectile(x, y, ID.Projectile,
+			bullet = new Projectile(x - 4, y, ID.Projectile,
 						Color.cyan, false, 8, 8,
 						handler);
 
@@ -85,7 +85,7 @@ public class Player extends GameObject
 
 
 			// center cannon
-			bullet = new Projectile(x + (width / 2), y,
+			bullet = new Projectile(x + (width / 2) - 4, y,
 						ID.Projectile,
 						Color.magenta, false, 8, 8,
 						handler);
@@ -94,7 +94,7 @@ public class Player extends GameObject
 
 
 			// right cannon
-			bullet = new Projectile(x + width, y,
+			bullet = new Projectile(x + width - 4, y,
 						ID.Projectile, Color.cyan,
 						false, 8, 8, handler);
 
@@ -240,6 +240,12 @@ public class Player extends GameObject
 				Rectangle mask = obj.getBounds();
 				if ( getBounds().intersects(mask) )
 					HUD.HEALTH -= 4;
+			}
+			else if (obj.getID() == ID.BossEnemy)
+			{
+				Rectangle mask = obj.getBounds();
+				if ( getBounds().intersects(mask) )
+					HUD.HEALTH -= 100;
 			}
 		}
 	}

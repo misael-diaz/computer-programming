@@ -76,17 +76,67 @@ public class Spawner
 
 
 	private void spawner ()
-	// spawns a new enemy every level up
+	// spawns a new enemy every level up (until level 20)
 	{
 		ID id;
+		ID spawns;
 		int x, y;
 		Color color;
+		BossEnemy boss;
 		FastEnemy fast;
 		BasicEnemy basic;
 		SmartEnemy smart;
-		if ( hud.getLevel() >= 5 )
-		// spawns a group of fast enemies and a smart enemy
+
+		if ( hud.getLevel() < 10 )
+		// spawns a group of basic enemies and a smart enemy
 		{
+			for (int i = 0; i != hud.getLevel(); ++i)
+			{
+				x = rand.nextInt(Game.WIDTH / 2);
+				y = rand.nextInt(Game.HEIGHT / 2);
+				id = ID.BasicEnemy;
+				color = Color.red;
+				basic = new BasicEnemy (x, y, id, color,
+							handler);
+				handler.addObject (basic);
+			}
+
+			// spawns smart enemy
+			x = rand.nextInt(Game.WIDTH / 2);
+			y = rand.nextInt(Game.HEIGHT / 2);
+			id = ID.SmartEnemy;
+			color = Color.green;
+			smart = new SmartEnemy (x, y, id, color,
+						handler);
+			handler.addObject (smart);
+		}
+
+		if (hud.getLevel() ==  10)
+		// spawns a boss at level 10
+		{
+			// spawns boss around the middle of the game and
+			// hides part of its body so that the player cannot
+			// go behind it
+			x = rand.nextInt(Game.WIDTH / 2);
+			y = -16;
+			id = ID.BossEnemy;
+			// sets the id of the enemies that the boss spawns
+			spawns = ID.BasicEnemy;
+			color = Color.red;
+
+			boss = new BossEnemy (x, y, id, Color.red, 96, 96,
+					      spawns, handler);
+			handler.addObject (boss);
+		}
+
+		if ( (hud.getLevel() >= 15) && (hud.getLevel() < 20) )
+		// Spawns groups of fast enemies and smart enemies
+		// Note that the boss is indestructible and that it lasts
+		// for five levels so we do not spawn enemies until it goes
+		// away.
+		{
+
+			// sets the group size for fast enemies
 			int count = Game.clamp(hud.getLevel() - 4, 1, 31);
 			for (int i = 0; i != count; ++i)
 			{
@@ -100,32 +150,31 @@ public class Spawner
 				handler.addObject (fast);
 			}
 
-			x = rand.nextInt(Game.WIDTH / 2);
-			y = rand.nextInt(Game.HEIGHT / 2);
-			id = ID.SmartEnemy;
-			color = Color.green;
-			smart = new SmartEnemy (x, y, id, color,
-						handler);
-			handler.addObject (smart);
+			// sets the group size of smart enemies
+			count = Game.clamp(hud.getLevel() - 12, 1, 31);
+			for (int i = 0; i != count; ++i)
+			{
+				x = rand.nextInt(Game.WIDTH / 2);
+				y = rand.nextInt(Game.HEIGHT / 2);
+				id = ID.SmartEnemy;
+				color = Color.green;
+				smart = new SmartEnemy (x, y, id, color,
+							handler);
+				handler.addObject (smart);
+			}
 		}
-		else
-		// spawns a basic enemy and a smart enemy
+
+		if (hud.getLevel() ==  20)
+		// spawns a boss at level 20
 		{
 			x = rand.nextInt(Game.WIDTH / 2);
-			y = rand.nextInt(Game.HEIGHT / 2);
-			id = ID.BasicEnemy;
-			color = Color.red;
-			basic = new BasicEnemy (x, y, id, color,
-						handler);
-			handler.addObject (basic);
-
-			x = rand.nextInt(Game.WIDTH / 2);
-			y = rand.nextInt(Game.HEIGHT / 2);
-			id = ID.SmartEnemy;
-			color = Color.green;
-			smart = new SmartEnemy (x, y, id, color,
-						handler);
-			handler.addObject (smart);
+			y = -16;
+			id = ID.BossEnemy;
+			spawns = ID.FastEnemy;
+			color = Color.yellow;
+			boss = new BossEnemy (x, y, id, color, 96, 96,
+					      spawns, handler);
+			handler.addObject (boss);
 		}
 
 		// sets the spawned state so that we know that the spawner
@@ -142,5 +191,11 @@ public class Spawner
  * needs to render. I could have imposed limits on the total number of
  * enemies at any given time but I did not wanted to invest much on a
  * piece of code that is likely to change in the near future.
+ *
+ * Boss Fights.
+ * Since our player can destroy enemies we do not clear them out of the
+ * game prior to spawning the boss in contrast to what the author of the
+ * tutorial did. One could regard the boss as a dropship instead of a
+ * larger enemy that shoots at the player.
  *
  */
