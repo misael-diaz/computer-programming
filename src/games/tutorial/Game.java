@@ -29,77 +29,58 @@ import java.util.Random;
 
 public class Game extends Canvas implements Runnable
 {
+	/* Game Components */
+
+	private Window window;	// window to display graphics
+	private Thread thread;	// thread for running our game loop
+	private Spawner spawner;// spawner object utility
+	private Handler handler;// handler object utility
+	private Random rand;	// pseudo random number generator PRNG
+	private Menu menu;	// game menu
+	private HUD hud;	// heads-up display for the gamer
 
 	// creates user-defined serial version UID for (de)serialization
 	private static final long serialVersionUID = 1550691097823471818L;
 
-	// defines window dimensions
+	// initializes game window dimensions
 	public static final int WIDTH = 3 * 640 / 2;
 	public static final int HEIGHT = 3 * WIDTH / 4;
-	// creates thread instance for the (serial) game
-	private Thread thread;
 	// initializes game running state to false
 	private boolean running = false;
 
-	private Spawner spawner;// spawner object utility
-	private Handler handler;// handler object utility
-	private Random rand;	// pseudo random number generator PRNG
-	private HUD hud;	// heads-up display
+
+	// initializes game state so that it starts with the menu
+	public State gameState = State.Menu;
+
+
+	/* Constructors */
 
 
 	public Game ()	// defines default constructor for the game
 	{
-
-		/* Aliases */
-
-
-		int W = WIDTH, H = HEIGHT;
-
-
 		/* Instantiations */
 
 		hud = new HUD ();
 		rand = new Random ();
 		handler = new Handler ();
-
-
-		// puts player at the front of the linked-list
-		Player player = new Player (W/2 - 32, H/2 - 32, ID.Player,
-				            handler);
-		handler.addObject (player);
-
-
 		spawner = new Spawner (hud, handler);
+		menu = new Menu (this, handler);
 
-
-		// adds key listener to the game for capturing player input
-		this.addKeyListener ( new KeyInput (handler) );
-
-
-		/* Demo (this will possibly change in a future revision) */
-
-
-		// spawns basic enemies "bouncers"
-		for (int i = 0; i != 5; ++i)
-		{
-			BasicEnemy enemy;
-			enemy = new BasicEnemy (rand.nextInt(W/2),
-						rand.nextInt(H/2),
-						ID.BasicEnemy,
-						Color.red,
-						handler);
-
-			handler.addObject (enemy);
-		}
-
+		// adds listeners to the game for capturing user input
+		this.addMouseListener (menu);
 
 		// creates a window of specified dimensions and title
-		new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
+		window = new Window (
+			WIDTH, HEIGHT, "Let's Build a Game!", this
+		);
 	}
 
 
+	/* Methods */
+
+
 	public synchronized void start ()
-	// starts instance of our game class
+	// starts the thread that executes our game loop
 	{
 		thread = new Thread (this);
 		thread.start();
@@ -108,13 +89,12 @@ public class Game extends Canvas implements Runnable
 
 
 	public synchronized void stop ()
-	// stops instance of our game class
+	// stops the thread that executes our game loop
 	{
 		try
 		{
-			// (presumably) stops the thread
+			System.out.println("stopping thread ...");
 			thread.join ();
-			running = false;
 		}
 		catch (Exception e)
 		{
@@ -207,6 +187,14 @@ public class Game extends Canvas implements Runnable
 	}
 
 
+	public void quit ()
+	// quits the game
+	{
+		running = false;	// breaks the game-loop
+		window.dispose ();	// disposes the game window
+	}
+
+
 	private void garbageCollector ()
 	// delegates the task of removing garbage objects to the handler
 	{
@@ -215,7 +203,7 @@ public class Game extends Canvas implements Runnable
 
 
 	private void spawn ()
-	// delegates the task of spawning enemies to the spawner
+	// delegates the task of spawning game objects to the spawner
 	{
 		spawner.spawn ();
 	}
@@ -223,10 +211,26 @@ public class Game extends Canvas implements Runnable
 
 	private void tick ()		// tick method
 	{
-		handler.tick();		// updates game object positions
-		hud.tick();		// updates HUD
-		spawner.tick();		// updates score and level in HUD
-		return;
+		switch (gameState)
+		{
+			case Menu:
+				menu.tick();	// ticks menu screen
+				break;
+			case Help:
+				menu.tick();	// ticks help screen
+				break;
+			case Init:
+				initialize();	// creates level 1
+				break;
+			case Game:
+				hud.tick();	// updates HUD
+				spawner.tick();	// updates score and level
+				handler.tick();	// updates object positions
+				break;
+			default:
+				handler.tick();	// updates object positions
+				break;
+		}
 	}
 
 
@@ -246,11 +250,66 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();	// renders graphic
 		g.setColor(Color.black);		// black background
 		g.fillRect(0, 0, WIDTH, HEIGHT);	// fills window
-		handler.render(g);			// renders objects
-		hud.render(g);				// renders heads-up
+
+		if (gameState == State.Menu || gameState == State.Help)
+		{
+			menu.render(g);			// renders menu
+		}
+		else if (gameState == State.Game)
+		{
+			handler.render(g);		// renders objects
+			hud.render(g);			// renders heads-up
+		}
+
 		g.dispose();				// frees resources
 		bs.show();				// displays graphic
 	}
+
+
+	private void initialize ()
+	// creates level 1 by spawning the player and basic enemies
+	{
+		// aliases for the game width and height
+		int W = WIDTH, H = HEIGHT;
+
+		// puts player at the front of the handler's linked-list
+
+		Player player = new Player (
+			W/2 - 32, H - 32, ID.Player, handler
+		);
+
+		handler.addObject (player);
+
+		// spawns basic enemies "bouncers"
+		for (int i = 0; i != 5; ++i)
+		{
+			BasicEnemy enemy;
+			enemy = new BasicEnemy (rand.nextInt(W/2),
+						rand.nextInt(H/2),
+						ID.BasicEnemy,
+						Color.red,
+						handler);
+
+			handler.addObject (enemy);
+		}
+
+		// adds key listener to process user input
+		this.addKeyListener ( new KeyInput (handler) );
+		// sets the state to launch the first level
+		gameState = State.Game;
+	}
+
+
+	/* Setters */
+
+
+	public void setGameState (State state)
+	{
+		gameState = state;
+	}
+
+
+	/* Static Methods */
 
 
 	public static int clamp (int val, int min, int max)
@@ -349,5 +408,10 @@ public class Game extends Canvas implements Runnable
  * destroyed continuously during the game so that the safest thing to do
  * is to put the player at the front of the linked-list so that we do not
  * run into potential issues later on.
+ *
+ * Quitting the Game from the Menu.
+ * Invoking the dispose() method of the Window (frame) causes the stop()
+ * method of the Game to be invoked as well to terminate the thread. The
+ * output written on the console confirms this.
  *
  */

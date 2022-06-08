@@ -31,12 +31,13 @@ public class Window extends Canvas
 
 	// creates user-defined serial version UID for (de)serialization
 	private static final long serialVersionUID = 240840600533728354L;
+	private JFrame frame;
 
 	public Window (int width, int height, String title, Game game)
 	// creates a window of specified dimensions for our game
 	{
 		// creates the frame (or window) for our game
-		JFrame frame = new JFrame (title);
+		frame = new JFrame (title);
 
 		// fixes the window dimensions
 		frame.setPreferredSize ( new Dimension(width, height) );
@@ -58,4 +59,25 @@ public class Window extends Canvas
 		// starts the game instance
 		game.start ();
 	}
+
+	public void dispose ()
+	// disposes of the jframe to terminate the application gracefully
+	{
+		System.out.println("disposing of window ...");
+		frame.setVisible (false);
+		frame.dispose ();
+		System.exit (0);
+	}
 }
+
+/*
+ * COMMENTS:
+ * The dispose() method was based on the following stack-overflow answer:
+ *
+ * 		https://stackoverflow.com/a/10873683
+ *
+ * Because we do not need to do other closing actions we do not add a
+ * listener, for the thread that runs our game loop will be halted on exit.
+ * And that's exactly what we want.
+ *
+ */
