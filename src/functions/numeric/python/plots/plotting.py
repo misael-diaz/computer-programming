@@ -40,3 +40,6 @@ ax.set_xlim([ 2, 3])
 ax.set_ylim([-3, 3])
 ax.set_xlabel('x')
 ax.set_ylabel('f(x)')
+
+# exports graph in PNG format with 300 DPI
+fig.savefig('graph.png', dpi=300)

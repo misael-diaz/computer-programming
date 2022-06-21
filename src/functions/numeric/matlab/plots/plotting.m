@@ -28,3 +28,6 @@ ylim([-3, 3])
 xlabel('x')
 ylabel('f(x)')
 grid on
+
+% exports figure in PNG format with 300 DPI
+print('graph.png', '-dpng', '-r300')
