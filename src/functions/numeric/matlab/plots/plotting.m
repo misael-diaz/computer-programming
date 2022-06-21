@@ -15,13 +15,17 @@
 % by the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
 
+
+% clears variables, closes all figures, and clears the command window
 clear
 close all
 clc
 
+% defines x in the range [0, 5] for plotting
 x = linspace(0, 5, 100);
 % defines the nonlinear equation as a lambda (or anonymous) function
 f = @(x) 8 - 4.5 * ( x - sin(x) );
+% evaluates the function
 y = f(x);
 
 % defines possible bracketing interval
