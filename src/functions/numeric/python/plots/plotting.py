@@ -24,22 +24,36 @@ References:
     Science Applications with NumPy, SciPy, and Matplotlib, 2nd edition
 """
 
-import numpy as np
+from numpy import sin
+from numpy import array
+from numpy import linspace
+from numpy import zeros_like
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-x = np.linspace(0, 5, 100)
-y = 8 - 4.5 * ( x - np.sin(x) )
+x = linspace(0, 5, 100)
+# defines the nonlinear function f(x) as a lambda (or anonymous) function
+f = lambda x: 8 - 4.5 * ( x - sin(x) )
+y = f(x)
+
+# defines possible bracketing interval
+lb, ub = (2.4, 2.5)
+xi = array([lb, ub])
+yi = f(xi)
 
 plt.close('all')
 plt.ion()
 fig, ax = plt.subplots()    # enables multiple plots in the same figure
-ax.plot(x, y)
-ax.plot(x, np.zeros_like(x), linestyle='--', color='black')
+ax.plot(x, y, label='f(x)')
+ax.plot(xi, yi, linestyle='', color='red', marker='o', label='bracketing')
+# plots a zero line (optional)
+ax.plot(x, zeros_like(x), linestyle='--', color='black')
 ax.set_xlim([ 2, 3])
 ax.set_ylim([-3, 3])
 ax.set_xlabel('x')
 ax.set_ylabel('f(x)')
+ax.grid()
+ax.legend()
 
 # exports graph in PNG format with 300 DPI
 fig.savefig('graph.png', dpi=300)
