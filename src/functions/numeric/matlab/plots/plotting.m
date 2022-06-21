@@ -20,9 +20,18 @@ close all
 clc
 
 x = linspace(0, 5, 100);
-y = 8 - 4.5 * ( x - sin(x) );
+f = @(x) 8 - 4.5 * ( x - sin(x) );
+y = f(x);
+
+% defines possible bracketing interval
+lb = 2.4;	% lower limit
+ub = 2.5;	% upper limit
+
+xi = [lb, ub];
+yi = f(xi);
 
 plot(x, y); hold on	% hold on enables multiple plots in the same figure
+plot(xi, yi, 'o')
 plot(x, zeros( size(x) ), '--r')	% horizontal line (optional)
 ylim([-3, 3])
 xlabel('x')
