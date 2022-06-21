@@ -24,18 +24,20 @@ References:
     Science Applications with NumPy, SciPy, and Matplotlib, 2nd edition
 """
 
-import numpy as np
+from numpy import sin
+from numpy import linspace
+from numpy import zeros_like
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-x = np.linspace(0, 5, 100)
-y = 8 - 4.5 * ( x - np.sin(x) )
+x = linspace(0, 5, 100)
+y = 8 - 4.5 * ( x - sin(x) )
 
 plt.close('all')
 plt.ion()
 fig, ax = plt.subplots()    # enables multiple plots in the same figure
 ax.plot(x, y)
-ax.plot(x, np.zeros_like(x), linestyle='--', color='black')
+ax.plot(x, zeros_like(x), linestyle='--', color='black')
 ax.set_xlim([ 2, 3])
 ax.set_ylim([-3, 3])
 ax.set_xlabel('x')
