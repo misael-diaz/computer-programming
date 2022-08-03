@@ -87,7 +87,8 @@ public class Files
 			PrintWriter out = new PrintWriter (filename);
 
 			int numel = 16;
-			Random rand = new Random (numel);
+			// creates random number generator object
+			Random rand = new Random();
 			String msg = "writing %d random numbers ... ";
 			System.out.printf(msg, numel);
 			// writes random integers in the range [0, 256)
