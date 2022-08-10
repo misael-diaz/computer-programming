@@ -7,9 +7,7 @@ Prof. M Diaz-Maldonado
 
 Synopsis:
 Plots the average number of comparisons and the average elapsed time
-as a function of the input size for the count duplicates algorithm.
-The figure shows that the average time grows quadratically with the input
-size in accordance with the expectations.
+as a function of the input size.
 
 
 Copyright (c) 2022 Misael Diaz-Maldonado
