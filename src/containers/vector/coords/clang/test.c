@@ -50,6 +50,28 @@ int main() {
 	// prints the vector size on the console
 	printf("size: %lu \n", vec -> size(vec));
 
+	// clears the data stored in vector
+	vec -> clear(vec);
+	printf("cleared vector\n");
+	printf("size: %lu \n", vec -> size(vec));
+
+	// pushes new coordinates unto the back of the vector
+	for (int i = 0; i != 32; ++i)
+	{
+		coord_t coord = {.x = (32 - i), .y = (32 - i)};
+		vec -> push_back (vec, coord);
+	}
+
+	// prints the new coordinates on the console
+	for (size_t i = 0; i != 32; ++i)
+	{
+		coord_t coord = {.x = array[i].x, .y = array[i].y};
+		printf("%4d %4d \n", coord.x, coord.y);
+	}
+
+	// prints the vector size on the console
+	printf("size: %lu \n", vec -> size(vec));
+
 	// frees the memory allocated for the vector
 	vec = destroy (vec);
 	return 0;

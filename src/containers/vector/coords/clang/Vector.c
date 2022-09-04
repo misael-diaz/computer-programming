@@ -40,6 +40,15 @@ static size_t size_method (void* vector)
 }
 
 
+static void clear_method (void* vector)
+// clears the vector elements
+{
+	// asserts that the type of the (universal) pointer is a vector
+	vector_t *vec = vector;
+	vec -> avail = (vec -> begin);
+}
+
+
 static void grow (vector_t* vec)
 // doubles the vector size
 {
@@ -158,6 +167,7 @@ vector_t* create (size_t size)
 	vec -> limit = ( (vec -> begin) + size * sizeof(coord_t) );
 	// binds the methods
 	vec -> size  = size_method;
+	vec -> clear = clear_method;
 	vec -> push_back = push_back_method;
 
 	return vec;
