@@ -31,68 +31,6 @@
 #include "vector.h"
 
 // implementations:
-vector_t* create (size_t size)
-// constructor --- allocates memory for a vector of requested size
-{
-	// allocates memory for the vector
-	vector_t *vec = (vector_t*) malloc ( sizeof(vector_t) );
-        if (vec == NULL)
-        {
-		char errmsg [] = "memory allocation error: %s\n";
-		fprintf (stderr, errmsg, strerror(errno) );
-                exit(EXIT_FAILURE);
-        }
-
-	// allocates memory for the data buffer
-	vec -> array = (coord_t*) malloc ( sizeof(coord_t) * size );
-	if (vec -> array == NULL)
-	{
-		char errmsg [] = "memory allocation error: %s\n";
-		fprintf (stderr, errmsg, strerror(errno) );
-                exit(EXIT_FAILURE);
-        }
-
-	coord_t *array = vec -> array;
-	// initializes the elements of the vector's data buffer
-	for (size_t i = 0; i != size; ++i)
-	{
-		array[i].x = 0;
-		array[i].y = 0;
-	}
-
-	// defines the vector limits
-	vec -> begin = vec -> array;
-	vec -> avail = vec -> array;
-	vec -> limit = ( (vec -> begin) + size * sizeof(coord_t) );
-
-	return vec;
-}
-
-
-vector_t* destroy (vector_t* vec)
-// destructor --- frees the memory allocated for the vector
-{
-	if (vec -> array)
-	{
-		free (vec -> array);
-		vec -> array = NULL;
-	}
-
-	if (vec -> begin)
-		vec -> begin = NULL;
-
-	if (vec -> avail)
-		vec -> avail = NULL;
-
-	if (vec -> limit)
-		vec -> limit = NULL;
-
-	free (vec);
-	vec = NULL;
-	return vec;
-}
-
-
 size_t size (vector_t* vec)
 // returns the vector size --- the number of elements stored
 {
@@ -178,4 +116,66 @@ void push_back (vector_t* vec, coord_t coord)
 	array[avail].y = coord.y;
 	// updates the vector size
 	vec -> avail += sizeof(coord_t);
+}
+
+
+vector_t* create (size_t size)
+// constructor --- allocates memory for a vector of requested size
+{
+	// allocates memory for the vector
+	vector_t *vec = (vector_t*) malloc ( sizeof(vector_t) );
+        if (vec == NULL)
+        {
+		char errmsg [] = "memory allocation error: %s\n";
+		fprintf (stderr, errmsg, strerror(errno) );
+                exit(EXIT_FAILURE);
+        }
+
+	// allocates memory for the data buffer
+	vec -> array = (coord_t*) malloc ( sizeof(coord_t) * size );
+	if (vec -> array == NULL)
+	{
+		char errmsg [] = "memory allocation error: %s\n";
+		fprintf (stderr, errmsg, strerror(errno) );
+                exit(EXIT_FAILURE);
+        }
+
+	coord_t *array = vec -> array;
+	// initializes the elements of the vector's data buffer
+	for (size_t i = 0; i != size; ++i)
+	{
+		array[i].x = 0;
+		array[i].y = 0;
+	}
+
+	// defines the vector limits
+	vec -> begin = vec -> array;
+	vec -> avail = vec -> array;
+	vec -> limit = ( (vec -> begin) + size * sizeof(coord_t) );
+
+	return vec;
+}
+
+
+vector_t* destroy (vector_t* vec)
+// destructor --- frees the memory allocated for the vector
+{
+	if (vec -> array)
+	{
+		free (vec -> array);
+		vec -> array = NULL;
+	}
+
+	if (vec -> begin)
+		vec -> begin = NULL;
+
+	if (vec -> avail)
+		vec -> avail = NULL;
+
+	if (vec -> limit)
+		vec -> limit = NULL;
+
+	free (vec);
+	vec = NULL;
+	return vec;
 }
