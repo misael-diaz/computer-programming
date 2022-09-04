@@ -26,11 +26,13 @@
 #include <stdio.h>
 #include "Vector.h"
 
+extern vector_namespace const vector;	// imports vector namespace
+
 int main() {
 
 	size_t numel = 16;
 	// creates a vector with requested storage capacity
-	vector_t *vec = create (numel);
+	vector_t *vec = vector.create (numel);
 
 	// pushes coordinates unto the back of the vector
 	for (int i = 0; i != 32; ++i)
@@ -73,6 +75,6 @@ int main() {
 	printf("size: %lu \n", vec -> size(vec));
 
 	// frees the memory allocated for the vector
-	vec = destroy (vec);
+	vec = vector.destroy (vec);
 	return 0;
 }

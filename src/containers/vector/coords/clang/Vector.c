@@ -29,6 +29,7 @@
 #include <string.h>
 #include <errno.h>
 #include "vector.h"
+#include "Vector.h"
 
 // implementations:
 static size_t size_method (void* vector)
@@ -132,7 +133,7 @@ static void push_back_method (void* vector, coord_t coord)
 }
 
 
-vector_t* create (size_t size)
+static vector_t* create (size_t size)
 // constructor --- allocates memory for a vector of requested size
 {
 	// allocates memory for the vector
@@ -174,7 +175,7 @@ vector_t* create (size_t size)
 }
 
 
-vector_t* destroy (vector_t* vec)
+static vector_t* destroy (vector_t* vec)
 // destructor --- frees the memory allocated for the vector
 {
 	if (vec -> array)
@@ -196,3 +197,7 @@ vector_t* destroy (vector_t* vec)
 	vec = NULL;
 	return vec;
 }
+
+
+// creates namespace for the vector class constructor and destructor
+vector_namespace const vector = {create, destroy};

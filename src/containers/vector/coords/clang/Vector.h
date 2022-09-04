@@ -27,7 +27,9 @@
 
 #include "vector.h"
 
-vector_t* create (size_t);	// constructor
-vector_t* destroy (vector_t*);	// destructor
+typedef struct {
+vector_t* (*const create) (size_t);	// constructor
+vector_t* (*const destroy) (vector_t*);	// destructor
+} vector_namespace;
 
 #endif
