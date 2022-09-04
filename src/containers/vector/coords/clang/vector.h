@@ -35,6 +35,7 @@ coord_t* limit;
 coord_t* array;
 // methods
 size_t (*size) (void*);
+void (*clear) (void*);
 void (*push_back) (void*, coord_t);
 } vector_t;
 #endif
