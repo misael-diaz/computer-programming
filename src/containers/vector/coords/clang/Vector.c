@@ -31,9 +31,11 @@
 #include "vector.h"
 
 // implementations:
-size_t size (vector_t* vec)
+static size_t size_method (void* vector)
 // returns the vector size --- the number of elements stored
 {
+	// asserts that the type of the (universal) pointer is a vector
+	vector_t *vec = vector;
 	return ( ( (vec -> avail) - (vec -> begin) ) / sizeof(coord_t) );
 }
 
@@ -41,7 +43,7 @@ size_t size (vector_t* vec)
 static void grow (vector_t* vec)
 // doubles the vector size
 {
-	size_t numel = size (vec);
+	size_t numel = size_method (vec);
 	size_t limit = (2 * numel);
 	// creates an array temporary to backup the vector's data buffer
 	coord_t *data = (coord_t*) malloc ( numel * sizeof(coord_t) );
@@ -101,15 +103,17 @@ static void grow (vector_t* vec)
 }
 
 
-void push_back (vector_t* vec, coord_t coord)
+static void push_back_method (void* vector, coord_t coord)
 // pushes elements unto the back of vector, grows the vector as needed
 {
+	// asserts that the type of the (universal) pointer is a vector
+	vector_t *vec = vector;
 	// doubles the vector size if the limit has been reached
 	if ( (vec -> avail) == (vec -> limit) )
 		grow (vec);
 
 	// gets the available location for storing new data
-	size_t avail   = size (vec);
+	size_t avail   = size_method (vec);
 	// copies the input into the data buffer
 	coord_t *array = (vec -> array);
 	array[avail].x = coord.x;
@@ -152,6 +156,9 @@ vector_t* create (size_t size)
 	vec -> begin = vec -> array;
 	vec -> avail = vec -> array;
 	vec -> limit = ( (vec -> begin) + size * sizeof(coord_t) );
+	// binds the methods
+	vec -> size  = size_method;
+	vec -> push_back = push_back_method;
 
 	return vec;
 }

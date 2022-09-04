@@ -28,9 +28,13 @@
 #include "coord.h"
 
 typedef struct {
+// data
 coord_t* begin;
 coord_t* avail;
 coord_t* limit;
 coord_t* array;
+// methods
+size_t (*size) (void*);
+void (*push_back) (void*, coord_t);
 } vector_t;
 #endif

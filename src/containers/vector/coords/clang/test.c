@@ -36,7 +36,7 @@ int main() {
 	for (int i = 0; i != 32; ++i)
 	{
 		coord_t coord = {.x = i, .y = i};
-		push_back (vec, coord);
+		vec -> push_back (vec, coord);
 	}
 
 	coord_t *array = (vec -> array);
@@ -48,7 +48,7 @@ int main() {
 	}
 
 	// prints the vector size on the console
-	printf("size: %lu \n", size(vec));
+	printf("size: %lu \n", vec -> size(vec));
 
 	// frees the memory allocated for the vector
 	vec = destroy (vec);

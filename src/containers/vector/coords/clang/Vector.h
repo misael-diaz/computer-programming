@@ -30,8 +30,4 @@
 vector_t* create (size_t);	// constructor
 vector_t* destroy (vector_t*);	// destructor
 
-// methods
-size_t size (vector_t* vec);
-void push_back (vector_t*, coord_t);
-
 #endif
