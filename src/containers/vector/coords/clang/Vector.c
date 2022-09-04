@@ -3,7 +3,7 @@
  * IST 4310
  * Prof. M Diaz-Maldonado
  *
- * source: vector.c
+ * source: Vector.c
  *
  * Synopsis:
  * Defines methods of the vector class.

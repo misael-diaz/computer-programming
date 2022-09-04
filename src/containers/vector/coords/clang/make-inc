@@ -24,7 +24,7 @@ LIBS = -lm
 
 
 # sources
-VECTOR_SRC = vector.c
+VECTOR_SRC = Vector.c
 TEST_VECTOR_SRC     = test.c
 
 
