@@ -19,6 +19,7 @@
  * [1] JJ McConnell, Analysis of Algorithms, 2nd edition
  * [2] POSIX Threads tutorial https://hpc-tutorials.llnl.gov/posix
  * [3] code is based on https://stackoverflow.com/a/15606507
+ * [4] https://hpc-tutorials.llnl.gov/posix/example_using_mutexes
  *
  */
 
@@ -41,12 +42,15 @@ typedef struct
 	double *x;	// array x
 	double *y;	// array y
 	double *z;	// array z
+	double *sum;	// accumulator
+	pthread_mutex_t *mutexsum;	// mutex for critical section(s)
 } data_t;
 
 
 // prototypes
 void pgreet   ();	// hello world
 void pvectorSum ();	// vector sum
+void pvectorProd ();	// vector scalar product
 void pmatrixMult ();	// matrix multiplication
 
 
@@ -54,6 +58,7 @@ int main ()
 {
 	pgreet ();	// each thread greets on the console
 	pvectorSum ();	// each thread sums a slice of the vectors
+	pvectorProd ();	// updates vector product in critical section
 	pmatrixMult ();	// each thread operates on contiguous rows
 	return 0;
 }
@@ -91,6 +96,43 @@ void* vectorSum (void *v)
 	// operates the vector sum on the assigned slice
 	for (size_t i = b; i != e; ++i)
 		z[i] = (x[i] + y[i]);
+
+	return NULL;
+}
+
+
+void* vectorProd (void *v)
+// vector scalar product example
+{
+	// asserts the type of the argument
+	data_t *p = v;
+	// gets the thread ID
+	size_t tid = (p -> tid);
+	// gets the assigned (asymmetric) data range
+	size_t b = (p -> b), e = (p -> e);
+	// gets iterators for the vectors
+	double *x = (p -> x), *y = (p -> y);
+
+	// reports the assigned slice
+	printf("thread: %4lu begin: %8lu end: %8lu\n", tid, b, e);
+
+	double mysum = 0;
+	// performs the vector scalar product on the assigned slice
+	for (size_t i = b; i != e; ++i)
+		mysum += (x[i] * y[i]);
+
+	/* starts critical section */
+
+	// references the shared accumulator
+	double *sum = (p -> sum);
+	// references the mutex for (un)locking access to shared resource
+	pthread_mutex_t *mutexsum = (p -> mutexsum);
+	// locks access, writes shared resource, and unlocks access
+	pthread_mutex_lock (mutexsum);
+	*sum += mysum;
+	pthread_mutex_unlock (mutexsum);
+
+	/* ends critical section */
 
 	return NULL;
 }
@@ -249,6 +291,108 @@ void pvectorSum()
 		printf("FAIL\n");
 	else
 		printf("pass\n");
+}
+
+
+void pvectorProd()
+// uses multiple threads to compute the vector scalar product
+{
+
+	/* initialization */
+
+	// initializes scalar product accumulator
+	double sum = 0;
+
+	// allocates vectors on the stack
+	double x[SIZE], y[SIZE];
+
+	// initializes vectors
+	for (size_t i = 0; i != SIZE; ++i)
+		x[i] = 1.0;
+
+	for (size_t i = 0; i != SIZE; ++i)
+		y[i] = 1.0;
+
+
+	// allocates the threads array
+	pthread_t threads[NUM_THREADS];
+	// allocates data for the parallel environment
+	data_t data[NUM_THREADS];
+	// creates thread iterator
+	pthread_t *thread = threads;
+	// creates data iterator
+	data_t *p = data;
+
+
+	// initializes mutex to create critical section
+	pthread_mutex_t mutex;
+	pthread_mutex_t *mutexsum = &mutex;
+	pthread_mutex_init (mutexsum, NULL);
+
+
+	/* multi-threaded execution */
+
+
+	for (size_t i = 0; i != NUM_THREADS; ++i)
+	{
+		/* distributes work evenly among threads */
+
+		size_t chunk = (SIZE / NUM_THREADS);	// sets chunk size
+		size_t b = i * chunk;			// sets begin
+		size_t e = (i + 1) * chunk;		// sets end
+
+		// defines the thread ID
+		p -> tid = i;
+		// defines the asymmetric range [b, e) assigned to thread
+		p -> b = b;
+		p -> e = e;
+		// references the (shared) vectors
+		p -> x = x;
+		p -> y = y;
+		// references the (shared) accumulator
+		p -> sum = &sum;
+		// references the mutex
+		p -> mutexsum = mutexsum;
+		// creates universal pointer for the data of current thread
+		void *v = p;
+		// creates thread with default options and puts it to work
+		pthread_create (thread, NULL, vectorProd, v);
+		// gets next thread
+		++thread;
+		// gets the data of the next thread
+		++p;
+	}
+
+
+	/* ends multi-threaded execution */
+
+
+	// waits for each tread to complete its task
+	for (size_t i = 0; i != NUM_THREADS; ++i)
+		pthread_join (threads[i], 0);
+
+
+	/* serial */
+
+
+	double res = (SIZE);		// defines the expected result
+	double diff = (sum - res);	// computes difference
+	// reports test outcome on the console
+	printf("vector-scalar-product-test[0]: ");
+	if (diff != 0.0)
+		printf("FAIL\n");
+	else
+		printf("pass\n");
+
+	// sets iterator to the beginning of the shared resource
+	p = data;
+	// prints vector scalar product on the console
+	printf("vector scalar product: %f\n", *(p -> sum));
+
+
+	// releases resources
+	pthread_mutex_destroy (mutexsum);
+	mutexsum = NULL;
 }
 
 
