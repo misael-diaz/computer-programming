@@ -1,0 +1,11 @@
+push-back-method-test: pass
+clear-method-test: pass
+x:  0 y:  0
+x:  1 y:  1
+x:  2 y:  4
+x:  2 y:  5
+x:  4 y:  0
+x:  4 y:  3
+x:  4 y:  4
+x:  7 y:  1
+sort-method-test: pass
