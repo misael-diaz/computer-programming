@@ -111,7 +111,7 @@ public class Vector
 	public void sort ()
 	// delegates the task of sorting to the sort method of Arrays
 	{
-		Arrays.sort (this.data);
+		Arrays.sort (this.data, this.begin, this.avail);
 	}
 
 
@@ -219,6 +219,24 @@ public class Vector
 	{
 		int size = 8;
 		Vector vector = new Vector (size);
+
+		/*
+
+		NullPointerException Test: Sorts Empty Vector
+
+		Passes test if no exception is thrown when executed.
+
+		Note that the exception should not occur because the sort
+		method of the vector class specifies the sorting range.
+
+		*/
+
+		vector.sort();
+
+
+		/* Pushes data unto back vector */
+
+
 		Random random = new Random ();
 		for (int i = 0; i != size; ++i)
 		// fills vector with random coordinates
@@ -228,6 +246,7 @@ public class Vector
 			Coord coord = new Coord (x, y);
 			vector.push_back (coord);
 		}
+
 
 		vector.sort();	// sorts data contained in vector
 
