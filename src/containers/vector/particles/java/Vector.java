@@ -25,9 +25,21 @@
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Comparator;
 
 public class Vector
 {
+
+	/* defines comparator for y-x sorting of coordinates */
+
+
+	static Comparator<Coord> comparator = (Coord P, Coord Q) -> {
+		if ( P.getY() != Q.getY() )
+			return ( P.getY() - Q.getY() );
+		else
+			return ( P.getX() - Q.getX() );
+	};
+
 
 	/* initializes parameters (not bound to objects of the class) */
 
@@ -112,6 +124,13 @@ public class Vector
 	// delegates the task of sorting to the sort method of Arrays
 	{
 		Arrays.sort (this.data, this.begin, this.avail);
+	}
+
+
+	public void sort (Comparator<Coord> comp)
+	// delegates the task of sorting to the sort method of Arrays
+	{
+		Arrays.sort (data, begin, avail, comp);
 	}
 
 
@@ -279,12 +298,45 @@ public class Vector
 		}
 
 
-		System.out.printf("sort-method-test: ");
+		System.out.printf("sort-method-test[0]: ");
 		// checks if the sorting method failed (unexpectedly)
 		if (failures != 0)
 			System.out.println("FAIL");
 		else
 			System.out.println("pass");
+
+
+		/* performs y - x sorting */
+
+
+		vector.sort(comparator);
+		data = vector.getData();
+		System.out.println("y-x sorting:");
+		for (int i = 0; i != size; ++i)
+		// prints the (sorted) coordinates on the console
+		{
+			int x = data[i].getX();
+			int y = data[i].getY();
+			System.out.printf("x: %2d y: %2d\n", x, y);
+		}
+
+
+		failures = 0;
+		for (int i = 0; i != (size - 1); ++i)
+		// counts failures (not in ascending order instances)
+		{
+			Coord thisCoord = data[i], nextCoord = data[i + 1];
+			if (comparator.compare(thisCoord, nextCoord) > 0)
+				++failures;
+		}
+
+
+		System.out.printf("sort-method-test[1]: ");
+		// checks if the sorting method failed (unexpectedly)
+		if (failures != 0)
+			System.out.println("FAIL\n");
+		else
+			System.out.println("pass\n");
 	}
 
 
@@ -356,3 +408,12 @@ public class Vector
 			System.out.println("pass");
 	}
 }
+
+/*
+ * TODO:
+ * [ ] overload the search method which accepts the y - x comparator as its
+ *     input argument. Note that the binary search algorithm will assume a
+ *     x - y ordering by default and because of that it can fail sometimes
+ *     if the comparator is not given.
+ *
+ */
