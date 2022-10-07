@@ -115,6 +115,13 @@ public class Vector
 	}
 
 
+	public int search (Coord key)
+	// delegates the task to the Binary Search method of Arrays
+	{
+		return Arrays.binarySearch (data, begin, avail, key);
+	}
+
+
 	/* implementations */
 
 
@@ -152,6 +159,7 @@ public class Vector
 		testPushBackMethod();
 		testClearMethod();
 		testSortMethod();
+		testSearchMethod();
 		return;
 	}
 
@@ -274,6 +282,75 @@ public class Vector
 		System.out.printf("sort-method-test: ");
 		// checks if the sorting method failed (unexpectedly)
 		if (failures != 0)
+			System.out.println("FAIL");
+		else
+			System.out.println("pass");
+	}
+
+
+	private static void testSearchMethod ()
+	/*
+
+	Synopsis:
+	Uses search method to create a distinct set of (x, y) coordinates.
+
+	*/
+	{
+		Vector vector = new Vector ();	// creates (empty) vector
+		Random random = new Random ();	// creates (default) PRNG
+
+
+		/* creates data set from random data */
+
+
+		int size = (0x00000010);
+		for (int i = 0; i != size; ++i)
+		// generates the distinct set of (x, y) coordinates
+		{
+			int x = random.nextInt(size);
+			int y = random.nextInt(size);
+			Coord c = new Coord (x, y);
+			while (vector.search(c) >= 0)
+			// generates a new coordinate if already in vector
+			{
+				x = random.nextInt(size);
+				y = random.nextInt(size);
+				c = new Coord (x, y);
+			}
+			// pushes (distinct) coordinate unto back of vector
+			vector.push_back(c);
+			// sorts to use binary search on next pass
+			vector.sort();
+		}
+
+
+		/* Displays Data on the Console */
+
+
+		Coord [] data = vector.getData();
+		for (int i = 0; i != size; ++i)
+		// prints the (distinct set of) coordinates on the console
+		{
+			int x = data[i].getX();
+			int y = data[i].getY();
+			System.out.printf("x: %2d y: %2d\n", x, y);
+		}
+
+
+		/* Duplicates Test */
+
+
+		int duplicates = 0;
+		for (int i = 0; i != (size - 1); ++i)
+		// counts duplicates by checking for equality
+		{
+			Coord thisCoord = data[i], nextCoord = data[i + 1];
+			if (thisCoord.compareTo(nextCoord) == 0)
+				++duplicates;
+		}
+
+		System.out.printf("search-method-test: ");
+		if (duplicates != 0)
 			System.out.println("FAIL");
 		else
 			System.out.println("pass");
