@@ -33,7 +33,7 @@ public class Vector
 	/* defines comparator for y-x sorting of coordinates */
 
 
-	static Comparator<Coord> comparator = (Coord P, Coord Q) -> {
+	public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
 		if ( P.getY() != Q.getY() )
 			return ( P.getY() - Q.getY() );
 		else
