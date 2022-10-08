@@ -141,6 +141,13 @@ public class Vector
 	}
 
 
+	public int search (Coord key, Comparator<Coord> comp)
+	// delegates the task to the Binary Search method of Arrays
+	{
+		return Arrays.binarySearch (data, begin, avail, key, comp);
+	}
+
+
 	/* implementations */
 
 
@@ -401,8 +408,50 @@ public class Vector
 				++duplicates;
 		}
 
-		System.out.printf("search-method-test: ");
+		System.out.printf("search-method-test[0]: ");
 		if (duplicates != 0)
+			System.out.println("FAIL");
+		else
+			System.out.println("pass");
+
+
+		/*
+
+		Performs y - x sorting test:
+
+		Test consists on searching the x-y sorted data after the
+		vector has been y-x sorted. We increment the number of
+		failures every time the method fails to find an element.
+
+		Note that if the comparator is not supplied to the binary
+		search method, it will fail sometimes because the data has
+		been y-x sorted while the method assumes x-y sorting.
+		On the other hand, when the comparator is supplied the
+		search is successful.
+
+		*/
+
+
+		int failures = 0;		// initializes counter
+		data = vector.getData();	// gets x - y sorted data
+		vector.sort(comparator);	// does y - x sorting
+		for (int i = 0; i != size; ++i)
+		// searches the x-y sorted data in the y-x sorted vector
+		{
+			Coord c = data[i];
+			if (vector.search(c, comparator) < 0)
+				++failures;
+		}
+
+
+		System.out.printf("search-method-test[1]: ");
+		/*
+
+		the number of failures should be zero because we are
+		searching for data that we know is contained in the vector
+
+		*/
+		if (failures != 0)
 			System.out.println("FAIL");
 		else
 			System.out.println("pass");
@@ -411,7 +460,7 @@ public class Vector
 
 /*
  * TODO:
- * [ ] overload the search method which accepts the y - x comparator as its
+ * [x] overload the search method which accepts the y - x comparator as its
  *     input argument. Note that the binary search algorithm will assume a
  *     x - y ordering by default and because of that it can fail sometimes
  *     if the comparator is not given.
