@@ -85,7 +85,7 @@ public class Vector
 	public Coord [] getData ()
 	// returns a clone of the data contained in vector
 	{
-		return this.data.clone();
+		return Arrays.copyOfRange(data, begin, avail);
 	}
 
 
