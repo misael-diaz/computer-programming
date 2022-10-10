@@ -40,10 +40,10 @@ public class Coord implements Comparable<Coord>
 		this.y = 0;
 	}
 
-	Coord (int xi, int yi)	// constructs from (xi, yi) coordinates
+	Coord (int x, int y)	// constructs from (x, y) coordinates
 	{
-		this.x = xi;
-		this.y = yi;
+		this.x = x;
+		this.y = y;
 	}
 
 	Coord (Coord c)		// copy constructor
