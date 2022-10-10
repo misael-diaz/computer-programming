@@ -79,6 +79,16 @@ public class Vector
 	}
 
 
+	Vector (Vector vector)
+	// copy constructor
+	{
+		this.begin = 0;			// sets to default
+		this.avail = vector.size();	// gets the size
+		this.limit = vector.size();	// fits to size
+		this.data  = vector.getData();	// gets a copy of the data
+	}
+
+
 	/* getters */
 
 
@@ -86,6 +96,13 @@ public class Vector
 	// returns a clone of the data contained in vector
 	{
 		return Arrays.copyOfRange(data, begin, avail);
+	}
+
+
+	public Coord getData (int i)
+	// returns a copy of the ith element
+	{
+		return new Coord(this.data[i]);
 	}
 
 
@@ -120,6 +137,36 @@ public class Vector
 	}
 
 
+	public Vector bisect ()
+	// bisects vector, keeps first half and returns second half
+	{
+		/*
+
+		Computes the sizes of the first and second halves,
+		note that these differ when the (original) vector
+		stores an odd number of elements.
+
+		*/
+
+		int size = this.size();			// original size
+		int sizeHalf1 = (size / 2);		// first-half size
+		int sizeHalf2 = (size - sizeHalf1);	// second-half size
+
+		// creates the (fitted-to-size) returned vector
+		Vector ret = new Vector(sizeHalf2);
+		// copies data in second half into the returned vector
+		for (int i = 0; i != sizeHalf2; ++i)
+			ret.data[i] = new Coord(this.data[i + sizeHalf1]);
+
+		// effectively deletes second half from (original) vector
+		this.avail = sizeHalf1;
+		// sets the size of the returned vector
+		ret.avail  = sizeHalf2;
+		// returns the vector that contains the second half
+		return ret;
+	}
+
+
 	public void sort ()
 	// delegates the task of sorting to the sort method of Arrays
 	{
@@ -145,6 +192,19 @@ public class Vector
 	// delegates the task to the Binary Search method of Arrays
 	{
 		return Arrays.binarySearch (data, begin, avail, key, comp);
+	}
+
+
+	public void print ()
+	// prints the (x, y) coordinates on the console
+	{
+		int size = this.size();
+		for (int i = 0; i != size; ++i)
+		{
+			Coord c = this.data[i];
+			String fmt = ("x, y = (%8d, %8d)\n");
+			System.out.printf(fmt, c.getX(), c.getY());
+		}
 	}
 
 
