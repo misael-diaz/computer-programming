@@ -46,6 +46,12 @@ public class Coord implements Comparable<Coord>
 		this.y = yi;
 	}
 
+	Coord (Coord c)		// copy constructor
+	{
+		this.x = c.x;
+		this.y = c.y;
+	}
+
 	/* getters */
 
 	public int getX ()	// returns copy of the x-axis coordinate
