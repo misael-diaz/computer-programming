@@ -40,10 +40,16 @@ public class Coord implements Comparable<Coord>
 		this.y = 0;
 	}
 
-	Coord (int xi, int yi)	// constructs from (xi, yi) coordinates
+	Coord (int x, int y)	// constructs from (x, y) coordinates
 	{
-		this.x = xi;
-		this.y = yi;
+		this.x = x;
+		this.y = y;
+	}
+
+	Coord (Coord c)		// copy constructor
+	{
+		this.x = c.x;
+		this.y = c.y;
 	}
 
 	/* getters */
@@ -68,5 +74,35 @@ public class Coord implements Comparable<Coord>
 			return (this.x - coord.x);
 		else
 			return (this.y - coord.y);
+	}
+
+
+	public static double distance (Coord i, Coord j)
+	/*
+
+	Synopsis:
+	Returns the squared distance of a pair of particles (i, j).
+
+	Inputs:
+	i		coordinates of the ith particle
+	j		coordinates of the jth particle
+
+	Output:
+	d		squared distance of the ith and jth particles
+
+	NOTES:
+	Omits the computation of the squared root for speed. And uses
+	doubles to represent the coordinates to avert overflows owing to
+	the limited range of numbers that can be represented with the
+	signed integer type.
+
+	*/
+	{
+		// gets the (x, y) coordinates of the ith particle
+		double xi = i.x, yi = i.y;
+		// gets the (x, y) coordinates of the jth particle
+		double xj = j.x, yj = j.y;
+		/* computes the squared of the distance of the particles */
+		return ( (xi - xj) * (xi - xj) + (yi - yj) * (yi - yj) );
 	}
 }
