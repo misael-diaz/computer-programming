@@ -48,7 +48,7 @@ c2 = size.mean() / opers.mean()
 ax.loglog(size, size,    color='black', linestyle='--',
           label='linear')
 # plots the elapsed time as a function of size
-ax.loglog(size[5:], c1 * etime[5:], color='black',
+ax.loglog(size, c1 * etime, color='black',
     linestyle='', marker='o', markersize=12, label='elapsed-time')
 # plots the number of operations as a function of size
 ax.loglog(size, c2 * opers, color='red',   linestyle='', marker='*',
