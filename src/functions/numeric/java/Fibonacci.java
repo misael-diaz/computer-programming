@@ -25,6 +25,8 @@ import java.util.Random;
 
 class Fibonacci
 {
+	static long recursions;
+
 	public static void main (String [] args)
 	{
 		// selects an integer in the asymmetric range [2, 21)
@@ -79,6 +81,28 @@ class Fibonacci
 			F = recursiveFibonacci (N - 1) +
 			    recursiveFibonacci (N - 2);
 
+		++recursions;
 		return F;
+	}
+
+
+	public static double iterative (int N)
+	// returns the elapsed time spent on the iterative computation
+	{
+		double start = System.nanoTime();
+		iterativeFibonacci(N);
+		double end = System.nanoTime();
+		return (end - start);
+	}
+
+
+	public static double recursive (int N)
+	// returns the elapsed time spent on the recursive computation
+	{
+		recursions = 0;
+		double start = System.nanoTime();
+		recursiveFibonacci(N);
+		double end = System.nanoTime();
+		return (end - start);
 	}
 }
