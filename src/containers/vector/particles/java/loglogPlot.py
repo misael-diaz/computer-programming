@@ -25,6 +25,7 @@ References:
 """
 
 # imports the needed methods from numerical python and matplotlib library
+from numpy import log2 as log
 from numpy import loadtxt
 from matplotlib import pyplot as plt
 
@@ -42,11 +43,12 @@ plt.ion()
 fig, ax = plt.subplots()
 
 # computes scaling constants to improve presentation
-c1 = size.mean() / etime.mean()
+c1 = ( size * log(size) ).mean() / etime.mean()
 c2 = size.mean() / opers.mean()
 # plots the expected (theoretical) time as a function of size
-ax.loglog(size, size,    color='black', linestyle='--',
-          label='linear')
+ax.loglog(size, size * log(size), color='black', linestyle='--',
+          label='super-linear')
+ax.loglog(size, size, color='black', linestyle='-', label='linear')
 # plots the elapsed time as a function of size
 ax.loglog(size, c1 * etime, color='black',
     linestyle='', marker='o', markersize=12, label='elapsed-time')
