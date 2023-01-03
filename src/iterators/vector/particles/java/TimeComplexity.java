@@ -119,8 +119,7 @@ public class TimeComplexity
 
 	/* implementation(s) */
 
-	private double [][] timeDivideAndConquer1D ()
-	throws ImplementErrorException
+	private double [][] timeDivideAndConquer1D () throws ImplementErrorException
 	/*
 
 	Synopsis:
@@ -180,8 +179,7 @@ public class TimeComplexity
 	}
 
 
-	private double [][] timeDivideAndConquer2D ()
-	throws ImplementErrorException
+	private double [][] timeDivideAndConquer2D () throws ImplementErrorException
 	/*
 
 	Synopsis:

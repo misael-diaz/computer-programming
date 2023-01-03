@@ -648,6 +648,14 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
 	private static void testViews ()
+	/*
+
+	Synopsis:
+	Checks that when views go out-of-scope the data present in the
+	original vector is not released from memory. The expectation is
+	that references to the stored data get nullified.
+
+	*/
 	{
 		// constructs a vector of points from allocator
 		Vector<Point> vector = new Vector<> (
@@ -762,6 +770,14 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
 	private static void testBisect ()
+	/*
+
+	Synopsis:
+	Bisects a vector into two views having each half of the data.
+	Then, it checks that the data contained in the views is consistent
+	with that of the vector as it should be.
+
+	*/
 	{
 		// constructs a vector of points from allocator
 		Vector<Point> vector = new Vector<> (
@@ -881,6 +897,13 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
 	private static void testIterator ()
+	/*
+
+	Synopsis:
+	Checks that by means of an iterator all the vector elements are
+	traversed.
+
+	*/
 	{
 		// constructs a vector of points from allocator
 		Vector<Point> points = new Vector<> (
