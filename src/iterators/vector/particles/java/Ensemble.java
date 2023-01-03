@@ -1234,10 +1234,10 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		if (size < 0x00000010)
+		if (size < 2)
 		{
 			String err = (	"ensemble size must be greater " +
-					"or equal to 16"  );
+					"or equal to two"  );
 			throw new IllegalArgumentException(err);
 		}
 	}
@@ -1381,7 +1381,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		int size = 16;
+		int size = 2;
 		Ensemble ens = new Ensemble(size);
 		Pair closestPair = ens.recursive2D();
 	}
@@ -1398,7 +1398,7 @@ public class Ensemble	// Particle Ensemble Class
 	along the largest dimension (the x-axis by design).
 
 	The test is performed for ensembles having sizes in the asymmetric
-	range [16, 4096). A new ensemble is created each time to change the
+	range [2, 4096). A new ensemble is created each time to change the
 	location of the closest pair. Note that the closest pair may be
 	present in or between (the smaller) partitions (or subdomains).
 
@@ -1410,7 +1410,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		for (int size = 16; size != (0x00001000); size *= 2)
+		for (int size = 2; size != (0x00001000); size *= 2)
 		{
 			for (int i = 0; i != 256; ++i)
 			{
@@ -1433,7 +1433,7 @@ public class Ensemble	// Particle Ensemble Class
 	space.
 
 	The test is performed for ensembles having sizes in the asymmetric
-	range [16, 4096). A new ensemble is created each time to change the
+	range [2, 4096). A new ensemble is created each time to change the
 	location of the closest pair. Note that the closest pair may be
 	present in or between (the smaller) partitions (or subdomains).
 
@@ -1445,7 +1445,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		for (int size = 16; size != (0x00001000); size *= 2)
+		for (int size = 2; size != (0x00001000); size *= 2)
 		{
 			for (int i = 0; i != 256; ++i)
 			{
