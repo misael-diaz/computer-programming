@@ -235,7 +235,7 @@ public class Ensemble	// Particle Ensemble Class
 	implementation error happens if the Brute Force and Divide and
 	Conquer Algorithms find a different closest pair. We are certain
 	of that because we have made sure that the dataset has a unique
-	closest pair; that is, there is no other pairs having the same
+	closest pair; that is, there are no other pairs having the same
 	separating distance.
 
 	*/
@@ -286,7 +286,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Applies the Divide and Conquer Algorithm to find the closest pair.
+	Applies the 1D Divide and Conquer Algorithm to find the closest pair.
 	Sets the elapsed-time (nanoseconds) and the number of operations
 	invested in finding the closest pair.
 
@@ -321,7 +321,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Applies the Divide and Conquer Algorithm to find the closest pair.
+	Applies the 2D Divide and Conquer Algorithm to find the closest pair.
 	Sets the elapsed-time (nanoseconds) and the number of operations
 	invested in finding the closest pair.
 
@@ -419,7 +419,7 @@ public class Ensemble	// Particle Ensemble Class
 	part		partition (or whole data set of points)
 
 	Outputs:
-	closestPair	the closest pair
+	tuple		the closest pair and the number of operations
 
 	*/
 	{
@@ -494,7 +494,7 @@ public class Ensemble	// Particle Ensemble Class
 	closestPair	current closest pair
 
 	Outputs:
-	closestPair	the (possibly new) closest pair
+	tuple		the closest pair and the number of operations
 
 	*/
 	{
@@ -567,7 +567,7 @@ public class Ensemble	// Particle Ensemble Class
 	closestPair	current closest pair
 
 	Output:
-	closestPair	a (possibly new) closest pair
+	tuple		the closest pair and the number of operations
 
 
 	COMMENTS:
@@ -726,7 +726,7 @@ public class Ensemble	// Particle Ensemble Class
 	closestPair	current closest pair
 
 	Output:
-	closestPair	a (possibly new) closest pair
+	tuple		the closest pair and the number of operations
 
 	*/
 	{
@@ -777,6 +777,30 @@ public class Ensemble	// Particle Ensemble Class
 
 
 	private Tuple recurse (Vector<Point> Px, Vector<Point> Py)
+	/*
+
+	Synopsis:
+	Implements the 2D Divide and Conquer Algorithm. If the partition
+	P is small enough, the method uses Brute Force to find the closest
+	pair. Otherwise, the method divides the partition P into left and
+	right partitions to look for the closest pair in each. Note that
+	the division step continues until the partitions are small enough
+	to use Brute Force. Then, the method combines the solutions by
+	selecting the smallest of the closest pair candidates and by
+	looking for the closest pair between partitions.
+
+	The method returns a tuple containing the closest pair and the
+	number of operations (distance computations) invested to find the
+	closest pair.
+
+	Inputs:
+	Px		the x-y sorted partition
+	Py		the y-x sorted partition
+
+	Output:
+	tuple		the closest pair and the number of operations
+
+	*/
 	{
 		if (Px.size() <= 3)
 		{
@@ -837,7 +861,7 @@ public class Ensemble	// Particle Ensemble Class
 	Synopsis:
 	If the partition is small enough, the method applies the Brute
 	Force Method to find the closest pair; otherwise it divides the
-	partition into a pair of quadrants to find the closest pair.
+	partition into two of four possible quadrants to find the closest pair.
 	If the partition P corresponds to the left partition, the method
 	divides it into the second and third quadrants; otherwise, the
 	method divides it into the first and fourth quadrants.
@@ -1339,6 +1363,25 @@ public class Ensemble	// Particle Ensemble Class
 
 
 	private static void test () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Checks for implementation errors. If the closest pair found by the
+	Brute Force algorithm is not the same as that found by the Divide
+	And Conquer algorithm an Implementation Error Exception is thrown.
+	This version uses the 2D Divide And Conquer Algorithm that divides
+	along the x and y axes, for the points span a squared domain in
+	space.
+
+	The ensemble has a predetermined size.
+
+	Inputs:
+	None
+
+	Outputs:
+	None
+
+	*/
 	{
 		int size = 16;
 		Ensemble ens = new Ensemble(size);
@@ -1347,6 +1390,27 @@ public class Ensemble	// Particle Ensemble Class
 
 
 	private static void test1D () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Checks for implementation errors. If the closest pair found by the
+	Brute Force algorithm is not the same as that found by the Divide
+	And Conquer algorithm an Implementation Error Exception is thrown.
+	This version uses the 1D Divide And Conquer Algorithm that divides
+	along the largest dimension (the x-axis by design).
+
+	The test is performed for ensembles having sizes in the asymmetric
+	range [16, 4096). A new ensemble is created each time to change the
+	location of the closest pair. Note that the closest pair may be
+	present in or between (the smaller) partitions (or subdomains).
+
+	Inputs:
+	None
+
+	Outputs:
+	None
+
+	*/
 	{
 		for (int size = 16; size != (0x00001000); size *= 2)
 		{
@@ -1360,6 +1424,28 @@ public class Ensemble	// Particle Ensemble Class
 
 
 	private static void test2D () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Checks for implementation errors. If the closest pair found by the
+	Brute Force algorithm is not the same as that found by the Divide
+	And Conquer algorithm an Implementation Error Exception is thrown.
+	This version uses the 2D Divide And Conquer Algorithm that divides
+	along the x and y axes, for the points span a squared domain in
+	space.
+
+	The test is performed for ensembles having sizes in the asymmetric
+	range [16, 4096). A new ensemble is created each time to change the
+	location of the closest pair. Note that the closest pair may be
+	present in or between (the smaller) partitions (or subdomains).
+
+	Inputs:
+	None
+
+	Outputs:
+	None
+
+	*/
 	{
 		for (int size = 16; size != (0x00001000); size *= 2)
 		{
