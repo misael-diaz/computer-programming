@@ -226,8 +226,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	public static void main (String [] args)
-	throws ImplementErrorException
+	public static void main (String [] args) throws ImplementErrorException
 	/*
 
 	Synopsis:
@@ -1244,8 +1243,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private void isInvalidData (Vector<Point> data)
-	throws IllegalArgumentException
+	private void isInvalidData (Vector<Point> data) throws IllegalArgumentException
 	/*
 
 	Synopsis:
