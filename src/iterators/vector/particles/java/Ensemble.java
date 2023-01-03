@@ -32,6 +32,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	interface Distance
 	{
+		// interface of distance computing methods
 		public double getDistance(Point P, Point Q);
 	}
 
@@ -53,8 +54,8 @@ public class Ensemble	// Particle Ensemble Class
 
 
 	private double etime;		// elapsed time (nanoseconds)
-	private double operations;	// operations counter
-	private int size;		// ensemble size
+	private double operations;	// operations (computed distances) counter
+	private int size;		// ensemble size (or number of points)
 
 
 	/* constructors */
@@ -63,10 +64,10 @@ public class Ensemble	// Particle Ensemble Class
 	Ensemble (int size)
 	// creates an ensemble of distinct points of size `size'.
 	{
-		this.isInvalidEnsembleSize(size);
-		this.etime = 0.0;
-		this.operations = 0.0;
-		this.size = size;
+		this.isInvalidEnsembleSize(size);	// complains if invalid
+		this.etime = 0.0;			// zeroes the elapsed time
+		this.operations = 0.0;			// zeroes the #operations
+		this.size = size;			// sets the ensemble size
 	}
 
 
@@ -230,7 +231,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Executes the test code to check for implementation errors. An
+	Executes the test codes to check for implementation errors. An
 	implementation error happens if the Brute Force and Divide and
 	Conquer Algorithms find a different closest pair. We are certain
 	of that because we have made sure that the dataset has a unique
@@ -247,13 +248,18 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	/* implementations */
+
+
 	private Pair bruteForceMethod (Vector<Point> points)
 	/*
 
 	Synopsis:
 	Applies the Brute Force Algorithm to obtain the closest pair.
 	Sets the elapsed-time (nanoseconds) invested in determining the
-	closest pair.
+	closest pair. It also sets the number of operations (or the number
+	of distance computations) executed by the Brute Force algorithm to
+	find the closest pair.
 
 	Inputs:
 	points		dataset of distinct points
@@ -287,7 +293,9 @@ public class Ensemble	// Particle Ensemble Class
 	Synopsis:
 	Applies the 1D Divide and Conquer Algorithm to find the closest pair.
 	Sets the elapsed-time (nanoseconds) and the number of operations
-	invested in finding the closest pair.
+	invested in finding the closest pair. It also sets the total number of
+	operations (or equivalently, the total number of distance computations)
+	executed by the Divide And Conquer algorithm to find the closest pair.
 
 	Input:
 	points		x-y sorted dataset of distinct points
@@ -302,7 +310,7 @@ public class Ensemble	// Particle Ensemble Class
 		this.isInvalidData(points);
 
 		double tstart = System.nanoTime();
-		// times the Divide and Conquer Algorithm
+		// times the 1D Divide and Conquer Algorithm
 		Tuple data = this.recurse(points);
 		double tend = System.nanoTime();
 
@@ -322,7 +330,9 @@ public class Ensemble	// Particle Ensemble Class
 	Synopsis:
 	Applies the 2D Divide and Conquer Algorithm to find the closest pair.
 	Sets the elapsed-time (nanoseconds) and the number of operations
-	invested in finding the closest pair.
+	invested in finding the closest pair. It also sets the total number of
+	operations (or equivalently, the total number of distance computations)
+	executed by the Divide And Conquer algorithm to find the closest pair.
 
 	Input:
 	Px		x-y sorted dataset of distinct points
@@ -356,7 +366,18 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Applies the Divide and Conquer Algorithm to find the closest pair.
+	Applies the 1D Divide and Conquer Algorithm to find the closest pair.
+	If the partition P is small enough, the method uses Brute Force to find
+	the closest pair. Otherwise, the method divides the partition P into
+	left and right partitions to look for the closest pair in each. Note
+	that the division step continues until the partitions are small enough
+	to use Brute Force (or the direct method). Then, the method combines
+	the solutions by selecting the smallest of the closest pair candidates
+	and by looking for the closest pair between partitions.
+
+	The method returns a tuple containing the closest pair and the
+	number of operations (distance computations) invested to find the
+	closest pair.
 
 	Input:
 	Px		x-y sorted coordinates of the particles
@@ -799,6 +820,13 @@ public class Ensemble	// Particle Ensemble Class
 	Output:
 	tuple		the closest pair and the number of operations
 
+
+	COMMENTS:
+	This 2D version of the Divide and Conquer Algorithm divides along
+	the y dimension as well whenever it makes sense to do so. The task
+	of dividing along the y dimension is carried out by the overloaded
+	divide() method.
+
 	*/
 	{
 		if (Px.size() <= 3)
@@ -1050,6 +1078,7 @@ public class Ensemble	// Particle Ensemble Class
 
 		return dataset;
 	}
+
 
 	private Vector<Point> create ()
 	/*
