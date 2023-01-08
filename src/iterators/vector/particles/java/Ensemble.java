@@ -36,7 +36,7 @@ public class Ensemble	// Particle Ensemble Class
 		public double getDistance(Point P, Point Q);
 	}
 
-	final class Tuple
+	private final class Tuple
 	/*
 
 	Defines an auxiliary Tuple Class to encapsulate the closest pair
