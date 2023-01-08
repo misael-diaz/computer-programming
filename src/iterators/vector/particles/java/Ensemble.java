@@ -463,25 +463,19 @@ public class Ensemble	// Particle Ensemble Class
 	{
 		// gets the partition size
 		int sz = part.size();
-		// initializes the closest pair object for the compiler
+		// initializes the closest pair
 		Pair closestPair = new Pair();
-		// initializes the distance of the closest pair
-		double d_min = Double.POSITIVE_INFINITY;
+		// considers all the distinct pairs to find the closest pair
 		for (int i = 0; i != (sz - 1); ++i)
 		{
 			for (int j = (i + 1); j != sz; ++j)
 			{
-
-				double d = this.distance(part, i, j);
-
-				if (d < d_min)
-				// creates a new closest pair
-				{
-					Point p = part.get(i);
-					Point q = part.get(j);
-					closestPair = new Pair(p, q, d);
-					d_min = d;
-				}
+				Point p = part.get(i);
+				Point q = part.get(j);
+				double d = Point.distance(p, q);
+				Pair pair = new Pair(p, q, d);
+				// updates the closest pair
+				closestPair = Pair.min(pair, closestPair);
 			}
 		}
 
