@@ -53,6 +53,18 @@ public class Ensemble	// Particle Ensemble Class
 			this.closestPair = closestPair;
 			this.numOperations = numOperations;
 		}
+
+		/* getters */
+
+		public Pair getClosestPair ()
+		{
+			return this.closestPair;
+		}
+
+		public double getNumOperations ()
+		{
+			return this.numOperations;
+		}
 	}
 
 
@@ -286,9 +298,9 @@ public class Ensemble	// Particle Ensemble Class
 		// sets the elapsed time (nanoseconds)
 		this.etime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.numOperations;
+		this.operations = data.getNumOperations();
 
-		Pair closestPair = data.closestPair;
+		Pair closestPair = data.getClosestPair();
 		return closestPair;
 	}
 
@@ -323,9 +335,9 @@ public class Ensemble	// Particle Ensemble Class
 		// sets the elapsed time
 		this.etime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.numOperations;
+		this.operations = data.getNumOperations();
 
-		Pair closestPair = data.closestPair;
+		Pair closestPair = data.getClosestPair();
 		return closestPair;
 	}
 
@@ -361,9 +373,9 @@ public class Ensemble	// Particle Ensemble Class
 		// sets the elapsed time
 		this.etime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.numOperations;
+		this.operations = data.getNumOperations();
 
-		Pair closestPair = data.closestPair;
+		Pair closestPair = data.getClosestPair();
 		return closestPair;
 	}
 
@@ -409,10 +421,10 @@ public class Ensemble	// Particle Ensemble Class
 
 			// finds the closest pair in the left partition
 			Tuple dataLeft = this.recurse(Lx);
-			Pair closestPairLeft = dataLeft.closestPair;
+			Pair closestPairLeft = dataLeft.getClosestPair();
 			// finds the closest pair in the right partition
 			Tuple dataRight = this.recurse(Rx);
-			Pair closestPairRight = dataRight.closestPair;
+			Pair closestPairRight = dataRight.getClosestPair();
 
 			// selects the closest from the two partitions
 			Pair closestPair = Pair.min(
@@ -424,10 +436,10 @@ public class Ensemble	// Particle Ensemble Class
 
 			// updates the number of operations
 			double numOperations = (
-				dataLeft.numOperations + dataRight.numOperations + data.numOperations
+				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
 			);
 
-			closestPair = data.closestPair;
+			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
 		}
 	}
@@ -863,11 +875,11 @@ public class Ensemble	// Particle Ensemble Class
 
 			// finds the closest pair in the left partition
 			Tuple dataLeft = this.divide(Lx, Ly);
-			Pair closestPairLeft = dataLeft.closestPair;
+			Pair closestPairLeft = dataLeft.getClosestPair();
 
 			// finds the closest pair in the right partition
 			Tuple dataRight = this.divide(Rx, Ry);
-			Pair closestPairRight = dataRight.closestPair;
+			Pair closestPairRight = dataRight.getClosestPair();
 
 			// selects the closest from the two partitions
 			Pair closestPair = Pair.min(
@@ -879,10 +891,10 @@ public class Ensemble	// Particle Ensemble Class
 
 			// updates the number of operations
 			double numOperations = (
-				dataLeft.numOperations + dataRight.numOperations + data.numOperations
+				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
 			);
 
-			closestPair = data.closestPair;
+			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
 		}
 	}
@@ -929,11 +941,11 @@ public class Ensemble	// Particle Ensemble Class
 
 			// finds the closest pair in the left partition
 			Tuple dataLeft = this.recurse(Lx, Ly);
-			Pair closestPairLeft = dataLeft.closestPair;
+			Pair closestPairLeft = dataLeft.getClosestPair();
 
 			// finds the closest pair in the right partition
 			Tuple dataRight = this.recurse(Rx, Ry);
-			Pair closestPairRight = dataRight.closestPair;
+			Pair closestPairRight = dataRight.getClosestPair();
 
 			// selects the closest from the two partitions
 			Pair closestPair = Pair.min(
@@ -954,10 +966,10 @@ public class Ensemble	// Particle Ensemble Class
 
 			// updates the number of operations
 			double numOperations = (
-				dataLeft.numOperations + dataRight.numOperations + data.numOperations
+				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
 			);
 
-			closestPair = data.closestPair;
+			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
 		}
 	}
