@@ -45,7 +45,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		final Pair pair;		// closest pair
+		final private Pair pair;	// closest pair
 		final private double oper;	// number of operations
 
 		Tuple (Pair pair, double oper)
