@@ -36,9 +36,10 @@ public final class Pair implements Comparable<Pair>
 	Pair ()
 	// default constructor
 	{
+		double inf = Double.POSITIVE_INFINITY;
 		this.first = new Point(0, 0);
-		this.second = new Point(1, 0);
-		this.distance = 1.0;
+		this.second = new Point(inf, 0);
+		this.distance = inf;
 	}
 
 
