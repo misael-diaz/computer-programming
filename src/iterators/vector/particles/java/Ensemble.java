@@ -435,9 +435,9 @@ public class Ensemble	// Particle Ensemble Class
 			Tuple data = this.combine(Lx, Rx, closestPair);
 
 			// updates the number of operations
-			double numOperations = (
-				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
-			);
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
 
 			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
@@ -890,9 +890,9 @@ public class Ensemble	// Particle Ensemble Class
 			Tuple data = this.combine(Lx, Rx, closestPair);
 
 			// updates the number of operations
-			double numOperations = (
-				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
-			);
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
 
 			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
@@ -965,9 +965,9 @@ public class Ensemble	// Particle Ensemble Class
 			);
 
 			// updates the number of operations
-			double numOperations = (
-				dataLeft.getNumOperations() + dataRight.getNumOperations() + data.getNumOperations()
-			);
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
 
 			closestPair = data.getClosestPair();
 			return ( new Tuple(closestPair, numOperations) );
