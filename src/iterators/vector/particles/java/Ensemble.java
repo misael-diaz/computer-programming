@@ -37,7 +37,13 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 	final class Tuple
-	// defines an auxiliary Tuple Class
+	/*
+
+	Defines an auxiliary Tuple Class to encapsulate the closest pair
+	and the number of operations (or equivalently, the number of distance
+	computations) done to find the closest pair.
+
+	*/
 	{
 		final Pair pair;		// closest pair
 		final private double oper;	// number of operations
