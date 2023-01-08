@@ -530,18 +530,14 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-
 		for (Point p : L)
 		{
 			for (Point q : R)
 			{
-
 				double d = Point.distance(p, q);
-
-				if ( d < closestPair.getDistance() )
-				{
-					closestPair = new Pair(p, q, d);
-				}
+				Pair pair = new Pair(p, q, d);
+				// updates the closest pair accordingly
+				closestPair = Pair.min(pair, closestPair);
 			}
 		}
 
