@@ -472,7 +472,7 @@ public class Ensemble	// Particle Ensemble Class
 			{
 				Point p = part.get(i);
 				Point q = part.get(j);
-				double d = Point.distance(p, q);
+				double d = p.distance(q);
 				Pair pair = new Pair(p, q, d);
 				// updates the closest pair
 				closestPair = Pair.min(pair, closestPair);
@@ -506,7 +506,7 @@ public class Ensemble	// Particle Ensemble Class
 		// gets the coordinate objects of the particles P and Q
 		Point p = part.get(i), q = part.get(j);
 		// delegates the computation of the squared distance
-		return Point.distance(p, q);
+		return p.distance(q);
 	}
 
 
@@ -534,7 +534,7 @@ public class Ensemble	// Particle Ensemble Class
 		{
 			for (Point q : R)
 			{
-				double d = Point.distance(p, q);
+				double d = p.distance(q);
 				Pair pair = new Pair(p, q, d);
 				// updates the closest pair accordingly
 				closestPair = Pair.min(pair, closestPair);
@@ -1236,7 +1236,7 @@ public class Ensemble	// Particle Ensemble Class
 			{
 				Point p = points.get(i);
 				Point q = points.get(j);
-				double d = Point.distance(p, q);
+				double d = p.distance(q);
 				Pair pair = new Pair(p, q, d);
 
 				if (pair.compareTo(firstClosestPair) <= 0)

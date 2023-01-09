@@ -5,7 +5,7 @@
  *
  *
  * Synopsis:
- * Defines an immutable Point Class of two dimensions.
+ * Defines a Point Class of two dimensions.
  *
  *
  * Copyright (c) 2022 Misael Diaz-Maldonado
@@ -23,7 +23,7 @@
  *
  */
 
-public final class Point implements Comparable<Point>
+public class Point implements Comparable<Point>
 // 2D Cartesian Point Class
 {
 
@@ -88,6 +88,32 @@ public final class Point implements Comparable<Point>
 	}
 
 
+	public double distance (Point p)
+	/*
+
+	Synopsis:
+	Returns the squared distance of a pair of points.
+
+	Inputs:
+	p		other point
+
+	Output:
+	d		squared distance of the points
+
+	COMMENTS:
+	Omits the computation of the squared root for speed. And uses
+	doubles to represent the coordinates to avert overflows owing to
+	the limited range of numbers that can be represented with the
+	signed integer type.
+
+	*/
+	{
+		double x1 = this.x, x2 = p.x;
+		double y1 = this.y, y2 = p.y;
+		return ( (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) );
+	}
+
+
 	@Override
 	public int compareTo (Point point)
 	/*
@@ -143,37 +169,10 @@ public final class Point implements Comparable<Point>
 	}
 
 
-	public static double distance (Point P, Point Q)
-	/*
-
-	Synopsis:
-	Returns the squared distance of a pair of points (P, Q).
-
-	Inputs:
-	P		the Pth point
-	Q		the Qth point
-
-	Output:
-	d		squared distance of the points
-
-	COMMENTS:
-	Omits the computation of the squared root for speed. And uses
-	doubles to represent the coordinates to avert overflows owing to
-	the limited range of numbers that can be represented with the
-	signed integer type.
-
-	*/
-	{
-		return (
-			(P.x - Q.x)*(P.x - Q.x) + (P.y - Q.y)*(P.y - Q.y)
-		);
-	}
-
-
 	/* implementation(s) */
 
 
-	private static int compare (double x1, double x2)
+	protected static int compare (double x1, double x2)
 	/*
 
 	Synopsis:
