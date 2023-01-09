@@ -290,13 +290,13 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(points);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the Brute Force Algorithm
 		Tuple data = this.distance(points);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time (nanoseconds)
-		this.elapsedTime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
 		this.numOperations = data.getNumOperations();
 
@@ -327,13 +327,13 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(points);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the 1D Divide and Conquer Algorithm
 		Tuple data = this.recurse(points);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time
-		this.elapsedTime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
 		this.numOperations = data.getNumOperations();
 
@@ -365,13 +365,13 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(Px);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the 2D Divide and Conquer Algorithm
 		Tuple data = this.recurse(Px, Py);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time
-		this.elapsedTime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
 		this.numOperations = data.getNumOperations();
 
