@@ -71,8 +71,8 @@ public class Ensemble	// Particle Ensemble Class
 	/* components */
 
 
-	private double etime;		// elapsed time (nanoseconds)
-	private double operations;	// operations (computed distances) counter
+	private double elapsedTime;	// elapsed time (nanoseconds)
+	private double numOperations;	// operations (computed distances) counter
 	private int size;		// ensemble size (or number of points)
 
 
@@ -83,8 +83,8 @@ public class Ensemble	// Particle Ensemble Class
 	// creates an ensemble of distinct points of size `size'.
 	{
 		this.isInvalidEnsembleSize(size);	// complains if invalid
-		this.etime = 0.0;			// zeroes the elapsed time
-		this.operations = 0.0;			// zeroes the #operations
+		this.elapsedTime = 0.0;			// zeroes the elapsed time
+		this.numOperations = 0.0;		// zeroes the #operations
 		this.size = size;			// sets the ensemble size
 	}
 
@@ -95,14 +95,14 @@ public class Ensemble	// Particle Ensemble Class
 	public double getOperations ()
 	// gets the number of operations spent on finding the closest pair
 	{
-		return this.operations;
+		return this.numOperations;
 	}
 
 
 	public double getElapsedTime ()
 	// gets the elapsed-time invested on finding the closest pair
 	{
-		return this.etime;
+		return this.elapsedTime;
 	}
 
 
@@ -296,9 +296,9 @@ public class Ensemble	// Particle Ensemble Class
 		double tend = System.nanoTime();
 
 		// sets the elapsed time (nanoseconds)
-		this.etime = (tend - tstart);
+		this.elapsedTime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
@@ -333,9 +333,9 @@ public class Ensemble	// Particle Ensemble Class
 		double tend = System.nanoTime();
 
 		// sets the elapsed time
-		this.etime = (tend - tstart);
+		this.elapsedTime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
@@ -371,9 +371,9 @@ public class Ensemble	// Particle Ensemble Class
 		double tend = System.nanoTime();
 
 		// sets the elapsed time
-		this.etime = (tend - tstart);
+		this.elapsedTime = (tend - tstart);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
