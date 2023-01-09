@@ -71,8 +71,8 @@ public class Ensemble	// Particle Ensemble Class
 	/* components */
 
 
-	private double etime;		// elapsed time (nanoseconds)
-	private double operations;	// operations (computed distances) counter
+	private double elapsedTime;	// elapsed time (nanoseconds)
+	private double numOperations;	// operations (computed distances) counter
 	private int size;		// ensemble size (or number of points)
 
 
@@ -83,8 +83,8 @@ public class Ensemble	// Particle Ensemble Class
 	// creates an ensemble of distinct points of size `size'.
 	{
 		this.isInvalidEnsembleSize(size);	// complains if invalid
-		this.etime = 0.0;			// zeroes the elapsed time
-		this.operations = 0.0;			// zeroes the #operations
+		this.elapsedTime = 0.0;			// zeroes the elapsed time
+		this.numOperations = 0.0;		// zeroes the #operations
 		this.size = size;			// sets the ensemble size
 	}
 
@@ -95,14 +95,14 @@ public class Ensemble	// Particle Ensemble Class
 	public double getOperations ()
 	// gets the number of operations spent on finding the closest pair
 	{
-		return this.operations;
+		return this.numOperations;
 	}
 
 
 	public double getElapsedTime ()
 	// gets the elapsed-time invested on finding the closest pair
 	{
-		return this.etime;
+		return this.elapsedTime;
 	}
 
 
@@ -139,7 +139,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairRecursive) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -172,7 +172,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -209,7 +209,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -290,15 +290,15 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(points);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the Brute Force Algorithm
 		Tuple data = this.distance(points);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time (nanoseconds)
-		this.etime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
@@ -327,15 +327,15 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(points);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the 1D Divide and Conquer Algorithm
 		Tuple data = this.recurse(points);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time
-		this.etime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
@@ -365,15 +365,15 @@ public class Ensemble	// Particle Ensemble Class
 		// complains if invalid
 		this.isInvalidData(Px);
 
-		double tstart = System.nanoTime();
+		double startTime = System.nanoTime();
 		// times the 2D Divide and Conquer Algorithm
 		Tuple data = this.recurse(Px, Py);
-		double tend = System.nanoTime();
+		double endTime = System.nanoTime();
 
 		// sets the elapsed time
-		this.etime = (tend - tstart);
+		this.elapsedTime = (endTime - startTime);
 		// sets the number of operations
-		this.operations = data.getNumOperations();
+		this.numOperations = data.getNumOperations();
 
 		Pair closestPair = data.getClosestPair();
 		return closestPair;
@@ -678,8 +678,8 @@ public class Ensemble	// Particle Ensemble Class
 			Point P = L.get(last);
 
 			// computes the x-axis distance of the candidate
-			double d = ( P.getX() - Q.getX() ) *
-				   ( P.getX() - Q.getX() );
+			double x1 = P.getX(), x2 = Q.getX();
+			double d = (x2 - x1) * (x2 - x1);
 
 			if (d < d_min)
 				++e2;
@@ -711,8 +711,8 @@ public class Ensemble	// Particle Ensemble Class
 			Point Q = R.get(0);
 
 			// computes the x-axis distance of the candidate
-			double d = ( P.getX() - Q.getX() ) *
-				   ( P.getX() - Q.getX() );
+			double x1 = P.getX(), x2 = Q.getX();
+			double d = (x2 - x1) * (x2 - x1);
 
 			if (d < d_min)
 				--b1;
@@ -944,8 +944,8 @@ public class Ensemble	// Particle Ensemble Class
 
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
-				double d = ( P.getY() - Q.getY() ) *
-					   ( P.getY() - Q.getY() );
+				double y1 = P.getY(), y2 = Q.getY();
+				double d = (y2 - y1) * (y2 - y1);
 				return d;
 			};
 
@@ -1059,13 +1059,8 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		// allocates memory for the dataset of points
-		Vector<Point> dataset = new Vector<>(
-			this.size, (Integer sz) -> new Point[sz]
-		);
-
 		// creates a trial dataset of points
-		this.create(dataset);
+		Vector<Point> dataset = this.create2D();
 
 		boolean hasDuplicateClosestPair = true;
 		while (hasDuplicateClosestPair)
@@ -1080,7 +1075,7 @@ public class Ensemble	// Particle Ensemble Class
 			catch (DuplicatedClosestPairException e)
 			{
 				// creates a new dataset
-				this.create(dataset);
+				dataset = this.create2D();
 			}
 		}
 
@@ -1149,23 +1144,27 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Vector<Point> create (Vector<Point> Px)
+	private Vector<Point> create2D ()
 	/*
 
 	Synopsis:
 	Generates a distinct dataset of Cartesian points by sampling
 	values from the uniform Pseudo-Random Number Generator PRNG
-	utility.
+	utility. This version spawns the points in a squared domain.
 
 	Inputs:
-	Px		an allocated (but empty) vector of points
+	None
 
 	Output:
-	Px		the vector contains the x-y sorted points
-	Py		the vector stores the same points but y-x sorted
+	Px		a vector containing the x-y sorted points
 
 	*/
 	{
+
+		// creates a vector for storing exactly the ensemble
+		Vector<Point> Px = new Vector<>(
+			this.size, (Integer sz) -> new Point[sz]
+		);
 
 		// creates a new Pseudo-Random Number Generator PRNG
 		Ensemble.Random r = new Ensemble.Random();
@@ -1201,10 +1200,7 @@ public class Ensemble	// Particle Ensemble Class
 		// sorts to support the divide and conquer algorithm
 		Px.sort();
 
-		Vector<Point> Py = new Vector<>(Px);
-		Py.sort( new Point.Comparator() );
-
-		return Py;
+		return Px;
 	}
 
 
@@ -1229,25 +1225,31 @@ public class Ensemble	// Particle Ensemble Class
 	{
 		// gets the total number of points
 		int sz = points.size();
-		// initializes the distance of the first closest pair
-		double d_min = Double.POSITIVE_INFINITY;
-		// initializes the distance of the second closest pair
-		double d_2nd = Double.POSITIVE_INFINITY;
+		// initializes the first closest pair
+		Pair firstClosestPair = new Pair();
+		// initializes the the second closest pair
+		Pair secondClosestPair = new Pair();
+		// uses Brute Force to find the first and second closest pairs
 		for (int i = 0; i != (sz - 1); ++i)
 		{
 			for (int j = (i + 1); j != sz; ++j)
 			{
+				Point p = points.get(i);
+				Point q = points.get(j);
+				double d = Point.distance(p, q);
+				Pair pair = new Pair(p, q, d);
 
-				double d = this.distance(points, i, j);
-
-				if (d <= d_min)
-				// updates distances of the closest pairs
+				if (pair.compareTo(firstClosestPair) <= 0)
+				// updates the first and second closest pairs
 				{
-					d_2nd = d_min;
-					d_min = d;
+					secondClosestPair = firstClosestPair;
+					firstClosestPair = pair;
 				}
 			}
 		}
+
+		double d_2nd = secondClosestPair.getDistance();
+		double d_min = firstClosestPair.getDistance();
 
 		if (d_2nd == d_min)
 		// complains if the closest pairs have equal distances
@@ -1271,10 +1273,9 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
+		String err = ("the ensemble size must be greater or equal to two");
 		if (size < 2)
 		{
-			String err = (	"ensemble size must be greater " +
-					"or equal to two"  );
 			throw new IllegalArgumentException(err);
 		}
 	}
@@ -1311,10 +1312,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( this.hasDuplicates(data) )
 		// complains if there are duplicated points
 		{
-			String err = (
-				"points must be distinct"
-			);
-
+			String err = ("points must be distinct");
 			throw new IllegalArgumentException(err);
 		}
 	}
