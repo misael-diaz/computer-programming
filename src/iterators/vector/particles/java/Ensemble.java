@@ -678,8 +678,8 @@ public class Ensemble	// Particle Ensemble Class
 			Point P = L.get(last);
 
 			// computes the x-axis distance of the candidate
-			double d = ( P.getX() - Q.getX() ) *
-				   ( P.getX() - Q.getX() );
+			double x1 = P.getX(), x2 = Q.getX();
+			double d = (x2 - x1) * (x2 - x1);
 
 			if (d < d_min)
 				++e2;
@@ -711,8 +711,8 @@ public class Ensemble	// Particle Ensemble Class
 			Point Q = R.get(0);
 
 			// computes the x-axis distance of the candidate
-			double d = ( P.getX() - Q.getX() ) *
-				   ( P.getX() - Q.getX() );
+			double x1 = P.getX(), x2 = Q.getX();
+			double d = (x2 - x1) * (x2 - x1);
 
 			if (d < d_min)
 				--b1;
@@ -944,8 +944,8 @@ public class Ensemble	// Particle Ensemble Class
 
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
-				double d = ( P.getY() - Q.getY() ) *
-					   ( P.getY() - Q.getY() );
+				double y1 = P.getY(), y2 = Q.getY();
+				double d = (y2 - y1) * (y2 - y1);
 				return d;
 			};
 
