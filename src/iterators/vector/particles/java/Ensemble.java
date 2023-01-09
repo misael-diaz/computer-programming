@@ -1229,25 +1229,31 @@ public class Ensemble	// Particle Ensemble Class
 	{
 		// gets the total number of points
 		int sz = points.size();
-		// initializes the distance of the first closest pair
-		double d_min = Double.POSITIVE_INFINITY;
-		// initializes the distance of the second closest pair
-		double d_2nd = Double.POSITIVE_INFINITY;
+		// initializes the first closest pair
+		Pair firstClosestPair = new Pair();
+		// initializes the the second closest pair
+		Pair secondClosestPair = new Pair();
+		// uses Brute Force to find the first and second closest pairs
 		for (int i = 0; i != (sz - 1); ++i)
 		{
 			for (int j = (i + 1); j != sz; ++j)
 			{
+				Point p = points.get(i);
+				Point q = points.get(j);
+				double d = Point.distance(p, q);
+				Pair pair = new Pair(p, q, d);
 
-				double d = this.distance(points, i, j);
-
-				if (d <= d_min)
-				// updates distances of the closest pairs
+				if (pair.compareTo(firstClosestPair) <= 0)
+				// updates the first and second closest pairs
 				{
-					d_2nd = d_min;
-					d_min = d;
+					secondClosestPair = firstClosestPair;
+					firstClosestPair = pair;
 				}
 			}
 		}
+
+		double d_2nd = secondClosestPair.getDistance();
+		double d_min = firstClosestPair.getDistance();
 
 		if (d_2nd == d_min)
 		// complains if the closest pairs have equal distances
