@@ -139,7 +139,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairRecursive) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -172,7 +172,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -209,7 +209,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
 		{
-			String errmsg = "different closest pairs found";
+			String errmsg = ("different closest pairs found");
 			throw new ImplementErrorException(errmsg);
 		}
 
@@ -1273,10 +1273,9 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
+		String err = ("the ensemble size must be greater or equal to two");
 		if (size < 2)
 		{
-			String err = (	"ensemble size must be greater " +
-					"or equal to two"  );
 			throw new IllegalArgumentException(err);
 		}
 	}
@@ -1313,10 +1312,7 @@ public class Ensemble	// Particle Ensemble Class
 		if ( this.hasDuplicates(data) )
 		// complains if there are duplicated points
 		{
-			String err = (
-				"points must be distinct"
-			);
-
+			String err = ("points must be distinct");
 			throw new IllegalArgumentException(err);
 		}
 	}
