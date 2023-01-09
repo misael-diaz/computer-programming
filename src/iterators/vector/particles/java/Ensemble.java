@@ -1059,13 +1059,8 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		// allocates memory for the dataset of points
-		Vector<Point> dataset = new Vector<>(
-			this.size, (Integer sz) -> new Point[sz]
-		);
-
 		// creates a trial dataset of points
-		this.create(dataset);
+		Vector<Point> dataset = this.create2D();
 
 		boolean hasDuplicateClosestPair = true;
 		while (hasDuplicateClosestPair)
@@ -1080,7 +1075,7 @@ public class Ensemble	// Particle Ensemble Class
 			catch (DuplicatedClosestPairException e)
 			{
 				// creates a new dataset
-				this.create(dataset);
+				dataset = this.create2D();
 			}
 		}
 
@@ -1149,23 +1144,27 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Vector<Point> create (Vector<Point> Px)
+	private Vector<Point> create2D ()
 	/*
 
 	Synopsis:
 	Generates a distinct dataset of Cartesian points by sampling
 	values from the uniform Pseudo-Random Number Generator PRNG
-	utility.
+	utility. This version spawns the points in a squared domain.
 
 	Inputs:
-	Px		an allocated (but empty) vector of points
+	None
 
 	Output:
-	Px		the vector contains the x-y sorted points
-	Py		the vector stores the same points but y-x sorted
+	Px		a vector containing the x-y sorted points
 
 	*/
 	{
+
+		// creates a vector for storing exactly the ensemble
+		Vector<Point> Px = new Vector<>(
+			this.size, (Integer sz) -> new Point[sz]
+		);
 
 		// creates a new Pseudo-Random Number Generator PRNG
 		Ensemble.Random r = new Ensemble.Random();
@@ -1201,10 +1200,7 @@ public class Ensemble	// Particle Ensemble Class
 		// sorts to support the divide and conquer algorithm
 		Px.sort();
 
-		Vector<Point> Py = new Vector<>(Px);
-		Py.sort( new Point.Comparator() );
-
-		return Py;
+		return Px;
 	}
 
 
