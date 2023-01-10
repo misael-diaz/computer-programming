@@ -117,6 +117,45 @@ public class TimeComplexity
 	}
 
 
+	public void exportTimeComplexity_DivideAndConquer3D ()
+	throws ImplementErrorException, FileNotFoundException
+	/*
+
+	Synopsis:
+	Exports the time complexity results of the 3D Divide and Conquer
+	Algorithm that solves the closest pair problem to a plain text
+	data file.
+
+	Inputs:
+	None
+
+	Outputs:
+	None
+
+	*/
+	{
+		// creates a new output stream
+		String filename = "timeDivideAndConquer3D.dat";
+		PrintWriter out = new PrintWriter(filename);
+
+		// gets the time complexity data
+		double [][] stats = this.timeDivideAndConquer3D();
+		double [] sizes = stats[0];
+		double [] times = stats[1];
+		double [] opers = stats[2];
+
+		for (int i = 0; i != this.runs; ++i)
+		{
+			String fmt = "%.15e %.15e %.15e\n";
+			// writes the data in exponential notation
+			out.printf(fmt, sizes[i], times[i], opers[i]);
+		}
+
+		// closes the output stream
+		out.close();
+	}
+
+
 	/* implementation(s) */
 
 	private double [][] timeDivideAndConquer1D () throws ImplementErrorException
@@ -218,6 +257,66 @@ public class TimeComplexity
 				Ensemble ens = new Ensemble(size);
 				// times the Divide and Conquer Algorithm
 				ens.recursive2D();
+				// gets the elapsed time (nanoseconds)
+				etime += ens.getElapsedTime();
+				// gets the #operations
+				opers += ens.getOperations();
+			}
+
+			// stores the ensemble size
+			sizes[i] = size;
+			// stores the average elapsed-time
+			avgElapsedTimes[i] = (etime / reps);
+			// stores the average #operations
+			avgNumOperations[i] = (opers / reps);
+
+			// doubles the ensemble size for the next run
+			size *= 2;
+		}
+
+		return statistics;
+	}
+
+
+	private double [][] timeDivideAndConquer3D () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Times the 3D Divide and Conquer Algorithm that finds the closest
+	pair in an ensmble of particles (or just points).
+
+	Input:
+	None
+
+	Output:
+	statistics	a second-rank array that stores the ensemble
+			sizes, the average elapsed-times, and the
+			average number of operations used by the
+			Divide and Conquer Algorithm to find the
+			closest pair.
+
+	*/
+	{
+		// allocates the statistics array
+		double [][] statistics = new double [3][this.runs];
+		// defines meaningful references for the rows of the array
+		double [] sizes = statistics[0];
+		double [] avgElapsedTimes = statistics[1];
+		double [] avgNumOperations = statistics[2];
+
+		int size = 16;	// defines the initial ensemble size
+		int reps = 256;	// defines the number of repetitions
+		for (int i = 0; i != this.runs; ++i)
+		{
+			double etime = 0;
+			double opers = 0;
+			for (int j = 0; j != reps; ++j)
+			// accumulates the elapsed-time and the #operations
+			{
+				// creates a new ensemble of requested size
+				Ensemble ens = new Ensemble(size);
+				// times the Divide and Conquer Algorithm
+				ens.recursive3D();
 				// gets the elapsed time (nanoseconds)
 				etime += ens.getElapsedTime();
 				// gets the #operations

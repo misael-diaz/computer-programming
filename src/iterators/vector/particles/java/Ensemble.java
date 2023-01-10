@@ -217,6 +217,49 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	public Pair recursive3D () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Finds the closest pair via the 3D Divide and Conquer Algorithm.
+
+	Inputs:
+	None
+
+	Output:
+	closestPair	the closest pair
+
+	*/
+	{
+		// creates a new xyz sorted dataset of distinct points
+		Vector<Point> Px = this.createDataset3D();
+
+		// creates yxz and zxy sorted counterparts
+		Vector<Point> Py = new Vector<>(Px);
+		Py.sort( new Point3D.yPosComparator() );
+
+		Vector<Point> Pz = new Vector<>(Px);
+		Pz.sort( new Point3D.zPosComparator() );
+
+		Point [] points = Px.get();
+		// saves the closest pair found by the brute force method
+		Tuple dataBruteForce = this.distance(points);
+		Pair closestPairBruteForce = dataBruteForce.getClosestPair();
+
+		// finds the closest pair via divide and conquer algorithm
+		Pair closestPair = this.recursive3DMethod(Px, Py, Pz);
+
+		if ( !closestPair.equalTo(closestPairBruteForce) )
+		// complains if the closest pairs are different
+		{
+			String errmsg = ("different closest pairs found");
+			throw new ImplementErrorException(errmsg);
+		}
+
+		return closestPair;
+	}
+
+
 	public class Random
 	// defines the Pseudo Random Number Generator PRNG Utility
 	{
@@ -258,9 +301,10 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		// tests the 1D and 2D Divide and Conquer Algorithms
+		// tests the 1D, 2D, and 3D Divide and Conquer Algorithms
 		test1D();
 		test2D();
+		test3D();
 
 		//test();
 	}
@@ -380,6 +424,46 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	private Pair recursive3DMethod (
+		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
+	)
+	/*
+
+	Synopsis:
+	Applies the 3D Divide and Conquer Algorithm to find the closest pair.
+	Sets the elapsed-time (nanoseconds) and the number of operations
+	invested in finding the closest pair. It also sets the total number of
+	operations (or equivalently, the total number of distance computations)
+	executed by the Divide And Conquer algorithm to find the closest pair.
+
+	Input:
+	Px		xyz sorted dataset of distinct points
+	Py		same dataset of points but yxz sorted
+	Pz		same dataset of points but zxy sorted
+
+	Output:
+	closestPair	the closest pair
+
+	*/
+	{
+
+		// complains if invalid
+		this.isInvalidData(Px);
+
+		double startTime = System.nanoTime();
+		// times the 3D Divide and Conquer Algorithm
+		Tuple data = this.recurse(Px, Py, Pz);
+		double endTime = System.nanoTime();
+
+		// sets the elapsed time
+		this.elapsedTime = (endTime - startTime);
+		// sets the number of operations
+		this.numOperations = data.getNumOperations();
+
+		Pair closestPair = data.getClosestPair();
+		return closestPair;
+	}
+
 	private Tuple recurse (Vector<Point> Px)
 	/*
 
@@ -445,6 +529,52 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	private Tuple distance (Point[] part)
+	/*
+
+	Synopsis:
+	Applies the Brute Force Algorithm to find the closest pair in a
+	partition. Note that the partition could be the whole dataset.
+
+	Inputs:
+	part		partition (or whole data set of points)
+
+	Outputs:
+	tuple		the closest pair and the number of operations
+
+	COMMENTS:
+	Brute Force method for the skeptical who believes that the values
+	of the z coordinates are not taken into account by the 3D Divide
+	And Conquer Algorithm.
+
+	*/
+	{
+		// gets the partition size
+		int sz = part.length;
+		// initializes the closest pair
+		Pair closestPair = new Pair();
+		// considers all the distinct pairs to find the closest pair
+		for (int i = 0; i != (sz - 1); ++i)
+		{
+			for (int j = (i + 1); j != sz; ++j)
+			{
+				Point p = part[i];
+				Point q = part[j];
+				// uses (x, y, z) coordinates to compute the distance
+				double d = this.distance(p, q);
+				Pair pair = new Pair(p, q, d);
+				// updates the closest pair
+				closestPair = Pair.min(pair, closestPair);
+			}
+		}
+
+		double N = part.length;
+		double numOperations = ( ( (N * (N - 1) ) / 2 ) );
+
+		return ( new Tuple(closestPair, numOperations) );
+	}
+
+
 	private Tuple distance (Vector<Point> part)
 	/*
 
@@ -483,6 +613,33 @@ public class Ensemble	// Particle Ensemble Class
 		double numOperations = ( ( (N * (N - 1) ) / 2 ) );
 
 		return ( new Tuple(closestPair, numOperations) );
+	}
+
+
+	private double distance (Point P, Point Q)
+	/*
+
+	Synopsis:
+	Returns the squared distance of a pair of 3D Points.
+
+	Inputs:
+
+	Output:
+	sqDist		squared distance between the pair of points
+
+	*/
+	{
+		// complains of the points belong to the base Point class
+		Point3D p = (Point3D) P, q = (Point3D) Q;
+
+		double x1 = p.getX(), x2 = q.getX();
+		double y1 = p.getY(), y2 = q.getY();
+		double z1 = p.getZ(), z2 = q.getZ();
+
+		double sqDist = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) +
+				(z2 - z1) * (z2 - z1);
+
+		return sqDist;
 	}
 
 
@@ -890,6 +1047,89 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	private Tuple recurse (
+		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
+	)
+	/*
+
+	Synopsis:
+	Implements the 3D Divide and Conquer Algorithm. If the partition
+	P is small enough, the method uses Brute Force to find the closest
+	pair. Otherwise, the method divides the partition P into left and
+	right partitions to look for the closest pair in each. Note that
+	the division step continues until the partitions are small enough
+	to use Brute Force. Then, the method combines the solutions by
+	selecting the smallest of the closest pair candidates and by
+	looking for the closest pair between partitions.
+
+	The method returns a tuple containing the closest pair and the
+	number of operations (distance computations) invested to find the
+	closest pair.
+
+	Inputs:
+	Px		the xyz sorted partition
+	Py		the yxz sorted partition
+	Pz		the zxy sorted partition
+
+	Output:
+	tuple		the closest pair and the number of operations
+
+
+	COMMENTS:
+	This 3D version of the Divide and Conquer Algorithm divides along
+	the y and z dimensions as well whenever it makes sense to do so.
+	The overloaded divide3D() methods handle those divisions.
+
+	*/
+	{
+		if (Px.size() <= 3)
+		{
+			// uses brute force on the smaller partition
+			return this.distance(Pz);
+		}
+		else
+		{
+			// allocs the xyz sorted left and right partitions
+			Vector<Point> Lx = new Vector<>();
+			Vector<Point> Rx = new Vector<>();
+
+			// divides dataset into left and right partitions
+			this.divide(Px, Lx, Rx);
+
+			// builds the yxz sorted left and right partitions
+			Vector<Point> Ly = new Vector<>(Lx);
+			Ly.sort( new Point3D.yPosComparator() );
+
+			Vector<Point> Ry = new Vector<>(Rx);
+			Ry.sort( new Point3D.yPosComparator() );
+
+			// finds the closest pair in the left partition
+			Tuple dataLeft = this.divide3D(Lx, Ly);
+			Pair closestPairLeft = dataLeft.getClosestPair();
+
+			// finds the closest pair in the right partition
+			Tuple dataRight = this.divide3D(Rx, Ry);
+			Pair closestPairRight = dataRight.getClosestPair();
+
+			// selects the closest from the two partitions
+			Pair closestPair = Pair.min(
+				closestPairLeft, closestPairRight
+			);
+
+			// combines the left and right partitions
+			Tuple data = this.combine(Lx, Rx, closestPair);
+
+			// updates the number of operations
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
+
+			closestPair = data.getClosestPair();
+			return ( new Tuple(closestPair, numOperations) );
+		}
+	}
+
+
 	private Tuple divide (Vector<Point> Px, Vector<Point> Py)
 	/*
 
@@ -952,6 +1192,176 @@ public class Ensemble	// Particle Ensemble Class
 			// combines the left and right partitions
 			Tuple data = this.combine(
 				Ly, Ry, closestPair, yAxisDist
+			);
+
+			// updates the number of operations
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
+
+			closestPair = data.getClosestPair();
+			return ( new Tuple(closestPair, numOperations) );
+		}
+	}
+
+
+	private Tuple divide3D (Vector<Point> Px, Vector<Point> Py)
+	/*
+
+	Synopsis:
+	If the partition is small enough, the method applies the Brute
+	Force Method to find the closest pair; otherwise it divides the
+	partition into two of four possible quadrants to find the closest pair.
+	If the partition P corresponds to the left partition, the method
+	divides it into the second and third quadrants; otherwise, the
+	method divides it into the first and fourth quadrants.
+
+	Inputs:
+	Px		the xyz sorted left (right) partition
+	Py		the yxz sorted left (right) partition
+
+	Output:
+	tuple		the closest pair and the number of operations
+
+	*/
+	{
+		if (Px.size() <= 3)
+		{
+			return this.distance(Px);
+		}
+		else
+		{
+			// allocs the yxz sorted left and right partitions
+			Vector<Point> Ly = new Vector<>();
+			Vector<Point> Ry = new Vector<>();
+
+			// divides into left and right partitions
+			this.divide(Py, Ly, Ry);
+
+			// constructs xyz sorted left and right partitions
+			Vector<Point> Lx = new Vector<>(Ly);
+			Lx.sort();
+
+			Vector<Point> Rx = new Vector<>(Ry);
+			Rx.sort();
+
+			// constructs zxy sorted left and right partitions
+			Vector<Point> Lz = new Vector<>(Ly);
+			Lz.sort( new Point3D.zPosComparator() );
+
+			Vector<Point> Rz = new Vector<>(Ry);
+			Rz.sort( new Point3D.zPosComparator() );
+
+			// finds the closest pair in the left partition
+			Tuple dataLeft = this.divide3D(Lx, Ly, Lz);
+			Pair closestPairLeft = dataLeft.getClosestPair();
+
+			// finds the closest pair in the right partition
+			Tuple dataRight = this.divide3D(Rx, Ry, Rz);
+			Pair closestPairRight = dataRight.getClosestPair();
+
+			// selects the closest from the two partitions
+			Pair closestPair = Pair.min(
+				closestPairLeft, closestPairRight
+			);
+
+			Distance yAxisDist = (Point P, Point Q) ->
+			{
+				double y1 = P.getY(), y2 = Q.getY();
+				double d = (y2 - y1) * (y2 - y1);
+				return d;
+			};
+
+			// combines the left and right partitions
+			Tuple data = this.combine(
+				Ly, Ry, closestPair, yAxisDist
+			);
+
+			// updates the number of operations
+			double numOperations = (dataLeft.getNumOperations() +
+						dataRight.getNumOperations() +
+						data.getNumOperations());
+
+			closestPair = data.getClosestPair();
+			return ( new Tuple(closestPair, numOperations) );
+		}
+	}
+
+
+	private Tuple divide3D (
+		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
+	)
+	/*
+
+	Synopsis:
+	If the partition is small enough, the method applies the Brute
+	Force Method to find the closest pair; otherwise it divides into
+	two partitions along the z dimension.
+
+	Inputs:
+	Px		the xyz sorted left (right) partition
+	Py		the yxz sorted left (right) partition
+	Pz		the zxy sorted left (right) partition
+
+	Output:
+	tuple		the closest pair and the number of operations
+
+	*/
+	{
+		if (Px.size() <= 3)
+		{
+			return this.distance(Px);
+		}
+		else
+		{
+			// allocs the zxy sorted left and right partitions
+			Vector<Point> Lz = new Vector<>();
+			Vector<Point> Rz = new Vector<>();
+
+			// divides into left and right partitions
+			this.divide(Pz, Lz, Rz);
+
+			// constructs xyz sorted left and right partitions
+			Vector<Point> Lx = new Vector<>(Lz);
+			Lx.sort();
+
+			Vector<Point> Rx = new Vector<>(Rz);
+			Rx.sort();
+
+			// constructs yxz sorted left and right partitions
+			Vector<Point> Ly = new Vector<>(Lz);
+			Ly.sort( new Point3D.yPosComparator() );
+
+			Vector<Point> Ry = new Vector<>(Rz);
+			Ry.sort( new Point3D.yPosComparator() );
+
+			// finds the closest pair in the left partition
+			Tuple dataLeft = this.recurse(Lx, Ly, Lz);
+			Pair closestPairLeft = dataLeft.getClosestPair();
+
+			// finds the closest pair in the right partition
+			Tuple dataRight = this.recurse(Rx, Ry, Rz);
+			Pair closestPairRight = dataRight.getClosestPair();
+
+			// selects the closest from the two partitions
+			Pair closestPair = Pair.min(
+				closestPairLeft, closestPairRight
+			);
+
+			Distance zAxisDist = (Point p, Point q) ->
+			{
+				// complains if points belong to the base class
+				Point3D P = (Point3D) p;
+				Point3D Q = (Point3D) q;
+
+				double z1 = P.getZ(), z2 = Q.getZ();
+				double d = (z2 - z1) * (z2 - z1);
+				return d;
+			};
+
+			// combines the left and right partitions
+			Tuple data = this.combine(
+				Lz, Rz, closestPair, zAxisDist
 			);
 
 			// updates the number of operations
@@ -1083,6 +1493,49 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
+	private Vector<Point> createDataset3D ()
+	/*
+
+	Synopsis:
+	Creates a dataset of 3d points that has no duplicate closest pairs;
+	that is, the second closest pair is farther away than the first
+	closest pair. This version invokes the method that creates points
+	uniformly distributed in a cubic domain. The possible range of
+	x, y, and z coordinates grow with the ensemble size to keep the
+	point density constant regardless of the ensemble size.
+
+	Input:
+	None
+
+	Output:
+	dataset		dataset of 3d points with a unique closest pair
+
+	*/
+	{
+		// creates a trial dataset of 3d points
+		Vector<Point> dataset = this.create3D();
+
+		boolean hasDuplicateClosestPair = true;
+		while (hasDuplicateClosestPair)
+		// creates a new dataset until there are no duplicates
+		{
+			try
+			{
+				// checks for duplicated closest pairs
+				this.hasDuplicateClosestPair(dataset);
+				hasDuplicateClosestPair = false;
+			}
+			catch (DuplicatedClosestPairException e)
+			{
+				// creates a new dataset
+				dataset = this.create3D();
+			}
+		}
+
+		return dataset;
+	}
+
+
 	private Vector<Point> create ()
 	/*
 
@@ -1195,6 +1648,69 @@ public class Ensemble	// Particle Ensemble Class
 			// pushes (new) point unto the back of the vector
 			Point point = new Point(p);
 			Px.push_back( () -> new Point(point) );
+		}
+
+		// sorts to support the divide and conquer algorithm
+		Px.sort();
+
+		return Px;
+	}
+
+
+	private Vector<Point> create3D ()
+	/*
+
+	Synopsis:
+	Generates a distinct dataset of 3D Cartesian Points by sampling
+	values from the uniform Pseudo-Random Number Generator PRNG
+	utility. This version spawns the points in a cubic domain.
+
+	Inputs:
+	None
+
+	Output:
+	Px		a vector containing the xyz sorted points
+
+	*/
+	{
+
+		// creates a vector for storing exactly the ensemble
+		Vector<Point> Px = new Vector<>(
+			this.size, (Integer sz) -> new Point3D[sz]
+		);
+
+		// creates a new Pseudo-Random Number Generator PRNG
+		Ensemble.Random r = new Ensemble.Random();
+
+
+		// defines limits for the point coordinates along the axes
+		double limit = (this.size * this.size);
+		double x_min = -limit, x_max = limit;
+		double y_min = -limit, y_max = limit;
+		double z_min = -limit, z_max = limit;
+
+
+		for (int i = 0; i != this.size; ++i)
+		// creates the set of distinct points
+		{
+
+			double x = r.nextDouble(x_min, x_max);
+			double y = r.nextDouble(y_min, y_max);
+			double z = r.nextDouble(z_min, z_max);
+
+			Point3D p = new Point3D(x, y, z);
+			while ( Px.contains(p) )
+			// creates a new point if already present in vector
+			{
+				x = r.nextDouble(x_min, x_max);
+				y = r.nextDouble(y_min, y_max);
+				z = r.nextDouble(z_min, z_max);
+				p = new Point3D(x, y, z);
+			}
+
+			// pushes (new) point unto the back of the vector
+			Point3D point = new Point3D(p);
+			Px.push_back( () -> new Point3D(point) );
 		}
 
 		// sorts to support the divide and conquer algorithm
@@ -1486,6 +2002,41 @@ public class Ensemble	// Particle Ensemble Class
 			{
 				Ensemble ens = new Ensemble(size);
 				Pair closestPair = ens.recursive2D();
+			}
+		}
+	}
+
+
+	private static void test3D () throws ImplementErrorException
+	/*
+
+	Synopsis:
+	Checks for implementation errors. If the closest pair found by the
+	Brute Force algorithm is not the same as that found by the Divide
+	And Conquer algorithm an Implementation Error Exception is thrown.
+	This version uses the 3D Divide And Conquer Algorithm that divides
+	along the x, y and z axes, for the points span a cubic domain in
+	space.
+
+	The test is performed for ensembles having sizes in the asymmetric
+	range [2, 4096). A new ensemble is created each time to change the
+	location of the closest pair. Note that the closest pair may be
+	present in or between (the smaller) partitions (or subdomains).
+
+	Inputs:
+	None
+
+	Outputs:
+	None
+
+	*/
+	{
+		for (int size = 2; size != (0x00001000); size *= 2)
+		{
+			for (int i = 0; i != 256; ++i)
+			{
+				Ensemble ens = new Ensemble(size);
+				Pair closestPair = ens.recursive3D();
 			}
 		}
 	}
