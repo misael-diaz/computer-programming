@@ -1545,7 +1545,7 @@ public class Ensemble	// Particle Ensemble Class
 	utility.
 
 	Inputs:
-	None		size of the dataset (number of particles)
+	None
 
 	Output:
 	points		a vector that stores the dataset of points
