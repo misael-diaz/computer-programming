@@ -1564,7 +1564,8 @@ public class Ensemble	// Particle Ensemble Class
 
 
 		// defines limits for the point coordinates along the axes
-		double limit = (this.size * this.size);
+		double size = this.size;
+		double limit = (size * size);
 		double x_min = -limit, x_max = limit;
 		double y_min = -4, y_max = 4;
 
@@ -1624,7 +1625,8 @@ public class Ensemble	// Particle Ensemble Class
 
 
 		// defines limits for the point coordinates along the axes
-		double limit = (this.size * this.size);
+		double size = this.size;
+		double limit = (size * size);
 		double x_min = -limit, x_max = limit;
 		double y_min = -limit, y_max = limit;
 
@@ -1684,7 +1686,8 @@ public class Ensemble	// Particle Ensemble Class
 
 
 		// defines limits for the point coordinates along the axes
-		double limit = (this.size * this.size);
+		double size = this.size;
+		double limit = (size * size);
 		double x_min = -limit, x_max = limit;
 		double y_min = -limit, y_max = limit;
 		double z_min = -limit, z_max = limit;
