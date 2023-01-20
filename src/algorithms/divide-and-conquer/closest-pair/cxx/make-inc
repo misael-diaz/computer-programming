@@ -1,0 +1,62 @@
+# Algorithms and Complexity				  January 16, 2023
+# IST 4310
+# Prof M Diaz-Maldonado
+#
+# Synopsis:
+# Defines the include file for building the project source codes with GNU make.
+#
+# Copyright (c) 2023 Misael Diaz-Maldonado
+# This file is released under the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+
+## compiler
+
+CXX = g++
+
+# debugging options
+CXXOPT = -g -Wall -Og
+# enables optimizations
+CXXOPT = -O2
+
+
+## source files
+
+# generics
+COMPARATOR_TEMPLATE_FUN_H = ComparatorTemplateFunction.h
+HANDLER_TEMPLATE_CLASS_H = HandlerTemplateClass.h
+
+# class headers
+DUPLICATE_CP_EXCEPT_CLASS_H = DuplicateClosestPairExceptionClass.h
+POINT_CLASS_H = PointClass.h
+PAIR_CLASS_H = PairClass.h
+ENSEMBLE_CLASS_H = EnsembleClass.h
+TIME_COMPLEXITY_CLASS_H = TimeComplexityClass.h
+
+# class definitions
+DUPLICATE_CP_EXCEPT_CLASS_CXX = DuplicateClosestPairExceptionClass.cpp
+POINT_CLASS_CXX = PointClass.cpp
+PAIR_CLASS_CXX = PairClass.cpp
+ENSEMBLE_CLASS_CXX = EnsembleClass.cpp
+TIME_COMPLEXITY_CLASS_CXX = TimeComplexityClass.cpp
+
+# main
+MAIN_CXX = main.cpp
+
+
+## objects
+DUPLICATE_CP_EXCEPT_CLASS_OBJ = DuplicateClosestPairExceptionClass.o
+POINT_CLASS_OBJ = PointClass.o
+PAIR_CLASS_OBJ = PairClass.o
+ENSEMBLE_CLASS_OBJ = EnsembleClass.o
+TIME_COMPLEXITY_CLASS_OBJ = TimeComplexityClass.o
+MAIN_OBJ = main.o
+
+OBJECTS = $(DUPLICATE_CP_EXCEPT_CLASS_OBJ) $(POINT_CLASS_OBJ) $(PAIR_CLASS_OBJ)\
+	$(ENSEMBLE_CLASS_OBJ) $(TIME_COMPLEXITY_CLASS_OBJ) $(MAIN_OBJ)
+
+
+## executables
+MAIN_EXE = test-closest-pair
+TESTS = $(MAIN_EXE)
