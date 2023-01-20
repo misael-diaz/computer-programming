@@ -30,7 +30,7 @@ References:
 class Point		// 2D Cartesian Point Class
 {
 
-	private:
+	protected:
 
 
 	/* components */
@@ -67,6 +67,10 @@ class Point		// 2D Cartesian Point Class
 
 
 	/* methods */
+
+
+	// copy method
+	virtual void copy (const Point* point);
 
 
 	// returns the squared distance between a pair of points
@@ -131,6 +135,10 @@ class Point3D : public Point	// 3D Cartesian Point Class
 
 
 	/* methods */
+
+
+	// copy method
+	virtual void copy (const Point* point);
 
 
 	// returns the squared distance between a pair of 3d points

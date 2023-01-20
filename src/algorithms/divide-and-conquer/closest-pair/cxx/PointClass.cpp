@@ -66,6 +66,14 @@ double Point::getZ () const
 /* methods */
 
 
+void Point::copy (const Point* point)
+// copies components from point objects
+{
+	this -> x = point -> x;
+	this -> y = point -> y;
+}
+
+
 double Point::distance (const Point* point) const
 /*
 
@@ -206,6 +214,15 @@ double Point3D::getZ () const
 
 
 /* methods */
+
+
+void Point3D::copy (const Point* point)
+// copies components from point objects
+{
+	this -> x = point -> getX();
+	this -> y = point -> getY();
+	this -> z = point -> getZ();
+}
 
 
 double Point3D::distance (const Point* point) const

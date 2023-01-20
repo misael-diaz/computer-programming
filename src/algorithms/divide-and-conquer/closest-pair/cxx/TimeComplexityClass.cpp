@@ -113,9 +113,6 @@ avgNumOperations	contains the average number of operations needed
 
 */
 {
-	// we need a handler to handle the dynamically allocated ensembles
-	Handler<Ensemble*> handler;
-
 	int size = 16;	// defines the initial ensemble size
 	int reps = 512;	// defines the number of repetitions
 	for (int i = 0; i != (this -> runs); ++i)
@@ -126,17 +123,13 @@ avgNumOperations	contains the average number of operations needed
 		// accumulates the elapsed-time and the number of operations
 		{
 			// creates a new ensemble of requested size
-			Ensemble *ens = new Ensemble(size);
+			Ensemble ens(size);
 			// times the 1D Divide And Conquer Algorithm
-			ens -> recursive1D();
+			ens.recursive1D();
 
 			// gets the elapsed-time and the number of operations
-			etime += ens -> getElapsedTime();
-			opers += ens -> getNumOperations();
-
-			// erases the ensemble from memory for the next pass
-			handler.add(ens);
-			handler.erase();
+			etime += ens.getElapsedTime();
+			opers += ens.getNumOperations();
 		}
 
 		// computes the average elapsed-time and number of operations

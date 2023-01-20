@@ -796,10 +796,6 @@ points		a vector that stores the dataset of points
 	points.clear();
 
 
-	// we also need a local handler to delete duplicate point objects
-	Handler<Point*> handler;
-
-
 	// implements method:
 
 
@@ -830,12 +826,9 @@ points		a vector that stores the dataset of points
 
 		double x = floor( xRand(engine) );
 		double y = floor( yRand(engine) );
-		Point *point = new Point(x, y);
-		// adds point to the local handler even if it is distinct, for what
-		// gets inserted into the class handler is a copy of the point
-		handler.add(point);
+		Point point(x, y);
 
-		while ( this -> handler.contains(point) )
+		while ( this -> handler.contains(&point) )
 		// discards duplicates until a distinct point is found,
 		// uses a linear search to determine if the point is
 		// not present in the handler
@@ -846,20 +839,14 @@ points		a vector that stores the dataset of points
 			// creates a new point object
 			double x = floor( xRand(engine) );
 			double y = floor( yRand(engine) );
-			point = new Point(x, y);
-			// adds point to the handler, for if it is a copy it gets
-			// erased from memory on the next iteration and if it is
-			// a distinct point we will make a copy of it anyways
-			handler.add(point);
+			Point p(x, y);
+			point.copy(&p);
 		}
 
 		// creates a copy of the distinct point object via the copy constructor
-		Point *object = new Point(*point);
+		Point *object = new Point(point);
 		// adds the distinct point object to class handler
 		this -> handler.add(object);
-
-		// erases the distinct point object from local handler
-		handler.erase();
 	}
 
 	// creates the dataset of distinct points by copying the references

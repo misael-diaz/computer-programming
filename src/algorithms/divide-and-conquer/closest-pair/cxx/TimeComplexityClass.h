@@ -25,7 +25,6 @@ References:
 #include <iomanip>	// provides std::ios::out, std::scientific and std::setprecision()
 
 #include "EnsembleClass.h"
-#include "HandlerTemplateClass.h"
 
 class TimeComplexity		// Time Complexity Class
 {
