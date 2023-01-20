@@ -80,6 +80,15 @@ double Pair::getDistance () const
 /* methods */
 
 
+void Pair::copy (const Pair *pair)
+// implements a copy method for copying the components of pair objects
+{
+	this -> first = pair -> first;
+	this -> second = pair -> second;
+	this -> distance = pair -> distance;
+}
+
+
 void Pair::print () const
 // prints info about the pair object
 {

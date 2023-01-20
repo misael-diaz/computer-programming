@@ -395,10 +395,6 @@ tuple		the closest pair and the number of operations
 
 */
 {
-
-	// we need a local handler to delete distant pair objects
-	Handler<Pair*> handler;
-
 	// initializes the closest pair
 	Pair *closestPair = new Pair();
 	// considers all the distinct pairs to find the closest pair
@@ -408,23 +404,13 @@ tuple		the closest pair and the number of operations
 		{
 			Point *p = points[i], *q = points[j];
 			double d = point::distance(p, q);
-			Pair *pair = new Pair(p, q, d);
+			Pair pair(p, q, d);
 
-			if ( pair -> compareTo(closestPair) < 0 )
+			if ( pair.compareTo(closestPair) < 0 )
 			// updates the closest pair
 			{
-				// adds the old closest pair to the handler
-				handler.add(closestPair);
-				closestPair = pair;
+				closestPair -> copy(&pair);
 			}
-			else
-			{
-				// adds the (more distant) current pair to the handler
-				handler.add(pair);
-			}
-
-			// erases unneeded pairs from memory to save space
-			handler.erase();
 		}
 	}
 
@@ -455,31 +441,18 @@ tuple		the closest pair and the number of operations
 
 */
 {
-	// we need a local handler to delete distant pair objects
-	Handler<Pair*> handler;
-
 	for (Point* p : L)
 	{
 		for (Point* q : R)
 		{
 			double d = point::distance(p, q);
-			Pair *pair = new Pair(p, q, d);
+			Pair pair(p, q, d);
 
-			if ( pair -> compareTo(closestPair) < 0 )
+			if ( pair.compareTo(closestPair) < 0 )
 			// updates the closest pair
 			{
-				// adds the old closest pair to the handler
-				handler.add(closestPair);
-				closestPair = pair;
+				closestPair -> copy(&pair);
 			}
-			else
-			{
-				// adds the (distant) current pair to the handler
-				handler.add(pair);
-			}
-
-			// erases unneeded pairs from memory to save space
-			handler.erase();
 		}
 	}
 
@@ -649,13 +622,10 @@ None
 
 */
 {
-	// we need a handler to handle the memory of dynamically allocated Pairs
-	Handler<Pair*> handler;
-
 	// initializes the first closest pair
-	Pair *firstClosestPair = new Pair();
+	Pair firstClosestPair;
 	// initializes the second closest pair
-	Pair *secondClosestPair = new Pair();
+	Pair secondClosestPair;
 	// uses Brute Force to find the first and second closest pairs
 	for (std::vector<Point*>::size_type i = 0; i != (points.size() - 1); ++i)
 	{
@@ -663,39 +633,19 @@ None
 		{
 			Point *p = points[i], *q = points[j];
 			double d = point::distance(p, q);
-			Pair *pair = new Pair(p, q, d);
+			Pair pair(p, q, d);
 
-			if ( pair -> compareTo(firstClosestPair) <= 0 )
+			if ( pair.compareTo(&firstClosestPair) <= 0 )
 			// updates the first and second closest pairs
 			{
-				// adds larger point to the handler
-				handler.add(secondClosestPair);
-
-				secondClosestPair = firstClosestPair;
-				firstClosestPair = pair;
+				secondClosestPair.copy(&firstClosestPair);
+				firstClosestPair.copy(&pair);
 			}
-			else
-			{
-				// adds larger point to the handler
-				handler.add(pair);
-			}
-
-			// erases larger point object from memory
-			handler.erase();
 		}
 	}
 
-
-	double d_2nd = secondClosestPair -> getDistance();
-	double d_min = firstClosestPair -> getDistance();
-
-
-	// adds closest pairs to the handler for we don't need them anymore
-	handler.add(firstClosestPair);
-	handler.add(secondClosestPair);
-	handler.erase();
-
-
+	double d_2nd = secondClosestPair.getDistance();
+	double d_min = firstClosestPair.getDistance();
 	if (d_2nd == d_min)
 	{
 		// complains if the closest pairs have equal distances

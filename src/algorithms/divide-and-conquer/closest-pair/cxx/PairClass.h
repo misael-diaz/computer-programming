@@ -75,6 +75,10 @@ class Pair	// closest pair class
 	/* methods */
 
 
+	// copies components from another pair
+	void copy (const Pair* pair);
+
+
 	// prints info about the closest pair
 	void print () const;
 
