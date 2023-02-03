@@ -1,0 +1,93 @@
+# Algorithms and Complexity				  January 16, 2023
+# IST 4310
+# Prof M Diaz-Maldonado
+#
+# Synopsis:
+# Defines the include file for building the project source codes with GNU make.
+#
+# Copyright (c) 2023 Misael Diaz-Maldonado
+# This file is released under the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+
+## GNU FORTRAN Compiler
+
+FC = gfortran
+
+# debugging options, executes without runtime errors
+FCOPT = -cpp -ffree-form -std=f2018 -g -Wall -Og -fno-unsafe-math-optimizations\
+	-frounding-math -fsignaling-nans -fbacktrace -fcheck=all -fall-intrinsics\
+	-ffpe-trap=invalid,zero,overflow -Wimplicit-interface -Warray-temporaries\
+	-Wrealloc-lhs-all -Wunderflow -Wtabs -Wsurprising -Wreal-q-constant\
+	-Winteger-division -Wconversion-extra -Wfrontend-loop-interchange\
+	-Wcharacter-truncation -Wampersand -Waliasing -Wpedantic -Wextra\
+	-Wuse-without-only
+
+# enables some optimizations
+FCOPT = -cpp -ffree-form -std=f2018 -O2 -ftree-vectorize -fopt-info-vec -fall-intrinsics\
+	-fno-unsafe-math-optimizations -frounding-math -fsignaling-nans
+
+
+## source files
+
+# modules
+ALGORITHMS_FOR = Algorithms.for
+
+# implementing submodules
+IMPLEMENTATIONS_FOR = Implementations.for
+
+# class encapsulating modules
+POINT_CLASS_FOR = PointClass.for
+PAIR_CLASS_FOR = PairClass.for
+VECTOR_CLASS_FOR = VectorClass.for
+TUPLE_CLASS_FOR = TupleClass.for
+ENSEMBLE_CLASS_FOR = EnsembleClass.for
+TIME_COMPLEXITY_CLASS_FOR = TimeComplexityClass.for
+
+# class implementing submodules
+METHODS_POINT_CLASS_FOR = methodsPointClass.for
+METHODS_PAIR_CLASS_FOR = methodsPairClass.for
+METHODS_VECTOR_CLASS_FOR = methodsVectorClass.for
+METHODS_TUPLE_CLASS_FOR = methodsTupleClass.for
+METHODS_ENSEMBLE_CLASS_FOR = methodsEnsembleClass.for
+METHODS_TIME_COMPLEXITY_CLASS_FOR = methodsTimeComplexityClass.for
+
+# main
+MAIN_FOR = main.for
+
+
+## objects
+ALGORITHMS_OBJ = Algorithms.o
+IMPLEMENTATIONS_OBJ = Implementations.o
+POINT_CLASS_OBJ = PointClass.o
+PAIR_CLASS_OBJ = PairClass.o
+VECTOR_CLASS_OBJ = VectorClass.o
+TUPLE_CLASS_OBJ = TupleClass.o
+ENSEMBLE_CLASS_OBJ = EnsembleClass.o
+TIME_COMPLEXITY_CLASS_OBJ = TimeComplexityClass.o
+
+METHODS_POINT_CLASS_OBJ = methodsPointClass.o
+METHODS_PAIR_CLASS_OBJ = methodsPairClass.o
+METHODS_VECTOR_CLASS_OBJ = methodsVectorClass.o
+METHODS_TUPLE_CLASS_OBJ = methodsTupleClass.o
+METHODS_ENSEMBLE_CLASS_OBJ = methodsEnsembleClass.o
+METHODS_TIME_COMPLEXITY_CLASS_OBJ = methodsTimeComplexityClass.o
+
+MAIN_OBJ = main.o
+OBJECTS = $(ALGORITHMS_OBJ) $(IMPLEMENTATIONS_OBJ) $(POINT_CLASS_OBJ) $(PAIR_CLASS_OBJ)\
+	$(VECTOR_CLASS_OBJ) $(TUPLE_CLASS_OBJ) $(ENSEMBLE_CLASS_OBJ)\
+	$(TIME_COMPLEXITY_CLASS_OBJ) $(METHODS_POINT_CLASS_OBJ)\
+	$(METHODS_PAIR_CLASS_OBJ) $(METHODS_VECTOR_CLASS_OBJ)\
+	$(METHODS_TUPLE_CLASS_OBJ) $(METHODS_ENSEMBLE_CLASS_OBJ)\
+	$(METHODS_TIME_COMPLEXITY_CLASS_OBJ) $(MAIN_OBJ)
+
+## executables
+MAIN_EXE = test-closest-pair
+TESTS = $(MAIN_EXE)
+
+# NOTE:
+# The code was compiled and tested with the following version of the GNU FORTRAN Compiler:
+# gfortran --version
+# GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+# Copyright (C) 2019 Free Software Foundation, Inc.
