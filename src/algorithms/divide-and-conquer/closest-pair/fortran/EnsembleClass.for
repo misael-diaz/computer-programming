@@ -192,7 +192,7 @@ public :: Ensemble_tests
         ! implements the 1D Divide And Conquer Algorithm that finds the closest pair
             class(Ensemble), intent(in) :: this
             type(Tuple), pointer :: t
-            real(kind = real64), intent(in) :: Px(:, :)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
             integer(kind = int32), intent(in) :: beginPosition
             integer(kind = int32), intent(in) :: endPosition
         end function
@@ -215,7 +215,7 @@ public :: Ensemble_tests
             class(Ensemble), intent(in) :: this
             type(Tuple), pointer :: t
             type(Pair), intent(in) :: currentClosestPair
-            real(kind = real64), intent(in) :: Px(:, :)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
             integer(kind = int32), intent(in) :: beginPosition
             integer(kind = int32), intent(in) :: endPosition
         end function
@@ -245,7 +245,7 @@ public :: Ensemble_tests
         module function distanceArrayBased (this, points) result(closestPair)
         ! FORTRAN77 (or procedural) implementation of the Brute Force Algorithm
             class(Ensemble), intent(in) :: this
-            real(kind = real64), intent(in) :: points(:, :)
+            real(kind = real64), intent(in) :: points(this % size, 2)
             type(Pair), pointer :: closestPair
         end function
 
@@ -265,7 +265,7 @@ public :: Ensemble_tests
         ! implements the Brute Force Algorithm for smaller partitions
             class(Ensemble), intent(in) :: this
             type(Tuple), pointer :: t
-            real(kind = real64), intent(in) :: Px(:, :)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
             integer(kind = int32), intent(in) :: beginPosition
             integer(kind = int32), intent(in) :: endPosition
         end function
@@ -290,7 +290,7 @@ public :: Ensemble_tests
             class(Ensemble), intent(in) :: this
             type(Tuple), pointer :: t
             type(Pair), intent(in) :: currentClosestPair
-            real(kind = real64), intent(in) :: Px(:, :)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
             integer(kind = int32), intent(in) :: beginPosLeft, endPosLeft
             integer(kind = int32), intent(in) :: beginPosRight, endPosRight
         end function
