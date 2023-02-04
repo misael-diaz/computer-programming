@@ -319,7 +319,7 @@ tuple		the closest pair and the number of operations
 	// we need a handler to handle the memory of closest pair candidates
 	Handler<Pair*> handler;
 
-	if (Px.size() < 3)
+	if (Px.size() <= 3)
 	{
 		// uses brute force on the smaller partition
 		return ( this -> distance(Px) );
