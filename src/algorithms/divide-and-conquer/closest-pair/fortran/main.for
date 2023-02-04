@@ -30,6 +30,7 @@ program main
 
     t = TimeComplexity(RUNS)
     ! exports the time complexity results of the 1D Divide And Conquer Algorithm
-    call t % exportTimeComplexity_DivideAndConquer1D()
+!   call t % exportTimeComplexity_DivideAndConquer1D()
+    call t % exportTimeComplexity_DivideAndConquer1D2() ! (version 2)
 
 end program
