@@ -47,18 +47,25 @@ public :: Ensemble_tests
             procedure, public :: bruteForceArrayBased
             ! Divide And Conquer Methods
             procedure, public :: recursive1D
+            procedure, public :: recursive1D2           ! (version 2)
             ! setters (or timers)
             procedure :: bruteForceMethod
             procedure :: bruteForceMethodArrayBased
             procedure :: recursive1DMethod
+            procedure :: recursive1DMethod2             ! (version 2)
             ! implements recursive algorithms
             procedure :: recurse
+            procedure :: recurse2                       ! (version 2)
             procedure :: combine
+            procedure :: combine2                       ! (version 2)
             ! implements distance computing algorithms
             procedure :: distanceOOP
             procedure :: distanceArrayBased
+            procedure :: distanceArrayBased2            ! (version 2)
             procedure :: distanceSmallerPartition
+            procedure :: distanceSmallerPartition2
             procedure :: distancePartitionInterface
+            procedure :: distancePartitionInterface2
             ! utilities
             procedure :: toArray
             procedure :: isInvalidData
@@ -68,8 +75,9 @@ public :: Ensemble_tests
             procedure :: create2D
             procedure :: export
             ! generics
-            generic :: distance => distanceOOP, distanceArrayBased,&
-                                  &distanceSmallerPartition, distancePartitionInterface
+            generic :: distance => distanceOOP, distanceArrayBased, distanceArrayBased2,&
+                                  &distanceSmallerPartition, distanceSmallerPartition2,&
+                                  &distancePartitionInterface, distancePartitionInterface2
     end type
 
 
@@ -139,6 +147,11 @@ public :: Ensemble_tests
             class(Ensemble), intent(inout) :: this
         end subroutine
 
+        module subroutine recursive1D2 (this)
+        ! applies the 1D Divide And Algorithm to find the closest pair (version 2)
+            class(Ensemble), intent(inout) :: this
+        end subroutine
+
     end interface
 
 
@@ -169,11 +182,28 @@ public :: Ensemble_tests
         end subroutine
 
 
+        module subroutine recursive1DMethod2 (this)
+        ! as recursive1DMethod() but does not (de)constructs derived-type objects (ver 2)
+            class(Ensemble), intent(inout) :: this
+        end subroutine
+
+
         module recursive function recurse (this, beginPosition, endPosition, Px) result(t)
         ! implements the 1D Divide And Conquer Algorithm that finds the closest pair
             class(Ensemble), intent(in) :: this
             type(Tuple), pointer :: t
             real(kind = real64), intent(in) :: Px(:, :)
+            integer(kind = int32), intent(in) :: beginPosition
+            integer(kind = int32), intent(in) :: endPosition
+        end function
+
+
+        module recursive function recurse2 (this, beginPosition, endPosition, Px)&
+                                           &result(ret)
+        ! implements the 1D Divide And Conquer Algorithm that finds the closest pair ver 2
+            class(Ensemble), intent(in) :: this
+            real(kind = real64) :: ret(3)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
             integer(kind = int32), intent(in) :: beginPosition
             integer(kind = int32), intent(in) :: endPosition
         end function
@@ -186,6 +216,18 @@ public :: Ensemble_tests
             type(Tuple), pointer :: t
             type(Pair), intent(in) :: currentClosestPair
             real(kind = real64), intent(in) :: Px(:, :)
+            integer(kind = int32), intent(in) :: beginPosition
+            integer(kind = int32), intent(in) :: endPosition
+        end function
+
+
+        module function combine2 (this, beginPosition, endPosition,&
+                                 &Px, currentClosestPair) result(ret)
+        ! implements the combination step of the 1D Divide And Conquer Algorithm, ver 2
+            class(Ensemble), intent(in) :: this
+            real(kind = real64) :: ret(3)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
+            integer(kind = int32), intent(in) :: currentClosestPair(2)
             integer(kind = int32), intent(in) :: beginPosition
             integer(kind = int32), intent(in) :: endPosition
         end function
@@ -208,6 +250,16 @@ public :: Ensemble_tests
         end function
 
 
+        module function distanceArrayBased2 (this, points, closestPair)&
+                                            &result(ret)
+        ! FORTRAN77 (or procedural) implementation of the Brute Force Algorithm, version 2
+            class(Ensemble), intent(in) :: this
+            real(kind = real64) :: ret(3)
+            real(kind = real64), intent(in) :: points(this % size, 2)
+            integer(kind = int32), intent(out) :: closestPair(2)
+        end function
+
+
         module function distanceSmallerPartition (this, beginPosition, endPosition, Px)&
                                                  &result(t)
         ! implements the Brute Force Algorithm for smaller partitions
@@ -219,6 +271,18 @@ public :: Ensemble_tests
         end function
 
 
+        module function distanceSmallerPartition2 (this, beginPosition, endPosition, Px,&
+                                                  &closestPair) result(ret)
+        ! implements the Brute Force Algorithm for smaller partitions (version 2)
+            class(Ensemble), intent(in) :: this
+            real(kind = real64) :: ret(3)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
+            integer(kind = int32), intent(in) :: beginPosition
+            integer(kind = int32), intent(in) :: endPosition
+            integer(kind = int32), intent(out) :: closestPair(2)
+        end function
+
+
         module function distancePartitionInterface (this, beginPosLeft, endPosLeft,&
                                                    &beginPosRight, endPosRight, Px,&
                                                    &currentClosestPair) result(t)
@@ -227,6 +291,19 @@ public :: Ensemble_tests
             type(Tuple), pointer :: t
             type(Pair), intent(in) :: currentClosestPair
             real(kind = real64), intent(in) :: Px(:, :)
+            integer(kind = int32), intent(in) :: beginPosLeft, endPosLeft
+            integer(kind = int32), intent(in) :: beginPosRight, endPosRight
+        end function
+
+
+        module function distancePartitionInterface2 (this, beginPosLeft, endPosLeft,&
+                                                    &beginPosRight, endPosRight, Px,&
+                                                    &currentClosestPair) result(ret)
+        ! implements the partition interface, closest-pair, finding method (version 2)
+            class(Ensemble), intent(in) :: this
+            real(kind = real64) :: ret(3)
+            real(kind = real64), intent(in) :: Px(this % size, 2)
+            integer(kind = int32), intent(in) :: currentClosestPair(2)
             integer(kind = int32), intent(in) :: beginPosLeft, endPosLeft
             integer(kind = int32), intent(in) :: beginPosRight, endPosRight
         end function

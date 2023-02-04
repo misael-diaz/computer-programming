@@ -32,9 +32,11 @@ save
             procedure :: timeBruteForce
             procedure :: timeBruteForceArrayBased
             procedure :: timeDivideAndConquer1D
+            procedure :: timeDivideAndConquer1D2                           ! version 2
             procedure, public :: exportTimeComplexity_BruteForce
             procedure, public :: exportTimeComplexity_BruteForceArrayBased
             procedure, public :: exportTimeComplexity_DivideAndConquer1D
+            procedure, public :: exportTimeComplexity_DivideAndConquer1D2  ! version 2
     end type
 
 
@@ -86,6 +88,12 @@ save
             class(TimeComplexity), intent(in) :: this
         end subroutine
 
+        module subroutine exportTimeComplexity_DivideAndConquer1D2 (this) ! (version 2)
+        ! exports the time complexity results of the implementation of the 1D Divide And
+        ! Conquer Algorithm
+            class(TimeComplexity), intent(in) :: this
+        end subroutine
+
     end interface
 
 
@@ -116,6 +124,15 @@ save
         module subroutine timeDivideAndConquer1D (this, sizes, avgElapsedTimes,&
                                                  &avgNumOperations)
         ! times the implementation of the 1D Divide And Conquer Algorithm
+            class(TimeComplexity), intent(in) :: this
+            real(kind = real64), allocatable, intent(out) :: sizes(:)
+            real(kind = real64), allocatable, intent(out) :: avgElapsedTimes(:)
+            real(kind = real64), allocatable, intent(out) :: avgNumOperations(:)
+        end subroutine
+
+        module subroutine timeDivideAndConquer1D2 (this, sizes, avgElapsedTimes,&
+                                                 &avgNumOperations)
+        ! times the implementation of the 1D Divide And Conquer Algorithm (version 2)
             class(TimeComplexity), intent(in) :: this
             real(kind = real64), allocatable, intent(out) :: sizes(:)
             real(kind = real64), allocatable, intent(out) :: avgElapsedTimes(:)

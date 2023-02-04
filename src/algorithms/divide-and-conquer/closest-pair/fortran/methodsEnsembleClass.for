@@ -113,6 +113,19 @@ contains
     end subroutine
 
 
+    module subroutine recursive1D2 (this)
+    ! applies the 1D Divide And Conquer Algorithm to find the closest pair (version 2)
+        class(Ensemble), intent(inout) :: this
+
+        ! caters invalid ensemble sizes
+        if (this % size >= 2) then
+            call this % recursive1DMethod2()
+        endif
+
+        return
+    end subroutine
+
+
     module subroutine bruteForceMethod (this)
 !
 !   Synopsis:
@@ -279,6 +292,136 @@ contains
 
         return
     end subroutine recursive1DMethod
+
+
+    module subroutine recursive1DMethod2 (this)
+!
+!   Synopsis:
+!   Times the implementation of the (version 2) 1D Divide And Conquer Algorithm.
+!
+!   Applies the 1D Divide And Conquer Algorithm to obtain the closest pair. Sets the
+!   elapsed-time (nanoseconds) invested in determining the closest pair. It also sets
+!   the number of operations (or the number of distance computations) executed by the
+!   algorithm to find the closest pair.
+!
+!   Inputs:
+!   this                the ensemble
+!
+!   Output:
+!   None
+!
+        class(Ensemble), intent(inout) :: this
+        class(Point), allocatable :: points(:)
+        real(kind = real64) :: data(3)
+        real(kind = real64) :: dataBruteForce(3)
+        real(kind = real64), allocatable :: Px(:, :)
+        real(kind = real64) :: systemClockPeriod
+        real(kind = real64) :: float_startCount
+        real(kind = real64) :: float_endCount
+        real(kind = real64) :: elapsedTime
+        real(kind = real64) :: numOperations
+        real(kind = real64) :: N
+        integer(kind = int64) :: startCount, endCount
+        integer(kind = int64) :: systemClockCountRate
+        integer(kind = int32) :: first, second
+        integer(kind = int32) :: closestPair(2)
+        integer(kind = int32) :: closestPairBruteForce(2)
+        logical(kind = int32) :: firstCheck, secondCheck
+
+
+        ! creates the dataset of N distinct points and stores it in a vector
+        call this % createDataset1D(points)
+
+        if ( this % isInvalidData(points) ) then
+            print *, 'Ensemble::recursive1D(): buggy sorting algorithm has been detected'
+            deallocate(points)
+            return
+        end if
+
+        ! copies the vector elements into an array (of N distinct) Points
+        call this % toArray(points, Px)
+
+
+        ! times the 1D Divide And Conquer Algorithm
+        call system_clock(startCount)
+        ! NOTE:
+        ! The implementation of the recursive algorithm expects a zero-starting,
+        ! asymmetric range [0, N) the first time it is invoked, where `N' is the
+        ! ensemble size (or equivalently, the number of points). This makes the
+        ! implementation in FORTRAN analogous to their Java and C++ counterparts.
+        data = this % recurse2(0, this % size, Px)
+        call system_clock(endCount)
+
+
+        ! sets the elapsed-time (nanoseconds) invested on finding the closest pair
+        call system_clock(count_rate = systemClockCountRate)
+        systemClockPeriod = 1.0_real64 / real(systemClockCountRate, kind=real64)
+        float_startCount = real(startCount, kind=real64)
+        float_endCount = real(endCount, kind=real64)
+        elapsedTime = systemClockPeriod * (float_endCount - float_startCount)
+        elapsedTime = 1.0e9_real64 * elapsedTime
+        this % elapsedTime = elapsedTime
+
+
+        ! sets the number of operations executed by the recursive algorithm
+        N = real(this % size, kind=real64)
+        numOperations = data(3)
+        this % numOperations = numOperations
+
+
+        ! saves the closest pair obtained found by the Divide And Conquer method
+        closestPair(1) = int(data(1), kind=int32)
+        closestPair(2) = int(data(2), kind=int32)
+
+
+        ! saves the closest pair obtained found by the Brute Force method
+        dataBruteForce = this % distance(0, this % size, Px, closestPair)
+        closestPairBruteForce(1) = int(dataBruteForce(1), kind=int32)
+        closestPairBruteForce(2) = int(dataBruteForce(2), kind=int32)
+
+
+        ! guarantees that the point with the smallest index is stored first
+        ! Note:
+        ! We need to do this to check with ease that the closest pairs found
+        ! by the Divide And Conquer and Brute Force algorithms are identical
+
+        first = min( closestPair(1), closestPair(2) )
+        second = max( closestPair(1), closestPair(2) )
+
+
+        closestPair(1) = first
+        closestPair(2) = second
+
+
+        first = min( closestPairBruteForce(1), closestPairBruteForce(2) )
+        second = max( closestPairBruteForce(1), closestPairBruteForce(2) )
+
+
+        closestPairBruteForce(1) = first
+        closestPairBruteForce(2) = second
+
+
+        ! checks for inequality of the closest pairs
+        firstCheck = ( closestPair(1) /= closestPairBruteForce(1) )
+        secondCheck = ( closestPair(2) /= closestPairBruteForce(2) )
+
+
+        ! reports to user if the closest pairs are different
+        if (firstCheck .or. secondCheck) then
+            print *, 'different closest pairs found:'
+            print *, 'Divide And Conquer Algorithm:'
+            print *, 'first: ', closestPair(1), ' second: ', closestPair(2)
+            print *, 'Brute Force Algorithm:'
+            print *, 'first: ', closestPairBruteForce(1), ' second: ',&
+                     &closestPairBruteForce(2)
+            ! writes the coordinates of the points to a file for analysis
+            ! call this % export(Px)
+        end if
+
+        deallocate(points, Px)
+
+        return
+    end subroutine recursive1DMethod2
 
 
     module subroutine bruteForceMethodArrayBased (this)
@@ -1859,5 +2002,619 @@ contains
 
         return
     end subroutine test7
+
+
+    module recursive function recurse2 (this, beginPosition, endPosition, Px) result(ret)
+!
+!   Synopsis:
+!   Implements the (version 2) 1D Divide and Conquer Algorithm that finds the closest pair
+!   The main difference between its predecessor `recurse()' is that this version does not
+!   (de)construct objects of derived-type. An array of intrinsic type stores the closest
+!   pair and the number of operations.
+!
+!   Inputs:
+!   this                the ensemble
+!
+!   beginPosition       beginning position of the partition
+!   endPosition         ending position of the partition
+!
+!   Px                  second-rank, dimension(N, 2), array storing the x, y coordinates
+!                       of the `N' distinct Points that comprise the Ensemble
+!
+!   Output:
+!   ret                 first-rank, dimension(3), array storing the indexes of the
+!                       points that comprise the (possibly new) closest pair in
+!                       the first two positions and the number of operations in
+!                       the third position
+!
+
+        class(Ensemble), intent(in) :: this
+        real(kind = real64), intent(in) :: Px(this % size, 2)
+        real(kind = real64) :: ret(3)
+        real(kind = real64) :: data(3)
+        real(kind = real64) :: dataLeft(3)
+        real(kind = real64) :: dataRight(3)
+        real(kind = real64) :: minDistLeft
+        real(kind = real64) :: minDistRight
+        real(kind = real64) :: numOperationsRight
+        real(kind = real64) :: numOperationsLeft
+        real(kind = real64) :: numOperations
+        real(kind = real64) :: x1, x2
+        real(kind = real64) :: y1, y2
+        integer(kind = int32) :: closestPair(2)
+        integer(kind = int32) :: currentClosestPair(2)
+        integer(kind = int32) :: leftClosestPair(2)
+        integer(kind = int32) :: rightClosestPair(2)
+        integer(kind = int32), intent(in) :: beginPosition
+        integer(kind = int32), intent(in) :: endPosition
+        integer(kind = int32) :: first
+        integer(kind = int32) :: second
+        integer(kind = int32) :: beginPos
+        integer(kind = int32) :: endPos
+        integer(kind = int32) :: numel
+
+
+        ! gets the number of elements in this partition (NOTE: endPosition is exclusive)
+        numel = (endPosition - beginPosition)
+        if (numel <= 3) then
+
+            ! applies the Brute Force Algorithm on the smaller partition
+            ret = this % distance(beginPosition, endPosition, Px, closestPair)
+
+        else
+
+
+            ! divides into left and right partitions to find the closest pair:
+
+
+            ! defines the asymmetric range [begin, end) that delimits the left partition
+            ! NOTE:
+            ! Contains the first half of the Points (N / 2) in the current partition
+            beginPos = beginPosition
+            endPos = beginPosition + (numel / 2)
+            ! searches (recursively) for the closest pair in the left partition
+            dataLeft = this % recurse2(beginPos, endPos, Px)
+            ! unpacks the (left partition) closest pair
+            leftClosestPair(1) = int(dataLeft(1), kind=int32)
+            leftClosestPair(2) = int(dataLeft(2), kind=int32)
+
+
+            ! gets the indexes of the points comprising the (left partition) closest pair
+            first = leftClosestPair(1)
+            second = leftClosestPair(2)
+
+            ! gets the x, y coordinates of the first point
+            x1 = Px(first, 1)
+            y1 = Px(first, 2)
+
+            ! gets the x, y coordinates of the second point
+            x2 = Px(second, 1)
+            y2 = Px(second, 2)
+
+            ! computes the distance of the closest pair at the left partition
+            minDistLeft = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+
+            ! defines the asymmetric range [begin, end) that delimits the right partition
+            ! NOTE:
+            ! Contains the remaining Points (N - N / 2) in the current partition, the
+            ! computation takes into account odd N values.
+            beginPos = beginPosition + (numel / 2)
+            endPos = beginPosition + numel
+            ! searches (recursively) for the closest pair in the right partition
+            dataRight = this % recurse2(beginPos, endPos, Px)
+            ! unpacks the (right partition) closest pair
+            rightClosestPair(1) = int(dataRight(1), kind=int32)
+            rightClosestPair(2) = int(dataRight(2), kind=int32)
+
+
+            ! gets the indexes of the points comprising the (right partition) closest pair
+            first = rightClosestPair(1)
+            second = rightClosestPair(2)
+
+            ! gets the x, y coordinates of the first point
+            x1 = Px(first, 1)
+            y1 = Px(first, 2)
+
+            ! gets the x, y coordinates of the second point
+            x2 = Px(second, 1)
+            y2 = Px(second, 2)
+
+            ! computes the distance of the closest pair at the left partition
+            minDistRight = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+
+            ! selects the smallest closest pair from the left and right partitions
+            if ( minDistLeft < minDistRight ) then
+                currentClosestPair = leftClosestPair
+            else
+                currentClosestPair = rightClosestPair
+            end if
+
+
+            ! combines the left and right partitions
+            data = this % combine2(beginPosition, endPosition, Px, currentClosestPair)
+            closestPair(1) = int(data(1), kind=int32)
+            closestPair(2) = int(data(2), kind=int32)
+
+
+            ! updates the number of operations
+            numOperations = data(3)
+            numOperationsLeft = dataLeft(3)
+            numOperationsRight = dataRight(3)
+            numOperations = numOperations + numOperationsLeft + numOperationsRight
+
+
+            ! packs the output unto the intrinsic-array container
+            ret(1) = real(closestPair(1), kind=real64)
+            ret(2) = real(closestPair(2), kind=real64)
+            ret(3) = numOperations
+
+
+        end if
+
+        return
+    end function recurse2
+
+
+    module function combine2 (this, beginPosition, endPosition, Px, currentClosestPair)&
+                             &result(ret)
+!
+!   Synopsis:
+!   Implements the (version 2) algorithm that looks for the closest pair at the interface
+!   of the left and right partitions). This version does not (de)construct objects of
+!   derived-type. Returns an array of intrinsic type storing the closest pair and the
+!   number of operations.
+!
+!   Inputs:
+!   this                        the ensemble
+!
+!   beginPosition               beginning position of the partition
+!   endPosition                 ending position of the partition
+!
+!   Px                          second-rank, dimension(N, 2), array storing the x, y
+!                               coordinates of the `N' distinct Points that comprise the
+!                               Ensemble
+!
+!   currentClosestPair          first-rank, dimension(2), array storing the indexes of the
+!                               points that comprise the closest pair
+!
+!   Outputs:
+!   ret                         first-rank, dimension(3), array storing the indexes of the
+!                               points that comprise the (possibly new) closest pair in
+!                               the first two positions and the number of operations in
+!                               the third position
+!
+
+        class(Ensemble), intent(in) :: this
+        real(kind = real64) :: x1, x2
+        real(kind = real64) :: y1, y2
+        real(kind = real64) :: d, d_min
+        real(kind = real64), intent(in) :: Px(this % size, 2)
+        integer(kind = int32), intent(in) :: currentClosestPair(2)
+        integer(kind = int32), intent(in) :: beginPosition
+        integer(kind = int32), intent(in) :: endPosition
+        integer(kind = int32) :: beginPos
+        integer(kind = int32) :: endPos
+        integer(kind = int32) :: beginPosLeft, endPosLeft
+        integer(kind = int32) :: beginPosRight, endPosRight
+        integer(kind = int32) :: numel
+        integer(kind = int32) :: first, second
+        integer(kind = int32) :: i, j
+        real(kind = real64) :: ret(3)
+
+
+        ! gets the indexes of the points that comprise the current closest pair
+        first = currentClosestPair(1)
+        second = currentClosestPair(2)
+
+        ! gets the x, y coordinates of the first point
+        x1 = Px(first, 1)
+        y1 = Px(first, 2)
+
+        ! gets the x, y coordinates of the second point
+        x2 = Px(second, 1)
+        y2 = Px(second, 2)
+
+        ! computes the (squared) distance of the current closest pair
+        d_min = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+
+        ! gets the total number of Points present in the partition
+        numel = (endPosition - beginPosition)
+
+        ! defines the asymmetric range [begin, end) that encompasses the left partition
+        beginPos = beginPosition
+        endPos = beginPosition + (numel / 2)
+
+        ! assumes no points in the left partition could comprise a closest pair
+        ! NOTE: the Points enclosed in the asymmetric range [beginPos1, endPos1) are
+        ! points in the Left partition that could form a closest pair with another point
+        ! in the Right partition.
+        beginPosLeft = endPos
+        endPosLeft = endPos
+
+        i = beginPos
+        ! includes points in the left partition comprising closest pair candidates
+        do while (i /= endPos)
+        ! Note:
+        ! traverses the partition array Px from back to front owing to the x-y sorting
+        ! and also note that the partition array is a non-zero index starting array
+
+            ! gets index of the current rightmost point in the left partition
+            ! Note: an offset is needed to position the index on the expected data
+            j = ( endPos - (i + 1) ) + beginPos
+
+            ! gets the `x' position of the current rightmost Point in the left partition
+            x1 = Px(j + 1, 1)
+            ! gets the `x' position of the leftmost Point in the right partition
+            x2 = Px(endPos + 1, 1)
+
+            ! computes the (squared) x-axis distance of the closest pair candidate
+            d = (x2 - x1) * (x2 - x1)
+
+            if (d < d_min) then
+                ! includes the point because it can be a closest pair comprising point
+                beginPosLeft = beginPosLeft - 1
+            else
+                ! halts the search because the next points are even farther apart
+                exit
+            endif
+
+            i = i + 1
+        end do
+
+
+        ! defines the asymmetric range [begin, end) that encompasses the right partition
+        beginPos = beginPosition + (numel / 2)
+        endPos = beginPosition + numel
+
+        ! assumes no points in the right partition could comprise a closest pair
+        beginPosRight = beginPosition + (numel / 2)
+        endPosRight = beginPosition + (numel / 2)
+
+        i = beginPos
+        ! includes points in the right partition comprising closest pair candidates
+        do while (i /= endPos)
+
+            ! gets the `x' position of the rightmost point in the left partition
+            x1 = Px( (beginPos - 1) + 1, 1)
+            ! gets the `x' position of the current leftmost point in the right partition
+            x2 = Px(i + 1, 1)
+
+            ! computes the (squared) x-axis distance of the closest pair candidate
+            d = (x2 - x1) * (x2 - x1)
+
+            if (d < d_min) then
+                ! includes the point because it can be a closest pair comprising point
+                endPosRight = endPosRight + 1
+            else
+                ! halts the search because the next points are even farther apart
+                exit
+            endif
+
+            i = i + 1
+        end do
+
+
+        ret = this % distance(beginPosLeft, endPosLeft, beginPosRight, endPosRight,&
+                             &Px, currentClosestPair)
+
+        return
+    end function combine2
+
+
+    module function distanceArrayBased2 (this, points, closestPair) result(ret)
+!
+!   Synopsis:
+!   FORTRAN77 (or procedural) implementation of the Brute Force Algorithm.
+!   This version does not (de)constructs objects of derived-type.
+!
+!   Applies the Brute Force Algorithm to find the closest pair in a partition.
+!   Note that the partition could be the whole dataset.
+!
+!   Inputs:
+!   this                the ensemble
+!   points              second-rank array, dimension(N, 2) partition, where `N' is the
+!                       number of Points
+!
+!   Outputs:
+!   closestPair         first-rank, dimension(2), array storing the indexes of the points
+!                       that comprise the closest pair
+!
+!   ret                 first-rank, dimension(3), array storing the indexes of the
+!                       points that comprise the (possibly new) closest pair in the
+!                       first two positions and the number of operations in the third
+!                       position
+!
+
+        class(Ensemble), intent(in) :: this
+        real(kind = real64), intent(in) :: points(this % size, 2)
+        real(kind = real64) :: ret(3)
+        real(kind = real64) :: d, d_min
+        real(kind = real64) :: x1, x2
+        real(kind = real64) :: y1, y2
+        real(kind = real64) :: inf
+        real(kind = real64) :: N
+        real(kind = real64) :: numOperations
+        integer(kind = int32), intent(out) :: closestPair(2)
+        integer(kind = int32) :: first, second
+        integer(kind = int32) :: i, j
+
+        ! stores the floating-point representation of positive infinity
+        inf = ieee_value(0.0_real64, ieee_positive_inf)
+
+        first = -1
+        second = -1
+        d_min = inf
+        i = 0
+        ! considers all distinct pairs in search for the closest pair
+        do while ( i /= (this % size - 1) )
+
+            j = (i + 1)
+            do while (j /= this % size)
+
+                x1 = points(i + 1, 1)
+                y1 = points(i + 1, 2)
+
+                x2 = points(j + 1, 1)
+                y2 = points(j + 1, 2)
+
+                d = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+                if (d < d_min) then
+                    first = (i + 1)
+                    second = (j + 1)
+                    d_min = d
+                end if
+
+                j = j + 1
+            end do
+
+            i = i + 1
+        end do
+
+
+        ! stores the indexes of the points that comprise the closest pair
+        closestPair(1) = first
+        closestPair(2) = second
+
+
+        ! computes the number of opertions
+        N = real(this % size, kind=real64)
+        numOperations = ( ( N * (N - 1.0_real64) ) / 2.0_real64 )
+
+
+        ! packs the output unto the intrinsic-array container
+        ret(1) = real(closestPair(1), kind=real64)
+        ret(2) = real(closestPair(2), kind=real64)
+        ret(3) = numOperations
+
+
+        return
+    end function distanceArrayBased2
+
+
+    module function distanceSmallerPartition2 (this, beginPosition, endPosition, Px,&
+                                              &closestPair) result(ret)
+!
+!   Synopsis:
+!   Applies the Brute Force Algorithm to find the closest pair in a partition delimited
+!   by the asymmetric range [beginPosition, endPosition). This version does not have
+!   the overhead of (de)construction of objects of derived-type.
+!
+!   Inputs:
+!   this                the ensemble
+!
+!   beginPosition       beginning position of the partition
+!   endPosition         ending position of the partition
+!
+!   Px                  second-rank, dimension(N, 2), zero-starting index, array storing
+!                       the x, y coordinates of the `N' distinct Points that comprise the
+!                       Ensemble
+!
+!   Outputs:
+!   ret                 first-rank, dimension(3), array storing the indexes of the
+!                       points that comprise the (possibly new) closest pair in the
+!                       first two positions and the number of operations in the third
+!                       position
+!
+
+        class(Ensemble), intent(in) :: this
+        real(kind = real64), intent(in) :: Px(this % size, 2)
+        real(kind = real64) :: ret(3)
+        real(kind = real64) :: d, d_min
+        real(kind = real64) :: x1, x2
+        real(kind = real64) :: y1, y2
+        real(kind = real64) :: inf
+        real(kind = real64) :: N
+        real(kind = real64) :: numOperations
+        integer(kind = int32), intent(in) :: beginPosition
+        integer(kind = int32), intent(in) :: endPosition
+        integer(kind = int32), intent(out) :: closestPair(2)
+        integer(kind = int32) :: first, second
+        integer(kind = int32) :: i, j
+
+        ! stores the floating-point representation of positive infinity
+        inf = ieee_value(0.0_real64, ieee_positive_inf)
+
+        first = -1
+        second = -1
+        d_min = inf
+        i = beginPosition
+        do while ( i /= (endPosition - 1) )
+        ! considers all distinct pairs (in partition) in search for the closest pair
+
+            j = (i + 1)
+            do while (j /= endPosition)
+
+                x1 = Px(i + 1, 1)
+                y1 = Px(i + 1, 2)
+
+                x2 = Px(j + 1, 1)
+                y2 = Px(j + 1, 2)
+
+                d = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+                if (d < d_min) then
+                    first = (i + 1)
+                    second = (j + 1)
+                    d_min = d
+                end if
+
+                j = j + 1
+            end do
+
+            i = i + 1
+        end do
+
+
+        ! stores the indexes of the points that comprise the closest pair
+        closestPair(1) = first
+        closestPair(2) = second
+
+
+        ! stores the number of operations (N * (N - 1) / 2) in a floating-point number
+        N = real(endPosition - beginPosition, kind=real64)
+        numOperations = ( ( N * (N - 1.0_real64) ) / 2.0_real64 )
+
+
+        ! packs the output unto the intrinsic-array container
+        ret(1) = real(closestPair(1), kind=real64)
+        ret(2) = real(closestPair(2), kind=real64)
+        ret(3) = numOperations
+
+
+        return
+    end function distanceSmallerPartition2
+
+
+    module function distancePartitionInterface2 (this, beginPosLeft, endPosLeft,&
+                                                &beginPosRight, endPosRight, Px,&
+                                                &currentClosestPair) result(ret)
+!
+!   Synopsis:
+!   Applies the Brute Force Algorithm to seek the closest pair at the interface of the
+!   Left and Right partitions. This version does not (de)construct objects of derived
+!   type.
+!
+!   Inputs:
+!   this                the ensemble
+!
+!   beginPosLeft        beginning position of the Left partition
+!   endPosLeft          ending position of the Left partition
+!
+!   beginPosRight       beginning position of the Right partition
+!   endPosRight         ending position of the Right partition
+!
+!   Px                  second-rank, dimension(N, 2), array storing the x, y coordinates
+!                       of the `N' distinct Points that comprise the Ensemble
+!
+!   currentClosestPair  first-rank, dimension(2), array storing the indexes of the
+!                       points that comprise the current closest pair
+!
+!   Outputs:
+!   ret                 first-rank, dimension(3), array storing the indexes of the
+!                       points that comprise the (possibly new) closest pair in the
+!                       first two positions and the number of operations in the third
+!                       position
+!
+
+        class(Ensemble), intent(in) :: this
+        real(kind = real64), intent(in) :: Px(this % size, 2)
+        real(kind = real64) :: ret(3)
+        real(kind = real64) :: d, d_min
+        real(kind = real64) :: x1, x2
+        real(kind = real64) :: y1, y2
+        real(kind = real64) :: N1, N2
+        real(kind = real64) :: numOperations
+        integer(kind = int32) :: closestPair(2)
+        integer(kind = int32), intent(in) :: currentClosestPair(2)
+        integer(kind = int32), intent(in) :: beginPosLeft, endPosLeft
+        integer(kind = int32), intent(in) :: beginPosRight, endPosRight
+        integer(kind = int32) :: first, second
+        integer(kind = int32) :: i, j
+
+
+        ! gets the indexes of the points that comprise the current closest pair
+        first = currentClosestPair(1)
+        second = currentClosestPair(2)
+
+        ! gets the x, y coordinates of the first point
+        x1 = Px(first, 1)
+        y1 = Px(first, 2)
+
+        ! gets the x, y coordinates of the second point
+        x2 = Px(second, 1)
+        y2 = Px(second, 2)
+
+        ! computes the (squared) distance of the current closest pair
+        d_min = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+
+        first = -1
+        second = -1
+        i = beginPosLeft
+        ! considers pairs formed by a point in the left and another in the right partition
+        do while (i /= endPosLeft)
+
+            j = beginPosRight
+            do while (j /= endPosRight)
+
+                ! NOTE:
+                ! Both i and j are zero-starting indexes by design, an offset is applied
+                ! to avoid incurring in out-of-bouds errors because the Points array Px is
+                ! a non-zero index starting array.
+                x1 = Px(i + 1, 1)
+                y1 = Px(i + 1, 2)
+
+                x2 = Px(j + 1, 1)
+                y2 = Px(j + 1, 2)
+
+                d = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+
+                if (d < d_min) then
+                    first = (i + 1)
+                    second = (j + 1)
+                    d_min = d
+                end if
+
+                j = j + 1
+            end do
+
+            i = i + 1
+        end do
+
+
+        ! checks if a new closest pair has been found:
+        if (first /= -1 .or. second /= -1) then
+
+            ! stores the indexes of the points that comprise the new closest pair
+            closestPair(1) = first
+            closestPair(2) = second
+
+        else
+
+            ! otherwise, stores the indexes of the current closest pair
+            closestPair = currentClosestPair
+
+        end if
+
+
+        ! determines the number of distance computations including those done in the
+        ! combine() step (it already takes into account if the nested for-loops execute)
+        N1 = real(endPosLeft - beginPosLeft, kind=real64)
+        N2 = real(endPosRight - beginPosRight, kind=real64)
+        numOperations = ( (N1 * N2) + (N1 + 1.0_real64) + (N2 + 1.0_real64) )
+
+
+        ! packs the output unto the intrinsic-array container
+        ret(1) = real(closestPair(1), kind=real64)
+        ret(2) = real(closestPair(2), kind=real64)
+        ret(3) = numOperations
+
+
+        return
+    end function distancePartitionInterface2
 
 end submodule

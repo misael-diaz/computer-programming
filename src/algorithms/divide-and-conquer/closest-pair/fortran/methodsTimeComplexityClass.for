@@ -182,6 +182,54 @@ contains
     end subroutine exportTimeComplexity_DivideAndConquer1D
 
 
+    module subroutine exportTimeComplexity_DivideAndConquer1D2 (this) ! (version 2)
+!
+!   Synopsis:
+!   Exports the time complexity results of the 1D Divide and Conquer
+!   Algorithm that solves the closest pair problem to a plain text
+!   data file.
+!
+!   Inputs:
+!   this                the time complexity object
+!
+!   Outputs:
+!   None
+!
+        class(TimeComplexity), intent(in) :: this
+        real(kind = real64), allocatable :: sizes(:)
+        real(kind = real64), allocatable :: avgElapsedTimes(:)
+        real(kind = real64), allocatable :: avgNumOperations(:)
+        integer(kind = int32) :: fhandle
+        integer(kind = int32) :: iostate
+        integer(kind = int32) :: i
+        ! exports the time complexity results in a different data file (version 2)
+        character(*), parameter :: fileDivideAndConquer = 'timeDivideAndConquer1D2.dat'
+
+        if (this % runs <= 0) then
+            return
+        endif
+
+        ! invokes the timer method (version 2)
+        call this % timeDivideAndConquer1D2(sizes, avgElapsedTimes, avgNumOperations)
+
+        open(newunit=fhandle, file=fileDivideAndConquer, action='write',&
+           & position='rewind', iostat=iostate)
+
+        if (iostate /= 0) then
+            print *, 'TimeComplexity::exportTimeComplexity_BruteForce(): IO ERROR'
+            stop
+        endif
+
+        do i = 1, this % runs
+            write (fhandle, '(3E25.15)') sizes(i), avgElapsedTimes(i), avgNumOperations(i)
+        end do
+
+        close(fhandle)
+
+        return
+    end subroutine exportTimeComplexity_DivideAndConquer1D2
+
+
     module subroutine timeBruteForce (this, sizes, avgElapsedTimes, avgNumOperations)
 !
 !   Synopsis:
@@ -356,5 +404,65 @@ contains
 
         return
     end subroutine timeDivideAndConquer1D
+
+
+    module subroutine timeDivideAndConquer1D2 (this, sizes, avgElapsedTimes,& ! (ver 2)
+                                              &avgNumOperations)
+!
+!   Synopsis:
+!   Times the Object-Oriented implementation of the 1D Divide And Conquer Algorithm that
+!   solves the closest pair problem. The method returns the ensemble sizes considered,
+!   and the average elapsed-time and number of operations executed by the implementation
+!   to solve the closest pair problem.
+!
+!   Inputs:
+!   this                the time complexity object
+!
+!   Outputs:
+!   sizes               first-rank array of ensemble sizes
+!   avgElapsedTimes     first-rank array storing the average elapsed-times
+!   avgNumOperations    first-rank array storing the average number of operations
+!
+        class(TimeComplexity), intent(in) :: this
+        type(Ensemble) :: ens
+        real(kind = real64), allocatable, intent(out) :: sizes(:)
+        real(kind = real64), allocatable, intent(out) :: avgElapsedTimes(:)
+        real(kind = real64), allocatable, intent(out) :: avgNumOperations(:)
+        real(kind = real64) :: elapsedTime
+        real(kind = real64) :: numOperations
+        integer(kind = int32) :: ensembleSize
+        integer(kind = int32) :: runs, reps
+        integer(kind = int32) :: run, rep
+        integer(kind = int32) :: mstat
+
+        runs = this % runs
+        allocate(sizes(runs), avgElapsedTimes(runs), avgNumOperations(runs), stat=mstat)
+
+        if (mstat /= 0) then
+            print *, 'TimeComplexity::timeDivideAndConquer1D(): failed to allocate arrays'
+            stop
+        end if
+
+        reps = 256
+        ensembleSize = 16
+        do run = 1, runs
+            elapsedTime = 0.0_real64
+            numOperations = 0.0_real64
+            do rep = 1, reps
+                ens = Ensemble(ensembleSize)
+                ! invokes the recursive1D() method (version 2)
+                call ens % recursive1D2()
+                elapsedTime = elapsedTime + ens % getElapsedTime()
+                numOperations = numOperations + ens % getNumOperations()
+            end do
+            sizes(run) = real(ensembleSize, kind=real64)
+            avgElapsedTimes(run) = elapsedTime / real(reps, kind=real64)
+            avgNumOperations(run) = numOperations / real(reps, kind=real64)
+
+            ensembleSize = 2 * ensembleSize
+        end do
+
+        return
+    end subroutine timeDivideAndConquer1D2
 
 end submodule
