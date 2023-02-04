@@ -1949,9 +1949,7 @@ contains
         type(Tuple), pointer :: tupleBruteForce
         type(Pair), pointer :: closestPairBruteForce
         type(Pair), pointer :: closestPair
-        type(Point), pointer :: p
         real(kind = real64) :: Px(16, 2)
-        real(kind = real64) :: x, y
         integer(kind = int32) :: fhandle
         integer(kind = int32) :: iostate
         integer(kind = int32) :: i
