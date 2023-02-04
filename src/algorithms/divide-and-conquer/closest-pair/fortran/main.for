@@ -17,6 +17,7 @@
 ! [0] SJ Chapman, FORTRAN for Scientists and Engineers, fourth edition
 ! [1] JJ McConnell, Analysis of Algorithms, second edition
 ! [2] OOP FORTRAN: https://gist.github.com/n-s-k/522f2669979ed6d0582b8e80cf6c95fd
+! [3] FORTRAN Array Kinds: www.lahey.com/docs/lfenthelp/F95LSARRAYSDYN.htm
 
 #define RUNS 8
 

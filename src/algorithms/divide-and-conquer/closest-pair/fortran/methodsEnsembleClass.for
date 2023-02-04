@@ -526,7 +526,7 @@ contains
         type(Pair), pointer :: currentClosestPair
         type(Pair), pointer :: leftClosestPair
         type(Pair), pointer :: rightClosestPair
-        real(kind = real64), intent(in) :: Px(:, :)
+        real(kind = real64), intent(in) :: Px(this % size, 2)
         real(kind = real64) :: numOperations
         real(kind = real64) :: numOperationsLeft
         real(kind = real64) :: numOperationsRight
@@ -659,7 +659,7 @@ contains
         type(Tuple), pointer :: t
         type(Pair), intent(in) :: currentClosestPair
         real(kind = real64) :: x1, x2
-        real(kind = real64), intent(in) :: Px(:, :)
+        real(kind = real64), intent(in) :: Px(this % size, 2)
         integer(kind = int32), intent(in) :: beginPosition
         integer(kind = int32), intent(in) :: endPosition
         integer(kind = int32) :: beginPos
@@ -838,7 +838,7 @@ contains
 !   the x, y coordinates.
 !
         class(Ensemble), intent(in) :: this
-        real(kind = real64), intent(in) :: points(:, :)
+        real(kind = real64), intent(in) :: points(this % size, 2)
         type(Pair), pointer :: closestPair
         class(Point), pointer :: p, q
         real(kind = real64) :: d, d_min
@@ -924,7 +924,7 @@ contains
         type(Tuple), pointer :: t
         type(Pair), pointer :: closestPair
         class(Point), pointer :: p, q
-        real(kind = real64), intent(in) :: Px(:, :)
+        real(kind = real64), intent(in) :: Px(this % size, 2)
         real(kind = real64) :: d, d_min
         real(kind = real64) :: x1, x2
         real(kind = real64) :: y1, y2
@@ -1033,7 +1033,7 @@ contains
         type(Pair), intent(in) :: currentClosestPair
         type(Pair), pointer :: closestPair
         class(Point), pointer :: p, q
-        real(kind = real64), intent(in) :: Px(:, :)
+        real(kind = real64), intent(in) :: Px(this % size, 2)
         real(kind = real64) :: d, d_min
         real(kind = real64) :: x1, x2
         real(kind = real64) :: y1, y2
@@ -1949,9 +1949,7 @@ contains
         type(Tuple), pointer :: tupleBruteForce
         type(Pair), pointer :: closestPairBruteForce
         type(Pair), pointer :: closestPair
-        type(Point), pointer :: p
         real(kind = real64) :: Px(16, 2)
-        real(kind = real64) :: x, y
         integer(kind = int32) :: fhandle
         integer(kind = int32) :: iostate
         integer(kind = int32) :: i
