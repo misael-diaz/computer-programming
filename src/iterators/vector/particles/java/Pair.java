@@ -147,7 +147,7 @@ public final class Pair implements Comparable<Pair>
 	points that comprise them are equal.
 
 	Input:
-	pair	a pair object (referred to as that pair)
+	pair	a pair object (referred to as `that pair')
 
 	Output:
 	equal	true if `this pair' and `that pair' are equal,

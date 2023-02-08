@@ -581,7 +581,6 @@ public class Ensemble	// Particle Ensemble Class
 	Synopsis:
 	Applies the Brute Force Algorithm to find the closest pair in a
 	partition. Note that the partition could be the whole dataset.
-	Increments the operations counter.
 
 	Inputs:
 	part		partition (or whole data set of points)
@@ -660,7 +659,7 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		// gets the coordinate objects of the particles P and Q
+		// gets the points P and Q
 		Point p = part.get(i), q = part.get(j);
 		// delegates the computation of the squared distance
 		return p.distance(q);
@@ -675,7 +674,7 @@ public class Ensemble	// Particle Ensemble Class
 	Applies Brute Force Algorithm on the middle partition M. Note
 	that the middle partition is comprised by closest pair candidates
 	from the left and right partitions; it is not constructed
-	explicitly. Increments the operations counter.
+	explicitly.
 
 	Inputs:
 	L		closest pair candidates in left partition
@@ -909,6 +908,7 @@ public class Ensemble	// Particle Ensemble Class
 	L		left partition
 	R		right partition
 	closestPair	current closest pair
+	quickDistance	lambda, user-defined distance computing method along an axis
 
 	Output:
 	tuple		the closest pair and the number of operations
@@ -1182,6 +1182,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the y axis
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
 				double y1 = P.getY(), y2 = Q.getY();
@@ -1265,6 +1266,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the y axis
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
 				double y1 = P.getY(), y2 = Q.getY();
@@ -1348,6 +1350,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the z axis
 			Distance zAxisDist = (Point p, Point q) ->
 			{
 				// complains if points belong to the base class

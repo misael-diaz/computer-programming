@@ -607,6 +607,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		else
 			System.out.println("pass");
 
+		// checks if the elements of the vector `yxSortedPoints' are y-x sorted;
+		// if they are, the binary search algorithm must be able to find all the
+		// elements without failures
 		for (Point p : vector)
 		{
 			boolean isContained = yxSortedPoints.contains(
@@ -627,6 +630,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
 		for (Point p : vector)
+		// as in the above test but uses the linear search algorithm
 		{
 			boolean isContained = yxSortedPoints.contains(
 				p, new Point.Comparator(), "linear"
