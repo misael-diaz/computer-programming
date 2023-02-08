@@ -445,9 +445,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	}
 
 
-	private int linearSearch (
-		T [] data, int begin, int end, T key, Comparator<T> comp
-	)
+	private int linearSearch (T[] data, int begin, int end, T key, Comparator<T> comp)
 	// searches linearly for the key and returns its positional index
 	{
 		for (int i = begin; i != end; ++i)
@@ -869,9 +867,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	}
 
 
-	private static void bisect     (Vector<Point> vector,
-					Vector<Point> first,
-					Vector<Point> second)
+	private static void bisect (Vector<Point> vector, Vector<Point> first,
+				    Vector<Point> second)
 	/*
 
 	Synopsis:

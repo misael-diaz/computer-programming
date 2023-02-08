@@ -666,8 +666,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple distance (Vector<Point> L, Vector<Point> R,
-				Pair closestPair)
+	private Tuple distance (Vector<Point> L, Vector<Point> R, Pair closestPair)
 	/*
 
 	Synopsis:
@@ -705,9 +704,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private void divide (
-		Vector<Point> Px, Vector<Point> Lx, Vector<Point> Rx
-	)
+	private void divide (Vector<Point> Px, Vector<Point> Lx, Vector<Point> Rx)
 	/*
 
 	Synopsis:
@@ -736,9 +733,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple combine (
-		Vector<Point> L, Vector<Point> R, Pair closestPair
-	)
+	private Tuple combine (Vector<Point> L, Vector<Point> R, Pair closestPair)
 	/*
 
 	Synopsis:
@@ -896,8 +891,8 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple combine (	Vector<Point> L, Vector<Point> R,
-				Pair closestPair, Distance quickDistance )
+	private Tuple combine (	Vector<Point> L, Vector<Point> R, Pair closestPair,
+				Distance quickDistance )
 	/*
 
 	Synopsis:
@@ -1047,9 +1042,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple recurse (
-		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
-	)
+	private Tuple recurse (Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz)
 	/*
 
 	Synopsis:
@@ -1290,9 +1283,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple divide3D (
-		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
-	)
+	private Tuple divide3D (Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz)
 	/*
 
 	Synopsis:
@@ -1378,8 +1369,8 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private void sort (	Vector<Point> Py, Vector<Point> Lx,
-				Vector<Point> Ly, Vector<Point> Ry     )
+	private void sort (Vector<Point> Py, Vector<Point> Lx, Vector<Point> Ly,
+			   Vector<Point> Ry)
 	/*
 
 	Synopsis:
