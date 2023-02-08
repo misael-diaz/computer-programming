@@ -824,11 +824,11 @@ public class Ensemble	// Particle Ensemble Class
 
 		*/
 		{
-			// gets the x-axis position of the rigthmost point
+			// gets index of the rigthmost point in the left partition
 			int last = (L.size() - 1);
 			Point P = L.get(last);
 
-			// computes the x-axis distance of the candidate
+			// computes the x-axis distance of the closest pair candidate
 			double x1 = P.getX(), x2 = Q.getX();
 			double d = (x2 - x1) * (x2 - x1);
 
@@ -855,13 +855,13 @@ public class Ensemble	// Particle Ensemble Class
 		int b1 = L.size(), e1 = L.size();
 		for (int i = 0; i != L.size(); ++i)
 		{
-			// gets the x-axis position of the leftmost point
+			// gets index of (current) rightmost point in the left partition
 			int j = L.size() - (i + 1);
 
 			Point P = L.get(j);
 			Point Q = R.get(0);
 
-			// computes the x-axis distance of the candidate
+			// computes the x-axis distance of the closest pair candidate
 			double x1 = P.getX(), x2 = Q.getX();
 			double d = (x2 - x1) * (x2 - x1);
 
@@ -915,7 +915,7 @@ public class Ensemble	// Particle Ensemble Class
 		int b2 = 0, e2 = 0;
 		for (Point Q : R)
 		{
-			// gets the x-axis position of the rigthmost point
+			// gets the x-axis position of the rigthmost point in the left
 			int last = (L.size() - 1);
 			Point P = L.get(last);
 
@@ -933,7 +933,7 @@ public class Ensemble	// Particle Ensemble Class
 		int b1 = L.size(), e1 = L.size();
 		for (int i = 0; i != L.size(); ++i)
 		{
-			// gets the x-axis position of the leftmost point
+			// gets index of (current) rigthmost point in the left partition
 			int j = L.size() - (i + 1);
 
 			Point P = L.get(j);
