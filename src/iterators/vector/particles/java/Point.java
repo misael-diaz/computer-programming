@@ -176,8 +176,8 @@ public class Point implements Comparable<Point>
 	/*
 
 	Synopsis:
-	Defines what it means to compare the x (or y) axis coordinates
-	of a pair of points.
+	Defines what it means to compare a pair of points by their the x (or y) axis
+	coordinates.
 
 	Inputs:
 	x1	the x (or y) axis coordinate of the first point

@@ -655,9 +655,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	/*
 
 	Synopsis:
-	Checks that when views go out-of-scope the data present in the
-	original vector is not released from memory. The expectation is
-	that references to the stored data get nullified.
+	Checks that when views go out-of-scope the data present in the original vector
+	is not released from memory. The expectation is that references to the stored
+	data get nullified.
 
 	*/
 	{
@@ -875,8 +875,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	/*
 
 	Synopsis:
-	Creates views of the first and second halves of the data
-	stored in the given vector.
+	Creates views of the first and second halves of the data stored in the passed
+	vector.
 
 	Inputs:
 	vector		vector storing all of the data
@@ -904,8 +904,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	/*
 
 	Synopsis:
-	Checks that by means of an iterator all the vector elements are
-	traversed.
+	Checks that by means of an iterator all the vector elements are traversed.
 
 	*/
 	{
@@ -938,8 +937,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		System.out.printf("test-iterator[0]: ");
 		/*
 
-		informs if the number of elements is not equal to
-		the vector size
+		informs if the number of elements is not equal to the vector size
 
 		*/
 		if (numel != size)
@@ -953,8 +951,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		for (Point P : points)
 		/*
 
-		checks for differences between the vector elements
-		and the original data array
+		checks for differences between the vector elements and the original array
 
 		*/
 		{

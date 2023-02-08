@@ -84,7 +84,7 @@ public class Ensemble	// Particle Ensemble Class
 	{
 		this.isInvalidEnsembleSize(size);	// complains if invalid
 		this.elapsedTime = 0.0;			// zeroes the elapsed time
-		this.numOperations = 0.0;		// zeroes the #operations
+		this.numOperations = 0.0;		// zeroes the number of operations
 		this.size = size;			// sets the ensemble size
 	}
 
@@ -731,8 +731,8 @@ public class Ensemble	// Particle Ensemble Class
 
 			// creates views of the left and right parititions
 
-			Lx.view(Px, 0, half);		// left partition
-			Rx.view(Px, half, size);	// right partition
+			Lx.view(Px, 0, half);		// view of the left partition
+			Rx.view(Px, half, size);	// view of the right partition
 	}
 
 
@@ -1807,8 +1807,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Complains if the dataset of points is not x-y sorted or if it has
-	duplicates.
+	Complains if the dataset of points is not x-y sorted or if it has duplicates.
 
 	Input:
 	data		dataset of points
@@ -1844,8 +1843,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Returns true if there are duplicated points, returns false
-	otherwise.
+	Returns true if there are duplicated points, returns false otherwise.
 
 	Input:
 	points		dataset of points
