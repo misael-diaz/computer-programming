@@ -44,9 +44,8 @@ public class TimeComplexity
 	/*
 
 	Synopsis:
-	Exports the time complexity results of the 1D Divide and Conquer
-	Algorithm that solves the closest pair problem to a plain text
-	data file.
+	Exports the time complexity results of the 1D Divide and Conquer Algorithm
+	that solves the closest pair problem to a plain text data file.
 
 	Inputs:
 	None
@@ -83,9 +82,8 @@ public class TimeComplexity
 	/*
 
 	Synopsis:
-	Exports the time complexity results of the 2D Divide and Conquer
-	Algorithm that solves the closest pair problem to a plain text
-	data file.
+	Exports the time complexity results of the 2D Divide and Conquer Algorithm
+	that solves the closest pair problem to a plain text data file.
 
 	Inputs:
 	None
@@ -122,9 +120,8 @@ public class TimeComplexity
 	/*
 
 	Synopsis:
-	Exports the time complexity results of the 3D Divide and Conquer
-	Algorithm that solves the closest pair problem to a plain text
-	data file.
+	Exports the time complexity results of the 3D Divide and Conquer Algorithm
+	that solves the closest pair problem to a plain text data file.
 
 	Inputs:
 	None
@@ -169,11 +166,9 @@ public class TimeComplexity
 	None
 
 	Output:
-	statistics	a second-rank array that stores the ensemble
-			sizes, the average elapsed-times, and the
-			average number of operations used by the
-			Divide and Conquer Algorithm to find the
-			closest pair.
+	statistics	a second-rank array that stores the ensemble sizes, the average
+			elapsed-times, and the average number of operations used by the
+			Divide and Conquer Algorithm to find the closest pair.
 
 	*/
 	{
@@ -191,7 +186,7 @@ public class TimeComplexity
 			double etime = 0;
 			double opers = 0;
 			for (int j = 0; j != reps; ++j)
-			// accumulates the elapsed-time and the #operations
+			// accumulates the elapsed-time and the number of operations
 			{
 				// creates a new ensemble of requested size
 				Ensemble ens = new Ensemble(size);
@@ -199,7 +194,7 @@ public class TimeComplexity
 				ens.recursive1D();
 				// gets the elapsed time (nanoseconds)
 				etime += ens.getElapsedTime();
-				// gets the #operations
+				// gets the number of operations
 				opers += ens.getOperations();
 			}
 
@@ -207,7 +202,7 @@ public class TimeComplexity
 			sizes[i] = size;
 			// stores the average elapsed-time
 			avgElapsedTimes[i] = (etime / reps);
-			// stores the average #operations
+			// stores the average number of operations
 			avgNumOperations[i] = (opers / reps);
 
 			// doubles the ensemble size for the next run
@@ -229,11 +224,9 @@ public class TimeComplexity
 	None
 
 	Output:
-	statistics	a second-rank array that stores the ensemble
-			sizes, the average elapsed-times, and the
-			average number of operations used by the
-			Divide and Conquer Algorithm to find the
-			closest pair.
+	statistics	a second-rank array that stores the ensemble sizes, the average
+			elapsed-times, and the average number of operations used by the
+			Divide and Conquer Algorithm to find the closest pair.
 
 	*/
 	{
@@ -251,7 +244,7 @@ public class TimeComplexity
 			double etime = 0;
 			double opers = 0;
 			for (int j = 0; j != reps; ++j)
-			// accumulates the elapsed-time and the #operations
+			// accumulates the elapsed-time and the number of operations
 			{
 				// creates a new ensemble of requested size
 				Ensemble ens = new Ensemble(size);
@@ -259,7 +252,7 @@ public class TimeComplexity
 				ens.recursive2D();
 				// gets the elapsed time (nanoseconds)
 				etime += ens.getElapsedTime();
-				// gets the #operations
+				// gets the number of operations
 				opers += ens.getOperations();
 			}
 
@@ -267,7 +260,7 @@ public class TimeComplexity
 			sizes[i] = size;
 			// stores the average elapsed-time
 			avgElapsedTimes[i] = (etime / reps);
-			// stores the average #operations
+			// stores the average number of operations
 			avgNumOperations[i] = (opers / reps);
 
 			// doubles the ensemble size for the next run
@@ -289,11 +282,9 @@ public class TimeComplexity
 	None
 
 	Output:
-	statistics	a second-rank array that stores the ensemble
-			sizes, the average elapsed-times, and the
-			average number of operations used by the
-			Divide and Conquer Algorithm to find the
-			closest pair.
+	statistics	a second-rank array that stores the ensemble sizes, the average
+			elapsed-times, and the average number of operations used by the
+			Divide and Conquer Algorithm to find the closest pair.
 
 	*/
 	{
@@ -311,7 +302,7 @@ public class TimeComplexity
 			double etime = 0;
 			double opers = 0;
 			for (int j = 0; j != reps; ++j)
-			// accumulates the elapsed-time and the #operations
+			// accumulates the elapsed-time and the number of operations
 			{
 				// creates a new ensemble of requested size
 				Ensemble ens = new Ensemble(size);
@@ -319,7 +310,7 @@ public class TimeComplexity
 				ens.recursive3D();
 				// gets the elapsed time (nanoseconds)
 				etime += ens.getElapsedTime();
-				// gets the #operations
+				// gets the number of operations
 				opers += ens.getOperations();
 			}
 
@@ -327,7 +318,7 @@ public class TimeComplexity
 			sizes[i] = size;
 			// stores the average elapsed-time
 			avgElapsedTimes[i] = (etime / reps);
-			// stores the average #operations
+			// stores the average number of operations
 			avgNumOperations[i] = (opers / reps);
 
 			// doubles the ensemble size for the next run

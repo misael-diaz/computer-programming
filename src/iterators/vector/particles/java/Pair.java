@@ -142,12 +142,12 @@ public final class Pair implements Comparable<Pair>
 	/*
 
 	Synopsis:
-	Defines what it means for two Pair objects to be equal to one
-	another. Two pair objects are equal if both the first and second
-	points that comprise them are equal.
+	Defines what it means for two Pair objects to be equal to one another.
+	Two pair objects are equal if both the first and second points that comprise them
+	are equal.
 
 	Input:
-	pair	a pair object (referred to as that pair)
+	pair	a pair object (referred to as `that pair')
 
 	Output:
 	equal	true if `this pair' and `that pair' are equal,

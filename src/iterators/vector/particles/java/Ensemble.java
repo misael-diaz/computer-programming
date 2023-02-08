@@ -84,7 +84,7 @@ public class Ensemble	// Particle Ensemble Class
 	{
 		this.isInvalidEnsembleSize(size);	// complains if invalid
 		this.elapsedTime = 0.0;			// zeroes the elapsed time
-		this.numOperations = 0.0;		// zeroes the #operations
+		this.numOperations = 0.0;		// zeroes the number of operations
 		this.size = size;			// sets the ensemble size
 	}
 
@@ -581,7 +581,6 @@ public class Ensemble	// Particle Ensemble Class
 	Synopsis:
 	Applies the Brute Force Algorithm to find the closest pair in a
 	partition. Note that the partition could be the whole dataset.
-	Increments the operations counter.
 
 	Inputs:
 	part		partition (or whole data set of points)
@@ -660,22 +659,21 @@ public class Ensemble	// Particle Ensemble Class
 
 	*/
 	{
-		// gets the coordinate objects of the particles P and Q
+		// gets the points P and Q
 		Point p = part.get(i), q = part.get(j);
 		// delegates the computation of the squared distance
 		return p.distance(q);
 	}
 
 
-	private Tuple distance (Vector<Point> L, Vector<Point> R,
-				Pair closestPair)
+	private Tuple distance (Vector<Point> L, Vector<Point> R, Pair closestPair)
 	/*
 
 	Synopsis:
 	Applies Brute Force Algorithm on the middle partition M. Note
 	that the middle partition is comprised by closest pair candidates
 	from the left and right partitions; it is not constructed
-	explicitly. Increments the operations counter.
+	explicitly.
 
 	Inputs:
 	L		closest pair candidates in left partition
@@ -706,9 +704,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private void divide (
-		Vector<Point> Px, Vector<Point> Lx, Vector<Point> Rx
-	)
+	private void divide (Vector<Point> Px, Vector<Point> Lx, Vector<Point> Rx)
 	/*
 
 	Synopsis:
@@ -732,14 +728,12 @@ public class Ensemble	// Particle Ensemble Class
 
 			// creates views of the left and right parititions
 
-			Lx.view(Px, 0, half);		// left partition
-			Rx.view(Px, half, size);	// right partition
+			Lx.view(Px, 0, half);		// view of the left partition
+			Rx.view(Px, half, size);	// view of the right partition
 	}
 
 
-	private Tuple combine (
-		Vector<Point> L, Vector<Point> R, Pair closestPair
-	)
+	private Tuple combine (Vector<Point> L, Vector<Point> R, Pair closestPair)
 	/*
 
 	Synopsis:
@@ -897,8 +891,8 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple combine (	Vector<Point> L, Vector<Point> R,
-				Pair closestPair, Distance quickDistance )
+	private Tuple combine (	Vector<Point> L, Vector<Point> R, Pair closestPair,
+				Distance quickDistance )
 	/*
 
 	Synopsis:
@@ -909,6 +903,7 @@ public class Ensemble	// Particle Ensemble Class
 	L		left partition
 	R		right partition
 	closestPair	current closest pair
+	quickDistance	lambda, user-defined distance computing method along an axis
 
 	Output:
 	tuple		the closest pair and the number of operations
@@ -1047,9 +1042,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple recurse (
-		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
-	)
+	private Tuple recurse (Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz)
 	/*
 
 	Synopsis:
@@ -1182,6 +1175,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the y axis
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
 				double y1 = P.getY(), y2 = Q.getY();
@@ -1265,6 +1259,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the y axis
 			Distance yAxisDist = (Point P, Point Q) ->
 			{
 				double y1 = P.getY(), y2 = Q.getY();
@@ -1288,9 +1283,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Tuple divide3D (
-		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
-	)
+	private Tuple divide3D (Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz)
 	/*
 
 	Synopsis:
@@ -1348,6 +1341,7 @@ public class Ensemble	// Particle Ensemble Class
 				closestPairLeft, closestPairRight
 			);
 
+			// defines the (squared) distance computation along the z axis
 			Distance zAxisDist = (Point p, Point q) ->
 			{
 				// complains if points belong to the base class
@@ -1375,8 +1369,8 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private void sort (	Vector<Point> Py, Vector<Point> Lx,
-				Vector<Point> Ly, Vector<Point> Ry     )
+	private void sort (Vector<Point> Py, Vector<Point> Lx, Vector<Point> Ly,
+			   Vector<Point> Ry)
 	/*
 
 	Synopsis:
@@ -1804,8 +1798,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Complains if the dataset of points is not x-y sorted or if it has
-	duplicates.
+	Complains if the dataset of points is not x-y sorted or if it has duplicates.
 
 	Input:
 	data		dataset of points
@@ -1841,8 +1834,7 @@ public class Ensemble	// Particle Ensemble Class
 	/*
 
 	Synopsis:
-	Returns true if there are duplicated points, returns false
-	otherwise.
+	Returns true if there are duplicated points, returns false otherwise.
 
 	Input:
 	points		dataset of points

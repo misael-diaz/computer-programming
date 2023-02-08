@@ -445,9 +445,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	}
 
 
-	private int linearSearch (
-		T [] data, int begin, int end, T key, Comparator<T> comp
-	)
+	private int linearSearch (T[] data, int begin, int end, T key, Comparator<T> comp)
 	// searches linearly for the key and returns its positional index
 	{
 		for (int i = begin; i != end; ++i)
@@ -607,6 +605,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		else
 			System.out.println("pass");
 
+		// checks if the elements of the vector `yxSortedPoints' are y-x sorted;
+		// if they are, the binary search algorithm must be able to find all the
+		// elements without failures
 		for (Point p : vector)
 		{
 			boolean isContained = yxSortedPoints.contains(
@@ -627,6 +628,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
 		for (Point p : vector)
+		// as in the above test but uses the linear search algorithm
 		{
 			boolean isContained = yxSortedPoints.contains(
 				p, new Point.Comparator(), "linear"
@@ -651,9 +653,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	/*
 
 	Synopsis:
-	Checks that when views go out-of-scope the data present in the
-	original vector is not released from memory. The expectation is
-	that references to the stored data get nullified.
+	Checks that when views go out-of-scope the data present in the original vector
+	is not released from memory. The expectation is that references to the stored
+	data get nullified.
 
 	*/
 	{
@@ -865,14 +867,13 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	}
 
 
-	private static void bisect     (Vector<Point> vector,
-					Vector<Point> first,
-					Vector<Point> second)
+	private static void bisect (Vector<Point> vector, Vector<Point> first,
+				    Vector<Point> second)
 	/*
 
 	Synopsis:
-	Creates views of the first and second halves of the data
-	stored in the given vector.
+	Creates views of the first and second halves of the data stored in the passed
+	vector.
 
 	Inputs:
 	vector		vector storing all of the data
@@ -900,8 +901,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 	/*
 
 	Synopsis:
-	Checks that by means of an iterator all the vector elements are
-	traversed.
+	Checks that by means of an iterator all the vector elements are traversed.
 
 	*/
 	{
@@ -934,8 +934,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		System.out.printf("test-iterator[0]: ");
 		/*
 
-		informs if the number of elements is not equal to
-		the vector size
+		informs if the number of elements is not equal to the vector size
 
 		*/
 		if (numel != size)
@@ -949,8 +948,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 		for (Point P : points)
 		/*
 
-		checks for differences between the vector elements
-		and the original data array
+		checks for differences between the vector elements and the original array
 
 		*/
 		{
