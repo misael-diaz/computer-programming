@@ -32,6 +32,7 @@ public class Elemental
 	{
 		example16C();	// example 1.6-C (based on problems from reference [1])
 		example16D();	// example 1.6-D (based on problems from reference [1])
+		example16E();	// example 1.6-E (based on problems from reference [1])
 	}
 
 
@@ -46,7 +47,7 @@ public class Elemental
 
 		int size = 8;			// sets the size of the array `x'
 		double xi = 0.0;		// sets the initial value of the array `x'
-		double xf = 8.0;		// sets the final value of the array `x'
+		double xf = 7.0;		// sets the final value of the array `x'
 		double [] y = new double [size];// allocates the `y' array of doubles
 
 
@@ -114,6 +115,36 @@ public class Elemental
 	}
 
 
+	private static void example16E ()
+	/*
+
+	Example 1.6-E:
+	Computes y = f(x) = 0.4 * x^4 + 3.1 * x^2 - 162.3 * x - 80.7 for x = 14:2:-2
+	(Note: x = 14, 12, 10, ..., 4, 2).
+
+	*/
+	{
+
+		int size = 7;			// sets the size of the array `x'
+		double xi = 14.0;		// sets the initial value of the array `x'
+		double xf =  2.0;		// sets the final value of the array `x'
+
+
+		// generates the `x' array with values in the symmetric range [xi, xf]
+		double [] x = linspace(xi, xf, size);
+
+
+		// maps streamed `x' into array `y' via elemental operations
+		double [] y = Arrays.stream(x).map( elem -> f(elem) ).toArray();
+
+
+		System.out.println("Example 1.6-E: 14, 12, 10, ..., 4, 2");
+
+		// tabulates results in a Pandas-like format
+		log(x, y);
+	}
+
+
 	private static void log (double [] x)
 	// logs the values stored in the array `x' (as in the Python examples)
 	{
@@ -144,6 +175,19 @@ public class Elemental
 			{
 				System.out.printf(" %.0f", x[i]);
 			}
+		}
+	}
+
+
+	private static void log (double [] x, double [] y)
+	// overloads the log() method to display the results of exercise 1.6-E
+	{
+		// displays a Pandas-like header for exercise 1.6-E
+		System.out.printf("\n%7d %8d\n", 0, 1);
+		for (int i = 0; i != x.length; ++i)
+		{
+			String fstring = ("%1d %5.1f %8.1f\n");
+			System.out.printf(fstring, i, x[i], y[i]);
 		}
 	}
 
