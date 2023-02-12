@@ -42,6 +42,7 @@ x = x.astype(int)
 print('\nExample 1.6-C: i = [0, 8)')
 print(x)    # equivalent to print(r_[0:8])
 
+print(f'references the 4th element of x: {x[3]:+.15e}')
 
 """
 Example 1.6-D: Non-unit, step, incrementing, sequences
@@ -57,6 +58,7 @@ x = x.astype(int)
 print('\nExample 1.6-D: i = 0, 2, 4, ..., 12, 14')
 print(x)    # equivalent to print(r_[0:16:2])
 
+print(f'references the 8th element of x: {x[7]:+.15e}')
 
 """
 Example 1.6-E: Decrementing sequences
