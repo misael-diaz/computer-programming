@@ -46,7 +46,7 @@ public class Elemental
 
 		int size = 8;			// sets the size of the array `x'
 		double xi = 0.0;		// sets the initial value of the array `x'
-		double xf = 8.0;		// sets the final value of the array `x'
+		double xf = 7.0;		// sets the final value of the array `x'
 		double [] y = new double [size];// allocates the `y' array of doubles
 
 
