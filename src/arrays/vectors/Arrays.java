@@ -20,7 +20,7 @@
  */
 
 
-class Arrays
+public class Arrays
 {
 
 	public static void main (String[] args)
@@ -97,6 +97,15 @@ class Arrays
 			"references the 7th element of y: %12.6f\n", y[6]
 		);
 		System.out.println("");
+
+
+		// tabulates results in Pandas style
+		for (int i = 0; i != size; ++i)
+		{
+			String fstr = ("%2d %5.1f %8.1f\n"); 	// format-string
+			System.out.printf(fstr, i, x[i], y[i]);
+		}
+
 	}
 }
 
