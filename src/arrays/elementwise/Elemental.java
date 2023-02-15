@@ -33,6 +33,7 @@ public class Elemental
 		example16C();	// example 1.6-C (based on problems from reference [1])
 		example16D();	// example 1.6-D (based on problems from reference [1])
 		example16E();	// example 1.6-E (based on problems from reference [1])
+		sumSquares();	// tabulates sequence and its cumulative sum
 	}
 
 
@@ -142,6 +143,54 @@ public class Elemental
 
 		// tabulates results in a Pandas-like format
 		log(x, y);
+	}
+
+
+	private static void sumSquares ()
+	// displays the sum of squares of the numbers in the arange [1, 9).
+	{
+		int numel = 8;				// number of sequence elements
+		int [][] res = new int [3][numel];	// creates data placeholder
+		int [] idx = res[0];			// series index, n
+		int [] seq = res[1];			// sequence s(n)
+		int [] cumsum = res[2];			// cumulative sum cumsum(n)
+
+
+		// fills the placeholder array according to storage order in memory to
+		// optimize the use of the CPU cache:
+
+
+		for (int i = 0; i != numel; ++i)
+		{
+			idx[i] = (i + 1);
+		}
+
+
+		for (int i = 0; i != numel; ++i)
+		{
+			seq[i] = (idx[i] * idx[i]);
+		}
+
+
+		int sum = 0;
+		for (int i = 0; i != numel; ++i)
+		{
+			sum += seq[i];
+			cumsum[i] = sum;
+		}
+
+
+		System.out.println("\nSum of Squares:\n");
+
+
+		// displays Pandas-like table header
+		System.out.printf(" %3d %3d %4d\n", 0, 1, 2);
+		for (int i = 0; i != numel; ++i)
+		// tabulates the results in Pandas style
+		{
+			String fstr = ("%1d %2d %3d %4d\n");
+			System.out.printf(fstr, i, idx[i], seq[i], cumsum[i]);
+		}
 	}
 
 
