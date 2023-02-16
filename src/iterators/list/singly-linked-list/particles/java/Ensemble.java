@@ -131,10 +131,10 @@ public class Ensemble	// Particle Ensemble Class
 		// creates a new dataset of distinct points
 		List<Point> points = this.createDataset1D();
 		// saves the closest pair found by the recursive algorithm
-		Pair closestPairRecursive = this.recursive1DMethod(points);
+		Pair closestPairRecursive = this.timeRecursive1D(points);
 
 		// uses the brute force algorithm to find the closest pair
-		Pair closestPair = this.bruteForceMethod(points);
+		Pair closestPair = this.timeBruteForce(points);
 
 		if ( !closestPair.equalTo(closestPairRecursive) )
 		// complains if the closest pairs are different
@@ -164,10 +164,10 @@ public class Ensemble	// Particle Ensemble Class
 		// creates a new dataset of distinct points
 		List<Point> points = this.createDataset1D();
 		// saves the closest pair found by the brute force method
-		Pair closestPairBruteForce = this.bruteForceMethod(points);
+		Pair closestPairBruteForce = this.timeBruteForce(points);
 
 		// finds the closest pair via divide and conquer algorithm
-		Pair closestPair = this.recursive1DMethod(points);
+		Pair closestPair = this.timeRecursive1D(points);
 
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
@@ -229,7 +229,7 @@ public class Ensemble	// Particle Ensemble Class
 	/* implementations */
 
 
-	private Pair bruteForceMethod (List<Point> points)
+	private Pair timeBruteForce (List<Point> points)
 	/*
 
 	Synopsis:
@@ -265,7 +265,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Pair recursive1DMethod (List<Point> points)
+	private Pair timeRecursive1D (List<Point> points)
 	/*
 
 	Synopsis:

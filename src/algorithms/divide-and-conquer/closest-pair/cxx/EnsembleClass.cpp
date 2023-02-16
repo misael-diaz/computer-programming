@@ -94,7 +94,7 @@ None
 	this -> createDataset1D(points);
 
 	// uses the brute force algorithm to find the closest pair
-	Pair *closestPair = this -> bruteForceMethod(points);
+	Pair *closestPair = this -> timeBruteForce(points);
 	handler.add(closestPair);
 
 	// displays info about the closest pair on the console
@@ -138,12 +138,12 @@ None
 
 
 	// saves the closest pair found by the Brute Force Algorithm
-	Pair *closestPairBruteForce = this -> bruteForceMethod(points);
+	Pair *closestPairBruteForce = this -> timeBruteForce(points);
 	handler.add(closestPairBruteForce);
 
 
 	// uses the 1D Divide And Conquer Algorithm to find the closest pair
-	Pair *closestPair = this -> recursive1DMethod(points);
+	Pair *closestPair = this -> timeRecursive1D(points);
 	handler.add(closestPair);
 
 
@@ -169,7 +169,7 @@ None
 /* implementations */
 
 
-Pair* Ensemble::bruteForceMethod (std::vector<Point*>& points)
+Pair* Ensemble::timeBruteForce (std::vector<Point*>& points)
 /*
 
 Synopsis:
@@ -229,7 +229,7 @@ closestPair	the closest pair
 }
 
 
-Pair* Ensemble::recursive1DMethod (std::vector<Point*>& points)
+Pair* Ensemble::timeRecursive1D (std::vector<Point*>& points)
 /*
 
 Synopsis:

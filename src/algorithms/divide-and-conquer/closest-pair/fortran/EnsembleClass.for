@@ -49,10 +49,10 @@ public :: Ensemble_tests
             procedure, public :: recursive1D
             procedure, public :: recursive1D2           ! (version 2)
             ! setters (or timers)
-            procedure :: bruteForceMethod
-            procedure :: bruteForceMethodArrayBased
-            procedure :: recursive1DMethod
-            procedure :: recursive1DMethod2             ! (version 2)
+            procedure :: timeBruteForce
+            procedure :: timeBruteForceArrayBased
+            procedure :: timeRecursive1D
+            procedure :: timeRecursive1D2               ! (version 2)
             ! implements recursive algorithms
             procedure :: recurse
             procedure :: recurse2                       ! (version 2)
@@ -160,21 +160,21 @@ public :: Ensemble_tests
 
     interface
 
-        module subroutine bruteForceMethod (this)
+        module subroutine timeBruteForce (this)
         ! invokes the Brute Force Algorithm and sets (as a side-effect) the elapsed-time
         ! and the number of operations executed by the algorithm to find the closest pair
             class(Ensemble), intent(inout) :: this
         end subroutine
 
 
-        module subroutine bruteForceMethodArrayBased (this)
+        module subroutine timeBruteForceArrayBased (this)
         ! invokes the Brute Force Algorithm and sets (as a side-effect) the elapsed-time
         ! and the number of operations executed by the algorithm to find the closest pair
             class(Ensemble), intent(inout) :: this
         end subroutine
 
 
-        module subroutine recursive1DMethod (this)
+        module subroutine timeRecursive1D (this)
         ! invokes the 1D Divide And Conquer Algorithm and sets (as a side-effect) the
         ! elapsed-time and the number of operations executed by the algorithm to find
         ! the closest pair
@@ -182,8 +182,8 @@ public :: Ensemble_tests
         end subroutine
 
 
-        module subroutine recursive1DMethod2 (this)
-        ! as recursive1DMethod() but does not (de)constructs derived-type objects (ver 2)
+        module subroutine timeRecursive1D2 (this)
+        ! as recursive1D() but does not (de)constructs derived-type objects (ver 2)
             class(Ensemble), intent(inout) :: this
         end subroutine
 
