@@ -80,7 +80,7 @@ contains
 
         ! caters invalid ensemble sizes
         if (this % size >= 2) then
-            call this % bruteForceMethod()
+            call this % timeBruteForce()
         endif
 
         return
@@ -93,7 +93,7 @@ contains
 
         ! caters invalid ensemble sizes
         if (this % size >= 2) then
-            call this % bruteForceMethodArrayBased()
+            call this % timeBruteForceArrayBased()
         endif
 
         return
@@ -106,7 +106,7 @@ contains
 
         ! caters invalid ensemble sizes
         if (this % size >= 2) then
-            call this % recursive1DMethod()
+            call this % timeRecursive1D()
         endif
 
         return
@@ -119,14 +119,14 @@ contains
 
         ! caters invalid ensemble sizes
         if (this % size >= 2) then
-            call this % recursive1DMethod2()
+            call this % timeRecursive1D2()
         endif
 
         return
     end subroutine
 
 
-    module subroutine bruteForceMethod (this)
+    module subroutine timeBruteForce (this)
 !
 !   Synopsis:
 !   Times the Object Oriented implementation of the Brute Force Algorithm.
@@ -189,10 +189,10 @@ contains
         closestPair => null()
 
         return
-    end subroutine bruteForceMethod
+    end subroutine timeBruteForce
 
 
-    module subroutine recursive1DMethod (this)
+    module subroutine timeRecursive1D (this)
 !
 !   Synopsis:
 !   Times the implementation of the 1D Divide And Conquer Algorithm.
@@ -291,10 +291,10 @@ contains
         t => null()
 
         return
-    end subroutine recursive1DMethod
+    end subroutine timeRecursive1D
 
 
-    module subroutine recursive1DMethod2 (this)
+    module subroutine timeRecursive1D2 (this)
 !
 !   Synopsis:
 !   Times the implementation of the (version 2) 1D Divide And Conquer Algorithm.
@@ -421,10 +421,10 @@ contains
         deallocate(points, Px)
 
         return
-    end subroutine recursive1DMethod2
+    end subroutine timeRecursive1D2
 
 
-    module subroutine bruteForceMethodArrayBased (this)
+    module subroutine timeBruteForceArrayBased (this)
     ! times the FORTRAN77 (procedural) implementation of the Brute Force Algorithm
         class(Ensemble), intent(inout) :: this
         class(Point), allocatable :: dataset(:)
@@ -476,7 +476,7 @@ contains
         closestPair => null()
 
         return
-    end subroutine bruteForceMethodArrayBased
+    end subroutine timeBruteForceArrayBased
 
 
     module recursive function recurse (this, beginPosition, endPosition, Px) result(t)

@@ -94,10 +94,10 @@ class Ensemble	// Ensemble of Points Class
 
 
 	// times the Brute Force Algorithm
-	Pair* bruteForceMethod (std::vector<Point*>& points);
+	Pair* timeBruteForce (std::vector<Point*>& points);
 
 	// times the 1D Divide And Conquer Algorithm
-	Pair* recursive1DMethod (std::vector<Point*>& points);
+	Pair* timeRecursive1D (std::vector<Point*>& points);
 
 	// implements the 1D Divide And Conquer Algorithm
 	std::tuple<Pair*, double> recurse (const std::vector<Point*>& Px) const;

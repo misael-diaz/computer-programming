@@ -131,10 +131,10 @@ public class Ensemble	// Particle Ensemble Class
 		// creates a new dataset of distinct points
 		Vector<Point> points = this.createDataset1D();
 		// saves the closest pair found by the recursive algorithm
-		Pair closestPairRecursive = this.recursive1DMethod(points);
+		Pair closestPairRecursive = this.timeRecursive1D(points);
 
 		// uses the brute force algorithm to find the closest pair
-		Pair closestPair = this.bruteForceMethod(points);
+		Pair closestPair = this.timeBruteForce(points);
 
 		if ( !closestPair.equalTo(closestPairRecursive) )
 		// complains if the closest pairs are different
@@ -164,10 +164,10 @@ public class Ensemble	// Particle Ensemble Class
 		// creates a new dataset of distinct points
 		Vector<Point> points = this.createDataset1D();
 		// saves the closest pair found by the brute force method
-		Pair closestPairBruteForce = this.bruteForceMethod(points);
+		Pair closestPairBruteForce = this.timeBruteForce(points);
 
 		// finds the closest pair via divide and conquer algorithm
-		Pair closestPair = this.recursive1DMethod(points);
+		Pair closestPair = this.timeRecursive1D(points);
 
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
@@ -201,10 +201,10 @@ public class Ensemble	// Particle Ensemble Class
 		Py.sort( new Point.Comparator() );
 
 		// saves the closest pair found by the brute force method
-		Pair closestPairBruteForce = this.bruteForceMethod(Px);
+		Pair closestPairBruteForce = this.timeBruteForce(Px);
 
 		// finds the closest pair via divide and conquer algorithm
-		Pair closestPair = this.recursive2DMethod(Px, Py);
+		Pair closestPair = this.timeRecursive2D(Px, Py);
 
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
@@ -247,7 +247,7 @@ public class Ensemble	// Particle Ensemble Class
 		Pair closestPairBruteForce = dataBruteForce.getClosestPair();
 
 		// finds the closest pair via divide and conquer algorithm
-		Pair closestPair = this.recursive3DMethod(Px, Py, Pz);
+		Pair closestPair = this.timeRecursive3D(Px, Py, Pz);
 
 		if ( !closestPair.equalTo(closestPairBruteForce) )
 		// complains if the closest pairs are different
@@ -313,7 +313,7 @@ public class Ensemble	// Particle Ensemble Class
 	/* implementations */
 
 
-	private Pair bruteForceMethod (Vector<Point> points)
+	private Pair timeBruteForce (Vector<Point> points)
 	/*
 
 	Synopsis:
@@ -349,7 +349,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Pair recursive1DMethod (Vector<Point> points)
+	private Pair timeRecursive1D (Vector<Point> points)
 	/*
 
 	Synopsis:
@@ -386,7 +386,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Pair recursive2DMethod (Vector<Point> Px, Vector<Point> Py)
+	private Pair timeRecursive2D (Vector<Point> Px, Vector<Point> Py)
 	/*
 
 	Synopsis:
@@ -424,7 +424,7 @@ public class Ensemble	// Particle Ensemble Class
 	}
 
 
-	private Pair recursive3DMethod (
+	private Pair timeRecursive3D (
 		Vector<Point> Px, Vector<Point> Py, Vector<Point> Pz
 	)
 	/*
