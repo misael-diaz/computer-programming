@@ -148,7 +148,7 @@ void testFrequency ()
 		{
 			int count = (-part[i]);
 			double rand = rands[i];
-			char format [] = ("%+.15e %d \n");
+			char format [] = ("%+.15e %d\n");
 			fprintf(file, format, rand, count);
 		}
 	}
