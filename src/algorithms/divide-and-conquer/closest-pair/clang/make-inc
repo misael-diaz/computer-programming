@@ -1,0 +1,24 @@
+#
+# Closest Pair Lab						February 20, 2023
+#
+# source: make-inc
+# author: @misael-diaz
+#
+# Synopsis:
+# Defines the include file for building the program with GNU make.
+#
+# Copyright (c) 2023 Misael Diaz-Maldonado
+# This file is released under the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+
+# clang compiler
+CC = gcc
+
+# options
+CCOPT = -g -Wall -Wextra -Og
+CCOPT = -O2 -ftree-vectorize -fopt-info-optimized
+
+# libraries
+LIBS = -lm
