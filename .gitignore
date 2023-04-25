@@ -1,0 +1,8 @@
+*.class
+*.dat
+*.png
+*.swp
+*.o
+*backup*
+*old*
+
