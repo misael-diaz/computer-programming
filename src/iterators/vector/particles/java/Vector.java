@@ -29,19 +29,18 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 
-public final class Vector<T extends Comparable<T>> implements Iterable<T>
 // Generic Vector Class
+public final class Vector<T extends Comparable<T>> implements Iterable<T>
 {
 
-  class Iterator<T extends Comparable<T>> implements java.util.Iterator<T>
   // Vector Iterator Class
+  class Iterator<T extends Comparable<T>> implements java.util.Iterator<T>
   {
     private int index;	// iterator (data array index)
     private int limit;	// iterator limit
     private T[] array;	// reference to the stored data
 
-    Iterator (Vector<T> vector)
-    // constructor
+    Iterator (Vector<T> vector) // constructor
     {
       this.index = vector.begin;
       this.limit = vector.avail;
@@ -50,15 +49,15 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
     @Override
     public boolean hasNext ()
-    // returns true if there is a next element, false otherwise
     {
+      // returns true if there is a next element, false otherwise
       return (this.index != this.limit);
     }
 
     @Override
     public T next ()
-    // returns a copy of the ith element and advances iterator
     {
+      // returns a copy of the ith element and advances iterator
       int i = this.index;
       ++(this.index);
       return ( Arrays.copyOfRange(this.array, i, i + 1) )[0];
@@ -66,13 +65,10 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
   }
 
 
-  /* defines the default vector size */
+  private static final int DEFAULT_SIZE = 16;	// defines the default vector size
 
 
-  private static final int DEFAULT_SIZE = 16;
-
-
-  /* component(s) */
+  // component(s)
 
 
   private Function<Integer, T[]> allocator;	// data allocator
@@ -85,12 +81,12 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
   private boolean isResized;			// true if resized
 
 
-  /* constructor(s) */
+  // constructor(s)
 
 
   Vector ()
-  // constructs an empty view
   {
+    // constructs an empty view
     this.allocator = null;
     this.array = null;
     this.begin = 0;
@@ -103,8 +99,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   Vector (Function<Integer, T[]> allocator)
-  // constructs a vector<T> from the allocator of the object type
   {
+    // constructs a vector<T> from the allocator of the object type
     int size = DEFAULT_SIZE;
 
     this.allocator = allocator;
@@ -119,8 +115,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   Vector (int size, Function<Integer, T[]> allocator)
-  // constructs a vector<T> with a storage capacity equal to `size'
   {
+    // constructs a vector<T> with a storage capacity equal to `size'
     this.allocator = allocator;
     this.array = allocator.apply(size);
     this.begin = 0;
@@ -133,8 +129,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   Vector (Vector<T> vector)
-  // copy constructor (fits vector to size for saving space)
   {
+    // copy constructor (fits vector to size for saving space)
     this.allocator = vector.allocator;
     this.array = vector.get();
     this.begin = 0;
@@ -146,8 +142,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
   }
 
   Vector (Vector<T> vector, int begin, int end)
-  // creates a view of the given range [b, e) of a vector
   {
+    // Synopsis: creates a view of the given range [b, e) of a vector
+
     // creates an empty view if an invalid range is supplied
     end = (end < begin)? begin : end;
     // applies offset (for the given vector might be a view itself)
@@ -165,48 +162,49 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
   }
 
 
-  /* methods */
+  // methods
 
 
   @Override
   public java.util.Iterator<T> iterator ()
-  // implements the iterator interface
   {
+    // implements the iterator interface
     return ( new Iterator<>(this) );
   }
 
 
   public void clear ()
-  // effectively clears the vector elements
   {
+    // effectively clears the vector elements
     this.avail = this.begin;
   }
 
 
   public int size ()
-  // returns the number of elements stored in the vector
   {
+    // returns the number of elements stored in the vector
     return (this.avail - this.begin);
   }
 
 
   public int capacity ()
-  // returns the storage capacity of the vector
   {
+    // returns the storage capacity of the vector
     return (this.limit - this.begin);
   }
 
 
   public boolean isResized ()
-  // returns the resized state
   {
+    // returns the resized state
     return this.isResized;
   }
 
 
   public void view (Vector<T> vector, int begin, int end)
-  // makes a view of the given vector in the range [b, e)
   {
+    // Synopsis: makes a view of the given vector in the range [b, e)
+
     // applies offset (for the given vector might be a view itself)
     int b = (vector.begin + begin), e = (vector.begin + end);
     this.allocator = vector.allocator;
@@ -223,37 +221,37 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public T[] get ()
-  // returns a copy of the data array stored in the vector
   {
+    // returns a copy of the data array stored in the vector
     return Arrays.copyOfRange(this.array, this.begin, this.avail);
   }
 
 
   public T get (int i)
-  // returns a copy of the ith element
   {
+    // Synopsis: returns a copy of the ith element
     i += this.begin;	// applies offset to account for views
     return ( Arrays.copyOfRange(this.array, i, i + 1) )[0];
   }
 
 
   public int search (T key)
-  /*
-
-       Synopsis:
-       Returns the positional index of the key. If the key is present,
-       the method returns a positional index in the asymmetric range
-       [this.begin, this.avail); otherwise it returns an invalid index.
-
-       Input:
-       key	the element being searched for
-
-       Output:
-       pos	equal to the positional index if present,
-       otherwise it is equal to -1 (invalid index)
-
-  */
   {
+    //
+    //
+    //  Synopsis:
+    //  Returns the positional index of the key. If the key is present,
+    //  the method returns a positional index in the asymmetric range
+    //  [this.begin, this.avail); otherwise it returns an invalid index.
+    //
+    //  Input:
+    //  key	the element being searched for
+    //
+    //  Output:
+    //  pos	equal to the positional index if present,
+    //  	otherwise it is equal to -1 (invalid index)
+    //
+    //
     T k = key;
     int b = this.begin;
     int e = this.avail;
@@ -273,26 +271,27 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public int search (T key, Comparator<T> comp, String method)
-  /*
-
-       Synopsis:
-       Returns the positional index of the key. If the key is present,
-       the method returns a positional index in the asymmetric range
-       [this.begin, this.avail); otherwise it returns an invalid index.
-       Uses the comparator supplied by the user to compare the vector
-       elements and applies the search algorithm requested by the user.
-
-       Inputs:
-       key		the element being searched for
-       comp		comparator
-       method		either 'binary' or 'linear' search
-
-       Output:
-       pos		equal to the positional index if present,
-       otherwise it is equal to -1 (invalid index)
-
-  */
   {
+    //
+    //
+    //  Synopsis:
+    //  Returns the positional index of the key. If the key is present,
+    //  the method returns a positional index in the asymmetric range
+    //  [this.begin, this.avail); otherwise it returns an invalid index.
+    //  Uses the comparator supplied by the user to compare the vector
+    //  elements and applies the search algorithm requested by the user.
+    //
+    //  Inputs:
+    //  key		the element being searched for
+    //  comp		comparator
+    //  method		either 'binary' or 'linear' search
+    //
+    //  Output:
+    //  pos		equal to the positional index if present,
+    //			otherwise it is equal to -1 (invalid index)
+    //
+    //
+
     T k = key;
     Comparator<T> c = comp;
     int b = this.begin;
@@ -314,8 +313,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public boolean contains (T key)
-  // returns true if the key is contained, false otherwise
   {
+    // returns true if the key is contained, false otherwise
     if ( this.search(key) < 0)
       return false;
     else
@@ -324,8 +323,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public boolean contains (T key, Comparator<T> comp, String method)
-  // as above but uses the comparator and the requested method
   {
+    // as above but uses the comparator and the requested method
     if ( this.search(key, comp, method) < 0)
       return false;
     else
@@ -334,29 +333,29 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public void push_back (Supplier<T> copyConstructor)
-  /*
-
-       Synopsis:
-       Pushes a copy of the given element at the back of the vector.
-       The user must supply the copy constructor to the method instead
-       of the element itself.
-
-  */
   {
+    //
+    //
+    //  Synopsis:
+    //  Pushes a copy of the given element at the back of the vector.
+    //  The user must supply the copy constructor to the method instead
+    //  of the element itself.
+    //
+    //
     if (!this.isView)
-    // disables the push-back() method for views
     {
+      // disables the push-back() method for views
       this.back_inserter(copyConstructor);
     }
   }
 
 
   public void sort ()
-  // sorts the vector elements
   {
+    // Synopsis: sorts the vector elements
     if (!this.isView)
-    // disables the sort() method for views
     {
+      // disables the sort() method for views
       Arrays.sort(this.array, this.begin, this.avail);
       this.isSorted = true;
     }
@@ -364,32 +363,26 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public void sort (Comparator<T> comp)
-  // uses the supplied comparator for sorting the vector elements
   {
+    // Synopsis: uses the supplied comparator for sorting the vector elements
     if (!this.isView)
-    // disables the sort() method for views
     {
+      // disables the sort() method for views
       Arrays.sort(array, begin, avail, comp);
 
-      /*
-
-	 sets to false because the user-defined comparator
-	 might be incompatible with the default sorting
-	 of the type T
-
-      */
-
+      // NOTE: sets to false because the user-defined comparator might be incompatible
+      // with the default sorting of the type T
       this.isSorted = false;
     }
   }
 
 
-  /* implementations */
+  // implementations
 
 
   private void back_inserter (Supplier<T> copyConstructor)
-  // pushes (a copy of the) data unto the back of the vector
   {
+    // Synopsis: pushes (a copy of the) data unto the back of the vector
 
 
     // increases the memory allocation for storage if needed
@@ -409,12 +402,13 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private void grow ()
-  // doubles the vector size
   {
+    // Synopsis: doubles the vector size
+
     // creates a backup of the stored data
     T [] data = this.get();
 
-    /* doubles the memory allocation and restores the data */
+    // doubles the memory allocation and restores the data
 
     this.limit *= 2;
     this.array = this.allocator.apply(this.limit);
@@ -427,14 +421,14 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private int linearSearch (T [] data, int begin, int end, T key)
-  /*
-
-       Synopsis:
-       Searches linearly for the given key in the range [begin, end). Returns
-       its positional index if present, otherwise returns -1 (invalid index).
-
-  */
   {
+    //
+    //
+    //       Synopsis:
+    //       Searches linearly for the given key in the range [begin, end). Returns
+    //       its positional index if present, otherwise returns -1 (invalid index).
+    //
+    //
     for (int i = begin; i != end; ++i)
     {
       if (key.compareTo(data[i]) == 0)
@@ -446,8 +440,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private int linearSearch (T[] data, int begin, int end, T key, Comparator<T> comp)
-  // searches linearly for the key and returns its positional index
   {
+    // Synopsis: searches linearly for the key and returns its positional index
     for (int i = begin; i != end; ++i)
     {
       if (comp.compare(key, data[i]) == 0)
@@ -459,8 +453,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   public static void main (String [] args)
-  // tests (some of) the methods of the vector class
   {
+    // Synopsis: tests (some of) the methods of the vector class
     testPushBackMethod();
     testSortMethod();
     testViews();
@@ -471,21 +465,17 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void testPushBackMethod ()
-  /*
-
-       Synopsis:
-       Checks if the storage order is preserved as it should be.
-
-  */
   {
+    // Synopsis: Checks if the storage order is preserved as it should be.
+
     // constructs a vector of points from allocator
     int size = (0x00100000);
     Vector<Point> vector = new Vector<> (size, (Integer sz) -> new Point[sz]);
 
     Random r = new Random();
     Point [] points = new Point[size];
-    for (int i = 0; i != size; ++i)
     // effectively pushes points unto the back of the vector
+    for (int i = 0; i != size; ++i)
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Point p = new Point(x, y);
@@ -504,8 +494,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
     int fails = 0;
-    for (int i = 0; i != size; ++i)
     // checks if the vector preserves the storing order
+    for (int i = 0; i != size; ++i)
     {
       Point P = points[i];
       Point Q = vector.get(i);
@@ -540,15 +530,16 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void testSortMethod ()
-  // checks if a sorted vector is actually sorted
   {
+    // Synopsis: checks if a sorted vector is actually sorted
+
     // constructs a vector of points from allocator
     Vector<Point> vector = new Vector<> ( (Integer size) -> new Point[size] );
 
     int size = (0x00001000);
     Random r = new Random();
-    for (int i = 0; i != size; ++i)
     // effectively pushes points unto the back of the vector
+    for (int i = 0; i != size; ++i)
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Point p = new Point(x, y);
@@ -562,8 +553,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
     int fails = 0;
     Point [] points = vector.get();
-    for (int i = 0; i != (size - 1); ++i)
     // checks if the vector elements are not in ascending order
+    for (int i = 0; i != (size - 1); ++i)
     {
       Point P = points[i];
       Point Q = points[i + 1];
@@ -584,8 +575,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
     Point [] data = yxSortedPoints.get();
-    for (int i = 0; i != (size - 1); ++i)
     // checks if y-x sorted elements are not in ascending order
+    for (int i = 0; i != (size - 1); ++i)
     {
       Point P = data[i];
       Point Q = data[i + 1];
@@ -621,8 +612,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
       System.out.println("pass");
 
 
-    for (Point p : vector)
     // as in the above test but uses the linear search algorithm
+    for (Point p : vector)
     {
       boolean isContained = yxSortedPoints.contains(p, new Point.Comparator(), "linear");
 
@@ -642,15 +633,12 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void testViews ()
-  /*
-
-       Synopsis:
-       Checks that when views go out-of-scope the data present in the original vector
-       is not released from memory. The expectation is that references to the stored
-       data get nullified.
-
-  */
   {
+    //  Synopsis:
+    //  Checks that when views go out-of-scope the data present in the original vector
+    //  is not released from memory. The expectation is that references to the stored
+    //  data get nullified.
+
     // constructs a vector of points from allocator
     Vector<Point> vector = new Vector<> ( (Integer size) -> new Point[size] );
 
@@ -659,14 +647,11 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
     createViews(vector);
 
 
+    // NOTE:
+    // if we do not get a null pointer exception, this means
+    // that the views were nullified and the contained data
+    // in the original vector was preserved as it should be
     for(int i = 0; i != vector.size(); ++i)
-    /*
-
-	 if we do not get a null pointer exception, this means
-	 that the views were nullified and the contained data
-	 in the original vector was preserved as it should be
-
-    */
     {
       Point point = vector.get(i);
       double x = point.getX(), y = point.getY();
@@ -676,14 +661,14 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void createViews (Vector<Point> vector)
-  // creates views each containing half of the contained data
   {
+    // Synopsis: creates views each containing half of the contained data
 
 
     int size = (0x00000010);
     Random r = new Random();
-    for (int i = 0; i != size; ++i)
     // effectively pushes points unto the back of the vector
+    for (int i = 0; i != size; ++i)
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Point p = new Point(x, y);
@@ -703,8 +688,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
     int numel = 0;
     int diffs = 0;
-    for (int i = 0; i != first.size(); ++i)
     // counts #differences between the view and the original
+    for (int i = 0; i != first.size(); ++i)
     {
       Point P = vector.get(i);
       Point Q = first.get(i);
@@ -724,8 +709,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
       System.out.println("pass");
 
 
-    for (int i = 0; i != second.size(); ++i)
     // counts #differences between the view and the original
+    for (int i = 0; i != second.size(); ++i)
     {
       // Note: applies offset to get the same data
       Point P = vector.get(first.size() + i);
@@ -747,12 +732,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
     System.out.printf("test-view[2]: ");
-    /*
-
-       checks that the vector has been traversed, meaning that
-       we have considered all the elements in the previous tests
-
-    */
+    // Note:
+    // checks that the vector has been traversed, meaning that
+    // we have considered all the elements in the previous tests
     if (vector.size() != numel)
       System.out.println("FAIL");
     else
@@ -762,23 +744,20 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void testBisect ()
-  /*
-
-       Synopsis:
-       Bisects a vector into two views having each half of the data.
-       Then, it checks that the data contained in the views is consistent
-       with that of the vector as it should be.
-
-  */
   {
+    //  Synopsis:
+    //  Bisects a vector into two views having each half of the data.
+    //  Then, it checks that the data contained in the views is consistent
+    //  with that of the vector as it should be.
+
     // constructs a vector of points from allocator
     Vector<Point> vector = new Vector<> ( (Integer size) -> new Point[size] );
 
 
     int size = (0x00001000);
     Random r = new Random();
-    for (int i = 0; i != size; ++i)
     // effectively pushes points unto the back of the vector
+    for (int i = 0; i != size; ++i)
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Point p = new Point(x, y);
@@ -787,11 +766,7 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
     }
 
 
-    /*
-
-       allocates memory for the views
-
-    */
+    //   allocates memory for the views
 
 
     Vector<Point> first = new Vector<> ();
@@ -804,8 +779,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
     int numel = 0;
     int diffs = 0;
-    for (int i = 0; i != first.size(); ++i)
     // counts differences between the view and the original
+    for (int i = 0; i != first.size(); ++i)
     {
       Point P = vector.get(i);
       Point Q = first.get(i);
@@ -825,8 +800,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
       System.out.println("pass");
 
 
-    for (int i = 0; i != second.size(); ++i)
     // counts differences between the view and the original
+    for (int i = 0; i != second.size(); ++i)
     {
       // Note: applies offset to get the same data
       Point P = vector.get(first.size() + i);
@@ -856,24 +831,21 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void bisect (Vector<Point> vector, Vector<Point> first,
-      Vector<Point> second)
-  /*
-
-       Synopsis:
-       Creates views of the first and second halves of the data stored in the passed
-       vector.
-
-       Inputs:
-       vector		vector storing all of the data
-       first		unset view
-       second		unset view
-
-       Output:
-       first		view of the first half of the data
-       second 		view of the second half of the data
-
-  */
+			      Vector<Point> second)
   {
+    //       Synopsis:
+    //       Creates views of the first and second halves of the data stored in the passed
+    //       vector.
+    //
+    //       Inputs:
+    //       vector		vector storing all of the data
+    //       first		unset view
+    //       second		unset view
+    //
+    //       Output:
+    //       first		view of the first half of the data
+    //       second 	view of the second half of the data
+
     int size = vector.size();
     int begin = 0, end = (size / 2);
     // creates a view of the first contained half
@@ -886,13 +858,9 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
 
   private static void testIterator ()
-  /*
-
-       Synopsis:
-       Checks that by means of an iterator all the vector elements are traversed.
-
-  */
   {
+    // Synopsis: Checks that all the vector elements are traversed with the iterator.
+
     // constructs a vector of points from allocator
     Vector<Point> points = new Vector<> ( (Integer size) -> new Point[size] );
 
@@ -900,8 +868,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
     int size = (0x00000100);
     Random r = new Random();
     Point [] data = new Point[size];
-    for (int i = 0; i != size; ++i)
     // effectively pushes points unto the back of the vector
+    for (int i = 0; i != size; ++i)
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Point p = new Point(x, y);
@@ -911,18 +879,18 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
     }
 
     int numel = 0;
-    for (Point p : points)
     // counts the number of elements in the vector
+    for (Point p : points)
     {
       ++numel;
     }
 
     System.out.printf("test-iterator[0]: ");
-    /*
 
-       informs if the number of elements is not equal to the vector size
 
-    */
+    //   informs if the number of elements is not equal to the vector size
+
+
     if (numel != size)
       System.out.println("FAIL");
     else
@@ -931,12 +899,8 @@ public final class Vector<T extends Comparable<T>> implements Iterable<T>
 
     int n = 0;
     int diffs = 0;
+    // checks for differences between the vector elements and the original array
     for (Point P : points)
-    /*
-
-	 checks for differences between the vector elements and the original array
-
-    */
     {
       Point Q = data[n];
 
