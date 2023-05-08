@@ -25,36 +25,36 @@ import static java.lang.Math.floor;
 
 public class floorLogBase2
 {
-	public static void main (String [] args)
-	{
-		// selects an integer in the asymmetric range [1, 16)
-		int min = 1, max = 1025;
-		Random rand = new Random();
-		int N = min + rand.nextInt(max - min);
+  public static void main (String [] args)
+  {
+    // selects an integer in the asymmetric range [1, 16)
+    int min = 1, max = 1025;
+    Random rand = new Random();
+    int N = min + rand.nextInt(max - min);
 
 
-		String fmt = ("recursive   floor( Log2(%d) ): %d\n");
-		// computes floor( Log2(N) ) recursively
-		System.out.printf(fmt, N, Log(N) );
+    String fmt = ("recursive   floor( Log2(%d) ): %d\n");
+    // computes floor( Log2(N) ) recursively
+    System.out.printf(fmt, N, Log(N) );
 
 
-		fmt = ("Java's Math floor( Log2(%d) ): %.1f\n");
-		// computes floor( Log2(N) ) via Java's Math library
-		double lg = log(N) / log(2);
-		System.out.printf(fmt, N, floor(lg) );
-		return;
-	}
+    fmt = ("Java's Math floor( Log2(%d) ): %.1f\n");
+    // computes floor( Log2(N) ) via Java's Math library
+    double lg = log(N) / log(2);
+    System.out.printf(fmt, N, floor(lg) );
+    return;
+  }
 
 
-	private static int Log (int N)
-	// computes floor( LogBase2(N) ) recursively
-	{
-		int n;				// exponent
-		if (N == 1)
-			return 0;		// direct solution
-		else
-			n = Log (N / 2);	// divides and recurses
+  private static int Log (int N)
+  {
+    // computes floor( LogBase2(N) ) recursively
+    int n;				// exponent
+    if (N == 1)
+      return 0;				// direct solution
+    else
+      n = Log (N / 2);			// divides and recurses
 
-		return (1 + n);			// combines
-	}
+    return (1 + n);			// combines
+  }
 }
