@@ -144,7 +144,10 @@ public class Solvers
   {
     // complains if the bracketing interval [l, u] does not bracket a root
     if ( objf.f(l) * objf.f(u) > 0.0 )
-      throw new RuntimeException("solver(): expects a root in the interval [l, u]");
+    {
+      String e = "solver(): expects a root in the interval [l, u]";
+      throw new IllegalArgumentException(e);
+    }
   }
 
 
