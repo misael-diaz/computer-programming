@@ -58,10 +58,9 @@ class Numerics
 
   public static double[] linspace (double xi, double xf, int numel)
   {
-
     if (numel <= 1)	// caters invalid number of elements
     {
-      throw new RuntimeException("number of elements must be greater than one");
+      throw new IllegalArgumentException("number of elements must be greater than one");
     }
 
     double dx  = (xf - xi) / ( (double) (numel - 1) );
