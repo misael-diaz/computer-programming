@@ -23,99 +23,85 @@
 
 class Integrators
 {
+  public static void main (String[] args)
+  {
+    System.out.println("\nFunction Example:\n");
 
-	public static void main (String[] args)
-	{
+    double xl = 0;	// lower integration limit
+    double xu = 1;	// upper integration limit
+    int N = 255;	// number of integration intervals
 
-		System.out.println("\nFunction Example:\n");
-
-		double xl = 0;	// lower integration limit
-		double xu = 1;	// upper integration limit
-		int N = 255;	// number of integration intervals
-
-		// applies the integrators to obtain estimates
-		System.out.println("Integral of f(x) = exp(x) in [0, 1]:");
-		System.out.printf (
-			"via left  Riemann sum: %.12f\n", lsum(xl, xu, N)
-		);
-		System.out.printf (
-			"via right Riemann sum: %.12f\n", rsum(xl, xu, N)
-		);
-
-		System.out.println("");
-
-	}
+    // applies the integrators to obtain estimates of the area under the curve
+    System.out.println("Integral of f(x) = exp(x) in [0, 1]:");
+    System.out.printf ("via left  Riemann sum: %.12f\n", lsum(xl, xu, N));
+    System.out.printf ("via right Riemann sum: %.12f\n", rsum(xl, xu, N));
+    System.out.println("");
+  }
 
 
-	public static double objf (double x)
-	{
-		/*
-		 * Synopsis:
-		 * Defines the objective function, f(x) = exp(x), which
-		 * is to be invoked by the integrator.
-		 *
-		 */
-
-		return Math.exp(x);
-	}
+  public static double objf (double x)
+  {
+    // defines the objective function, f(x) = exp(x), invoked by the integrators
+    return Math.exp(x);
+  }
 
 
-	public static double lsum (double xl, double xu, int N)
-	{
-		/*
-		 * Synopsis:
-		 * Implements the left Riemann sum as a function.
-		 *
-		 * Inputs:
-		 * xl		lower integration limit
-		 * xu		upper integration limit
-		 * N		number of integration intervals
-		 *
-		 * Output:
-		 * integral	integral of the objective function f(x)
-		 *
-		 */
-
-		double x;
-		double integral = 0;
-		double dx = (xu - xl) / ( (double) N );
-
-		for (int i = 0; i != N; ++i)
-		{
-			x = xl + ( (double) i ) * dx;
-			integral += objf(x);
-		}
-
-		return (dx * integral);
-	}
+  // double lsum (double xl, double xu, int N)
+  //
+  // Synopsis:
+  // Implements the left Riemann sum as a function.
+  //
+  // Inputs:
+  // xl		lower integration limit
+  // xu		upper integration limit
+  // N		number of integration intervals
+  //
+  // Output:
+  // integral	integral of the objective function f(x)
 
 
-	public static double rsum (double xl, double xu, int N)
-	{
-		/*
-		 * Synopsis:
-		 * Implements the right Riemann sum as a function.
-		 *
-		 * Inputs:
-		 * xl		lower integration limit
-		 * xu		upper integration limit
-		 * N		number of integration intervals
-		 *
-		 * Output:
-		 * integral	integral of the objective function f(x)
-		 *
-		 */
+  public static double lsum (double xl, double xu, int N)
+  {
+    double x;
+    double integral = 0;
+    double dx = (xu - xl) / ( (double) N );
 
-		double x;
-		double integral = 0;
-		double dx = (xu - xl) / ( (double) N );
+    for (int i = 0; i != N; ++i)
+    {
+      x = xl + ( (double) i ) * dx;
+      integral += objf(x);
+    }
 
-		for (int i = 1; i != (N + 1); ++i)
-		{
-			x = xl + ( (double) i ) * dx;
-			integral += objf(x);
-		}
+    return (dx * integral);
+  }
 
-		return (dx * integral);
-	}
+
+  // double rsum (double xl, double xu, int N)
+  //
+  // Synopsis:
+  // Implements the right Riemann sum as a function.
+  //
+  // Inputs:
+  // xl		lower integration limit
+  // xu		upper integration limit
+  // N		number of integration intervals
+  //
+  // Output:
+  // integral	integral of the objective function f(x)
+
+
+  public static double rsum (double xl, double xu, int N)
+  {
+    double x;
+    double integral = 0;
+    double dx = (xu - xl) / ( (double) N );
+
+    for (int i = 1; i != (N + 1); ++i)
+    {
+      x = xl + ( (double) i ) * dx;
+      integral += objf(x);
+    }
+
+    return (dx * integral);
+  }
 }

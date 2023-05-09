@@ -28,155 +28,161 @@ import static java.lang.Math.log10;
 public class Solvers
 {
 
-	interface Objf	// Objetive Function Interface
-	{
-		public double f (double x);	// nonlinear function, f(x)
-	}
+  interface Objf		// Objetive Function Interface
+  {
+    public double f (double x);	// nonlinear function, f(x)
+  }
 
 
-	// Objf has been made static so that it can be accessed by methods
-	static Objf objf = (double x) -> {
-	/* defines the nonlinear objective function f(x) as a lambda */
-
-		return ( 1.0 / sqrt(x) + 2.0 * log10 (0.024490 / 3.7 +
-			 2.51 / (7812525.1 * sqrt(x) ) ) );
-	};
-
-	public static void main (String [] args)
-	// solves for the root of a nonlinear function f(x):
-	{
-		Bisection ();	// applies recursive Bisection Method
-		RegulaFalsi ();	// applies recursive Regula Falsi Method
-		return;
-	}
+  // defines the nonlinear objective function f(x) as a lambda
+  // Note: the Objf has been made static so that it can be accessed by the static methods
+  static Objf objf = (double x) -> {
+    return (1.0/sqrt(x) + 2.0 * log10(0.024490 / 3.7 + 2.51 / (7812525.1 * sqrt(x) ) ) );
+  };
 
 
-	public static double bisect (double l, double u, Objf objf)
-	/*
-	 * Synopsis:
-	 * Recursive implementation of the Bisection Method.
-	 *
-	 * Inputs
-	 * l		lower bracketing limit
-	 * u 		upper bracketing limit
-	 * objf		nonlinear function f(x)
-	 *
-	 * Output
-	 * x		returns root of the nonlinear function f(x)
-	 *
-	 */
-	{
-		// complains if the there is no root enclosed in [l, u]
-		hasRoot (l, u, objf);
-
-		double tol = 1.0e-12;	// tolerance
-		double m = (l + u) / 2;	// middle value
-		double f;		// f(x)
-
-		// quick absolute value computation
-		f = (objf.f(m) < 0)? -objf.f(m) : objf.f(m);
-
-		if (f < tol)		// if meets convergence criterion:
-
-			return m;	/* uses direct solution */
-
-		else			/* divides */
-		{
-			if (objf.f(m) * objf.f(u) < 0.0)
-				l = m;	// divides by removing first half
-			else
-				u = m;	// divides by removing second half
-		}
-
-		return bisect (l, u, objf);	/* recurses */
-	}
+  // solves for the root of a nonlinear function f(x):
+  public static void main (String [] args)
+  {
+    Bisection ();	// applies recursive Bisection Method
+    RegulaFalsi ();	// applies recursive Regula Falsi Method
+    return;
+  }
 
 
-	public static double regfal (double l, double u, Objf objf)
-	/*
-	 * Synopsis:
-	 * Recursive implementation of the Regula Falsi Method.
-	 *
-	 * Inputs
-	 * l		lower bracketing limit
-	 * u 		upper bracketing limit
-	 * objf		nonlinear function f(x)
-	 *
-	 * Output
-	 * x		returns root of the nonlinear function f(x)
-	 *
-	 */
-	{
-		// complains if the there is no root enclosed in [l, u]
-		hasRoot (l, u, objf);
-
-		double tol = 1.0e-12;	// tolerance
-
-		// obtains intermediate value via linear interpolation
-		double fl = objf.f(l), fu = objf.f(u);
-		double m = (l * fu - u * fl) / (fu - fl);
-		double f;		// f(x)
-
-		// quick absolute value computation
-		f = (objf.f(m) < 0)? -objf.f(m) : objf.f(m);
-
-		if (f < tol)		// if meets convergence criterion:
-
-			return m;	/* uses direct solution */
-
-		else			/* divides */
-		{
-			if (objf.f(m) * objf.f(u) < 0.0)
-				l = m;	// divides by removing first part
-			else
-				u = m;	// divides by removing second part
-		}
-
-		return regfal (l, u, objf);	/* recurses */
-	}
+  // double bisect (double l, double u, Objf objf)
+  //
+  // Synopsis:
+  // Recursive implementation of the Bisection Method.
+  //
+  // Inputs
+  // l		lower bracketing limit
+  // u 		upper bracketing limit
+  // objf	nonlinear function f(x)
+  //
+  // Output
+  // x		returns root of the nonlinear function f(x)
 
 
-	private static void hasRoot (double l, double u, Objf objf)
-	// complains if bracketing interval [l, u] does not bracket a root
-	{
-		if ( objf.f(l) * objf.f(u) > 0.0 )
-			throw new RuntimeException(
-				"solver(): expects a root in bracketing " +
-				"interval [l, u]"
-			);
-	}
+  public static double bisect (double l, double u, Objf objf)
+  {
+    hasRoot(l, u, objf);	// complains if the there is no root enclosed in [l, u]
+
+    double tol = 1.0e-12;	// tolerance
+    double m = (l + u) / 2;	// middle value
+    double f;			// f(x)
+
+    f = (objf.f(m) < 0)? -objf.f(m) : objf.f(m); // gets the absolute value of f(x)
+
+    if (f < tol)		// if it meets the convergence criterion:
+    {
+      return m;			// uses direct solution
+    }
+    else			// divides:
+    {
+      if (objf.f(m) * objf.f(u) < 0.0)
+      {
+	l = m;			// divides by removing first half
+      }
+      else
+      {
+	u = m;			// divides by removing second half
+      }
+    }
+
+    return bisect(l, u, objf);	// recurses
+  }
 
 
-	private static void Bisection ()
-	// solves for the root of f(x) with the Bisection Method
-	{
-		System.out.println("\nBisection Method:\n");
-		// defines the bracketing interval lower and upper limits
-		double l = 2.0e-2, u = 6.0e-2;
-		// solves for the root of f(x) recursively
-		double r = bisect (l, u, objf);
-
-		// reports the location of the root on the console
-		System.out.printf("root: %.12f\n", r);
-		System.out.printf("f(x): %.12e\n", objf.f(r) );
-
-		return;
-	}
+  // double regfal (double l, double u, Objf objf)
+  //
+  // Synopsis:
+  // Recursive implementation of the Regula Falsi (or False Position) Method.
+  //
+  // Inputs
+  // l		lower bracketing limit
+  // u 		upper bracketing limit
+  // objf	nonlinear function f(x)
+  //
+  // Output
+  // x		returns root of the nonlinear function f(x)
 
 
-	private static void RegulaFalsi ()
-	// solves for the root of f(x) with the Regula Falsi Method
-	{
-		System.out.println("\nRegula Falsi Method:\n");
-		// defines the bracketing interval lower and upper limits
-		double l = 2.0e-2, u = 6.0e-2;
-		// solves for the root of f(x) recursively
-		double r = regfal (l, u, objf);
+  public static double regfal (double l, double u, Objf objf)
+  {
+    hasRoot(l, u, objf); 	// complains if the there is no root enclosed in [l, u]
 
-		// reports the location of the root on the console
-		System.out.printf("root: %.12f\n", r);
-		System.out.printf("f(x): %.12e\n", objf.f(r) );
+    double tol = 1.0e-12;	// tolerance
 
-		return;
-	}
+    double fl = objf.f(l), fu = objf.f(u);	// gets f(x_l) and f(x_u)
+    double m = (l * fu - u * fl) / (fu - fl); 	// interpolates to get intermediate value 
+    double f;			// f(x)
+
+    f = (objf.f(m) < 0)? -objf.f(m) : objf.f(m);// gets the absolute value of f(x)
+
+    if (f < tol)		// if f(x_m) meets the convergence criterion:
+    {
+      return m;			// uses direct solution
+    }
+    else			// divides:
+    {
+      if (objf.f(m) * objf.f(u) < 0.0)
+      {
+	l = m;			// divides by removing first part
+      }
+      else
+      {
+	u = m;			// divides by removing second part
+      }
+    }
+
+    return regfal (l, u, objf);	// recurses
+  }
+
+
+  private static void hasRoot (double l, double u, Objf objf)
+  {
+    // complains if the bracketing interval [l, u] does not bracket a root
+    if ( objf.f(l) * objf.f(u) > 0.0 )
+    {
+      String e = "solver(): expects a root in the interval [l, u]";
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+
+  private static void Bisection ()
+  {
+    // solves for the root of f(x) with the Bisection Method
+
+    System.out.println("\nBisection Method:\n");
+    // defines the bracketing interval lower and upper limits
+    double l = 2.0e-2, u = 6.0e-2;
+    // solves for the root of f(x) recursively
+    double r = bisect (l, u, objf);
+
+    // reports the location of the root on the console
+    System.out.printf("root: %.12f\n", r);
+    System.out.printf("f(x): %.12e\n", objf.f(r) );
+
+    return;
+  }
+
+
+  private static void RegulaFalsi ()
+  {
+    // solves for the root of f(x) with the Regula Falsi Method
+
+    System.out.println("\nRegula Falsi Method:\n");
+    // defines the bracketing interval lower and upper limits
+    double l = 2.0e-2, u = 6.0e-2;
+    // solves for the root of f(x) recursively
+    double r = regfal (l, u, objf);
+
+    // reports the location of the root on the console
+    System.out.printf("root: %.12f\n", r);
+    System.out.printf("f(x): %.12e\n", objf.f(r) );
+
+    return;
+  }
 }
