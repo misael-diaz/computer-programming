@@ -19,9 +19,7 @@
  *
  *
  * References:
- * [0] Invalid Operation Exception: (
- * 	docs.oracle.com/javame/config/cldc/opt-pkgs/api/daapi/com/oracle/
- * 	deviceaccess/InvalidOperationException.html
+ * [0] https://docs.oracle.com/javame/config/cldc/opt-pkgs/api/daapi/com/oracle/deviceaccess/InvalidOperationException.html
  * )
  *
  */
