@@ -20,6 +20,7 @@
  *
  */
 
+import java.util.Random;
 
 interface Comparator
 {
@@ -41,6 +42,7 @@ public class SortingAlgorithms
     ascend();					// sorts in ascending order
     descend();					// sorts in descending order
     testInsertionSort();			// tests the insertion sort implementation
+    test();
   }
 
 
@@ -337,5 +339,58 @@ public class SortingAlgorithms
       System.out.printf("pass\n");
     else
       System.out.printf("FAIL\n");
+  }
+
+
+  private static void test ()	// tests if the implementation of insertion sort fails
+  {
+    int fails = 0;					// failures counter
+    int reps = 256;					// repetitions
+    Random r = new Random();
+    for (int size = 2; size != 0x00001000; size *= 2)
+    {
+      int min = 0;
+      int max = size;
+      int [] list = new int [size];
+      for (int rep = 0; rep != reps; ++rep)
+      {
+	for (int i = 0; i != size; ++i)
+	{
+	  list[i] = min + r.nextInt(max - min);		// fills list with random numbers
+	}
+
+	InsertionSort(list);
+
+	if ( !sorted(list) )
+	{
+	  ++fails;
+	}
+      }
+    }
+
+    System.out.printf("test::InsertionSort(): ");
+    if (fails != 0)
+    {
+      System.out.printf("FAIL\n");
+    }
+    else
+    {
+      System.out.printf("pass\n");
+    }
+
+  }
+
+
+  private static boolean sorted (int [] list)
+  {
+    for (int i = 0; i != (list.length - 1); ++i)
+    {
+      if (list[i] > list[i + 1])
+      {
+	return false;
+      }
+    }
+
+    return true;
   }
 }
