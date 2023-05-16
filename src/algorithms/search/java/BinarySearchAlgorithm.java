@@ -39,6 +39,8 @@ public class BinarySearchAlgorithm
       System.out.printf("target found in position %d\n\n", pos);
     else
       System.out.printf("target is not in the list\n\n");
+
+    test();
   }
 
 
@@ -136,6 +138,41 @@ public class BinarySearchAlgorithm
     if (e > list.length)
     {
       throw new IllegalArgumentException("BinarySearch(): expects a valid `end` index");
+    }
+  }
+
+
+  private static void test ()
+  {
+    int fails = 0;
+    int size = 0x00001000;
+    int [] list = new int [size];
+    generate(list);
+    for (int i = 0; i != list.length; ++i)
+    {
+      int pos = BinarySearch(1, list.length, list, list[i]) - 1;
+      if (i != pos)
+      {
+	++fails;
+      }
+    }
+
+    System.out.print("test::BinarySearch(): ");
+    if (fails != 0)
+    {
+      System.out.println("FAIL");
+    }
+    else
+    {
+      System.out.println("pass");
+    }
+  }
+
+  private static void generate (int [] list)
+  {
+    for (int i = 0; i != list.length; ++i)
+    {
+      list[i] = (2 * i + 1);
     }
   }
 }
