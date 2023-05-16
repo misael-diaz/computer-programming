@@ -346,21 +346,13 @@ public class SortingAlgorithms
   {
     int fails = 0;					// failures counter
     int reps = 256;					// repetitions
-    Random r = new Random();
     for (int size = 2; size != 0x00001000; size *= 2)
     {
-      int min = 0;
-      int max = size;
       int [] list = new int [size];
       for (int rep = 0; rep != reps; ++rep)
       {
-	for (int i = 0; i != size; ++i)
-	{
-	  list[i] = min + r.nextInt(max - min);		// fills list with random numbers
-	}
-
+	generate(list);
 	InsertionSort(list);
-
 	if ( !sorted(list) )
 	{
 	  ++fails;
@@ -378,6 +370,18 @@ public class SortingAlgorithms
       System.out.printf("pass\n");
     }
 
+  }
+
+
+  private static void generate (int [] list)	// fills list with random numbers
+  {
+    int min = 0;
+    int max = list.length;
+    Random r = new Random();
+    for (int i = 0; i != list.length; ++i)
+    {
+      list[i] = min + r.nextInt(max - min);
+    }
   }
 
 
