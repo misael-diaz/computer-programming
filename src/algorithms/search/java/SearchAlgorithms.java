@@ -68,6 +68,39 @@ public class SearchAlgorithms
   }
 
 
+  // int SequentialSearch (int [] list, int beg, int end, int target)
+  //
+  // Synopsis:
+  // Possible implementation of the Sequential Search Algorithm.
+  // Searches sequentially in the range [beg, end) until a match is found or until the
+  // list range is traversed without a match.
+  //
+  // Inputs
+  // list		list of (presumed) unsorted integers
+  // beg		begin index
+  // end		end index
+  // target		target value
+  //
+  // Output
+  // pos		positional index [1, NUMEL], otherwise zero
+
+
+  public static int SequentialSearch (int [] list, int beg, int end, int target)
+  {
+    int pos = 0;
+    for (int i = beg; i != end; ++i)
+    {
+      if (list[i] == target)
+      {
+	pos = (i + 1);
+	break;
+      }
+    }
+
+    return pos;
+  }
+
+
   // implementations:
 
 
