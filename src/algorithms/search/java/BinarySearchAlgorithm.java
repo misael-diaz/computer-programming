@@ -18,6 +18,8 @@
  *
  */
 
+import java.util.Arrays;
+import java.util.Random;
 
 public class BinarySearchAlgorithm
 {
@@ -41,6 +43,7 @@ public class BinarySearchAlgorithm
       System.out.printf("target is not in the list\n\n");
 
     test();
+    test2();
   }
 
 
@@ -168,11 +171,58 @@ public class BinarySearchAlgorithm
     }
   }
 
+
+  private static void test2 ()
+  {
+    int fails = 0;
+    int size = 0x00001000;
+    int [] list = new int [size];
+    Random r = new Random();
+    generate(list, r);
+    Arrays.sort(list);
+    for (int i = 0; i != list.length; ++i)
+    {
+      int pos = BinarySearch(1, list.length, list, list[i]) - 1;
+      if (i != pos)
+      {
+	++fails;
+      }
+    }
+
+    System.out.print("test::BinarySearch(): ");
+    if (fails != 0)
+    {
+      System.out.println("FAIL");
+    }
+    else
+    {
+      System.out.println("pass");
+    }
+
+  }
+
+
   private static void generate (int [] list)
   {
     for (int i = 0; i != list.length; ++i)
     {
       list[i] = (2 * i + 1);
+    }
+  }
+
+
+  private static void generate (int [] list, Random r)
+  {
+    // generates list comprising distinct random numbers in the range [min, max)
+    int min = 0, max = 4 * list.length;
+    for (int i = 0; i != list.length; ++i)
+    {
+      int elem = min + r.nextInt(max - min);
+      while (SearchAlgorithms.SequentialSearch(list, 0, i, elem) != 0)
+      {
+	elem = min + r.nextInt(max - min);
+      }
+      list[i] = elem;
     }
   }
 }
