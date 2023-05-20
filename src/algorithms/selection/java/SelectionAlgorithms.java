@@ -223,9 +223,9 @@ public class SelectionAlgorithms
 
     System.out.printf("\ntest::FindKthLargest(): ");
     if ( equality(sorted, arange) )			// tests the implementation
-      System.out.printf("pass\n\n");
+      System.out.println("pass");
     else
-      System.out.printf("FAIL\n\n");
+      System.out.println("FAIL");
   }
 
 
