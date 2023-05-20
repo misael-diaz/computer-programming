@@ -18,6 +18,7 @@
  *
  */
 
+import java.util.Random;
 
 public class SelectionAlgorithms
 {
@@ -26,6 +27,7 @@ public class SelectionAlgorithms
   {
     FindsKthLargest();		// uses the implementation
     testFindKthLargest();	// validates the implementation
+    test();
   }
 
 
@@ -224,6 +226,80 @@ public class SelectionAlgorithms
       System.out.printf("pass\n\n");
     else
       System.out.printf("FAIL\n\n");
+  }
+
+
+  private static int search (int b, int e, int [] list, int t)	// linear search
+  {
+    int pos = 0x11111111;
+    for (int i = b; i != e; ++i)
+    {
+      if (list[i] == t)
+      {
+	pos = i;
+	return pos;
+      }
+    }
+    return pos;
+  }
+
+
+  private static void generate (int [] list)	// generates distinct random numbers
+  {
+    Random r = new Random();
+    int min = 0, max = 4 * list.length;
+    for (int i = 0; i != list.length; ++i)
+    {
+      int elem = min + r.nextInt(max - min);
+      while (search(0, i, list, elem) != 0x11111111)
+      {
+	elem = min + r.nextInt(max - min);
+      }
+      list[i] = elem;
+    }
+  }
+
+
+  private static int [] sort (int [] list)
+  {
+    int [] sorted = new int [list.length];
+    for (int k = 0; k != list.length; ++k)
+    {
+      sorted[k] = FindKthLargest(k + 1, list);
+    }
+    return sorted;
+  }
+
+
+  private static boolean isDescending(int [] list)
+  {
+    for (int k = 0; k != (list.length - 1); ++k)
+    {
+      if (list[k] < list[k + 1])
+      {
+	return false;
+      }
+    }
+    return true;
+  }
+
+
+  private static void test ()
+  {
+    int size = 0x00000100;
+    int [] list = new int [size];
+    generate(list);
+    int [] sorted = sort(list);
+    
+    System.out.printf("test::FindKthLargest(): ");
+    if ( isDescending(sorted) )
+    {
+      System.out.println("pass");
+    }
+    else
+    {
+      System.out.println("FAIL");
+    }
   }
 }
 
