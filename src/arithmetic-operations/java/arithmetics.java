@@ -25,44 +25,42 @@
 
 class Arithmetics
 {
-	public static void main (String[] args)
-	{
-		System.out.println("Arithmetic Operations Examples:");
+  public static void main (String[] args)
+  {
+    System.out.println("Arithmetic Operations Examples:");
 
 
-		// example 1.1-A
-		double x = Math.pow (
-			5.0 - 19.0 / 7.0 + Math.pow(2.5, 3.0), 2.0
-		);
+    // example 1.1-A
+    double x = Math.pow(5.0 - 19.0 / 7.0 + Math.pow(2.5, 3.0), 2.0);
 
-		System.out.printf("example 1.1-A: %.6f\n", x);
+    System.out.printf("example 1.1-A: %.6f\n", x);
 
 
-		// example 1.1-B
-		x = 7 * 3.1 + Math.sqrt(120)/5 - Math.pow( 15, (5.0/3.0) );
-		System.out.printf("example 1.1-B: %.6f\n", x);
+    // example 1.1-B
+    x = 7 * 3.1 + Math.sqrt(120)/5 - Math.pow( 15, (5.0 / 3.0) );
+    System.out.printf("example 1.1-B: %.6f\n", x);
 
 
-		// example 1.2-A
-		x = Math.cbrt(8.0 + 80.0/2.6) + Math.exp(3.5);
-		System.out.printf("example 1.2-A: %.6f\n", x);
+    // example 1.2-A
+    x = Math.cbrt(8.0 + 80.0 / 2.6) + Math.exp(3.5);
+    System.out.printf("example 1.2-A: %.6f\n", x);
 
 
-		// example 1.3-A
-		x =(23 + Math.cbrt(45) ) / (16 * 0.7) + Math.log10(589006);
-		System.out.printf("example 1.3-A: %.6f\n", x);
+    // example 1.3-A
+    x =( 23 + Math.cbrt(45) ) / (16 * 0.7) + Math.log10(589006);
+    System.out.printf("example 1.3-A: %.6f\n", x);
 
 
-		// example 1.4-D
-		x = (1.0 / Math.sqrt(5.0e-2) + 2.0 * Math.log10(4.5e-3 /
-		     3.7 + 2.51 / ( 1.8e6 * Math.sqrt(2.5e-1) ) ) );
-		System.out.printf("example 1.4-D: %.6f\n", x);
+    // example 1.4-D
+    x = 1.0 / Math.sqrt(5.0e-2) +
+        2.0 * Math.log10( 4.5e-3 / 3.7 + 2.51 / ( 1.8e6 * Math.sqrt(2.5e-1) ) );
+    System.out.printf("example 1.4-D: %.6f\n", x);
 
 
-		// example 1.5-A
-		x = Math.sin(0.2 * Math.PI) / Math.cos(Math.PI / 6) +
-		    Math.tan(72.0 * (Math.PI / 180.0) );
-		System.out.printf("example 1.5-A: %.6f\n", x);
+    // example 1.5-A
+    x = Math.sin(0.2 * Math.PI) / Math.cos(Math.PI / 6) +
+        Math.tan(72.0 * (Math.PI / 180.0) );
+    System.out.printf("example 1.5-A: %.6f\n", x);
 
-	}
+  }
 }
