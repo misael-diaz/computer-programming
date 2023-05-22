@@ -37,7 +37,7 @@ class Arithmetics
 
 
     // example 1.1-B
-    x = 7 * 3.1 + Math.sqrt(120)/5 - Math.pow( 15, (5.0 / 3.0) );
+    x = 7.0 * 3.1 + Math.sqrt(120.0) / 5.0 - Math.pow( 15.0, (5.0 / 3.0) );
     System.out.printf("example 1.1-B: %.6f\n", x);
 
 
@@ -47,7 +47,7 @@ class Arithmetics
 
 
     // example 1.3-A
-    x =( 23 + Math.cbrt(45) ) / (16 * 0.7) + Math.log10(589006);
+    x =( 23.0 + Math.cbrt(45.0) ) / (16.0 * 0.7) + Math.log10(589006.0);
     System.out.printf("example 1.3-A: %.6f\n", x);
 
 
@@ -58,7 +58,7 @@ class Arithmetics
 
 
     // example 1.5-A
-    x = Math.sin(0.2 * Math.PI) / Math.cos(Math.PI / 6) +
+    x = Math.sin(0.2 * Math.PI) / Math.cos(Math.PI / 6.0) +
         Math.tan(72.0 * (Math.PI / 180.0) );
     System.out.printf("example 1.5-A: %.6f\n", x);
 
