@@ -15,15 +15,12 @@
  *
  *
  * References:
- * [0] Files: www.w3schools.com/java/java_files_create.asp
- * [1] PrintWriter: (docs.oracle.com/en/java/javase/11/docs/api/java.base/
- *                   java/io/PrintWriter.html)
- * [2] IOException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                   IOException.html)
- * [3] FileNotFoundException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                             FileNotFoundException.html)
- * [4] Scanner: docs.oracle.com/javase/7/docs/api/java/util/Scanner.html
- * [5] www.javatpoint.com/throw-keyword
+ * [0] https://www.w3schools.com/java/java_files_create.asp
+ * [1] https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintWriter.html
+ * [2] https://docs.oracle.com/javase/7/docs/api/java/io/IOException.html
+ * [3] https://docs.oracle.com/javase/7/docs/api/java/io/FileNotFoundException.html
+ * [4] https://docs.oracle.com/javase/7/docs/api/java/util/Scanner.html
+ * [5] https://www.javatpoint.com/throw-keyword
  *
  */
 
