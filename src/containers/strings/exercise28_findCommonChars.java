@@ -112,10 +112,7 @@ public class exercise28_findCommonChars
   private static boolean contains (String str, char target)
   {
     int pos = search(str, target);
-    if (pos < 0)
-      return false;
-    else
-      return true;
+    return ( (pos < 0)? false : true );
   }
 
 
