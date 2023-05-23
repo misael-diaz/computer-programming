@@ -41,10 +41,12 @@ class BasicIOExample
     write();						// writes data to the file
     read();						// reads data in the file
     store();						// stores data in an array
-    return;
   }
 
+
   // implementations:
+
+
   private static void create ()				// creates a file
   {
     try
@@ -57,14 +59,11 @@ class BasicIOExample
       System.out.printf("%s", msg);
       f.createNewFile();				// creates the new file
       System.out.println("done");
-
     }
     catch (IOException err)				// catches Input/Output Error
     {
       err.printStackTrace();
     }
-
-    return;
   }
 
 
@@ -91,8 +90,6 @@ class BasicIOExample
     {
       err.printStackTrace();
     }
-
-    return;
   }
 
 
@@ -120,14 +117,11 @@ class BasicIOExample
       System.out.printf(msg, count);
 
       in.close();					// closes the input stream
-
     }
     catch (FileNotFoundException err)
     {
       err.printStackTrace();
     }
-
-    return;
   }
 
 
@@ -165,16 +159,12 @@ class BasicIOExample
     {
       err.printStackTrace();
     }
-
-
-    return;
   }
 
 
   // counts number of lines (or records) in a file
   private static int lines (String filename)
   {
-
     int count = 0;
     File f = new File (filename);
     try
