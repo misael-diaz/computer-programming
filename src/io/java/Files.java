@@ -63,7 +63,6 @@ public class Files
     }
     catch (IOException err)				// catches Input/Output Errors
     {
-      System.out.println("IO Error:");
       err.printStackTrace();
     }
   }
@@ -91,7 +90,6 @@ public class Files
     }
     catch (FileNotFoundException err)
     {
-      System.out.println("IO Error:");
       err.printStackTrace();
     }
   }
@@ -123,7 +121,6 @@ public class Files
     }
     catch (FileNotFoundException err)
     {
-      System.out.println("IO Error:");
       err.printStackTrace();
     }
   }
@@ -159,7 +156,6 @@ public class Files
     }
     catch (FileNotFoundException err)
     {
-      System.out.println("IO Error:");
       err.printStackTrace();
     }
   }
@@ -182,7 +178,6 @@ public class Files
     }
     catch (FileNotFoundException err)
     {
-      System.out.println("IO Error:");
       err.printStackTrace();
     }
 
