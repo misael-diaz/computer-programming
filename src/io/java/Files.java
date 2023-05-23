@@ -44,7 +44,6 @@ public class Files
     write ();						// writes random numbers to file
     read  ();						// reads random numbers in file
     readIntoArray();					// reads file contents into array
-    return;
   }
 
   private static void create ()				// creates a file
@@ -67,8 +66,6 @@ public class Files
       System.out.println("IO Error:");
       err.printStackTrace();
     }
-
-    return;
   }
 
 
@@ -97,8 +94,6 @@ public class Files
       System.out.println("IO Error:");
       err.printStackTrace();
     }
-
-    return;
   }
 
 
@@ -131,9 +126,6 @@ public class Files
       System.out.println("IO Error:");
       err.printStackTrace();
     }
-
-
-    return;
   }
 
 
@@ -170,9 +162,6 @@ public class Files
       System.out.println("IO Error:");
       err.printStackTrace();
     }
-
-
-    return;
   }
 
 
