@@ -53,11 +53,10 @@ public class Files
       String fname = "random.txt";			// defines the filename
       File f = new File (fname);			// creates a new File object
 
-      // creates the new file
       String msg = "creating file `" + fname + "' ... ";
       System.out.println();
       System.out.printf("%s", msg);
-      f.createNewFile();
+      f.createNewFile();				// creates the new file
       System.out.println("done");
 
     }
