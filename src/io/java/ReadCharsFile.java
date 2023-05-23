@@ -15,15 +15,12 @@
  *
  *
  * References:
- * [0] Files: www.w3schools.com/java/java_files_create.asp
- * [1] PrintWriter: (docs.oracle.com/en/java/javase/11/docs/api/java.base/
- *                   java/io/PrintWriter.html)
- * [2] IOException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                   IOException.html)
- * [3] FileNotFoundException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                             FileNotFoundException.html)
- * [4] BufferedReader: www.javatpoint.com/java-bufferedreader-class
- * [5] FileReader: www.tutorialspoint.com/java/java_filereader_class.htm
+ * [0] https://www.w3schools.com/java/java_files_create.asp
+ * [1] https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintWriter.html
+ * [2] https://docs.oracle.com/javase/7/docs/api/java/io/IOException.html
+ * [3] https://docs.oracle.com/javase/7/docs/api/java/io/FileNotFoundException.html
+ * [4] https://www.javatpoint.com/java-bufferedreader-class
+ * [5] https://www.tutorialspoint.com/java/java_filereader_class.htm
  *
  */
 
@@ -35,65 +32,60 @@ import java.io.IOException;
 
 class ReadCharsFile
 {
-	public static void main (String [] args)
-	// reads and prints the GPL on the console one character at a time
-	{
-		read ();
-	}
-
-	// implementation:
-	private static void read ()
-	// opens GPL file for reading one character at a time
-	{
-		String filename = ("GPL.txt");
-		File f = new File (filename);
-		try
-		// the compiler complains if not in a try - catch structure
-		{
-			// we need a buffer reader to read char-by-char
-			FileReader fr = new FileReader (f);
-			BufferedReader br = new BufferedReader (fr);
-			// reads the buffer one character at a time
-			read (br);
-		}
-		catch (FileNotFoundException e)
-		{
-			// prints the stack trace for troubleshooting
-			e.printStackTrace();
-		}
-
-	}
+  // reads and prints the GPL on the console one character at a time
+  public static void main (String [] args)
+  {
+    read ();
+  }
 
 
-	private static void read (BufferedReader br)
-	/*
-
-	Synopsis:
-	Reads buffer one character at a time and reports on the console the
-	number of capital letters found.
-
-	*/
-	{
-		// reads the first character in the file
-		int c = readBuffer (br);
-		while (c != 0xFFFFFFFF)	/* (Note: 0xFFFFFFFF = -1) */
-		// reads one character at a time until end-of-file EOF
-		{
-			// prints the read character on the console
-			System.out.printf("%c", c);
-			// reads the next character
-			c = readBuffer (br);
-		}
-	}
+  // implementation:
 
 
-	private static int readBuffer (BufferedReader br)
-	// tries to read a single character from buffer stream
-	{
-		int c = 0;
-		// the compiler complains if not in a try - catch structure
-		try { c = br.read(); }
-		catch (IOException e) { e.printStackTrace(); }
-		return c;
-	}
+  // opens GPL file for reading one character at a time
+  private static void read ()
+  {
+    String filename = ("GPL.txt");
+    File f = new File (filename);
+    try	// the compiler complains if this codeblock is not in a try - catch structure
+    {
+      FileReader fr = new FileReader (f);		// for reading file
+      BufferedReader br = new BufferedReader (fr);	// for reading char-by-char
+      read (br);					// reads chars in buffer
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    }
+
+  }
+
+
+  // Reads the buffer one character at a time and reports the number of capital letters
+  private static void read (BufferedReader br)
+  {
+    int c = readBuffer (br);	// reads the first character in the file
+    while (c != 0xFFFFFFFF)	// reads one character at a time until end-of-file EOF
+    {
+      System.out.printf("%c", c);
+      c = readBuffer (br);	// reads the next character
+    }
+  }
+
+
+  // tries to read a single character from buffer stream
+  private static int readBuffer (BufferedReader br)
+  {
+    int c = 0;
+    // the compiler complains if codeblock is not in a try - catch structure
+    try
+    {
+      c = br.read();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+    return c;
+  }
 }

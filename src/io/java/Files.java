@@ -15,17 +15,14 @@
  *
  *
  * References:
- * [0] Files: www.w3schools.com/java/java_files_create.asp
- * [1] PrintWriter: (docs.oracle.com/en/java/javase/11/docs/api/java.base/
- *                   java/io/PrintWriter.html)
- * [2] IOException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                   IOException.html)
- * [3] FileNotFoundException: (docs.oracle.com/javase/7/docs/api/java/io/
- *                             FileNotFoundException.html)
- * [4] Scanner: docs.oracle.com/javase/7/docs/api/java/util/Scanner.html
- * [5] Random: docs.oracle.com/javase/8/docs/api/java/util/Random.html
- * [6] www.javatpoint.com/throw-keyword
- * [7] www.javatpoint.com/post/java-random
+ * [0] https://www.w3schools.com/java/java_files_create.asp
+ * [1] https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintWriter.html
+ * [2] https://docs.oracle.com/javase/7/docs/api/java/io/IOException.html
+ * [3] https://docs.oracle.com/javase/7/docs/api/java/io/FileNotFoundException.html
+ * [4] https://docs.oracle.com/javase/7/docs/api/java/util/Scanner.html
+ * [5] https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
+ * [6] https://www.javatpoint.com/throw-keyword
+ * [7] https://www.javatpoint.com/post/java-random
  *
  */
 
@@ -38,191 +35,150 @@ import java.util.Random;
 
 public class Files
 {
-	public static void main (String[] args)
-	{
-		create();	// creates a file
-		write ();	// writes random numbers to the file
-		read  ();	// reads random numbers in the file
-		readIntoArray();// reads random numbers into array
-		return;
-	}
+  public static void main (String[] args)
+  {
+    create();						// creates a file
+    write ();						// writes random numbers to file
+    read  ();						// reads random numbers in file
+    readIntoArray();					// reads file contents into array
+  }
 
-	private static void create ()
-	// creates a file with given name `filename'
-	{
-		try
-		{
-			// defines the filename
-			String fname = "random.txt";
-			// creates a new File object
-			File f = new File (fname);
+  private static void create ()				// creates a file
+  {
+    try
+    {
+      String fname = "random.txt";			// defines the filename
+      File f = new File (fname);			// creates a new File object
 
-			// creates the new file
-			String msg = "creating file `" + fname + "' ... ";
-			System.out.println();
-			System.out.printf("%s", msg);
-			f.createNewFile();
-			System.out.println("done");
+      String msg = "creating file `" + fname + "' ... ";
+      System.out.println();
+      System.out.printf("%s", msg);
+      f.createNewFile();				// creates the new file
+      System.out.println("done");
 
-		}
-		catch (IOException err)
-		{
-			// complains if there is an Input/Output Error
-			System.out.println("IO Error:");
-			err.printStackTrace();
-		}
-
-		return;
-	}
+    }
+    catch (IOException err)				// catches Input/Output Errors
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-	private static void write ()
-	// writes to the file
-	{
-		try
-		{
-			// defines the filename
-			String filename = "random.txt";
-			// creates new PrintWriter object for writing file
-			PrintWriter out = new PrintWriter (filename);
+  private static void write ()				// writes to the file
+  {
+    try
+    {
+      String filename = "random.txt";			// defines the filename
+      PrintWriter out = new PrintWriter (filename);	// creates PrintWriter for writing
 
-			int numel = 16;
-			// creates random number generator object
-			Random rand = new Random();
-			String msg = "writing %d random numbers ... ";
-			System.out.printf(msg, numel);
-			// writes random integers in the range [0, 256)
-			for (int i = 0; i != numel; ++i)
-				out.printf("%d\n", rand.nextInt(256) );
+      int numel = 16;
+      Random rand = new Random();			// creates random number generator
+      String msg = "writing %d random numbers ... ";
+      System.out.printf(msg, numel);
+      for (int i = 0; i != numel; ++i)			// writes random nums in [0, 256)
+	out.printf("%d\n", rand.nextInt(256) );
 
-			System.out.println("done");
+      System.out.println("done");
 
-			System.out.printf("closing file ... ");
-			out.close();	// closes the file
-			System.out.println("done");
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			System.out.println("IO Error:");
-			err.printStackTrace();
-		}
-
-		return;
-	}
+      System.out.printf("closing file ... ");
+      out.close();					// closes the file
+      System.out.println("done");
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-	private static void read ()
-	// reads the file contents and prints them to the console
-	{
-		// defines the filename
-		String filename = "random.txt";
-		// creates a File object
-		File f = new File (filename);
-		try
-		{
-			// attempts to create a Scanner object
-			Scanner in = new Scanner (f);
+  // reads the file contents and prints them to the console
+  private static void read ()
+  {
+    String filename = "random.txt";
+    File f = new File (filename);
+    try
+    {
+      Scanner in = new Scanner (f);
 
-			System.out.printf("\nrandom numbers in file:\n");
+      System.out.printf("\nrandom numbers in file:\n");
 
-			int r;
-			int count = 0;
-			// reads integers in file until EOF
-			while ( in.hasNextInt() )
-			{
-				// reads random number and prints it
-				r = in.nextInt();
-				System.out.printf("%2d %4d\n", count, r);
-				++count;
-			}
+      int r;
+      int count = 0;
+      while ( in.hasNextInt() )				// reads data in file until EOF
+      {
+	r = in.nextInt();
+	System.out.printf("%2d %4d\n", count, r);
+	++count;
+      }
 
-			String msg = "%d random numbers have been read\n";
-			System.out.printf(msg, count);
+      String msg = "%d random numbers have been read\n";
+      System.out.printf(msg, count);
 
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			System.out.println("IO Error:");
-			err.printStackTrace();
-		}
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-		return;
-	}
+  // reads the file contents into an array and prints the array
+  private static void readIntoArray ()
+  {
+    String filename = "random.txt";
+    File f = new File (filename);
+
+    try
+    {
+      Scanner in = new Scanner (f);
+
+      int size = lines (filename);
+      int [] rand = new int [size];		// allocates for storing contained data
+
+      int count = 0;
+      while ( in.hasNextInt() )			// reads random numbers into array
+      {
+	rand[count] = in.nextInt();
+	++count;
+      }
+
+      System.out.printf("\nrandom numbers in array:\n");
+      for (int i = 0; i != size; ++i)
+	System.out.printf("%2d %4d\n", i, rand[i]);
+
+      String msg = "array stores %d random numbers\n";
+      System.out.printf(msg, count);
+
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-	private static void readIntoArray ()
-	// reads the file contents into an array and prints the array
-	{
-		String filename = "random.txt";
-		File f = new File (filename);
+  // counts number of lines (or records) in a file
+  private static int lines (String filename)
+  {
+    int count = 0;
+    File f = new File (filename);
+    try
+    {
+      Scanner in = new Scanner (f);
 
-		try
-		{
-			Scanner in = new Scanner (f);
+      while ( in.hasNextInt() )
+      {
+	in.nextInt();
+	++count;
+      }
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
 
-			// allocates for storing the random numbers in file
-			int size = lines (filename);
-			int [] rand = new int [size];
-
-			int count = 0;
-			// reads random numbers into array
-			while ( in.hasNextInt() )
-			{
-				rand[count] = in.nextInt();
-				++count;
-			}
-
-			System.out.printf("\nrandom numbers in array:\n");
-			for (int i = 0; i != size; ++i)
-				System.out.printf("%2d %4d\n", i, rand[i]);
-
-			String msg = "array stores %d random numbers\n";
-			System.out.printf(msg, count);
-
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			System.out.println("IO Error:");
-			err.printStackTrace();
-		}
-
-
-		return;
-	}
-
-
-	private static int lines (String filename)
-	// counts number of lines (or records) in a file
-	{
-
-		int count = 0;
-		// creates a File object
-		File f = new File (filename);
-		try
-		{
-			// attempts to create a Scanner object
-			Scanner in = new Scanner (f);
-
-			// reads integers in file until EOF for counting
-			while ( in.hasNextInt() )
-			{
-				in.nextInt();
-				++count;
-			}
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			System.out.println("IO Error:");
-			err.printStackTrace();
-		}
-
-		return count;
-	}
+    return count;
+  }
 }
 
 /*
