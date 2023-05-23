@@ -35,206 +35,170 @@ import java.util.Scanner;
 
 class BasicIOExample
 {
-	public static void main (String[] args)
-	{
-		create();	// creates a file
-		write();	// writes data to the file
-		read();		// reads data in the file
-		store();	// stores data in an array
-		return;
-	}
-
-	// implementations:
-	private static void create ()
-	// creates a file
-	{
-		try
-		{
-			// defines the filename
-			String fname = ("data.txt");
-			// creates a new File object
-			File f = new File (fname);
-
-			String msg = "creating file `" + fname + "' ... ";
-			System.out.println();
-			System.out.printf("%s", msg);
-			// creates the new file
-			f.createNewFile();
-			System.out.println("done");
-
-		}
-		catch (IOException err)
-		{
-			// complains if there is an Input/Output Error
-			err.printStackTrace();
-		}
-
-		return;
-	}
+  public static void main (String[] args)
+  {
+    create();						// creates a file
+    write();						// writes data to the file
+    read();						// reads data in the file
+    store();						// stores data in an array
+  }
 
 
-	private static void write ()
-	// writes data to a file
-	{
-		try
-		{
-			// defines the filename
-			String filename = ("data.txt");
-			// creates new PrintWriter object for writing file
-			PrintWriter out = new PrintWriter (filename);
-
-			int numel = 256;
-			String msg = "writing %d numbers ... ";
-			System.out.printf(msg, numel);
-			// writes the integers in the range [0, 256)
-			for (int i = 0; i != numel; ++i)
-				out.printf("%d\n", i);
-
-			System.out.println("done");
-
-			System.out.printf("closing file ... ");
-			out.close();	// closes the output stream
-			System.out.println("done");
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			err.printStackTrace();
-		}
-
-		return;
-	}
+  // implementations:
 
 
-	private static void read ()
-	// reads the file contents and prints them to the console
-	{
-		// defines the filename
-		String filename = ("data.txt");
-		// creates a File object
-		File f = new File (filename);
-		try
-		{
-			// attempts to create a Scanner object
-			Scanner in = new Scanner (f);
+  private static void create ()				// creates a file
+  {
+    try
+    {
+      String fname = ("data.txt");			// defines the filename
+      File f = new File (fname);			// creates a new File object
 
-			System.out.printf("\nnumbers in file:\n");
-
-			int x;
-			int count = 0;
-			// reads integers in file until EOF
-			while ( in.hasNextInt() )
-			{
-				// reads  number and prints it
-				x = in.nextInt();
-				System.out.printf("%4d\n", x);
-				++count;
-			}
-
-			String msg = ("%d numbers have been read\n");
-			System.out.printf(msg, count);
-
-			in.close();	// closes the input stream
-
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			err.printStackTrace();
-		}
+      String msg = "creating file `" + fname + "' ... ";
+      System.out.println();
+      System.out.printf("%s", msg);
+      f.createNewFile();				// creates the new file
+      System.out.println("done");
+    }
+    catch (IOException err)				// catches Input/Output Error
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-		return;
-	}
+  private static void write ()				// writes data to a file
+  {
+    try
+    {
+      String filename = ("data.txt");			// defines the filename
+      PrintWriter out = new PrintWriter (filename);	// creates PrintWriter for writing
+
+      int numel = 256;
+      String msg = "writing %d numbers ... ";
+      System.out.printf(msg, numel);
+      for (int i = 0; i != numel; ++i)
+	out.printf("%d\n", i);				// writes integers in [0, 256)
+
+      System.out.println("done");
+
+      System.out.printf("closing file ... ");
+      out.close();					// closes the output stream
+      System.out.println("done");
+    }
+    catch (FileNotFoundException err)			// catches if file does not exist
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-	private static void store ()
-	// stores the file contents into an array and prints the array
-	{
-		String filename = "data.txt";
-		File f = new File (filename);
+  private static void read ()				// reads file
+  {
+    String filename = ("data.txt");			// defines the filename
+    File f = new File (filename);			// creates a File object
+    try
+    {
+      Scanner in = new Scanner (f);			// creates a Scanner object
 
-		try
-		{
-			Scanner in = new Scanner (f);
+      System.out.printf("\nnumbers in file:\n");
 
-			// allocates list for storing the numbers in file
-			int size = lines (filename);
-			int [] list = new int [size];
+      int x;
+      int count = 0;
+      // reads integers in file until End-Of-File EOF:
+      while ( in.hasNextInt() )
+      {
+	x = in.nextInt();				// reads
+	System.out.printf("%4d\n", x);			// prints
+	++count;
+      }
 
-			int count = 0;
-			// reads numbers into array
-			while ( in.hasNextInt() )
-			{
-				list[count] = in.nextInt();
-				++count;
-			}
+      String msg = ("%d numbers have been read\n");
+      System.out.printf(msg, count);
 
-			System.out.printf("\nnumbers in array:\n");
-			for (int i = 0; i != size; ++i)
-				System.out.printf("%4d\n", list[i]);
-
-			String msg = ("array stores %d numbers\n");
-			System.out.printf(msg, count);
-
-			in.close();	// closes the input stream
-
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			err.printStackTrace();
-		}
+      in.close();					// closes the input stream
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-		return;
-	}
+  // stores the file contents into an array and prints the array
+  private static void store ()
+  {
+    String filename = "data.txt";
+    File f = new File (filename);
+
+    try
+    {
+      Scanner in = new Scanner (f);
+
+      int size = lines (filename);
+      int [] list = new int [size];	// allocates list for storing the numbers in file
+
+      int count = 0;
+      while ( in.hasNextInt() )
+      {
+	list[count] = in.nextInt();	// reads numbers into array
+	++count;
+      }
+
+      System.out.printf("\nnumbers in array:\n");
+      for (int i = 0; i != size; ++i)
+	System.out.printf("%4d\n", list[i]);
+
+      String msg = ("array stores %d numbers\n");
+      System.out.printf(msg, count);
+
+      in.close();			// closes the input stream
+
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+  }
 
 
-	private static int lines (String filename)
-	// counts number of lines (or records) in a file
-	{
+  // counts number of lines (or records) in a file
+  private static int lines (String filename)
+  {
+    int count = 0;
+    File f = new File (filename);
+    try
+    {
+      Scanner in = new Scanner (f);
 
-		int count = 0;
-		// creates a File object
-		File f = new File (filename);
-		try
-		{
-			// attempts to create a Scanner object
-			Scanner in = new Scanner (f);
+      while ( in.hasNextInt() )		// reads integers in file until EOF
+      {
+	in.nextInt();
+	++count;
+      }
 
-			// reads integers in file until EOF for counting
-			while ( in.hasNextInt() )
-			{
-				in.nextInt();
-				++count;
-			}
+      in.close();			// closes the input stream
+    }
+    catch (FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
 
-			in.close();	// closes the input stream
-		}
-		catch (FileNotFoundException err)
-		{
-			// complains if file does not exist
-			err.printStackTrace();
-		}
-
-		return count;
-	}
+    return count;
+  }
 }
 
-/*
- * COMMENTS:
- *
- * Reading Data:
- * Reads integers until the scanner object finds something that it is not
- * an integer, such as a String or an End-Of-File EOF for instance.
- *
- * Static methods:
- * Static methods are not bound to any object of the class and these can
- * be conveniently invoked directly from the main program (as done here).
- *
- * Variables:
- * Note that local variables are destroyed (freed from memory) after the
- * method executes. Do not use global variables unless you really have to.
- *
- */
+
+// COMMENTS:
+//
+// Reading Data:
+// Reads integers until the scanner object finds something that it is not
+// an integer, such as a String or an End-Of-File EOF for instance.
+//
+// Static methods:
+// Static methods are not bound to any object of the class and these can
+// be conveniently invoked directly from the main program (as done here).
+//
+// Variables:
+// Note that local variables are destroyed (freed from memory) after the
+// method executes. Do not use global variables unless you really have to.
