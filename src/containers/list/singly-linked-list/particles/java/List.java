@@ -453,7 +453,7 @@ public class List
   }
 
 
-  private static void testInsortMethod ()	// tests the insertion sort method
+  private static void testInsortMethod ()
   {
     int size = 0x00001000;
     List list = new List ();
