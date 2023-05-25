@@ -65,10 +65,7 @@ public final class Coord implements Comparable<Coord> // 2D Cartesian Coordinate
   @Override
   public int compareTo (Coord coord)	// implements comparable interface
   {
-    if (this.x != coord.x)
-      return (this.x - coord.x);
-    else
-      return (this.y - coord.y);
+    return ( (this.x != coord.x)? (this.x - coord.x) : (this.y - coord.y) );
   }
 
   // double distance (Coord p, Coord q)
