@@ -37,19 +37,19 @@ public class List
 
     // node constructors:
 
-    Node ()			// default constructor
+    Node ()					// default constructor
     {
       this.next = null;
       this.data = new Coord();
     }
 
-    Node (Coord data)		// constructs node that stores given coordinate object
+    Node (Coord data)				// constructs node from data
     {
       this.next = null;
       this.data = ( new Coord(data) );
     }
 
-    Node (Node node)		// copy constructor
+    Node (Node node)				// copy constructor
     {
       this.next = null;
       this.data = ( new Coord(node.data) );
@@ -57,7 +57,7 @@ public class List
 
     // getters:
 
-    public Coord get ()		// returns a copy of the coordinates object
+    public Coord get ()				// returns a copy of the data
     {
       return ( new Coord(data) );
     }
@@ -310,7 +310,7 @@ public class List
   }
 
 
-  public void print ()		// prints stored coordinates on the console
+  public void print ()					// prints list data on the console
   {
     Node it = this.head;
     while (it != null)
@@ -356,7 +356,7 @@ public class List
   // implementations:
 
 
-  private void create (Coord c)		// creates the first node of the list
+  private void create (Coord c)				// creates the list head node
   {
     this.head = new Node(c);
     this.tail = this.head;
@@ -364,7 +364,7 @@ public class List
   }
 
 
-  private void push_front (Coord c)	// inserts at the front of the list
+  private void push_front (Coord c)			// inserts at the list front
   {
     Node head = this.head;
     this.head = new Node(c);
@@ -373,7 +373,7 @@ public class List
   }
 
 
-  private void push_back (Coord c) 	// inserts at the back of the list
+  private void push_back (Coord c) 			// inserts at the back of the list
   {
     if (this.tail == null)
     {
@@ -389,7 +389,8 @@ public class List
   }
 
 
-  private void insert (Coord c)		// inserts at the position that keeps list order
+  // inserts at the position that keeps the list order
+  private void insert (Coord c)
   {
     // creates iterators:
     Node it = this.head;
@@ -409,10 +410,10 @@ public class List
   }
 
 
-  private int linearSearch (Coord target)	// implements linear search
+  private int linearSearch (Coord target)		// implements linear search
   {
     int invalidIndex = (0xFFFFFFFF);
-    if (this.head == null)			// returns invalid if empty
+    if (this.head == null)				// returns invalid if empty
       return invalidIndex;
 
     int idx = 0;
@@ -433,7 +434,7 @@ public class List
   }
 
 
-  private void isDivisible ()			// complains if cannot divide list in two
+  private void isDivisible ()				// complains if cannot bisect list
   {
     String errmsg = (
 	"list.bisect(): list of size: " + this.size +
@@ -496,7 +497,7 @@ public class List
   }
 
 
-  private static void testAppendMethod ()		// tests the append method
+  private static void testAppendMethod ()
   {
     int size = 0x00001000;
     List list = new List();
@@ -532,7 +533,7 @@ public class List
   }
 
 
-  private static void testSearchMethod ()		// tests the search method
+  private static void testSearchMethod ()
   {
     int size = 0x00001000;
     List list = new List ();
