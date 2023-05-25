@@ -88,8 +88,8 @@ public final class Coord implements Comparable<Coord> // 2D Cartesian Coordinate
 
   public static double distance (Coord p, Coord q)
   {
-    double x_p = p.x, y_p = p.y;// gets the (x, y) coordinates of the pth particle
-    double x_q = q.x, y_q = q.y;// gets the (x, y) coordinates of the qth particle
+    double x_p = p.x, y_p = p.y;
+    double x_q = q.x, y_q = q.y;
     return ( (x_p - x_q) * (x_p - x_q) + (y_p - y_q) * (y_p - y_q) );
   }
 }
