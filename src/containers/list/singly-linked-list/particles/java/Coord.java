@@ -71,17 +71,17 @@ public final class Coord implements Comparable<Coord> // 2D Cartesian Coordinate
       return (this.y - coord.y);
   }
 
-  // double distance (Coord i, Coord j)
+  // double distance (Coord p, Coord q)
   //
   // Synopsis:
-  // Returns the squared distance of a pair of particles (i, j).
+  // Returns the squared distance of a pair of particles (p, q).
   //
   // Inputs:
-  // i		coordinates of the ith particle
-  // j		coordinates of the jth particle
+  // p		coordinates of the pth particle
+  // q		coordinates of the qth particle
   //
   // Output:
-  // d		squared distance of the ith and jth particles
+  // d		squared distance of the pth and qth particles
   //
   // NOTES:
   // Omits the computation of the squared root for speed. And uses
@@ -89,10 +89,10 @@ public final class Coord implements Comparable<Coord> // 2D Cartesian Coordinate
   // the limited range of numbers that can be represented with the
   // signed integer type.
 
-  public static double distance (Coord i, Coord j)
+  public static double distance (Coord p, Coord q)
   {
-    double xi = i.x, yi = i.y;	// gets the (x, y) coordinates of the ith particle
-    double xj = j.x, yj = j.y;	// gets the (x, y) coordinates of the jth particle
-    return ( (xi - xj) * (xi - xj) + (yi - yj) * (yi - yj) );
+    double x_p = p.x, y_p = p.y;// gets the (x, y) coordinates of the pth particle
+    double x_q = q.x, y_q = q.y;// gets the (x, y) coordinates of the qth particle
+    return ( (x_p - x_q) * (x_p - x_q) + (y_p - y_q) * (y_p - y_q) );
   }
 }
