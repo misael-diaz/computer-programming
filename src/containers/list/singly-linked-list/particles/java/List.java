@@ -815,3 +815,6 @@ public class List
       System.out.println("pass");
   }
 }
+
+// TODO:
+// [ ] complain if the position passed to the forwardIterator() constructor is invalid
