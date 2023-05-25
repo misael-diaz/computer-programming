@@ -30,38 +30,34 @@ public class List
   private class Node
   {
 
-    /* node data members */
+    // node data members:
 
     private Node  next;
     private Coord data;
 
-    /* node constructors */
+    // node constructors:
 
-    Node ()
-      // default constructor
+    Node ()			// default constructor
     {
       this.next = null;
       this.data = new Coord();
     }
 
-    Node (Coord data)
-      // constructs node that stores given coordinate object
+    Node (Coord data)		// constructs node that stores given coordinate object
     {
       this.next = null;
       this.data = ( new Coord(data) );
     }
 
-    Node (Node node)
-      // copy constructor
+    Node (Node node)		// copy constructor
     {
       this.next = null;
       this.data = ( new Coord(node.data) );
     }
 
-    /* getters */
+    // getters:
 
-    public Coord get ()
-      // returns a copy of the coordinates object
+    public Coord get ()		// returns a copy of the coordinates object
     {
       return ( new Coord(data) );
     }
@@ -71,43 +67,32 @@ public class List
   public class forwardIterator
   {
 
-    /* data */
+    // data:
 
 
     private Node iter;
 
 
-    /* constructors */
+    // constructors:
 
 
-    forwardIterator ()
-      // default constructor
+    forwardIterator ()				// default constructor
     {
       this.iter = null;
     }
 
 
-    forwardIterator (Node head)
-      // constructs forward iterator from the list head node
+    forwardIterator (Node head)			// constructs iterator from list head node
     {
       this.iter = head;
     }
 
 
-    forwardIterator (Node head, int pos)
-      // constructs forward iterator at position
+    forwardIterator (Node head, int pos)	// constructs forward iterator at position
     {
       int i = 0;
       this.iter = head;
       while (i != pos)
-	/*
-
-	   NOTE:
-	   It is the responsibility of the user to request a
-	   valid position; if it is an out-of-bounds position
-	   the iterator could point to HEAD or be NULL.
-
-*/
       {
 	iter = (iter == null)? null : iter.next;
 	++i;
@@ -115,22 +100,21 @@ public class List
     }
 
 
-    /* getters */
+    // getters:
 
 
-    public Coord get ()
-      // returns a copy of the data stored in the current node
+    public Coord get ()				// returns a copy of the data in place
     {
       return this.iter.get();
     }
 
 
-    /* methods */
+    // methods:
 
 
     public boolean hasNext ()
-      // returns true if there is a next node, false otherwise
     {
+      // returns true if there is a next node, false otherwise
       if (this.iter == null)
       {
 	return false;
@@ -145,26 +129,24 @@ public class List
     }
 
 
-    public void next ()
-      // advances iterator forward
+    public void next ()				// advances iterator forward
     {
       this.iter = this.iter.next;
     }
   }
 
 
-  /* list data members */
+  // list data members:
 
   private Node head;
   private Node tail;
   private int size;
 
 
-  /* list constructors */
+  // list constructors:
 
 
-  List ()
-    // default constructor
+  List ()					// default constructor
   {
     this.head = null;
     this.tail = null;
@@ -172,11 +154,9 @@ public class List
   }
 
 
-  List (List list)
-    // copy constructor
+  List (List list)				// copy constructor
   {
-    if (list.head == null)
-      // returns a new empty list if passed list is empty
+    if (list.head == null)			// returns an empty list if empty
     {
       this.head = null;
       this.tail = null;
@@ -185,162 +165,143 @@ public class List
     }
     else
     {
-      // otherwise, creates a copy of the head node
-      this.head = new Node (list.head);
+      this.head = new Node (list.head);		// copies the head node
       this.tail = this.head;
 
       Node it = list.head.next;
-      while (it != null)
-	// and copies the remaining nodes into the new list
+      while (it != null)			// copies remaining nodes
       {
 	this.tail.next = new Node (it);
 	this.tail = this.tail.next;
 	it = it.next;
       }
 
-      // defines the size of the new list
-      this.size = list.size;
+      this.size = list.size;			// defines the size of the new list
     }
   }
 
 
-  /* getters */
+  // getters:
 
 
-  public Coord get (int pos)
-    // returns copy of the coordinates object at position
+  public Coord get (int pos)			// returns copy of the data at position
   {
-    if (this.head == null)
+    if (this.head == null)			// complains if the list is empty
     {
       String errmsg = "EmptyListError";
       throw new RuntimeException(errmsg);
     }
 
-    if (pos < 0 || pos >= this.size)
-      // complains if the position index is invalid
+    if (pos < 0 || pos >= this.size)		// complains if given invalid position
     {
       String errmsg = "OutOfBoundsError";
       throw new RuntimeException(errmsg);
     }
 
-    if ( pos == 0 )
-      // returns data stored in head node
+    if ( pos == 0 )				// returns data stored in head node
     {
       return ( new Coord(head.data) );
     }
 
-    if ( pos == (this.size - 1) )
-      // returns data stored in tail node
+    if ( pos == (this.size - 1) )		// returns data stored in tail node
     {
       return ( new Coord(tail.data) );
     }
 
     int i = 0;
     Node iter = this.head;
-    while (i != pos)
-      // advances iterator to requested position
+    while (i != pos)				// advances iterator to requested position
     {
       iter = iter.next;
       ++i;
     }
 
-    return ( new Coord(iter.data) );
+    return ( new Coord(iter.data) );		// returns copy at position
   }
 
 
-  /* methods */
+  // methods:
 
 
-  public int size ()
-    // returns the size of the list (number of elements stored)
+  public int size ()				// returns the size of the list
   {
     return this.size;
   }
 
 
-  private void append (Coord c)
-    // appends coordinate objects to the list
+  private void append (Coord c)			// appends data to the list
   {
     this.push_back(c);
   }
 
 
-  public void insort (Coord c)
-    // insertion sort method
+  public void insort (Coord c)			// implements the insertion sort method
   {
-    if (this.head == null)
-      // if the list is empty
+    if (this.head == null)			// creates head node if the list is empty
     {
       this.create(c);
       return;
     }
 
 
-    if (c.compareTo(this.head.data) <= 0)
-      // if less than or equal to the first element in the list
+    if (c.compareTo(this.head.data) <= 0)	// inserts at the front if less than head
     {
       this.push_front(c);
       return;
     }
 
 
-    if (c.compareTo(this.tail.data) >= 0)
-      // if greater than or equal to the last element in the list
+    if (c.compareTo(this.tail.data) >= 0)	// inserts at the back if larger than tail
     {
       this.push_back(c);
       return;
     }
 
 
-    //otherwise, searches linearly for the insertion location
-    this.insert(c);
+    this.insert(c);				// inserts at the correct position
     return;
   }
 
 
+  // int search (Coord target)
+  //
+  // Synopsis:
+  // Returns the index of the node containing the target, otherwise
+  // returns an invalid index to indicate that the target is not in
+  // the list.
+
+
   public int search (Coord target)
-    /*
-
-       Synopsis:
-       Returns the index of the node containing the target, otherwise
-       returns an invalid index to indicate that the target is not in
-       the list.
-
-*/
   {
     Coord t = target;
     return this.linearSearch(t);
   }
 
 
-  public List bisect ()
-    // bisects list into two partitions, returns the second partition
+  public List bisect ()		// bisects list into two partitions, returns second part
   {
 
-    isDivisible();	// complains if list cannot be divided
+    isDivisible();		// complains if list cannot be divided
 
-    int i = 0;		// counter
+    int i = 0;			// counter
     Node it   = this.head;	// iterator
     Node head = this.head;	// first partition head
     Node tail = this.tail;	// first partition tail
     int size = this.size;	// original list size
     int half = (size / 2);	// first partition size
-    while (i != half)
-      // advances iterator until the second partition is reached
+    while (i != half)		// advances iterator until the second partition is reached
     {
       tail = it;
       it = it.next;
       ++i;
     }
 
-    // creates placeholder (list) for the second partition
-    List part = new List();
+    List part = new List();	// creates placeholder (list) for the second partition
     part.head = it;
     part.tail = this.tail;
     part.size = (size - half);
 
-    // unlinks the first partition from the second partition
-    tail.next = null;
+    tail.next = null;		// unlinks the first partition from the second partition
     this.head = head;
     this.tail = tail;
     this.size = half;
@@ -349,8 +310,7 @@ public class List
   }
 
 
-  public void print ()
-    // prints stored coordinates on the console
+  public void print ()		// prints stored coordinates on the console
   {
     Node it = this.head;
     while (it != null)
@@ -363,22 +323,19 @@ public class List
   }
 
 
-  public forwardIterator forwardIterator ()
-    // returns default iterator
+  public forwardIterator forwardIterator ()		// returns default iterator
   {
     return ( new forwardIterator(this.head) );
   }
 
 
-  public forwardIterator forwardIterator (int pos)
-    // returns an iterator that points at requested position
+  public forwardIterator forwardIterator (int pos)	// returns iterator at position
   {
     return ( new forwardIterator(this.head, pos) );
   }
 
 
-  public Coord [] toArray ()
-    // returns an array of the data contained in the nodes
+  public Coord [] toArray ()				// returns array of the list data
   {
     int size = this.size;
     Coord [] data = new Coord[size];
@@ -396,11 +353,10 @@ public class List
   }
 
 
-  /* implementations */
+  // implementations:
 
 
-  private void create (Coord c)
-    // creates the first node of the list
+  private void create (Coord c)		// creates the first node of the list
   {
     this.head = new Node(c);
     this.tail = this.head;
@@ -408,8 +364,7 @@ public class List
   }
 
 
-  private void push_front (Coord c)
-    // pushes coordinate object at the front of the list
+  private void push_front (Coord c)	// inserts at the front of the list
   {
     Node head = this.head;
     this.head = new Node(c);
@@ -418,8 +373,7 @@ public class List
   }
 
 
-  private void push_back (Coord c)
-    // pushes coordinate object at the back of the list
+  private void push_back (Coord c) 	// inserts at the back of the list
   {
     if (this.tail == null)
     {
@@ -435,20 +389,19 @@ public class List
   }
 
 
-  private void insert (Coord c)
-    // inserts data at suitable location
+  private void insert (Coord c)		// inserts at the position that keeps list order
   {
-    // creates iterators
+    // creates iterators:
     Node it = this.head;
     Node next = it.next;
+    // advances iterators until the insertion location is found:
     while (next != null && c.compareTo(next.data) > 0)
-      // advances iterators until the insertion location is found
     {
       it = it.next;
       next = (next == null)? null : next.next;
     }
 
-    // inserts node at insertion location
+    // inserts node at insertion location:
     Node node = new Node(c);
     it.next = node;
     node.next = next;
@@ -456,12 +409,10 @@ public class List
   }
 
 
-  private int linearSearch (Coord target)
-    // implements linear search
+  private int linearSearch (Coord target)	// implements linear search
   {
-    // if the list is empty there is nothing to search
     int invalidIndex = (0xFFFFFFFF);
-    if (this.head == null)
+    if (this.head == null)			// returns invalid if empty
       return invalidIndex;
 
     int idx = 0;
@@ -482,8 +433,7 @@ public class List
   }
 
 
-  private void isDivisible ()
-    // complains if the list cannot be divided into two partitions
+  private void isDivisible ()			// complains if cannot divide list in two
   {
     String errmsg = (
 	"list.bisect(): list of size: " + this.size +
@@ -505,14 +455,13 @@ public class List
   }
 
 
-  private static void testInsortMethod ()
-    // tests the insertion sort method
+  private static void testInsortMethod ()	// tests the insertion sort method
   {
     int size = 0x00001000;
     List list = new List ();
     Random r = new Random ();
+    // fills the list with random coordinates
     for (int i = 0; i != size; ++i)
-      // fills the list with random coordinates
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Coord c = new Coord (x, y);
@@ -529,8 +478,8 @@ public class List
 
 
     int fails = 0;
+    // counts number of disordered pairs
     for (int i = 0; i != (size - 1); ++i)
-      // counts number of disordered pairs
     {
       Coord P = list.get(i);
       Coord Q = list.get(i + 1);
@@ -547,16 +496,15 @@ public class List
   }
 
 
-  private static void testAppendMethod ()
-    // tests the append method
+  private static void testAppendMethod ()		// tests the append method
   {
     int size = 0x00001000;
     List list = new List();
 
     Random r = new Random ();
     Coord [] coords = new Coord [size];
+    // appends data to the list
     for (int i = 0; i != size; ++i)
-      // appends data to the list
     {
       int x = r.nextInt();
       int y = r.nextInt();
@@ -565,12 +513,8 @@ public class List
       list.append(c);
     }
 
-    /*
-
-       checks for differences between the stored and the
-       generated data (we expect none)
-
-*/
+    // checks for differences between the stored and the
+    // generated data (we expect none)
 
     int diffs = 0;
     for (int i = 0; i != size; ++i)
@@ -588,15 +532,14 @@ public class List
   }
 
 
-  private static void testSearchMethod ()
-    // tests the search method
+  private static void testSearchMethod ()		// tests the search method
   {
     int size = 0x00001000;
     List list = new List ();
     Coord [] coords = new Coord [size];
     Random r = new Random ();
+    // fills the list with random coordinates
     for (int i = 0; i != size; ++i)
-      // fills the list with random coordinates
     {
       int x = r.nextInt(size), y = r.nextInt(size);
       Coord c = new Coord (x, y);
@@ -605,18 +548,14 @@ public class List
     }
 
 
-    /*
-
-       counts the number of times the search method fails to find
-       the target in the list (we expect none for we know that the
-       target must be in the list)
-
-*/
+    //   counts the number of times the search method fails to find
+    //   the target in the list (we expect none for we know that the
+    //   target must be in the list)
 
 
     int fails = 0;
+    // counts number of search failures
     for (int i = 0; i != size; ++i)
-      // counts number of search failures
     {
       Coord c = coords[i];
       if (list.search(c) < 0)
@@ -633,7 +572,6 @@ public class List
 
 
   private static void testCopyConstructor ()
-    // test the copy of constructor of the list class
   {
     int size = 0x00001000;
     List list = new List ();
@@ -655,8 +593,8 @@ public class List
 
 
     int diffs = 0;
+    // counts number of differences between the lists
     for (int i = 0; i != size; ++i)
-      // counts number of differences between the lists
     {
       Coord P = list.get(i);
       Coord Q = copy.get(i);
@@ -674,7 +612,6 @@ public class List
 
 
   private static void testForwardIterator ()
-    // test the forward iterator of the list class
   {
     int size = 0x00001000;
     List list = new List ();
@@ -687,32 +624,22 @@ public class List
     }
 
 
-    /*
-
-test: uses the iterator to determine the list size
-
-*/
-
-
+    // test: uses the iterator to determine the list size
     List copy = new List(list);	// invokes copy constructor
 
 
     int count = 0;
     forwardIterator iter = copy.forwardIterator();
+    // while-loop invariant:
+    // so far we have counted `count' nodes with a node next to it
     while ( iter.hasNext() )
-      /*
-
-	 while-loop invariant:
-	 so far we have counted `count' nodes with a node next to it
-
-*/
     {
       ++count;
       iter.next();
     }
 
 
-    /* #nodes: the list has `count' nodes plus the tail node */
+    // #nodes: the list has `count' nodes plus the tail node
 
 
     int nodes = (count + 1);
@@ -723,20 +650,16 @@ test: uses the iterator to determine the list size
       System.out.println("pass");
 
 
-    /*
-
-test:
-checks that the data pointed to by the iterator of the
-copied list is the same as that contained in the original
-list (as it should)
-
-*/
+    // test:
+    // checks that the data pointed to by the iterator of the
+    // copied list is the same as that contained in the original
+    // list (as it should)
 
 
     int diffs = 0;
     iter = copy.forwardIterator();
+    // counts number of differences
     for (int i = 0; i != size; ++i)
-      // counts number of differences
     {
       Coord P = list.get(i);
       Coord Q = iter.get();
@@ -754,20 +677,16 @@ list (as it should)
       System.out.println("pass");
 
 
-    /*
-
-test:
-checks that the data pointed to by the iterator is the
-same as that contained in the list (as it should)
-
-*/
+    // test:
+    // checks that the data pointed to by the iterator is the
+    // same as that contained in the list (as it should)
 
 
     diffs = 0;
     iter = list.forwardIterator();
     Coord [] data = list.toArray();
+    // counts differences
     for (int i = 0; i != size; ++i)
-      // counts differences
     {
       Coord P = data[i];
       Coord Q = iter.get();
@@ -785,32 +704,28 @@ same as that contained in the list (as it should)
       System.out.println("pass");
 
 
-    /* divides the original list into two partitions */
+    // divides the original list into two partitions
 
 
     List first = copy;
     List second = first.bisect();
 
 
-    /* test: checks the size of the first partition */
+    // test: checks the size of the first partition
 
 
     count = 0;
     iter = first.forwardIterator();
+    // while-loop invariant:
+    // so far we have counted `count' nodes with a node next to it
     while ( iter.hasNext() )
-      /*
-
-	 while-loop invariant:
-	 so far we have counted `count' nodes with a node next to it
-
-*/
     {
       ++count;
       iter.next();
     }
 
 
-    /* #nodes: the list has `count' nodes plus the tail node */
+    // #nodes: the list has `count' nodes plus the tail node
 
 
     nodes = (count + 1);
@@ -821,25 +736,21 @@ same as that contained in the list (as it should)
       System.out.println("pass");
 
 
-    /* test: checks the size of the second partition */
+    // test: checks the size of the second partition
 
 
     count = 0;
     iter = second.forwardIterator();
+    // while-loop invariant:
+    // so far we have counted `count' nodes with a node next to it
     while ( iter.hasNext() )
-      /*
-
-	 while-loop invariant:
-	 so far we have counted `count' nodes with a node next to it
-
-*/
     {
       ++count;
       iter.next();
     }
 
 
-    /* #nodes: the list has `count' nodes plus the tail node */
+    // #nodes: the list has `count' nodes plus the tail node
 
 
     nodes = (count + 1);
@@ -850,20 +761,16 @@ same as that contained in the list (as it should)
       System.out.println("pass");
 
 
-    /*
-
-test:
-checks that the data in the first partition corresponds
-to the data stored in the first half of the original list
-
-*/
+    // test:
+    // checks that the data in the first partition corresponds
+    // to the data stored in the first half of the original list
 
 
     diffs = 0;
     data = list.toArray();
     iter = first.forwardIterator();
+    // counts number of differences
     for (int i = 0; i != first.size(); ++i)
-      // counts number of differences
     {
       Coord P = data[i];
       Coord Q = iter.get();
@@ -881,20 +788,16 @@ to the data stored in the first half of the original list
       System.out.println("pass");
 
 
-    /*
-
-test:
-checks that the data in the second partition corresponds
-to the data stored in the second half of the original list
-
-*/
+    // test:
+    // checks that the data in the second partition corresponds
+    // to the data stored in the second half of the original list
 
 
     diffs = 0;
     data = list.toArray();
     iter = second.forwardIterator();
+    // counts number of differences
     for (int i = 0; i != second.size(); ++i)
-      // counts number of differences
     {
       Coord P = data[i + first.size()];
       Coord Q = iter.get();
