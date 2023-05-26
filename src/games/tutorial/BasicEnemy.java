@@ -29,15 +29,15 @@ public class BasicEnemy extends GameObject
 // defines Basic Enemy with attributes inherited from the Game Object Class
 {
 
-  /* Basic Enemy Attributes */
+  // Basic Enemy Attributes:
 
   private Color color;			// enemy color
-  private boolean shape = false;		// enemy shape (rectangle)
+  private boolean shape = false;	// enemy shape (rectangle)
   private float trailspan = 0.25f;	// defines enemy trail span
   private Handler handler;		// enemy trail handler
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public BasicEnemy (int x, int y, ID id, Color color,
@@ -54,10 +54,10 @@ public class BasicEnemy extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
-  public void shoot ()	/* unimplemented */
+  public void shoot ()	// unimplemented
     // we need to define this method because objects derived from the
     // Game Object class must define the abstract methods of the class
   {
@@ -75,12 +75,12 @@ public class BasicEnemy extends GameObject
       setGarbage();	// sets garbage state to true
     else
     {
-      /* updates position */
+      // updates position:
 
       x += v_x;
       y += v_y;
 
-      /* simulates elastic collisions with boundaries */
+      // simulates elastic collisions with boundaries:
 
       if ( x <= 0 || x >= (Game.WIDTH - 16) )
 	v_x *= -1;
@@ -88,7 +88,7 @@ public class BasicEnemy extends GameObject
       if ( y <= 0 || y >= (Game.HEIGHT - 64) )
 	v_y *= -1;
 
-      /* simulates enemy trail */
+      // simulates enemy trail:
 
       Trail trail = new Trail(x, y, ID.Trail, color,
 	  shape, trailspan, width,
@@ -121,16 +121,13 @@ public class BasicEnemy extends GameObject
   }
 }
 
-/*
- * COMMENTS:
- * The `super' keyword is used here to invoke the constructor of the
- * parent class, which in this case refers to the GameObject class.
- *
- * The trail of the enemy is simulated by spawning trail objects that
- * fade with time (via calls to the trail tick method).
- *
- * Note that the garbage collector will subsequently remove enemies
- * marked as garbage. We do not remove enemies right away to avert
- * serious issues while traversing the linked-list.
- *
- */
+// COMMENTS:
+// The `super' keyword is used here to invoke the constructor of the
+// parent class, which in this case refers to the GameObject class.
+//
+// The trail of the enemy is simulated by spawning trail objects that
+// fade with time (via calls to the trail tick method).
+//
+// Note that the garbage collector will subsequently remove enemies
+// marked as garbage. We do not remove enemies right away to avert
+// serious issues while traversing the linked-list.
