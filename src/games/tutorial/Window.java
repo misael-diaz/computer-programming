@@ -29,45 +29,45 @@ public class Window extends Canvas
 // purpose of the class is to create the window for us
 {
 
-	// creates user-defined serial version UID for (de)serialization
-	private static final long serialVersionUID = 240840600533728354L;
-	private JFrame frame;
+  // creates user-defined serial version UID for (de)serialization
+  private static final long serialVersionUID = 240840600533728354L;
+  private JFrame frame;
 
-	public Window (int width, int height, String title, Game game)
-	// creates a window of specified dimensions for our game
-	{
-		// creates the frame (or window) for our game
-		frame = new JFrame (title);
+  public Window (int width, int height, String title, Game game)
+    // creates a window of specified dimensions for our game
+  {
+    // creates the frame (or window) for our game
+    frame = new JFrame (title);
 
-		// fixes the window dimensions
-		frame.setPreferredSize ( new Dimension(width, height) );
-		frame.setMaximumSize   ( new Dimension(width, height) );
-		frame.setMinimumSize   ( new Dimension(width, height) );
+    // fixes the window dimensions
+    frame.setPreferredSize ( new Dimension(width, height) );
+    frame.setMaximumSize   ( new Dimension(width, height) );
+    frame.setMinimumSize   ( new Dimension(width, height) );
 
-		// enables closing the window to terminate game gracefully
-		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+    // enables closing the window to terminate game gracefully
+    frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
-		// we don't want a resizable window to avoid future issues
-		frame.setResizable (false);
-		// spawns window at the middle of the screen
-		frame.setLocationRelativeTo (null);
-		// adds the game to the window
-		frame.add (game);
+    // we don't want a resizable window to avoid future issues
+    frame.setResizable (false);
+    // spawns window at the middle of the screen
+    frame.setLocationRelativeTo (null);
+    // adds the game to the window
+    frame.add (game);
 
-		// makes the window visible
-		frame.setVisible (true);
-		// starts the game instance
-		game.start ();
-	}
+    // makes the window visible
+    frame.setVisible (true);
+    // starts the game instance
+    game.start ();
+  }
 
-	public void dispose ()
-	// disposes of the jframe to terminate the application gracefully
-	{
-		System.out.println("disposing of window ...");
-		frame.setVisible (false);
-		frame.dispose ();
-		System.exit (0);
-	}
+  public void dispose ()
+    // disposes of the jframe to terminate the application gracefully
+  {
+    System.out.println("disposing of window ...");
+    frame.setVisible (false);
+    frame.dispose ();
+    System.exit (0);
+  }
 }
 
 /*
