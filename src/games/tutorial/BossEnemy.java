@@ -30,7 +30,7 @@ public class BossEnemy extends GameObject
 // defines Boss Enemy with attributes inherited from the Game Object Class
 {
 
-  /* Boss Enemy Attributes */
+  // Boss Enemy Attributes:
 
   private int ticks = 0;			// times boss fight
   private ID spawns;			// enemy ID that it spawns
@@ -39,7 +39,7 @@ public class BossEnemy extends GameObject
   private Handler handler;		// spawning handler
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public BossEnemy (int x, int y, ID id, Color color, int width,
@@ -57,10 +57,10 @@ public class BossEnemy extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
-  public void shoot ()	/* unimplemented */
+  public void shoot ()	// unimplemented intentionally
     // we need to define this method because objects derived from the
     // Game Object class must define the abstract methods of the class
   {
@@ -78,12 +78,12 @@ public class BossEnemy extends GameObject
       setGarbage();	// sets garbage state to true
     else
     {
-      /* updates position */
+      // updates position:
 
       x += v_x;
       y += v_y;
 
-      /* simulates elastic collisions with boundaries */
+      // simulates elastic collisions with boundaries:
 
       if ( x <= 0 || x >= (Game.WIDTH - width) )
 	v_x *= -1;
@@ -91,12 +91,12 @@ public class BossEnemy extends GameObject
       if ( y <= 0 || y >= (Game.HEIGHT - 64) )
 	v_y *= -1;
 
-      /* fires random projectiles at player */
+      // fires random projectiles at player:
       if (ticks != 0 && ticks % 50 == 0)
 	fire ();
 
 
-      /* destroys boss to remove it from the game */
+      // destroys boss to remove it from the game:
       if (ticks != 0 && ticks % 1000 == 0)
 	setDestroyed();
 
@@ -131,7 +131,7 @@ public class BossEnemy extends GameObject
     // fires enemies at the player
   {
 
-    /* defines the attributes of the fired enemies */
+    // defines the attributes of the fired enemies:
 
     Random r = new Random ();	// PRNG for enemy speed
     Color color = this.color;	// color
@@ -181,18 +181,15 @@ public class BossEnemy extends GameObject
   }
 }
 
-/*
- * COMMENTS:
- * The `super' keyword is used here to invoke the constructor of the
- * parent class, which in this case refers to the GameObject class.
- *
- * Note that the garbage collector will subsequently remove enemies
- * marked as garbage. We do not remove enemies right away to avert
- * serious issues while traversing the linked-list.
- *
- * Note that for selecting the enemy type that the boss spawns we used
- * the unqualified names BasicEnemy and FastEnemy instead of ID.BasicEnemy
- * and ID.FastEnemy, for this is what the Java compiler expects for enum
- * (data) types when used in switch case structures.
- *
- */
+// COMMENTS:
+// The `super' keyword is used here to invoke the constructor of the
+// parent class, which in this case refers to the GameObject class.
+//
+// Note that the garbage collector will subsequently remove enemies
+// marked as garbage. We do not remove enemies right away to avert
+// serious issues while traversing the linked-list.
+//
+// Note that for selecting the enemy type that the boss spawns we used
+// the unqualified names BasicEnemy and FastEnemy instead of ID.BasicEnemy
+// and ID.FastEnemy, for this is what the Java compiler expects for enum
+// (data) types when used in switch case structures.
