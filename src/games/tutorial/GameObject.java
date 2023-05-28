@@ -24,11 +24,11 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class GameObject
 // players, enemies, items, etc. are instances of the Game Object Class
+public abstract class GameObject
 {
 
-  /* game object attributes */
+  // game object attributes
 
 
   // sets the default width and height of game objects
@@ -37,7 +37,7 @@ public abstract class GameObject
 
 
   protected int x, y;		// position vector components
-  protected int v_x, v_y;		// velocity vector components
+  protected int v_x, v_y;	// velocity vector components
   protected ID id;		// game object ID
 
   protected int width, height;	// width and height of object
@@ -45,7 +45,7 @@ public abstract class GameObject
   protected boolean garbage;	// garbage state
 
 
-  /* constructors */
+  // constructors:
 
 
   public GameObject (int x, int y, ID id)
@@ -92,16 +92,16 @@ public abstract class GameObject
   }
 
 
-  /* abstract methods */
+  // abstract methods:
 
 
   public abstract void shoot();			// shoot method
   public abstract void tick();			// tick method
   public abstract void render (Graphics g);	// render method
-  public abstract Rectangle getBounds();		// rectangle bounds
+  public abstract Rectangle getBounds();	// rectangle bounds
 
 
-  /* setters */
+  // setters:
 
 
   public void setPosX (int x)	// sets object position in x axis
@@ -140,7 +140,7 @@ public abstract class GameObject
   }
 
 
-  /* getters */
+  // getters:
 
 
   public int getPosX ()		// gets object position in x axis
@@ -168,12 +168,12 @@ public abstract class GameObject
     return id;
   }
 
-  public int getWidth ()		// gets object width
+  public int getWidth ()	// gets object width
   {
     return width;
   }
 
-  public int getHeight ()		// gets object height
+  public int getHeight ()	// gets object height
   {
     return height;
   }
