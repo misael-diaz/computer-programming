@@ -29,56 +29,56 @@ public class Handler
 // loops through all our objects in our game and updates them individually
 {
 
-	// creates a list for containing all of our game objects
-	LinkedList<GameObject> objects = new LinkedList<GameObject>();
+  // creates a list for containing all of our game objects
+  LinkedList<GameObject> objects = new LinkedList<GameObject>();
 
 
-	/* Methods */
+  /* Methods */
 
 
-	public void addObject (GameObject object)
-	// adds object to list of game objects
-	{
-		this.objects.add(object);
-	}
+  public void addObject (GameObject object)
+    // adds object to list of game objects
+  {
+    this.objects.add(object);
+  }
 
 
-	public void removeObject (GameObject object)
-	// removes object from list of game objects
-	{
-		this.objects.remove(object);
-	}
+  public void removeObject (GameObject object)
+    // removes object from list of game objects
+  {
+    this.objects.remove(object);
+  }
 
 
-	public void tick ()
-	// invokes the tick method on behalf of each game object
-	{
-		int i = 0;
-		while ( i != objects.size() )
-		{
-			GameObject object = objects.get(i);
-			object.tick();
-			++i;
-		}
-	}
+  public void tick ()
+    // invokes the tick method on behalf of each game object
+  {
+    int i = 0;
+    while ( i != objects.size() )
+    {
+      GameObject object = objects.get(i);
+      object.tick();
+      ++i;
+    }
+  }
 
 
-	public void render (Graphics g)
-	// invokes the render method on behalf of each game object
-	{
-		for (int i = 0; i != objects.size(); ++i)
-		{
-			GameObject object = objects.get(i);
-			object.render(g);
-		}
-	}
+  public void render (Graphics g)
+    // invokes the render method on behalf of each game object
+  {
+    for (int i = 0; i != objects.size(); ++i)
+    {
+      GameObject object = objects.get(i);
+      object.render(g);
+    }
+  }
 
 
-	public void garbageCollector ()
-	// removes garbage objects from game
-	{
-		this.objects.removeIf ( object -> object.isGarbage() );
-	}
+  public void garbageCollector ()
+    // removes garbage objects from game
+  {
+    this.objects.removeIf ( object -> object.isGarbage() );
+  }
 }
 
 
