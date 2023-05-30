@@ -24,9 +24,9 @@
 import java.awt.Graphics;
 import java.util.LinkedList;
 
-public class Handler
 // maintains and renders all of our objects in our game
 // loops through all our objects in our game and updates them individually
+public class Handler
 {
 
   // creates a list for containing all of our game objects
@@ -36,22 +36,19 @@ public class Handler
   // Methods:
 
 
-  public void addObject (GameObject object)
-    // adds object to list of game objects
+  public void addObject (GameObject object)	// adds object to list of game objects
   {
     this.objects.add(object);
   }
 
 
-  public void removeObject (GameObject object)
-    // removes object from list of game objects
+  public void removeObject (GameObject object)	// removes object from list
   {
     this.objects.remove(object);
   }
 
 
-  public void tick ()
-    // invokes the tick method on behalf of each game object
+  public void tick ()				// invokes the game object tick method
   {
     int i = 0;
     while ( i != objects.size() )
@@ -63,8 +60,7 @@ public class Handler
   }
 
 
-  public void render (Graphics g)
-    // invokes the render method on behalf of each game object
+  public void render (Graphics g)		// invokes the game object render method
   {
     for (int i = 0; i != objects.size(); ++i)
     {
@@ -74,8 +70,7 @@ public class Handler
   }
 
 
-  public void garbageCollector ()
-    // removes garbage objects from game
+  public void garbageCollector ()		// removes garbage objects from game
   {
     this.objects.removeIf ( object -> object.isGarbage() );
   }
