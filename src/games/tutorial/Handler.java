@@ -77,15 +77,12 @@ public class Handler
 }
 
 
-/*
- * COMMENTS:
- * A while-loop is used to invoke the tick() method because some of the
- * game objects create other game objects such as the player and enemies.
- * Enemies create after images of themselves to simulate a trail. The
- * player can shoot at enemies by means of projectiles and these are also
- * implemented as game objects. Note that it is safe to do this because
- * new objects are inserted at the end of the linked-list. The while-loop
- * is necessary to properly account for the change in size of the
- * linked-list.
- *
- */
+// COMMENTS:
+// A while-loop is used to invoke the tick() method because some of the
+// game objects create other game objects such as the player and enemies.
+// Enemies create after images of themselves to simulate a trail. The
+// player can shoot at enemies by means of projectiles and these are also
+// implemented as game objects. Note that it is safe to do this because
+// new objects are inserted at the end of the linked-list. The while-loop
+// is necessary to properly account for the change in size of the
+// linked-list.
