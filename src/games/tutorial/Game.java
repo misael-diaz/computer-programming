@@ -254,11 +254,11 @@ public class Game extends Canvas implements Runnable
     // spawns basic enemies "bouncers"
     for (int i = 0; i != 5; ++i)
     {
-      BasicEnemy enemy;
-      enemy = new BasicEnemy(rand.nextInt(W/2), rand.nextInt(H/2), ID.BasicEnemy,
-			    Color.red, handler);
+      BasicEnemy be;
+      be = new BasicEnemy(rand.nextInt(W / 2), rand.nextInt(H / 2), ID.BasicEnemy,
+			  Color.red, handler);
 
-      handler.addObject (enemy);
+      handler.addObject(be);
     }
 
     // adds key listener to process user input
