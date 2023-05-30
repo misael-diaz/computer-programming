@@ -31,20 +31,20 @@ public class Game extends Canvas implements Runnable
 {
   // Game Components:
 
-  private Window window;	// window to display graphics
-  private Thread thread;	// thread for running our game loop
-  private Spawner spawner;	// spawner object utility
-  private Handler handler;	// handler object utility
-  private Random rand;		// pseudo random number generator PRNG
-  private Menu menu;		// game menu
-  private HUD hud;		// heads-up display for the gamer
+  private Window window;			// window to display graphics
+  private Thread thread;			// thread for running our game loop
+  private Spawner spawner;			// spawner object utility
+  private Handler handler;			// handler object utility
+  private Random rand;				// pseudo random number generator PRNG
+  private Menu menu;				// game menu
+  private HUD hud;				// heads-up display for the gamer
 
   // creates user-defined serial version UID for (de)serialization
   private static final long serialVersionUID = 1550691097823471818L;
 
   // initializes game window dimensions
-  public static final int WIDTH = 3 * 640 / 2;
-  public static final int HEIGHT = 3 * WIDTH / 4;
+  public static final int WIDTH = (3 * 640) / 2;
+  public static final int HEIGHT = (3 * WIDTH) / 4;
   // initializes game running state to false
   private boolean running = false;
 
@@ -56,21 +56,22 @@ public class Game extends Canvas implements Runnable
   // Constructors:
 
 
-  public Game ()	// defines default constructor for the game
+  // defines default constructor for the game
+  public Game ()
   {
     // Instantiations:
 
-    hud = new HUD ();
-    rand = new Random ();
-    handler = new Handler ();
-    spawner = new Spawner (hud, handler);
-    menu = new Menu (this, handler);
+    hud = new HUD();
+    rand = new Random();
+    handler = new Handler();
+    spawner = new Spawner(hud, handler);
+    menu = new Menu(this, handler);
 
     // adds listeners to the game for capturing user input
-    this.addMouseListener (menu);
+    this.addMouseListener(menu);
 
     // creates a window of specified dimensions and title
-    window = new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
+    window = new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
   }
 
 
@@ -80,19 +81,19 @@ public class Game extends Canvas implements Runnable
   // starts the thread that executes our game loop
   public synchronized void start ()
   {
-    thread = new Thread (this);
+    thread = new Thread(this);
     thread.start();
     running = true;
   }
 
 
   // stops the thread that executes our game loop
-  public synchronized void stop ()
+  public synchronized void stop()
   {
     try
     {
       System.out.println("stopping thread ...");
-      thread.join ();
+      thread.join();
     }
     catch (Exception e)
     {
@@ -149,9 +150,8 @@ public class Game extends Canvas implements Runnable
 
       if (System.currentTimeMillis() - timer > 1000)
       {
-	// prints frames per second FPS every second
 	timer += 1000;
-	System.out.println("FPS: " + frames);
+	System.out.println("FPS: " + frames);	// prints frame-rate, Hz, FPS every second
 	frames = 0;
       }
     }
@@ -163,44 +163,44 @@ public class Game extends Canvas implements Runnable
   public void quit ()				// quits the game
   {
     running = false;				// breaks the game-loop
-    window.dispose ();				// disposes the game window
+    window.dispose();				// disposes the game window
   }
 
 
   // delegates the task of removing garbage objects to the handler
   private void garbageCollector ()
   {
-    handler.garbageCollector ();
+    handler.garbageCollector();
   }
 
 
   // delegates the task of spawning game objects to the spawner
   private void spawn ()
   {
-    spawner.spawn ();
+    spawner.spawn();
   }
 
 
-  private void tick ()		// tick method
+  private void tick ()				// tick method
   {
     switch (gameState)
     {
       case Menu:
-	menu.tick();	// ticks menu screen
+	menu.tick();				// ticks menu screen
 	break;
       case Help:
-	menu.tick();	// ticks help screen
+	menu.tick();				// ticks help screen
 	break;
       case Init:
-	initialize();	// creates level 1
+	initialize();				// creates level 1
 	break;
       case Game:
-	hud.tick();	// updates HUD
-	spawner.tick();	// updates score and level
-	handler.tick();	// updates object positions
+	hud.tick();				// updates HUD
+	spawner.tick();				// updates score and level
+	handler.tick();				// updates object positions
 	break;
       default:
-	handler.tick();	// updates object positions
+	handler.tick();				// updates object positions
 	break;
     }
   }
@@ -220,22 +220,22 @@ public class Game extends Canvas implements Runnable
       return;
     }
 
-    Graphics g = bs.getDrawGraphics();	// renders graphic
-    g.setColor(Color.black);		// black background
-    g.fillRect(0, 0, WIDTH, HEIGHT);	// fills window
+    Graphics g = bs.getDrawGraphics();		// renders graphic
+    g.setColor(Color.black);			// black background
+    g.fillRect(0, 0, WIDTH, HEIGHT);		// fills window
 
     if (gameState == State.Menu || gameState == State.Help)
     {
-      menu.render(g);			// renders menu
+      menu.render(g);				// renders menu
     }
     else if (gameState == State.Game)
     {
-      handler.render(g);		// renders objects
-      hud.render(g);			// renders heads-up
+      handler.render(g);			// renders objects
+      hud.render(g);				// renders heads-up
     }
 
-    g.dispose();			// frees resources
-    bs.show();				// displays graphic
+    g.dispose();				// frees resources
+    bs.show();					// displays graphic
   }
 
 
@@ -254,15 +254,15 @@ public class Game extends Canvas implements Runnable
     // spawns basic enemies "bouncers"
     for (int i = 0; i != 5; ++i)
     {
-      BasicEnemy enemy;
-      enemy = new BasicEnemy(rand.nextInt(W/2), rand.nextInt(H/2), ID.BasicEnemy,
-			    Color.red, handler);
+      BasicEnemy be;
+      be = new BasicEnemy(rand.nextInt(W / 2), rand.nextInt(H / 2), ID.BasicEnemy,
+			  Color.red, handler);
 
-      handler.addObject (enemy);
+      handler.addObject(be);
     }
 
     // adds key listener to process user input
-    this.addKeyListener( new KeyInput (handler) );
+    this.addKeyListener( new KeyInput(handler) );
     // sets the state to launch the first level
     gameState = State.Game;
   }
@@ -280,7 +280,7 @@ public class Game extends Canvas implements Runnable
   // Static Methods:
 
 
-  // int clamp (int val, int min, int max)
+  // int clamp(int val, int min, int max)
   //
   // Synopsis:
   // General purpose method for imposing limits on variables.
@@ -351,7 +351,7 @@ public class Game extends Canvas implements Runnable
   // creates instance of our game
   public static void main (String [] args)
   {
-    new Game ();
+    new Game();
   }
 }
 
