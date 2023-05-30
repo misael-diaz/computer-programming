@@ -33,7 +33,7 @@ public class Handler
   LinkedList<GameObject> objects = new LinkedList<GameObject>();
 
 
-  /* Methods */
+  // Methods:
 
 
   public void addObject (GameObject object)
