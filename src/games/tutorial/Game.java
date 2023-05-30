@@ -43,8 +43,8 @@ public class Game extends Canvas implements Runnable
   private static final long serialVersionUID = 1550691097823471818L;
 
   // initializes game window dimensions
-  public static final int WIDTH = 3 * 640 / 2;
-  public static final int HEIGHT = 3 * WIDTH / 4;
+  public static final int WIDTH = (3 * 640) / 2;
+  public static final int HEIGHT = (3 * WIDTH) / 4;
   // initializes game running state to false
   private boolean running = false;
 
@@ -61,17 +61,17 @@ public class Game extends Canvas implements Runnable
   {
     // Instantiations:
 
-    hud = new HUD ();
-    rand = new Random ();
-    handler = new Handler ();
-    spawner = new Spawner (hud, handler);
-    menu = new Menu (this, handler);
+    hud = new HUD();
+    rand = new Random();
+    handler = new Handler();
+    spawner = new Spawner(hud, handler);
+    menu = new Menu(this, handler);
 
     // adds listeners to the game for capturing user input
-    this.addMouseListener (menu);
+    this.addMouseListener(menu);
 
     // creates a window of specified dimensions and title
-    window = new Window (WIDTH, HEIGHT, "Let's Build a Game!", this);
+    window = new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
   }
 
 
@@ -81,19 +81,19 @@ public class Game extends Canvas implements Runnable
   // starts the thread that executes our game loop
   public synchronized void start ()
   {
-    thread = new Thread (this);
+    thread = new Thread(this);
     thread.start();
     running = true;
   }
 
 
   // stops the thread that executes our game loop
-  public synchronized void stop ()
+  public synchronized void stop()
   {
     try
     {
       System.out.println("stopping thread ...");
-      thread.join ();
+      thread.join();
     }
     catch (Exception e)
     {
@@ -163,21 +163,21 @@ public class Game extends Canvas implements Runnable
   public void quit ()				// quits the game
   {
     running = false;				// breaks the game-loop
-    window.dispose ();				// disposes the game window
+    window.dispose();				// disposes the game window
   }
 
 
   // delegates the task of removing garbage objects to the handler
   private void garbageCollector ()
   {
-    handler.garbageCollector ();
+    handler.garbageCollector();
   }
 
 
   // delegates the task of spawning game objects to the spawner
   private void spawn ()
   {
-    spawner.spawn ();
+    spawner.spawn();
   }
 
 
@@ -262,7 +262,7 @@ public class Game extends Canvas implements Runnable
     }
 
     // adds key listener to process user input
-    this.addKeyListener( new KeyInput (handler) );
+    this.addKeyListener( new KeyInput(handler) );
     // sets the state to launch the first level
     gameState = State.Game;
   }
@@ -280,7 +280,7 @@ public class Game extends Canvas implements Runnable
   // Static Methods:
 
 
-  // int clamp (int val, int min, int max)
+  // int clamp(int val, int min, int max)
   //
   // Synopsis:
   // General purpose method for imposing limits on variables.
@@ -351,7 +351,7 @@ public class Game extends Canvas implements Runnable
   // creates instance of our game
   public static void main (String [] args)
   {
-    new Game ();
+    new Game();
   }
 }
 
