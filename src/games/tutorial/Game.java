@@ -31,13 +31,13 @@ public class Game extends Canvas implements Runnable
 {
   // Game Components:
 
-  private Window window;	// window to display graphics
-  private Thread thread;	// thread for running our game loop
-  private Spawner spawner;	// spawner object utility
-  private Handler handler;	// handler object utility
-  private Random rand;		// pseudo random number generator PRNG
-  private Menu menu;		// game menu
-  private HUD hud;		// heads-up display for the gamer
+  private Window window;			// window to display graphics
+  private Thread thread;			// thread for running our game loop
+  private Spawner spawner;			// spawner object utility
+  private Handler handler;			// handler object utility
+  private Random rand;				// pseudo random number generator PRNG
+  private Menu menu;				// game menu
+  private HUD hud;				// heads-up display for the gamer
 
   // creates user-defined serial version UID for (de)serialization
   private static final long serialVersionUID = 1550691097823471818L;
@@ -56,7 +56,8 @@ public class Game extends Canvas implements Runnable
   // Constructors:
 
 
-  public Game ()	// defines default constructor for the game
+  // defines default constructor for the game
+  public Game ()
   {
     // Instantiations:
 
@@ -149,9 +150,8 @@ public class Game extends Canvas implements Runnable
 
       if (System.currentTimeMillis() - timer > 1000)
       {
-	// prints frames per second FPS every second
 	timer += 1000;
-	System.out.println("FPS: " + frames);
+	System.out.println("FPS: " + frames);	// prints frame-rate, Hz, FPS every second
 	frames = 0;
       }
     }
@@ -181,26 +181,26 @@ public class Game extends Canvas implements Runnable
   }
 
 
-  private void tick ()		// tick method
+  private void tick ()				// tick method
   {
     switch (gameState)
     {
       case Menu:
-	menu.tick();	// ticks menu screen
+	menu.tick();				// ticks menu screen
 	break;
       case Help:
-	menu.tick();	// ticks help screen
+	menu.tick();				// ticks help screen
 	break;
       case Init:
-	initialize();	// creates level 1
+	initialize();				// creates level 1
 	break;
       case Game:
-	hud.tick();	// updates HUD
-	spawner.tick();	// updates score and level
-	handler.tick();	// updates object positions
+	hud.tick();				// updates HUD
+	spawner.tick();				// updates score and level
+	handler.tick();				// updates object positions
 	break;
       default:
-	handler.tick();	// updates object positions
+	handler.tick();				// updates object positions
 	break;
     }
   }
@@ -220,22 +220,22 @@ public class Game extends Canvas implements Runnable
       return;
     }
 
-    Graphics g = bs.getDrawGraphics();	// renders graphic
-    g.setColor(Color.black);		// black background
-    g.fillRect(0, 0, WIDTH, HEIGHT);	// fills window
+    Graphics g = bs.getDrawGraphics();		// renders graphic
+    g.setColor(Color.black);			// black background
+    g.fillRect(0, 0, WIDTH, HEIGHT);		// fills window
 
     if (gameState == State.Menu || gameState == State.Help)
     {
-      menu.render(g);			// renders menu
+      menu.render(g);				// renders menu
     }
     else if (gameState == State.Game)
     {
-      handler.render(g);		// renders objects
-      hud.render(g);			// renders heads-up
+      handler.render(g);			// renders objects
+      hud.render(g);				// renders heads-up
     }
 
-    g.dispose();			// frees resources
-    bs.show();				// displays graphic
+    g.dispose();				// frees resources
+    bs.show();					// displays graphic
   }
 
 
