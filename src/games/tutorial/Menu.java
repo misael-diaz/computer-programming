@@ -44,9 +44,8 @@ public class Menu extends MouseAdapter
 
     // Constructors:
 
-    public Button  (Font font, String label, int x, int y,
-	int width, int height, int h_offset,
-	int v_offset)
+    public Button(Font font, String label, int x, int y, int width, int height,
+		  int h_offset, int v_offset)
     {
       this.x = x;
       this.y = y;
@@ -174,17 +173,13 @@ public class Menu extends MouseAdapter
 
     // creates play, help, quit, and back buttons
 
-    this.play = new Button (font, "Play", x, y - vspace,
-	width, height, hspace, offset);
+    this.play = new Button (font, "Play", x, y - vspace, width, height, hspace, offset);
 
-    this.help = new Button (font, "Help", x, y,
-	width, height, hspace, offset);
+    this.help = new Button (font, "Help", x, y, width, height, hspace, offset);
 
-    this.quit = new Button (font, "Quit", x, y + vspace,
-	width, height, hspace, offset);
+    this.quit = new Button (font, "Quit", x, y + vspace, width, height, hspace, offset);
 
-    this.back = new Button (font, "Back", x, y + vspace,
-	width, height, hspace, offset);
+    this.back = new Button (font, "Back", x, y + vspace, width, height, hspace, offset);
 
     this.game = game;
     this.handler = handler;
@@ -240,8 +235,7 @@ public class Menu extends MouseAdapter
 	// renders game title
 	g.setFont (font);
 	g.setColor (Color.red);
-	g.drawString  (	"Swarm", x + hspace / 2,
-	    y - 3 * vspace / 2 );
+	g.drawString  (	"Swarm", x + hspace / 2, y - 3 * vspace / 2 );
 
 	// renders menu buttons
 	play.render (g);
@@ -253,8 +247,7 @@ public class Menu extends MouseAdapter
 	// renders help title
 	g.setFont (font);
 	g.setColor (Color.white);
-	g.drawString  (	"Help", x + hspace,
-	    y - 3 * vspace / 2 );
+	g.drawString  (	"Help", x + hspace, y - 3 * vspace / 2 );
 
 	// renders help buttons
 	back.render (g);
