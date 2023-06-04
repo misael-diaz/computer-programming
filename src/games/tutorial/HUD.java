@@ -29,7 +29,7 @@ public class HUD
 // defines the heads-up display HUD
 {
 
-  /* HUD Attributes */
+  // HUD Attributes:
 
 
   // defines health limits
@@ -41,7 +41,7 @@ public class HUD
   private int level = 1;	// initializes level
 
 
-  /* Methods */
+  // Methods:
 
 
   public void tick ()
@@ -78,7 +78,7 @@ public class HUD
   }
 
 
-  /* setters */
+  // Setters:
 
   public void setScore (int score)
   {
@@ -90,7 +90,7 @@ public class HUD
     this.level = level;
   }
 
-  /* getters */
+  // Getters:
 
   public int getScore ()
   {
