@@ -27,11 +27,11 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 
-public class Menu extends MouseAdapter
 // defines the game menu and help screens
+public class Menu extends MouseAdapter
 {
+  // defines menu buttons
   private class Button
-    // defines menu buttons
   {
     // Button Attributes:
 
@@ -114,8 +114,8 @@ public class Menu extends MouseAdapter
       return height;
     }
 
+    // returns true if x, y are both inside the button area
     public boolean isHovering (int x, int y)
-      // returns true if x, y are both inside the button area
     {
       if (x > this.x && x < this.x + this.width)
       {
@@ -194,8 +194,8 @@ public class Menu extends MouseAdapter
   // Methods:
 
 
+  // handles mouse events depending on the state: menu or help screen
   public void mousePressed (MouseEvent e)
-    // handles mouse events depending on the state: menu or help screen
   {
     int x = e.getX();
     int y = e.getY();
@@ -224,15 +224,15 @@ public class Menu extends MouseAdapter
   }
 
 
+  // we might use this in the near future to display swarming enemies
   public void tick ()
-    // we might use this in the near future to display swarming enemies
   {
     return;
   }
 
 
+  // renders the menu or help screen depending on the game state
   public void render (Graphics g)
-    // renders the menu or help screen depending on the game state
   {
     switch (game.gameState)
     {
