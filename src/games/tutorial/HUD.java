@@ -44,28 +44,26 @@ public class HUD
   // Methods:
 
 
-  public void tick ()
-    // demo tick method that drains health points from player
+  public void tick ()			// drains health points from player
   {
     HEALTH = Game.clamp (HEALTH, MIN_HEALTH, MAX_HEALTH);
     ++score;
   }
 
-  public void render (Graphics g)
-    // initial implementation of the HUD renderer method
+  public void render (Graphics g)	// implements the HUD renderer method
   {
     // renders hud background
     g.setColor (Color.gray);
     g.fillRect (15, 15, 200, 32);
 
-    // renders health bar according to player state
+    // renders health bar according to player state:
     if (HEALTH > 25)
-      g.setColor (Color.green);	// normal
+      g.setColor (Color.green);		// normal
     else
       g.setColor (Color.red);		// critical
 
     g.fillRect (15, 15, 2 * HEALTH, 32);
-    // renders hud frame
+    // renders hud frame:
     g.setColor (Color.black);
     g.drawRect (15, 15, 200, 32);
 
