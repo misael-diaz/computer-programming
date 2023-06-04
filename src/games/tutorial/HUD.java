@@ -29,78 +29,78 @@ public class HUD
 // defines the heads-up display HUD
 {
 
-	/* HUD Attributes */
+  /* HUD Attributes */
 
 
-	// defines health limits
-	private static int MIN_HEALTH = 0, MAX_HEALTH = 100;
-	// initializes the player health
-	public static int HEALTH = MAX_HEALTH;
+  // defines health limits
+  private static int MIN_HEALTH = 0, MAX_HEALTH = 100;
+  // initializes the player health
+  public static int HEALTH = MAX_HEALTH;
 
-	private int score = 0;	// initializes score
-	private int level = 1;	// initializes level
-
-
-	/* Methods */
+  private int score = 0;	// initializes score
+  private int level = 1;	// initializes level
 
 
-	public void tick ()
-	// demo tick method that drains health points from player
-	{
-		HEALTH = Game.clamp (HEALTH, MIN_HEALTH, MAX_HEALTH);
-		++score;
-	}
-
-	public void render (Graphics g)
-	// initial implementation of the HUD renderer method
-	{
-		// renders hud background
-		g.setColor (Color.gray);
-		g.fillRect (15, 15, 200, 32);
-
-		// renders health bar according to player state
-		if (HEALTH > 25)
-			g.setColor (Color.green);	// normal
-		else
-			g.setColor (Color.red);		// critical
-
-		g.fillRect (15, 15, 2 * HEALTH, 32);
-		// renders hud frame
-		g.setColor (Color.black);
-		g.drawRect (15, 15, 200, 32);
+  /* Methods */
 
 
-		g.setColor (Color.white);
-		String Score = String.format("Score: %d", score);
-		String Level = String.format("Level: %d", level);
-		g.drawString (Score, 15, 64);
-		g.drawString (Level, 15, 80);
-	}
+  public void tick ()
+    // demo tick method that drains health points from player
+  {
+    HEALTH = Game.clamp (HEALTH, MIN_HEALTH, MAX_HEALTH);
+    ++score;
+  }
+
+  public void render (Graphics g)
+    // initial implementation of the HUD renderer method
+  {
+    // renders hud background
+    g.setColor (Color.gray);
+    g.fillRect (15, 15, 200, 32);
+
+    // renders health bar according to player state
+    if (HEALTH > 25)
+      g.setColor (Color.green);	// normal
+    else
+      g.setColor (Color.red);		// critical
+
+    g.fillRect (15, 15, 2 * HEALTH, 32);
+    // renders hud frame
+    g.setColor (Color.black);
+    g.drawRect (15, 15, 200, 32);
 
 
-	/* setters */
+    g.setColor (Color.white);
+    String Score = String.format("Score: %d", score);
+    String Level = String.format("Level: %d", level);
+    g.drawString (Score, 15, 64);
+    g.drawString (Level, 15, 80);
+  }
 
-	public void setScore (int score)
-	{
-		this.score = score;
-	}
 
-	public void setLevel (int level)
-	{
-		this.level = level;
-	}
+  /* setters */
 
-	/* getters */
+  public void setScore (int score)
+  {
+    this.score = score;
+  }
 
-	public int getScore ()
-	{
-		return score;
-	}
+  public void setLevel (int level)
+  {
+    this.level = level;
+  }
 
-	public int getLevel ()
-	{
-		return level;
-	}
+  /* getters */
+
+  public int getScore ()
+  {
+    return score;
+  }
+
+  public int getLevel ()
+  {
+    return level;
+  }
 }
 
 /*
