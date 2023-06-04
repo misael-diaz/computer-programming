@@ -33,7 +33,7 @@ public class Menu extends MouseAdapter
   private class Button
     // defines menu buttons
   {
-    /* Button Attributes */
+    // Button Attributes:
 
     private String label;		// label
     private Font font;		// label font
@@ -42,7 +42,7 @@ public class Menu extends MouseAdapter
     private int h_offset;		// label horizontal offset
     private int v_offset;		// label vertical offset
 
-    /* Constructors */
+    // Constructors:
 
     public Button  (Font font, String label, int x, int y,
 	int width, int height, int h_offset,
@@ -58,7 +58,7 @@ public class Menu extends MouseAdapter
       this.v_offset = v_offset;
     }
 
-    /* Methods */
+    // Methods:
 
     public void render (Graphics g)
     {
@@ -70,7 +70,7 @@ public class Menu extends MouseAdapter
       g.drawString (label, x, y);
     }
 
-    /* Setters */
+    // Setters:
 
     public void setPosX (int x)
     {
@@ -92,7 +92,7 @@ public class Menu extends MouseAdapter
       this.height = height;
     }
 
-    /* Getters */
+    // Getters:
 
     public int getPosX ()
     {
@@ -132,7 +132,7 @@ public class Menu extends MouseAdapter
   }
 
 
-  /* Menu Components */
+  // Menu Components:
 
 
   private Game game;		// for setting and getting states
@@ -163,16 +163,16 @@ public class Menu extends MouseAdapter
   private int offset = (vspace / 2);
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public Menu (Game game, Handler handler)
   {
-    /* creates Font for graphics display */
+    // creates Font for graphics display
 
     this.font = new Font (fontname, fontstyle, fontsize);
 
-    /* creates play, help, quit, and back buttons */
+    // creates play, help, quit, and back buttons
 
     this.play = new Button (font, "Play", x, y - vspace,
 	width, height, hspace, offset);
@@ -191,7 +191,7 @@ public class Menu extends MouseAdapter
   }
 
 
-  /* Methods */
+  // Methods:
 
 
   public void mousePressed (MouseEvent e)
