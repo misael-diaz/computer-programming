@@ -61,12 +61,12 @@ public class Menu extends MouseAdapter
 
     public void render (Graphics g)
     {
-      g.setFont (font);
-      g.setColor (Color.white);
-      g.drawRect (x, y, width, height);
+      g.setFont(font);
+      g.setColor(Color.white);
+      g.drawRect(x, y, width, height);
       int x = this.x + this.h_offset;
       int y = this.y + this.v_offset;
-      g.drawString (label, x, y);
+      g.drawString(label, x, y);
     }
 
     // Setters:
@@ -169,17 +169,17 @@ public class Menu extends MouseAdapter
   {
     // creates Font for graphics display
 
-    this.font = new Font (fontname, fontstyle, fontsize);
+    this.font = new Font(fontname, fontstyle, fontsize);
 
     // creates play, help, quit, and back buttons
 
-    this.play = new Button (font, "Play", x, y - vspace, width, height, hspace, offset);
+    this.play = new Button(font, "Play", x, y - vspace, width, height, hspace, offset);
 
-    this.help = new Button (font, "Help", x, y, width, height, hspace, offset);
+    this.help = new Button(font, "Help", x, y, width, height, hspace, offset);
 
-    this.quit = new Button (font, "Quit", x, y + vspace, width, height, hspace, offset);
+    this.quit = new Button(font, "Quit", x, y + vspace, width, height, hspace, offset);
 
-    this.back = new Button (font, "Back", x, y + vspace, width, height, hspace, offset);
+    this.back = new Button(font, "Back", x, y + vspace, width, height, hspace, offset);
 
     this.game = game;
     this.handler = handler;
@@ -199,16 +199,16 @@ public class Menu extends MouseAdapter
     {
       case Menu:
 	if ( play.isHovering(x, y) )
-	  game.setGameState (State.Init);
+	  game.setGameState(State.Init);
 	else if ( help.isHovering(x, y) )
-	  game.setGameState (State.Help);
+	  game.setGameState(State.Help);
 	else if ( quit.isHovering(x, y) )
-	  game.quit ();
+	  game.quit();
 	break;
 
       case Help:
 	if ( back.isHovering(x, y) )
-	  game.setGameState (State.Menu);
+	  game.setGameState(State.Menu);
     }
   }
 
@@ -233,24 +233,24 @@ public class Menu extends MouseAdapter
     {
       case Menu:
 	// renders game title
-	g.setFont (font);
-	g.setColor (Color.red);
-	g.drawString  (	"Swarm", x + hspace / 2, y - 3 * vspace / 2 );
+	g.setFont(font);
+	g.setColor(Color.red);
+	g.drawString("Swarm", x + hspace / 2, y - 3 * vspace / 2);
 
 	// renders menu buttons
-	play.render (g);
-	help.render (g);
-	quit.render (g);
+	play.render(g);
+	help.render(g);
+	quit.render(g);
 	break;
 
       case Help:
 	// renders help title
-	g.setFont (font);
-	g.setColor (Color.white);
-	g.drawString  (	"Help", x + hspace, y - 3 * vspace / 2 );
+	g.setFont(font);
+	g.setColor(Color.white);
+	g.drawString("Help", x + hspace, y - 3 * vspace / 2);
 
 	// renders help buttons
-	back.render (g);
+	back.render(g);
 	break;
     }
   }
