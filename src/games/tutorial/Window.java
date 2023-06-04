@@ -25,16 +25,16 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
-public class Window extends Canvas
 // purpose of the class is to create the window for us
+public class Window extends Canvas
 {
 
   // creates user-defined serial version UID for (de)serialization
   private static final long serialVersionUID = 240840600533728354L;
   private JFrame frame;
 
+  // creates a window of specified dimensions for our game
   public Window (int width, int height, String title, Game game)
-    // creates a window of specified dimensions for our game
   {
     // creates the frame (or window) for our game
     frame = new JFrame (title);
@@ -60,8 +60,8 @@ public class Window extends Canvas
     game.start ();
   }
 
+  // disposes of the jframe to terminate the application gracefully
   public void dispose ()
-    // disposes of the jframe to terminate the application gracefully
   {
     System.out.println("disposing of window ...");
     frame.setVisible (false);

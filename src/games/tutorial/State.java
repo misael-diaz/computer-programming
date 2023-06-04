@@ -25,5 +25,5 @@
 public enum State
 // provides state identifiers for our game
 {
-	Menu(), Help(), Init(), Game();
+  Menu(), Help(), Init(), Game();
 }
