@@ -119,9 +119,13 @@ public class Menu extends MouseAdapter
       if (x > this.x && x < this.x + this.width)
       {
 	if (y > this.y && y < this.y + this.height)
+	{
 	  return true;
+	}
 	else
+	{
 	  return false;
+	}
       }
       else
       {
@@ -199,16 +203,24 @@ public class Menu extends MouseAdapter
     {
       case Menu:
 	if ( play.isHovering(x, y) )
+	{
 	  game.setGameState(State.Init);
+	}
 	else if ( help.isHovering(x, y) )
+	{
 	  game.setGameState(State.Help);
+	}
 	else if ( quit.isHovering(x, y) )
+	{
 	  game.quit();
+	}
 	break;
 
       case Help:
 	if ( back.isHovering(x, y) )
+	{
 	  game.setGameState(State.Menu);
+	}
     }
   }
 
