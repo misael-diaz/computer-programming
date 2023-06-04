@@ -35,12 +35,12 @@ public class Menu extends MouseAdapter
   {
     // Button Attributes:
 
-    private String label;		// label
-    private Font font;		// label font
-    private int x, y;		// position
-    private int width, height;	// button dimensions
-    private int h_offset;		// label horizontal offset
-    private int v_offset;		// label vertical offset
+    private String label;			// label
+    private Font font;				// label font
+    private int x, y;				// position
+    private int width, height;			// button dimensions
+    private int h_offset;			// label horizontal offset
+    private int v_offset;			// label vertical offset
 
     // Constructors:
 
