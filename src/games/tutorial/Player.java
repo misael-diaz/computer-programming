@@ -62,10 +62,7 @@ public class Player extends GameObject
 
   public void shoot ()		// toggles attack mode
   {
-    if (attack)
-      attack = false;
-    else
-      attack = true;
+    attack = ( (attack)? false : true );
   }
 
 
@@ -152,9 +149,13 @@ public class Player extends GameObject
 
     // renders player according to its shape
     if (shape)
+    {
       g.fillOval (x, y, width, height);	// circle
+    }
     else
+    {
       g.fillRect (x, y, width, height);	// square
+    }
   }
 
 
@@ -181,11 +182,17 @@ public class Player extends GameObject
   private int clamp (int pos, int min, int max)
   {
     if (pos < min)
+    {
       return min;
+    }
     else if (pos > max)
+    {
       return max;
+    }
     else
+    {
       return pos;
+    }
   }
 
 
@@ -210,11 +217,17 @@ public class Player extends GameObject
 
     // applies periodic condition to the object position
     if (pos < min)
+    {
       return (pos + L);
+    }
     else if (pos > max)
+    {
       return (pos - L);
+    }
     else
+    {
       return pos;
+    }
   }
 
 
@@ -228,25 +241,33 @@ public class Player extends GameObject
       {
 	Rectangle mask = obj.getBounds();
 	if ( getBounds().intersects(mask) )
+	{
 	  --HUD.HEALTH;
+	}
       }
       else if (obj.getID() == ID.SmartEnemy)
       {
 	Rectangle mask = obj.getBounds();
 	if ( getBounds().intersects(mask) )
+	{
 	  --HUD.HEALTH;
+	}
       }
       else if (obj.getID() == ID.FastEnemy)
       {
 	Rectangle mask = obj.getBounds();
 	if ( getBounds().intersects(mask) )
+	{
 	  HUD.HEALTH -= 4;
+	}
       }
       else if (obj.getID() == ID.BossEnemy)
       {
 	Rectangle mask = obj.getBounds();
 	if ( getBounds().intersects(mask) )
+	{
 	  HUD.HEALTH -= 100;
+	}
       }
     }
   }
