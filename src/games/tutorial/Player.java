@@ -52,7 +52,7 @@ public class Player extends GameObject
 
   public Player (int x, int y, ID id, Handler handler)
   {
-    super (x, y, id);
+    super(x, y, id);
     this.handler = handler;
   }
 
@@ -74,21 +74,21 @@ public class Player extends GameObject
       Projectile bullet;
       bullet = new Projectile(x - 4, y, ID.Projectile, Color.cyan, false, 8, 8, handler);
 
-      handler.addObject (bullet);
+      handler.addObject(bullet);
 
 
       // center cannon
       bullet = new Projectile(x + (width / 2) - 4, y, ID.Projectile, Color.magenta,
 			      false, 8, 8, handler);
 
-      handler.addObject (bullet);
+      handler.addObject(bullet);
 
 
       // right cannon
       bullet = new Projectile(x + width - 4, y, ID.Projectile, Color.cyan,
 			      false, 8, 8, handler);
 
-      handler.addObject (bullet);
+      handler.addObject(bullet);
     }
   }
 
@@ -117,15 +117,15 @@ public class Player extends GameObject
 
     // simulates rigid boundaries:
 
-    x = clamp (x, min_x, max_x);
-    y = clamp (y, min_y, max_y);
+    x = clamp(x, min_x, max_x);
+    y = clamp(y, min_y, max_y);
 
     // simulates player trail:
 
     Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
 			    handler);
 
-    handler.addObject (trail);
+    handler.addObject(trail);
 
     // fires at enemies:
 
@@ -140,23 +140,23 @@ public class Player extends GameObject
   public void render (Graphics g)	// initial render method
   {
     // sets player color
-    g.setColor (color);
+    g.setColor(color);
 
     // renders player according to its shape
     if (shape)
     {
-      g.fillOval (x, y, width, height);	// circle
+      g.fillOval(x, y, width, height);	// circle
     }
     else
     {
-      g.fillRect (x, y, width, height);	// square
+      g.fillRect(x, y, width, height);	// square
     }
   }
 
 
   public Rectangle getBounds ()		// we need this for collision detection
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
 
