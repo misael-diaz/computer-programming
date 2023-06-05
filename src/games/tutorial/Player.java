@@ -72,26 +72,21 @@ public class Player extends GameObject
     {
       // left cannon
       Projectile bullet;
-      bullet = new Projectile(x - 4, y, ID.Projectile,
-	  Color.cyan, false, 8, 8,
-	  handler);
+      bullet = new Projectile(x - 4, y, ID.Projectile, Color.cyan, false, 8, 8, handler);
 
       handler.addObject (bullet);
 
 
       // center cannon
-      bullet = new Projectile(x + (width / 2) - 4, y,
-	  ID.Projectile,
-	  Color.magenta, false, 8, 8,
-	  handler);
+      bullet = new Projectile(x + (width / 2) - 4, y, ID.Projectile, Color.magenta,
+			      false, 8, 8, handler);
 
       handler.addObject (bullet);
 
 
       // right cannon
-      bullet = new Projectile(x + width - 4, y,
-	  ID.Projectile, Color.cyan,
-	  false, 8, 8, handler);
+      bullet = new Projectile(x + width - 4, y, ID.Projectile, Color.cyan,
+			      false, 8, 8, handler);
 
       handler.addObject (bullet);
     }
@@ -127,8 +122,8 @@ public class Player extends GameObject
 
     // simulates player trail:
 
-    Trail trail = new Trail(x, y, ID.Trail, color, shape,
-	trailspan, width, height, handler);
+    Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
+			    handler);
 
     handler.addObject (trail);
 
