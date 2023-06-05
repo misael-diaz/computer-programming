@@ -25,8 +25,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Player extends GameObject
 // defines the Player with attributes inherited from the Game Object Class
+public class Player extends GameObject
 {
 
   // Player Attributes:
@@ -60,8 +60,7 @@ public class Player extends GameObject
   // Methods:
 
 
-  public void shoot ()
-    // toggles attack mode
+  public void shoot ()		// toggles attack mode
   {
     if (attack)
       attack = false;
@@ -70,8 +69,7 @@ public class Player extends GameObject
   }
 
 
-  private void fire ()
-    // fires projectiles in the vertical direction (bottom to top)
+  private void fire ()	// fires projectiles in the vertical direction (bottom to top)
   {
     if (attack && (HUD.HEALTH != 0) )
     {
@@ -103,10 +101,14 @@ public class Player extends GameObject
   }
 
 
+  // void tick()
+  //
+  // initial tick method, updates position by a constant velocity
+  // confines the player to the game boundaries, handles damage from
+  // enemies, and simulates the player trail (after image).
+
+
   public void tick ()
-    // initial tick method, updates position by a constant velocity
-    // confines the player to the game boundaries, handles damage from
-    // enemies, and simulates the player trail (after image).
   {
     // updates player position:
 
@@ -143,8 +145,7 @@ public class Player extends GameObject
   }
 
 
-  public void render (Graphics g)
-    // initial render method
+  public void render (Graphics g)	// initial render method
   {
     // sets player color
     g.setColor (color);
@@ -157,8 +158,7 @@ public class Player extends GameObject
   }
 
 
-  public Rectangle getBounds ()
-    // we need this for collision detection
+  public Rectangle getBounds ()		// we need this for collision detection
   {
     return new Rectangle (x, y, width, height);
   }
