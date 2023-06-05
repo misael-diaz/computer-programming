@@ -29,7 +29,7 @@ public class Player extends GameObject
 // defines the Player with attributes inherited from the Game Object Class
 {
 
-  /* Player Attributes */
+  // Player Attributes:
 
 
   // locks player weapons
@@ -47,7 +47,7 @@ public class Player extends GameObject
   private Handler handler;
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public Player (int x, int y, ID id, Handler handler)
@@ -57,7 +57,7 @@ public class Player extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
   public void shoot ()
@@ -108,7 +108,7 @@ public class Player extends GameObject
     // confines the player to the game boundaries, handles damage from
     // enemies, and simulates the player trail (after image).
   {
-    /* updates player position */
+    // updates player position:
 
     if (HUD.HEALTH != 0)
     {
@@ -121,23 +121,23 @@ public class Player extends GameObject
       y += 0;
     }
 
-    /* simulates rigid boundaries */
+    // simulates rigid boundaries:
 
     x = clamp (x, min_x, max_x);
     y = clamp (y, min_y, max_y);
 
-    /* simulates player trail */
+    // simulates player trail:
 
     Trail trail = new Trail(x, y, ID.Trail, color, shape,
 	trailspan, width, height, handler);
 
     handler.addObject (trail);
 
-    /* fires at enemies */
+    // fires at enemies:
 
     fire();
 
-    /* drains player health upon collisions with enemies */
+    // drains player health upon collisions with enemies:
 
     collision();
   }
@@ -164,20 +164,21 @@ public class Player extends GameObject
   }
 
 
+  // int clamp (int pos, int min, int max)
+  //
+  // Synopsis:
+  // Possible implementation of a rigid boundary.
+  //
+  // Inputs:
+  // pos		position coordinate
+  // min		minimum allowed position
+  // max		maximum allowed position
+  //
+  // Ouput
+  // pos		the position after applying boundary condition
+
+
   private int clamp (int pos, int min, int max)
-    /*
-     * Synopsis:
-     * Possible implementation of a rigid boundary.
-     *
-     * Inputs:
-     * pos		position coordinate
-     * min		minimum allowed position
-     * max		maximum allowed position
-     *
-     * Ouput
-     * pos		the position after applying boundary condition
-     *
-     */
   {
     if (pos < min)
       return min;
@@ -188,20 +189,21 @@ public class Player extends GameObject
   }
 
 
+  // int periodic (int pos, int min, int max)
+  //
+  // Synopsis:
+  // Possible implementation of a periodic boundary.
+  //
+  // Inputs:
+  // pos		position coordinate
+  // min		minimum allowed position
+  // max		maximum allowed position
+  //
+  // Ouput
+  // pos		the position after applying boundary condition
+
+
   private int periodic (int pos, int min, int max)
-    /*
-     * Synopsis:
-     * Possible implementation of a periodic boundary.
-     *
-     * Inputs:
-     * pos		position coordinate
-     * min		minimum allowed position
-     * max		maximum allowed position
-     *
-     * Ouput
-     * pos		the position after applying boundary condition
-     *
-     */
   {
     // gets dimension lenght
     int L = (max - min);
@@ -216,8 +218,7 @@ public class Player extends GameObject
   }
 
 
-  private void collision ()
-    // decrements player health upon collisions with enemies
+  private void collision ()	// decrements player health upon collisions with enemies
   {
     for (int i = 0; i != handler.objects.size(); ++i)
     {
