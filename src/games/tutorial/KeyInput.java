@@ -60,8 +60,7 @@ public class KeyInput extends KeyAdapter
 
 
     // complains if the player is not at the front of the linked-list
-    String errMSG = ("KeyInput(): expects the player at " +
-	"the front of the linked-list");
+    String errMSG = ("KeyInput(): expects the player at the front of the linked-list");
     if (object.getID() != ID.Player)
       throw new RuntimeException(errMSG);
 
@@ -111,8 +110,7 @@ public class KeyInput extends KeyAdapter
 
 
     // complains if the player is not at the front of the linked-list
-    String errMSG = ("KeyInput(): expects the player at " +
-	"the front of the linked-list");
+    String errMSG = ("KeyInput(): expects the player at the front of the linked-list");
     if (object.getID() != ID.Player)
       throw new RuntimeException(errMSG);
 
