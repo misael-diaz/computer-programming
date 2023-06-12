@@ -35,7 +35,7 @@ public class KeyInput extends KeyAdapter
   private Handler handler;
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public KeyInput (Handler handler)
@@ -44,7 +44,7 @@ public class KeyInput extends KeyAdapter
   }
 
 
-  /* Methods */
+  // Methods:
 
 
   @Override
@@ -147,17 +147,14 @@ public class KeyInput extends KeyAdapter
 }
 
 
-/*
- * COMMENTS:
- * The class that extends KeyAdapter only has to override the methods
- * it needs. The Override keyword expresses that we are modifying the
- * implementation of the method that follows it.
- *
- * By design we expect the player to be at the front of the linked-list
- * (that is, to be the first object in the linked-list).
- *
- * We set the player velocity to zero only if the user is not pressing
- * opposing arrow keys consecutively to avoid the sticky effect bug.
- * Now the user can quickly press down opposing keys for tight maneuvers.
- *
- */
+// COMMENTS:
+// The class that extends KeyAdapter only has to override the methods
+// it needs. The Override keyword expresses that we are modifying the
+// implementation of the method that follows it.
+//
+// By design we expect the player to be at the front of the linked-list
+// (that is, to be the first object in the linked-list).
+//
+// We set the player velocity to zero only if the user is not pressing
+// opposing arrow keys consecutively to avoid the sticky effect bug.
+// Now the user can quickly press down opposing keys for tight maneuvers.
