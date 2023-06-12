@@ -48,8 +48,7 @@ public class KeyInput extends KeyAdapter
 
 
   @Override
-  public void keyPressed (KeyEvent e)
-  // moves player according to the pressed key
+  public void keyPressed (KeyEvent e)	// moves player according to the pressed key
   {
     // gets code of pressed key
     int key = e.getKeyCode();
