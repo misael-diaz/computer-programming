@@ -61,7 +61,9 @@ public class KeyInput extends KeyAdapter
     // complains if the player is not at the front of the linked-list
     String errMSG = ("KeyInput(): expects the player at the front of the linked-list");
     if (object.getID() != ID.Player)
+    {
       throw new RuntimeException(errMSG);
+    }
 
 
     // handles key events for player:
@@ -111,7 +113,9 @@ public class KeyInput extends KeyAdapter
     // complains if the player is not at the front of the linked-list
     String errMSG = ("KeyInput(): expects the player at the front of the linked-list");
     if (object.getID() != ID.Player)
+    {
       throw new RuntimeException(errMSG);
+    }
 
 
     // handles key events for player:
@@ -140,11 +144,15 @@ public class KeyInput extends KeyAdapter
 
     // zeroes vertical movement
     if (!keyDown[0] && !keyDown[1])
+    {
       object.setVelY(0);
+    }
 
     // zeroes horizontal movement
     if (!keyDown[2] && !keyDown[3])
+    {
       object.setVelX(0);
+    }
   }
 }
 
