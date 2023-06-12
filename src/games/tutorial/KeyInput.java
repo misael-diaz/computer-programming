@@ -83,14 +83,14 @@ public class KeyInput extends KeyAdapter
 	keyDown[2] = true;
 	object.setVelX(-5);
 	break;
-      case (KeyEvent.VK_RIGHT):
+      case KeyEvent.VK_RIGHT:
 	keyDown[3] = true;
 	object.setVelX(+5);
 	break;
-      case (KeyEvent.VK_SPACE):
+      case KeyEvent.VK_SPACE:
 	object.shoot();
 	break;
-      case (KeyEvent.VK_R):
+      case KeyEvent.VK_R:
 	HUD.HEALTH = 100;
 	break;
     }
@@ -129,12 +129,12 @@ public class KeyInput extends KeyAdapter
       case KeyEvent.VK_LEFT:
 	keyDown[2] = false;
 	break;
-      case (KeyEvent.VK_RIGHT):
+      case KeyEvent.VK_RIGHT:
 	keyDown[3] = false;
 	break;
-      case (KeyEvent.VK_SPACE):
+      case KeyEvent.VK_SPACE:
 	break;
-      case (KeyEvent.VK_R):
+      case KeyEvent.VK_R:
 	break;
     }
 
