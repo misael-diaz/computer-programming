@@ -25,8 +25,8 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class KeyInput extends KeyAdapter
 // defines the key input class for processing input from the player
+public class KeyInput extends KeyAdapter
 {
 
   // we use this boolean array to avert sticky player movements
@@ -51,24 +51,27 @@ public class KeyInput extends KeyAdapter
   public void keyPressed (KeyEvent e)
   // moves player according to the pressed key
   {
-    int key = e.getKeyCode();	// gets code of pressed key
+    // gets code of pressed key
+    int key = e.getKeyCode();
+
 
     // gets the player
     GameObject object = handler.objects.get(0);
 
 
-    // complains if the player is not at the front of the
-    // linked-list
+    // complains if the player is not at the front of the linked-list
     String errMSG = ("KeyInput(): expects the player at " +
 	"the front of the linked-list");
     if (object.getID() != ID.Player)
       throw new RuntimeException(errMSG);
 
 
-    // handles key events for player
+    // handles key events for player:
+
+
+    // maps pressed keys to player movements
+    // sets velocity according to pressed key
     switch (key)
-      // maps pressed keys to player movements
-      // sets velocity according to pressed key
     {
       case KeyEvent.VK_UP:
 	keyDown[0] = true;
@@ -97,26 +100,28 @@ public class KeyInput extends KeyAdapter
 
 
   @Override
-  public void keyReleased (KeyEvent e)
-  // restores player defaults according to the released key
+  public void keyReleased (KeyEvent e)	// restores defaults according to the released key
   {
-    int key = e.getKeyCode();	// gets released key code
+    // gets released key code
+    int key = e.getKeyCode();
+
 
     // gets the player
     GameObject object = handler.objects.get(0);
 
 
-    // complains if the player is not at the front of the
-    // linked-list
+    // complains if the player is not at the front of the linked-list
     String errMSG = ("KeyInput(): expects the player at " +
 	"the front of the linked-list");
     if (object.getID() != ID.Player)
       throw new RuntimeException(errMSG);
 
 
-    // handles key events for player
+    // handles key events for player:
+
+
+    // resets velocity to default (stationary)
     switch (key)
-      // resets velocity to default (stationary)
     {
       case KeyEvent.VK_UP:
 	keyDown[0] = false;
