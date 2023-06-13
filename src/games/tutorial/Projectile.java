@@ -191,7 +191,7 @@ public class Projectile extends GameObject
 	Rectangle mask = obj.getBounds();
 	if ( getBounds().intersects(mask) )
 	{
-	  // destroys projectile
+	  // only destroys projectile for bosses are indestructible
 	  this.setDestroyed();
 	}
       }
