@@ -71,19 +71,20 @@ public class Projectile extends GameObject
   }
 
 
+  // void tick()
+  //
+  // Synopsis:
+  // Marks projectiles that have hit enemies for removal by
+  // setting the garbage state to true; otherwise, updates the
+  // projectile coordinates and checks for collisions with enemies.
+  // Marks projectiles that have hit enemies or that have reached
+  // the game boundaries for destruction. Note that destroyed
+  // projectiles end up marked as garbage the next time the tick()
+  // method is invoked. Also note that enemies hit by the projectiles
+  // are marked for destruction as well.
+
+
   public void tick ()
-    /*
-     * Synopsis:
-     * Marks projectiles that have hit enemies for removal by
-     * setting the garbage state to true; otherwise, updates the
-     * projectile coordinates and checks for collisions with enemies.
-     * Marks projectiles that have hit enemies or that have reached
-     * the game boundaries for destruction. Note that destroyed
-     * projectiles end up marked as garbage the next time the tick()
-     * method is invoked. Also note that enemies hit by the projectiles
-     * are marked for destruction as well.
-     *
-     */
   {
     // marks projectile for removal if it has hit an enemy:
 
@@ -193,36 +194,33 @@ public class Projectile extends GameObject
 }
 
 
-/*
- * COMMENTS:
- * The `super' keyword is used here to invoke the constructor of the
- * parent class, which in this case refers to the GameObject class.
- *
- * Collisions. Note that collision detection is done in the same way we
- * handle collisions between other game objects. This is to be expected
- * since the projectiles themselves are also game objects.
- *
- * During collision detection we check if the enemy has been hit by another
- * projectile by checking its destroyed state, for we want to be fair with
- * the player. An enemy that has been marked as destroyed should not end up
- * destroying other projectiles that could potentially hit other enemies.
- *
- * Destruction. We do not want to remove game objects while we are invoking
- * the tick method because doing so can cause serious runtime problems if
- * we are not careful. Note that removing an object from a linked-list
- * invalidates the index we are using to traverse the linked-list because
- * its size has changed due to the removal. It would only be safe to remove
- * the last object in the linked-list but there's no guarantee that the
- * object that we want to remove is actually at the end, most likely it
- * will be around the middle of the linked-list. It is be possible to
- * circumvent this issue some other way but we would have to change our
- * algorithm. I prefer to keep things simple without delving further into
- * the world of data structures at this level. An advantage of using this
- * approach is that we can easily add a destruction sequence latter on.
- *
- * Creation, Spawning, or Insertion of Objects.
- * We can safely add objects to the game while ticking because these are
- * inserted at the end of the linked-list. It is easy to account for the
- * size change with a while-loop.
- *
- */
+// COMMENTS:
+// The `super' keyword is used here to invoke the constructor of the
+// parent class, which in this case refers to the GameObject class.
+//
+// Collisions. Note that collision detection is done in the same way we
+// handle collisions between other game objects. This is to be expected
+// since the projectiles themselves are also game objects.
+//
+// During collision detection we check if the enemy has been hit by another
+// projectile by checking its destroyed state, for we want to be fair with
+// the player. An enemy that has been marked as destroyed should not end up
+// destroying other projectiles that could potentially hit other enemies.
+//
+// Destruction. We do not want to remove game objects while we are invoking
+// the tick method because doing so can cause serious runtime problems if
+// we are not careful. Note that removing an object from a linked-list
+// invalidates the index we are using to traverse the linked-list because
+// its size has changed due to the removal. It would only be safe to remove
+// the last object in the linked-list but there's no guarantee that the
+// object that we want to remove is actually at the end, most likely it
+// will be around the middle of the linked-list. It is be possible to
+// circumvent this issue some other way but we would have to change our
+// algorithm. I prefer to keep things simple without delving further into
+// the world of data structures at this level. An advantage of using this
+// approach is that we can easily add a destruction sequence latter on.
+//
+// Creation, Spawning, or Insertion of Objects.
+// We can safely add objects to the game while ticking because these are
+// inserted at the end of the linked-list. It is easy to account for the
+// size change with a while-loop.
