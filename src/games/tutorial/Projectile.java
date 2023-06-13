@@ -43,8 +43,8 @@ public class Projectile extends GameObject
   // Constructors:
 
 
-  public Projectile (int x, int y, ID id, Color color, boolean shape,
-      int width, int height, Handler handler)
+  public Projectile(int x, int y, ID id, Color color, boolean shape,
+		    int width, int height, Handler handler)
   {
     // creates projectile object
     super (x, y, id, width, height);
