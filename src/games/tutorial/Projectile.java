@@ -25,14 +25,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Projectile extends GameObject
 // defines a basic projectile object
+public class Projectile extends GameObject
 {
 
   // Projectile Attributes:
 
 
-  private boolean shape;		// circle, otherwise rectangle
+  private boolean shape;	// circle, otherwise rectangle
   private Color color;		// projectile color
   private Handler handler;	// collisions handler
 
@@ -63,9 +63,9 @@ public class Projectile extends GameObject
   // Methods:
 
 
+  // note that we do not have to implement this method unless
+  // we have projectiles that can shoot at enemies ;)
   public void shoot ()
-    // note that we do not have to implement this method unless
-    // we have projectiles that can shoot at enemies ;)
   {
     return;
   }
@@ -110,8 +110,7 @@ public class Projectile extends GameObject
   }
 
 
-  public void render (Graphics g)
-    // initial render method
+  public void render (Graphics g)	// initial render method
   {
     g.setColor (color);
 
@@ -123,15 +122,14 @@ public class Projectile extends GameObject
   }
 
 
-  public Rectangle getBounds ()
-    // we need this method for collision detection
+  public Rectangle getBounds ()		// we need this method for collision detection
   {
     return new Rectangle(x, y, width, height);
   }
 
 
+  // marks hit enemies and the projectiles themselves for removal
   private void collision ()
-    // marks hit enemies and the projectiles themselves for removal
   {
     for (int i = 0; i != handler.objects.size(); ++i)
     {
