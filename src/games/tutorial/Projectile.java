@@ -89,7 +89,9 @@ public class Projectile extends GameObject
     // marks projectile for removal if it has hit an enemy:
 
     if ( isDestroyed() )
+    {
       setGarbage();
+    }
     else
     {
       // updates projectile coordinates:
@@ -104,7 +106,9 @@ public class Projectile extends GameObject
       // destroys projectiles at game boundaries:
 
       if (y == min_y || y == max_y)
+      {
 	setDestroyed();
+      }
     }
 
   }
@@ -116,9 +120,13 @@ public class Projectile extends GameObject
 
     // renders projectile according to its shape
     if (shape)
+    {
       g.fillOval(x, y, width, height);	// circle
+    }
     else
+    {
       g.fillRect(x, y, width, height);	// square
+    }
   }
 
 
