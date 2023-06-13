@@ -29,167 +29,167 @@ public class Projectile extends GameObject
 // defines a basic projectile object
 {
 
-	/* Projectile Attributes */
+  /* Projectile Attributes */
 
 
-	private boolean shape;		// circle, otherwise rectangle
-	private Color color;		// projectile color
-	private Handler handler;	// collisions handler
+  private boolean shape;		// circle, otherwise rectangle
+  private Color color;		// projectile color
+  private Handler handler;	// collisions handler
 
-	// defines the game boundaries for the projectiles
-	private int min_y = 0, max_y = (Game.HEIGHT - 64);
-
-
-	/* Constructors */
+  // defines the game boundaries for the projectiles
+  private int min_y = 0, max_y = (Game.HEIGHT - 64);
 
 
-	public Projectile (int x, int y, ID id, Color color, boolean shape,
-			   int width, int height, Handler handler)
+  /* Constructors */
+
+
+  public Projectile (int x, int y, ID id, Color color, boolean shape,
+      int width, int height, Handler handler)
+  {
+    // creates projectile object
+    super (x, y, id, width, height);
+
+    // defines its attributes
+    this.shape = shape;
+    this.color = color;
+    this.handler = handler;
+
+    // sets projectile velocity
+    v_x = this.handler.objects.get(0).getVelX();
+    v_y = -10;
+  }
+
+
+  /* Methods */
+
+
+  public void shoot ()
+    // note that we do not have to implement this method unless
+    // we have projectiles that can shoot at enemies ;)
+  {
+    return;
+  }
+
+
+  public void tick ()
+    /*
+     * Synopsis:
+     * Marks projectiles that have hit enemies for removal by
+     * setting the garbage state to true; otherwise, updates the
+     * projectile coordinates and checks for collisions with enemies.
+     * Marks projectiles that have hit enemies or that have reached
+     * the game boundaries for destruction. Note that destroyed
+     * projectiles end up marked as garbage the next time the tick()
+     * method is invoked. Also note that enemies hit by the projectiles
+     * are marked for destruction as well.
+     *
+     */
+  {
+    /* marks projectile for removal if it has hit an enemy */
+
+    if ( isDestroyed() )
+      setGarbage();
+    else
+    {
+      /* updates projectile coordinates */
+
+      y += v_y;
+      y = Game.clamp (y, min_y, max_y);
+
+      /* destroys enemies */
+
+      collision();
+
+      /* destroys projectiles at game boundaries */
+
+      if (y == min_y || y == max_y)
+	setDestroyed();
+    }
+
+  }
+
+
+  public void render (Graphics g)
+    // initial render method
+  {
+    g.setColor (color);
+
+    // renders projectile according to its shape
+    if (shape)
+      g.fillOval (x, y, width, height);	// circle
+    else
+      g.fillRect (x, y, width, height);	// square
+  }
+
+
+  public Rectangle getBounds ()
+    // we need this method for collision detection
+  {
+    return new Rectangle(x, y, width, height);
+  }
+
+
+  private void collision ()
+    // marks hit enemies and the projectiles themselves for removal
+  {
+    for (int i = 0; i != handler.objects.size(); ++i)
+    {
+      GameObject obj = handler.objects.get(i);
+
+      if (obj.getID() == ID.BasicEnemy)
+      {
+	// detects collision
+	Rectangle mask = obj.getBounds();
+	if ( getBounds().intersects(mask) )
 	{
-		// creates projectile object
-		super (x, y, id, width, height);
-
-		// defines its attributes
-		this.shape = shape;
-		this.color = color;
-		this.handler = handler;
-
-		// sets projectile velocity
-		v_x = this.handler.objects.get(0).getVelX();
-		v_y = -10;
+	  // destroys enemy and projectile
+	  if ( !obj.isDestroyed() )
+	  {
+	    obj.setDestroyed();
+	    this.setDestroyed();
+	  }
 	}
-
-
-	/* Methods */
-
-
-	public void shoot ()
-	// note that we do not have to implement this method unless
-	// we have projectiles that can shoot at enemies ;)
+      }
+      else if (obj.getID() == ID.SmartEnemy)
+      {
+	// detects collision
+	Rectangle mask = obj.getBounds();
+	if ( getBounds().intersects(mask) )
 	{
-		return;
+	  // destroys enemy and projectile
+	  if ( !obj.isDestroyed() )
+	  {
+	    obj.setDestroyed();
+	    this.setDestroyed();
+	  }
 	}
-
-
-	public void tick ()
-	/*
-	 * Synopsis:
-	 * Marks projectiles that have hit enemies for removal by
-	 * setting the garbage state to true; otherwise, updates the
-	 * projectile coordinates and checks for collisions with enemies.
-	 * Marks projectiles that have hit enemies or that have reached
-	 * the game boundaries for destruction. Note that destroyed
-	 * projectiles end up marked as garbage the next time the tick()
-	 * method is invoked. Also note that enemies hit by the projectiles
-	 * are marked for destruction as well.
-	 *
-	 */
+      }
+      else if (obj.getID() == ID.FastEnemy)
+      {
+	// detects collision
+	Rectangle mask = obj.getBounds();
+	if ( getBounds().intersects(mask) )
 	{
-		/* marks projectile for removal if it has hit an enemy */
-
-		if ( isDestroyed() )
-			setGarbage();
-		else
-		{
-			/* updates projectile coordinates */
-
-			y += v_y;
-			y = Game.clamp (y, min_y, max_y);
-
-			/* destroys enemies */
-
-			collision();
-
-			/* destroys projectiles at game boundaries */
-
-			if (y == min_y || y == max_y)
-				setDestroyed();
-		}
-
+	  // destroys enemy and projectile
+	  if ( !obj.isDestroyed() )
+	  {
+	    obj.setDestroyed();
+	    this.setDestroyed();
+	  }
 	}
-
-
-	public void render (Graphics g)
-	// initial render method
+      }
+      else if (obj.getID() == ID.BossEnemy)
+      {
+	// detects collision
+	Rectangle mask = obj.getBounds();
+	if ( getBounds().intersects(mask) )
 	{
-		g.setColor (color);
-
-		// renders projectile according to its shape
-		if (shape)
-			g.fillOval (x, y, width, height);	// circle
-		else
-			g.fillRect (x, y, width, height);	// square
+	  // destroys projectile
+	  this.setDestroyed();
 	}
-
-
-	public Rectangle getBounds ()
-	// we need this method for collision detection
-	{
-		return new Rectangle(x, y, width, height);
-	}
-
-
-	private void collision ()
-	// marks hit enemies and the projectiles themselves for removal
-	{
-		for (int i = 0; i != handler.objects.size(); ++i)
-		{
-			GameObject obj = handler.objects.get(i);
-
-			if (obj.getID() == ID.BasicEnemy)
-			{
-				// detects collision
-				Rectangle mask = obj.getBounds();
-				if ( getBounds().intersects(mask) )
-				{
-					// destroys enemy and projectile
-					if ( !obj.isDestroyed() )
-					{
-						obj.setDestroyed();
-						this.setDestroyed();
-					}
-				}
-			}
-			else if (obj.getID() == ID.SmartEnemy)
-			{
-				// detects collision
-				Rectangle mask = obj.getBounds();
-				if ( getBounds().intersects(mask) )
-				{
-					// destroys enemy and projectile
-					if ( !obj.isDestroyed() )
-					{
-						obj.setDestroyed();
-						this.setDestroyed();
-					}
-				}
-			}
-			else if (obj.getID() == ID.FastEnemy)
-			{
-				// detects collision
-				Rectangle mask = obj.getBounds();
-				if ( getBounds().intersects(mask) )
-				{
-					// destroys enemy and projectile
-					if ( !obj.isDestroyed() )
-					{
-						obj.setDestroyed();
-						this.setDestroyed();
-					}
-				}
-			}
-			else if (obj.getID() == ID.BossEnemy)
-			{
-				// detects collision
-				Rectangle mask = obj.getBounds();
-				if ( getBounds().intersects(mask) )
-				{
-					// destroys projectile
-					this.setDestroyed();
-				}
-			}
-		}
-	}
+      }
+    }
+  }
 }
 
 
