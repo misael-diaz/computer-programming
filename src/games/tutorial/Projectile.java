@@ -29,7 +29,7 @@ public class Projectile extends GameObject
 // defines a basic projectile object
 {
 
-  /* Projectile Attributes */
+  // Projectile Attributes:
 
 
   private boolean shape;		// circle, otherwise rectangle
@@ -40,7 +40,7 @@ public class Projectile extends GameObject
   private int min_y = 0, max_y = (Game.HEIGHT - 64);
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public Projectile (int x, int y, ID id, Color color, boolean shape,
@@ -60,7 +60,7 @@ public class Projectile extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
   public void shoot ()
@@ -85,22 +85,22 @@ public class Projectile extends GameObject
      *
      */
   {
-    /* marks projectile for removal if it has hit an enemy */
+    // marks projectile for removal if it has hit an enemy:
 
     if ( isDestroyed() )
       setGarbage();
     else
     {
-      /* updates projectile coordinates */
+      // updates projectile coordinates:
 
       y += v_y;
       y = Game.clamp (y, min_y, max_y);
 
-      /* destroys enemies */
+      // destroys enemies:
 
       collision();
 
-      /* destroys projectiles at game boundaries */
+      // destroys projectiles at game boundaries:
 
       if (y == min_y || y == max_y)
 	setDestroyed();
