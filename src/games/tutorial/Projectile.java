@@ -47,7 +47,7 @@ public class Projectile extends GameObject
 		    int width, int height, Handler handler)
   {
     // creates projectile object
-    super (x, y, id, width, height);
+    super(x, y, id, width, height);
 
     // defines its attributes
     this.shape = shape;
@@ -95,7 +95,7 @@ public class Projectile extends GameObject
       // updates projectile coordinates:
 
       y += v_y;
-      y = Game.clamp (y, min_y, max_y);
+      y = Game.clamp(y, min_y, max_y);
 
       // destroys enemies:
 
@@ -112,13 +112,13 @@ public class Projectile extends GameObject
 
   public void render (Graphics g)	// initial render method
   {
-    g.setColor (color);
+    g.setColor(color);
 
     // renders projectile according to its shape
     if (shape)
-      g.fillOval (x, y, width, height);	// circle
+      g.fillOval(x, y, width, height);	// circle
     else
-      g.fillRect (x, y, width, height);	// square
+      g.fillRect(x, y, width, height);	// square
   }
 
 
