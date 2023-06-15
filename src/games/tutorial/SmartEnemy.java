@@ -25,8 +25,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class SmartEnemy extends GameObject
 // defines Smart Enemy with attributes inherited from the Game Object Class
+public class SmartEnemy extends GameObject
 {
 
   // Smart Enemy Attributes:
@@ -64,16 +64,15 @@ public class SmartEnemy extends GameObject
   // Methods:
 
 
-  public void shoot ()	// unimplemented
-    // we need to define this method because objects derived from the
-    // Game Object class must define the abstract methods of the class
+  // we need to define this method because objects derived from the
+  // Game Object class must define the abstract methods of the class
+  public void shoot ()
   {
     return;
   }
 
 
-  public void tick ()
-    // initial tick method
+  public void tick ()	// initial tick method
   {
 
     // marks enemy as garbage if it has been destroyed,
@@ -111,8 +110,7 @@ public class SmartEnemy extends GameObject
   }
 
 
-  public void render (Graphics g)
-    // initial render method
+  public void render (Graphics g)	// initial render method
   {
     // sets enemy color
     g.setColor (color);
@@ -125,15 +123,13 @@ public class SmartEnemy extends GameObject
   }
 
 
-  public Rectangle getBounds ()
-    // we need this for collision detection
+  public Rectangle getBounds ()		// we need this for collision detection
   {
     return new Rectangle (x, y, width, height);
   }
 
 
-  private void chase ()
-    // sets the velocity of the enemy so that it chases the player
+  private void chase ()	// sets the velocity of the enemy so that it chases the player
   {
     // gets player coordinates
     int playerPosX = this.player.getPosX();
@@ -161,10 +157,10 @@ public class SmartEnemy extends GameObject
 	);
 
 
+    // sets the velocity along the relative position vector
+    // if the objects are not too close to each other to avoid
+    // division by zero
     if (distance > 1)
-      // sets the velocity along the relative position vector
-      // if the objects are not too close to each other to avoid
-      // division by zero
     {
 
       // finds the unit, relative, position vector
