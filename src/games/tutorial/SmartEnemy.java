@@ -29,168 +29,168 @@ public class SmartEnemy extends GameObject
 // defines Smart Enemy with attributes inherited from the Game Object Class
 {
 
-	/* Smart Enemy Attributes */
+  /* Smart Enemy Attributes */
 
-	private Color color;			// enemy color
-	private boolean shape = false;		// enemy shape (rectangle)
-	private float trailspan = 0.25f;	// defines enemy trail span
-	private int speed = 4;			// defines enemy speed
-	private GameObject player;		// references player
-	private Handler handler;		// enemy trail handler
-
-
-	/* Constructors */
+  private Color color;			// enemy color
+  private boolean shape = false;		// enemy shape (rectangle)
+  private float trailspan = 0.25f;	// defines enemy trail span
+  private int speed = 4;			// defines enemy speed
+  private GameObject player;		// references player
+  private Handler handler;		// enemy trail handler
 
 
-	public SmartEnemy (int x, int y, ID id, Color color,
-			   Handler handler)
-	{
-		// creates smart enemy object
-		super (x, y, id);
+  /* Constructors */
 
 
-		// defines attributes
-		this.color = color;
-		this.handler = handler;
-		// sets initial velocity equal to the bias
-		this.v_x = (speed / 2);
-		this.v_y = (speed / 2);
-		// binds to the player object
-		this.player = handler.objects.get(0);
-
-	}
+  public SmartEnemy (int x, int y, ID id, Color color,
+      Handler handler)
+  {
+    // creates smart enemy object
+    super (x, y, id);
 
 
-	/* Methods */
+    // defines attributes
+    this.color = color;
+    this.handler = handler;
+    // sets initial velocity equal to the bias
+    this.v_x = (speed / 2);
+    this.v_y = (speed / 2);
+    // binds to the player object
+    this.player = handler.objects.get(0);
+
+  }
 
 
-	public void shoot ()	/* unimplemented */
-	// we need to define this method because objects derived from the
-	// Game Object class must define the abstract methods of the class
-	{
-		return;
-	}
+  /* Methods */
 
 
-	public void tick ()
-	// initial tick method
-	{
-
-		// marks enemy as garbage if it has been destroyed,
-		// otherwise updates its position and velocity
-		if ( isDestroyed() )
-			setGarbage();	// sets garbage state to true
-		else
-		{
-			/* sets the velocity for chasing the player */
-
-			chase ();
-
-			/* updates position */
-
-			x += v_x;
-			y += v_y;
-
-			/* simulates elastic collisions with boundaries */
-
-			if ( x <= 0 || x >= (Game.WIDTH - 16) )
-				v_x *= -1;
-
-			if ( y <= 0 || y >= (Game.HEIGHT - 64) )
-				v_y *= -1;
-
-			/* simulates enemy trail */
-
-			Trail trail = new Trail(x, y, ID.Trail, color,
-						shape, trailspan, width,
-						height, handler);
-
-			handler.addObject (trail);
-		}
-
-	}
+  public void shoot ()	/* unimplemented */
+    // we need to define this method because objects derived from the
+    // Game Object class must define the abstract methods of the class
+  {
+    return;
+  }
 
 
-	public void render (Graphics g)
-	// initial render method
-	{
-		// sets enemy color
-		g.setColor (color);
+  public void tick ()
+    // initial tick method
+  {
 
-		// renders enemy according to its shape
-		if (shape)
-			g.fillOval (x, y, width, height);	// circle
-		else
-			g.fillRect (x, y, width, height);	// square
-	}
+    // marks enemy as garbage if it has been destroyed,
+    // otherwise updates its position and velocity
+    if ( isDestroyed() )
+      setGarbage();	// sets garbage state to true
+    else
+    {
+      /* sets the velocity for chasing the player */
 
+      chase ();
 
-	public Rectangle getBounds ()
-	// we need this for collision detection
-	{
-		return new Rectangle (x, y, width, height);
-	}
+      /* updates position */
 
+      x += v_x;
+      y += v_y;
 
-	private void chase ()
-	// sets the velocity of the enemy so that it chases the player
-	{
-		// gets player coordinates
-		int playerPosX = this.player.getPosX();
-		int playerPosY = this.player.getPosY();
-		// gets player dimensions
-		int playerWidth  = this.player.getWidth();
-		int playerHeight = this.player.getHeight();
-		// corrects position vector to the player's center
-		playerPosX += (playerWidth / 2);
-		playerPosY += (playerHeight / 2);
+      /* simulates elastic collisions with boundaries */
 
-		// gets enemy coordinates
-		int enemyPosX = this.getPosX();
-		int enemyPosY = this.getPosY();
-		// corrects position vector to the enemy's center
-		enemyPosX += (this.width / 2);
-		enemyPosY += (this.height / 2);
+      if ( x <= 0 || x >= (Game.WIDTH - 16) )
+	v_x *= -1;
+
+      if ( y <= 0 || y >= (Game.HEIGHT - 64) )
+	v_y *= -1;
+
+      /* simulates enemy trail */
+
+      Trail trail = new Trail(x, y, ID.Trail, color,
+	  shape, trailspan, width,
+	  height, handler);
+
+      handler.addObject (trail);
+    }
+
+  }
 
 
-		// computes the distance between the player and enemy
-		double diffPosX = (playerPosX - enemyPosX);
-		double diffPosY = (playerPosY - enemyPosY);
-		double distance = Math.sqrt (
-			diffPosX * diffPosX + diffPosY * diffPosY
-		);
+  public void render (Graphics g)
+    // initial render method
+  {
+    // sets enemy color
+    g.setColor (color);
+
+    // renders enemy according to its shape
+    if (shape)
+      g.fillOval (x, y, width, height);	// circle
+    else
+      g.fillRect (x, y, width, height);	// square
+  }
 
 
-		if (distance > 1)
-		// sets the velocity along the relative position vector
-		// if the objects are not too close to each other to avoid
-		// division by zero
-		{
+  public Rectangle getBounds ()
+    // we need this for collision detection
+  {
+    return new Rectangle (x, y, width, height);
+  }
 
-			// finds the unit, relative, position vector
-			double ratio = diffPosX / distance;
-			int u_x = ( (int) Math.floor (ratio) );
 
-			ratio = diffPosY / distance;
-			int u_y = ( (int) Math.floor (ratio) );
+  private void chase ()
+    // sets the velocity of the enemy so that it chases the player
+  {
+    // gets player coordinates
+    int playerPosX = this.player.getPosX();
+    int playerPosY = this.player.getPosY();
+    // gets player dimensions
+    int playerWidth  = this.player.getWidth();
+    int playerHeight = this.player.getHeight();
+    // corrects position vector to the player's center
+    playerPosX += (playerWidth / 2);
+    playerPosY += (playerHeight / 2);
 
-			// sets the velocity along the relative position
-			// vector --- shortest path --- to chase the player
-			v_x = u_x * speed;
-			v_y = u_y * speed;
+    // gets enemy coordinates
+    int enemyPosX = this.getPosX();
+    int enemyPosY = this.getPosY();
+    // corrects position vector to the enemy's center
+    enemyPosX += (this.width / 2);
+    enemyPosY += (this.height / 2);
 
-			// adds a bias to improve the chase effect since
-			// we are using integers instead of floats for the
-			// velocity components
-			v_x += (speed / 2);
-			v_y += (speed / 2);
-		}
-		else	// otherwise, sets the velocity equal to the bias
-		{
-			v_x = (speed / 2);
-			v_y = (speed / 2);
-		}
-	}
+
+    // computes the distance between the player and enemy
+    double diffPosX = (playerPosX - enemyPosX);
+    double diffPosY = (playerPosY - enemyPosY);
+    double distance = Math.sqrt (
+	diffPosX * diffPosX + diffPosY * diffPosY
+	);
+
+
+    if (distance > 1)
+      // sets the velocity along the relative position vector
+      // if the objects are not too close to each other to avoid
+      // division by zero
+    {
+
+      // finds the unit, relative, position vector
+      double ratio = diffPosX / distance;
+      int u_x = ( (int) Math.floor (ratio) );
+
+      ratio = diffPosY / distance;
+      int u_y = ( (int) Math.floor (ratio) );
+
+      // sets the velocity along the relative position
+      // vector --- shortest path --- to chase the player
+      v_x = u_x * speed;
+      v_y = u_y * speed;
+
+      // adds a bias to improve the chase effect since
+      // we are using integers instead of floats for the
+      // velocity components
+      v_x += (speed / 2);
+      v_y += (speed / 2);
+    }
+    else	// otherwise, sets the velocity equal to the bias
+    {
+      v_x = (speed / 2);
+      v_y = (speed / 2);
+    }
+  }
 }
 
 /*
