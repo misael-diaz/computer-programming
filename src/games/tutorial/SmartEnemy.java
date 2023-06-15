@@ -193,16 +193,14 @@ public class SmartEnemy extends GameObject
   }
 }
 
-/*
- * COMMENTS:
- * The `super' keyword is used here to invoke the constructor of the
- * parent class, which in this case refers to the GameObject class.
- *
- * The trail of the enemy is simulated by spawning trail objects that
- * fade with time (via calls to the trail tick method).
- *
- * Note that the garbage collector will subsequently remove enemies
- * marked as garbage. We do not remove enemies right away to avert
- * serious issues while traversing the linked-list.
- *
- */
+
+// COMMENTS:
+// The `super' keyword is used here to invoke the constructor of the
+// parent class, which in this case refers to the GameObject class.
+//
+// The trail of the enemy is simulated by spawning trail objects that
+// fade with time (via calls to the trail tick method).
+//
+// Note that the garbage collector will subsequently remove enemies
+// marked as garbage. We do not remove enemies right away to avert
+// serious issues while traversing the linked-list.
