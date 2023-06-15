@@ -29,7 +29,7 @@ public class SmartEnemy extends GameObject
 // defines Smart Enemy with attributes inherited from the Game Object Class
 {
 
-  /* Smart Enemy Attributes */
+  // Smart Enemy Attributes:
 
   private Color color;			// enemy color
   private boolean shape = false;		// enemy shape (rectangle)
@@ -39,7 +39,7 @@ public class SmartEnemy extends GameObject
   private Handler handler;		// enemy trail handler
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public SmartEnemy (int x, int y, ID id, Color color,
@@ -61,10 +61,10 @@ public class SmartEnemy extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
-  public void shoot ()	/* unimplemented */
+  public void shoot ()	// unimplemented
     // we need to define this method because objects derived from the
     // Game Object class must define the abstract methods of the class
   {
@@ -82,16 +82,16 @@ public class SmartEnemy extends GameObject
       setGarbage();	// sets garbage state to true
     else
     {
-      /* sets the velocity for chasing the player */
+      // sets the velocity for chasing the player:
 
       chase ();
 
-      /* updates position */
+      // updates position:
 
       x += v_x;
       y += v_y;
 
-      /* simulates elastic collisions with boundaries */
+      // simulates elastic collisions with boundaries:
 
       if ( x <= 0 || x >= (Game.WIDTH - 16) )
 	v_x *= -1;
@@ -99,7 +99,7 @@ public class SmartEnemy extends GameObject
       if ( y <= 0 || y >= (Game.HEIGHT - 64) )
 	v_y *= -1;
 
-      /* simulates enemy trail */
+      // simulates enemy trail:
 
       Trail trail = new Trail(x, y, ID.Trail, color,
 	  shape, trailspan, width,
