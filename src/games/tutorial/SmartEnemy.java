@@ -99,7 +99,7 @@ public class SmartEnemy extends GameObject
     // simulates enemy trail:
 
     Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
-	handler);
+			    handler);
 
     handler.addObject(trail);
   }
