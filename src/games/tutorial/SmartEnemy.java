@@ -158,6 +158,11 @@ public class SmartEnemy extends GameObject
     double distance = Math.sqrt(diffPosX * diffPosX + diffPosY * diffPosY);
 
 
+    // sets the velocity so that the smart enemy chases the player:
+
+
+    v_x = 0;
+    v_y = 0;
     // sets the velocity along the relative position vector if the objects are not too
     // close to each other to avoid division by zero
     if (distance > 1)
@@ -172,18 +177,12 @@ public class SmartEnemy extends GameObject
       // sets the velocity along the relative position vector to chase the player
       v_x = u_x * speed;
       v_y = u_y * speed;
+    }
 
-      // adds a bias to improve the chase effect since we are using integers instead of
-      // floats for the velocity components
-      v_x += (speed / 2);
-      v_y += (speed / 2);
-    }
-    else
-    {
-      // sets the velocity equal to the bias otherwise (too close)
-      v_x = (speed / 2);
-      v_y = (speed / 2);
-    }
+    // adds a bias to improve the chase effect since we are using integers instead of
+    // floats for the velocity components
+    v_x += (speed / 2);
+    v_y += (speed / 2);
   }
 }
 
