@@ -45,7 +45,7 @@ public class SmartEnemy extends GameObject
   public SmartEnemy (int x, int y, ID id, Color color, Handler handler)
   {
     // creates smart enemy object
-    super (x, y, id);
+    super(x, y, id);
 
 
     // defines attributes
@@ -81,7 +81,7 @@ public class SmartEnemy extends GameObject
     {
       // sets the velocity for chasing the player:
 
-      chase ();
+      chase();
 
       // updates position:
 
@@ -101,7 +101,7 @@ public class SmartEnemy extends GameObject
       Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
 			      handler);
 
-      handler.addObject (trail);
+      handler.addObject(trail);
     }
 
   }
@@ -110,19 +110,19 @@ public class SmartEnemy extends GameObject
   public void render (Graphics g)	// initial render method
   {
     // sets enemy color
-    g.setColor (color);
+    g.setColor(color);
 
     // renders enemy according to its shape
     if (shape)
-      g.fillOval (x, y, width, height);	// circle
+      g.fillOval(x, y, width, height);	// circle
     else
-      g.fillRect (x, y, width, height);	// square
+      g.fillRect(x, y, width, height);	// square
   }
 
 
   public Rectangle getBounds ()		// we need this for collision detection
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
 
@@ -149,7 +149,7 @@ public class SmartEnemy extends GameObject
     // computes the distance between the player and enemy
     double diffPosX = (playerPosX - enemyPosX);
     double diffPosY = (playerPosY - enemyPosY);
-    double distance = Math.sqrt (diffPosX * diffPosX + diffPosY * diffPosY);
+    double distance = Math.sqrt(diffPosX * diffPosX + diffPosY * diffPosY);
 
 
     // sets the velocity along the relative position vector if the objects are not too
@@ -159,10 +159,10 @@ public class SmartEnemy extends GameObject
 
       // finds the unit, relative, position vector
       double ratio = diffPosX / distance;
-      int u_x = ( (int) Math.floor (ratio) );
+      int u_x = ( (int) Math.floor(ratio) );
 
       ratio = diffPosY / distance;
-      int u_y = ( (int) Math.floor (ratio) );
+      int u_y = ( (int) Math.floor(ratio) );
 
       // sets the velocity along the relative position vector to chase the player
       v_x = u_x * speed;
