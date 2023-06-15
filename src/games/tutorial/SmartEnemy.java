@@ -75,8 +75,7 @@ public class SmartEnemy extends GameObject
   public void tick ()	// initial tick method
   {
 
-    // marks enemy as garbage if it has been destroyed,
-    // otherwise updates its position and velocity
+    // sets as garbage if it has been destroyed, updates position and velocity otherwise
     if ( isDestroyed() )
       setGarbage();	// sets garbage state to true
     else
@@ -157,9 +156,8 @@ public class SmartEnemy extends GameObject
 	);
 
 
-    // sets the velocity along the relative position vector
-    // if the objects are not too close to each other to avoid
-    // division by zero
+    // sets the velocity along the relative position vector if the objects are not too
+    // close to each other to avoid division by zero
     if (distance > 1)
     {
 
@@ -170,19 +168,18 @@ public class SmartEnemy extends GameObject
       ratio = diffPosY / distance;
       int u_y = ( (int) Math.floor (ratio) );
 
-      // sets the velocity along the relative position
-      // vector --- shortest path --- to chase the player
+      // sets the velocity along the relative position vector to chase the player
       v_x = u_x * speed;
       v_y = u_y * speed;
 
-      // adds a bias to improve the chase effect since
-      // we are using integers instead of floats for the
-      // velocity components
+      // adds a bias to improve the chase effect since we are using integers instead of
+      // floats for the velocity components
       v_x += (speed / 2);
       v_y += (speed / 2);
     }
-    else	// otherwise, sets the velocity equal to the bias
+    else
     {
+      // sets the velocity equal to the bias otherwise (too close)
       v_x = (speed / 2);
       v_y = (speed / 2);
     }
