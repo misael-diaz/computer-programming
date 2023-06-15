@@ -74,34 +74,34 @@ public class SmartEnemy extends GameObject
 
     // sets as garbage if it has been destroyed, updates position and velocity otherwise
     if ( isDestroyed() )
-      setGarbage();	// sets garbage state to true
-    else
     {
-      // sets the velocity for chasing the player:
-
-      chase();
-
-      // updates position:
-
-      x += v_x;
-      y += v_y;
-
-      // simulates elastic collisions with boundaries:
-
-      if ( x <= 0 || x >= (Game.WIDTH - 16) )
-	v_x *= -1;
-
-      if ( y <= 0 || y >= (Game.HEIGHT - 64) )
-	v_y *= -1;
-
-      // simulates enemy trail:
-
-      Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
-			      handler);
-
-      handler.addObject(trail);
+      setGarbage();	// sets garbage state to true
+      return;
     }
 
+    // sets the velocity for chasing the player:
+
+    chase();
+
+    // updates position:
+
+    x += v_x;
+    y += v_y;
+
+    // simulates elastic collisions with boundaries:
+
+    if ( x <= 0 || x >= (Game.WIDTH - 16) )
+      v_x *= -1;
+
+    if ( y <= 0 || y >= (Game.HEIGHT - 64) )
+      v_y *= -1;
+
+    // simulates enemy trail:
+
+    Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
+	handler);
+
+    handler.addObject(trail);
   }
 
 
