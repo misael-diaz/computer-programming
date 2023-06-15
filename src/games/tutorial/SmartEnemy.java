@@ -32,9 +32,9 @@ public class SmartEnemy extends GameObject
   // Smart Enemy Attributes:
 
   private Color color;			// enemy color
-  private boolean shape = false;		// enemy shape (rectangle)
+  private boolean shape = false;	// enemy shape (rectangle)
   private float trailspan = 0.25f;	// defines enemy trail span
-  private int speed = 4;			// defines enemy speed
+  private int speed = 4;		// defines enemy speed
   private GameObject player;		// references player
   private Handler handler;		// enemy trail handler
 
