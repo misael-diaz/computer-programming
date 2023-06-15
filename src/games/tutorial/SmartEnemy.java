@@ -91,10 +91,14 @@ public class SmartEnemy extends GameObject
     // simulates elastic collisions with boundaries:
 
     if ( x <= 0 || x >= (Game.WIDTH - 16) )
+    {
       v_x *= -1;
+    }
 
     if ( y <= 0 || y >= (Game.HEIGHT - 64) )
+    {
       v_y *= -1;
+    }
 
     // simulates enemy trail:
 
@@ -112,9 +116,13 @@ public class SmartEnemy extends GameObject
 
     // renders enemy according to its shape
     if (shape)
+    {
       g.fillOval(x, y, width, height);	// circle
+    }
     else
+    {
       g.fillRect(x, y, width, height);	// square
+    }
   }
 
 
