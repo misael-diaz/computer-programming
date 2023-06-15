@@ -47,7 +47,6 @@ public class SmartEnemy extends GameObject
     // creates smart enemy object
     super(x, y, id);
 
-
     // defines attributes
     this.color = color;
     this.handler = handler;
@@ -56,7 +55,6 @@ public class SmartEnemy extends GameObject
     this.v_y = (speed / 2);
     // binds to the player object
     this.player = handler.objects.get(0);
-
   }
 
 
@@ -156,7 +154,6 @@ public class SmartEnemy extends GameObject
     // close to each other to avoid division by zero
     if (distance > 1)
     {
-
       // finds the unit, relative, position vector
       double ratio = diffPosX / distance;
       int u_x = ( (int) Math.floor(ratio) );
