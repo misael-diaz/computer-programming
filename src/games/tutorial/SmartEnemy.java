@@ -42,8 +42,7 @@ public class SmartEnemy extends GameObject
   // Constructors:
 
 
-  public SmartEnemy (int x, int y, ID id, Color color,
-      Handler handler)
+  public SmartEnemy (int x, int y, ID id, Color color, Handler handler)
   {
     // creates smart enemy object
     super (x, y, id);
@@ -99,9 +98,8 @@ public class SmartEnemy extends GameObject
 
       // simulates enemy trail:
 
-      Trail trail = new Trail(x, y, ID.Trail, color,
-	  shape, trailspan, width,
-	  height, handler);
+      Trail trail = new Trail(x, y, ID.Trail, color, shape, trailspan, width, height,
+			      handler);
 
       handler.addObject (trail);
     }
@@ -151,9 +149,7 @@ public class SmartEnemy extends GameObject
     // computes the distance between the player and enemy
     double diffPosX = (playerPosX - enemyPosX);
     double diffPosY = (playerPosY - enemyPosY);
-    double distance = Math.sqrt (
-	diffPosX * diffPosX + diffPosY * diffPosY
-	);
+    double distance = Math.sqrt (diffPosX * diffPosX + diffPosY * diffPosY);
 
 
     // sets the velocity along the relative position vector if the objects are not too
