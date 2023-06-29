@@ -28,7 +28,7 @@ public class Spawner
 // spawner handles the level and score system and the spawning of enemies
 {
 
-  /* Spawner Attributes */
+  // Spawner Attributes:
 
 
   private HUD hud;
@@ -38,7 +38,7 @@ public class Spawner
   private boolean spawned = false;
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public Spawner (HUD hud, Handler handler)
