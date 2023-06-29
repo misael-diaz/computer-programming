@@ -91,8 +91,7 @@ public class Spawner
 	y = rand.nextInt(Game.HEIGHT / 2);
 	id = ID.BasicEnemy;
 	color = Color.red;
-	basic = new BasicEnemy (x, y, id, color,
-	    handler);
+	basic = new BasicEnemy (x, y, id, color, handler);
 	handler.addObject (basic);
       }
 
@@ -101,8 +100,7 @@ public class Spawner
       y = rand.nextInt(Game.HEIGHT / 2);
       id = ID.SmartEnemy;
       color = Color.green;
-      smart = new SmartEnemy (x, y, id, color,
-	  handler);
+      smart = new SmartEnemy (x, y, id, color, handler);
       handler.addObject (smart);
     }
 
@@ -117,8 +115,7 @@ public class Spawner
       spawns = ID.BasicEnemy;
       color = Color.red;
 
-      boss = new BossEnemy (x, y, id, Color.red, 96, 96,
-	  spawns, handler);
+      boss = new BossEnemy (x, y, id, Color.red, 96, 96, spawns, handler);
       handler.addObject (boss);
     }
 
@@ -136,8 +133,7 @@ public class Spawner
 	id = ID.FastEnemy;
 	color = Color.yellow;
 
-	fast = new FastEnemy (x, y, id, color,
-	    handler);
+	fast = new FastEnemy (x, y, id, color, handler);
 	handler.addObject (fast);
       }
 
@@ -149,8 +145,7 @@ public class Spawner
 	y = rand.nextInt(Game.HEIGHT / 2);
 	id = ID.SmartEnemy;
 	color = Color.green;
-	smart = new SmartEnemy (x, y, id, color,
-	    handler);
+	smart = new SmartEnemy (x, y, id, color, handler);
 	handler.addObject (smart);
       }
     }
@@ -163,8 +158,7 @@ public class Spawner
       id = ID.BossEnemy;
       spawns = ID.FastEnemy;
       color = Color.yellow;
-      boss = new BossEnemy (x, y, id, color, 96, 96,
-	  spawns, handler);
+      boss = new BossEnemy (x, y, id, color, 96, 96, spawns, handler);
       handler.addObject (boss);
     }
 
