@@ -147,11 +147,11 @@ class Point3D : public Point	// 3D Cartesian Point Class
 
 namespace point
 {
-	// defines predicate method compare() for x-y sorting of points
-	bool compare (const Point* p, const Point* q);
+  // defines predicate method compare() for x-y sorting of points
+  bool compare (const Point* p, const Point* q);
 
-	// returns the distance between a pair of points
-	double distance (const Point* p, const Point* q);
+  // returns the distance between a pair of points
+  double distance (const Point* p, const Point* q);
 }
 
 #endif
