@@ -108,9 +108,8 @@ public class Spawner
 
     if (hud.getLevel() ==  10)	// spawns a boss at level 10
     {
-      // spawns boss around the middle of the game and
-      // hides part of its body so that the player cannot
-      // go behind it
+      // spawns boss around the middle of the game and hides part of its body so that
+      // the player cannot go behind it
       x = rand.nextInt(Game.WIDTH / 2);
       y = -16;
       id = ID.BossEnemy;
@@ -124,9 +123,8 @@ public class Spawner
     }
 
     // Spawns groups of fast enemies and smart enemies
-    // Note that the boss is indestructible and that it lasts
-    // for five levels so we do not spawn enemies until it goes
-    // away.
+    // Note that the boss is indestructible and that it lasts for five levels so we do not
+    // spawn enemies until it goes away.
     if ( (hud.getLevel() >= 15) && (hud.getLevel() < 20) )
     {
       // sets the group size for fast enemies
@@ -170,8 +168,7 @@ public class Spawner
       handler.addObject (boss);
     }
 
-    // sets the spawned state so that we know that the spawner
-    // has completed its task
+    // sets the spawned state so that we know that the spawner has completed its task
     spawned = true;
   }
 }
