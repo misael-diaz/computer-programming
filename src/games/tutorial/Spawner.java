@@ -68,7 +68,7 @@ public class Spawner
   {
     // spawns enemies if it has not already done so
     if (levelup && !spawned)
-      spawner ();
+      spawner();
   }
 
 
@@ -91,8 +91,8 @@ public class Spawner
 	y = rand.nextInt(Game.HEIGHT / 2);
 	id = ID.BasicEnemy;
 	color = Color.red;
-	basic = new BasicEnemy (x, y, id, color, handler);
-	handler.addObject (basic);
+	basic = new BasicEnemy(x, y, id, color, handler);
+	handler.addObject(basic);
       }
 
       // spawns smart enemy
@@ -100,8 +100,8 @@ public class Spawner
       y = rand.nextInt(Game.HEIGHT / 2);
       id = ID.SmartEnemy;
       color = Color.green;
-      smart = new SmartEnemy (x, y, id, color, handler);
-      handler.addObject (smart);
+      smart = new SmartEnemy(x, y, id, color, handler);
+      handler.addObject(smart);
     }
 
     if (hud.getLevel() ==  10)	// spawns a boss at level 10
@@ -115,8 +115,8 @@ public class Spawner
       spawns = ID.BasicEnemy;
       color = Color.red;
 
-      boss = new BossEnemy (x, y, id, Color.red, 96, 96, spawns, handler);
-      handler.addObject (boss);
+      boss = new BossEnemy(x, y, id, Color.red, 96, 96, spawns, handler);
+      handler.addObject(boss);
     }
 
     // Spawns groups of fast enemies and smart enemies
@@ -133,8 +133,8 @@ public class Spawner
 	id = ID.FastEnemy;
 	color = Color.yellow;
 
-	fast = new FastEnemy (x, y, id, color, handler);
-	handler.addObject (fast);
+	fast = new FastEnemy(x, y, id, color, handler);
+	handler.addObject(fast);
       }
 
       // sets the group size of smart enemies
@@ -145,8 +145,8 @@ public class Spawner
 	y = rand.nextInt(Game.HEIGHT / 2);
 	id = ID.SmartEnemy;
 	color = Color.green;
-	smart = new SmartEnemy (x, y, id, color, handler);
-	handler.addObject (smart);
+	smart = new SmartEnemy(x, y, id, color, handler);
+	handler.addObject(smart);
       }
     }
 
@@ -158,8 +158,8 @@ public class Spawner
       id = ID.BossEnemy;
       spawns = ID.FastEnemy;
       color = Color.yellow;
-      boss = new BossEnemy (x, y, id, color, 96, 96, spawns, handler);
-      handler.addObject (boss);
+      boss = new BossEnemy(x, y, id, color, 96, 96, spawns, handler);
+      handler.addObject(boss);
     }
 
     // sets the spawned state so that we know that the spawner has completed its task
