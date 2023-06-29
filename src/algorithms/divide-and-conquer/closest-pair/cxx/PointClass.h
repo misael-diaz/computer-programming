@@ -80,68 +80,68 @@ class Point		// 2D Cartesian Point Class
 class Point3D : public Point	// 3D Cartesian Point Class
 {
 
-	private:
+  private:
 
 
-	// component(s):
+    // component(s):
 
 
-	double z;	// z-axis coordinate
+    double z;	// z-axis coordinate
 
 
-	public:
+  public:
 
 
-	// (de)constructors:
+    // (de)constructors:
 
 
-	// default constructor
-	Point3D ();
+    // default constructor
+    Point3D ();
 
 
-	// constructs 3d point from x, y, z coordinates
-	Point3D (double x, double y, double z);
+    // constructs 3d point from x, y, z coordinates
+    Point3D (double x, double y, double z);
 
 
-	// destructor
-	virtual ~Point3D ();
+    // destructor
+    virtual ~Point3D ();
 
 
-	// getters:
+    // getters:
 
 
-	virtual double getZ () const;	// returns the z-axis position
+    virtual double getZ () const;	// returns the z-axis position
 
 
-	// methods:
+    // methods:
 
 
-	// copy method
-	virtual void copy (const Point* point);
+    // copy method
+    virtual void copy (const Point* point);
 
 
-	// returns the squared distance between a pair of 3d points
-	virtual double distance (const Point* point) const;
+    // returns the squared distance between a pair of 3d points
+    virtual double distance (const Point* point) const;
 
 
-	// prints the x, y, z coordinates
-	virtual void print () const;
+    // prints the x, y, z coordinates
+    virtual void print () const;
 
 
-	// returns true if the points are equal, returns false otherwise
-	virtual bool equalTo (const Point* point) const;
+    // returns true if the points are equal, returns false otherwise
+    virtual bool equalTo (const Point* point) const;
 
 
-	// compares points primarily by the x-axis values (default)
-	virtual int compareTo (const Point* point) const;
+    // compares points primarily by the x-axis values (default)
+    virtual int compareTo (const Point* point) const;
 
 
-	// compares points primarily by the y-axis values
-	virtual int yPosCompareTo (const Point* p) const;
+    // compares points primarily by the y-axis values
+    virtual int yPosCompareTo (const Point* p) const;
 
 
-	// compares points primarily by the z-axis values
-	virtual int zPosCompareTo (const Point* point) const;
+    // compares points primarily by the z-axis values
+    virtual int zPosCompareTo (const Point* point) const;
 };
 
 
