@@ -83,7 +83,7 @@ public class Spawner
     BasicEnemy basic;
     SmartEnemy smart;
 
-    if ( hud.getLevel() < 10 )	// spawns a group of basic enemies and a smart enemy
+    if (hud.getLevel() < 10)	// spawns a group of basic enemies and a smart enemy
     {
       for (int i = 0; i != hud.getLevel(); ++i)
       {
@@ -104,7 +104,7 @@ public class Spawner
       handler.addObject(smart);
     }
 
-    if (hud.getLevel() ==  10)	// spawns a boss at level 10
+    if (hud.getLevel() == 10)	// spawns a boss at level 10
     {
       // spawns boss around the middle of the game and hides part of its body so that
       // the player cannot go behind it
@@ -151,7 +151,7 @@ public class Spawner
     }
 
     // spawns a boss at level 20
-    if (hud.getLevel() ==  20)
+    if (hud.getLevel() == 20)
     {
       x = rand.nextInt(Game.WIDTH / 2);
       y = -16;
