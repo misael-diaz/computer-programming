@@ -9,71 +9,71 @@
 class Point		// 2D Cartesian Point Class
 {
 
-	protected:
+  protected:
 
 
-	/* components */
+    /* components */
 
 
-	double x;	// x-axis coordinate
-	double y;	// y-axis coordinate
+    double x;	// x-axis coordinate
+    double y;	// y-axis coordinate
 
 
-	public:
+  public:
 
 
-	/* (de)constructors */
+    /* (de)constructors */
 
 
-	// default constructor
-	Point ();
+    // default constructor
+    Point ();
 
 
-	// constructs a point object from x, y coordinates
-	Point (double x, double y);
+    // constructs a point object from x, y coordinates
+    Point (double x, double y);
 
 
-	// we need a virtual destructor to destroy derived instances
-	virtual ~Point ();
+    // we need a virtual destructor to destroy derived instances
+    virtual ~Point ();
 
 
-	/* getters */
+    /* getters */
 
 
-	double getX () const;		// returns the x-axis position
-	double getY () const;		// returns the y-axis position
-	virtual double getZ () const;	// returns a zero z-axis position
+    double getX () const;		// returns the x-axis position
+    double getY () const;		// returns the y-axis position
+    virtual double getZ () const;	// returns a zero z-axis position
 
 
-	/* methods */
+    /* methods */
 
 
-	// copy method
-	virtual void copy (const Point* point);
+    // copy method
+    virtual void copy (const Point* point);
 
 
-	// returns the squared distance between a pair of points
-	virtual double distance (const Point* point) const;
+    // returns the squared distance between a pair of points
+    virtual double distance (const Point* point) const;
 
 
-	// prints the x, y coordinates
-	virtual void print () const;
+    // prints the x, y coordinates
+    virtual void print () const;
 
 
-	// returns true if the points are equal, returns false otherwise
-	virtual bool equalTo (const Point* point) const;
+    // returns true if the points are equal, returns false otherwise
+    virtual bool equalTo (const Point* point) const;
 
 
-	// returns true if this point is less than the other point
-	virtual int compareTo (const Point* point) const;
+    // returns true if this point is less than the other point
+    virtual int compareTo (const Point* point) const;
 
 
-	// compares points primarily by their y-axis values
-	virtual int yPosCompareTo (const Point* p) const;
+    // compares points primarily by their y-axis values
+    virtual int yPosCompareTo (const Point* p) const;
 
 
-	// compares points primarily by their z-axis values
-	virtual int zPosCompareTo (const Point* p) const;
+    // compares points primarily by their z-axis values
+    virtual int zPosCompareTo (const Point* p) const;
 };
 
 
