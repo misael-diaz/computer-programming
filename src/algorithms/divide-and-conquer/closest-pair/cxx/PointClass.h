@@ -12,7 +12,7 @@ class Point		// 2D Cartesian Point Class
   protected:
 
 
-    /* components */
+    // components:
 
 
     double x;	// x-axis coordinate
@@ -22,7 +22,7 @@ class Point		// 2D Cartesian Point Class
   public:
 
 
-    /* (de)constructors */
+    // (de)constructors:
 
 
     // default constructor
@@ -37,7 +37,7 @@ class Point		// 2D Cartesian Point Class
     virtual ~Point ();
 
 
-    /* getters */
+    // getters:
 
 
     double getX () const;		// returns the x-axis position
@@ -45,7 +45,7 @@ class Point		// 2D Cartesian Point Class
     virtual double getZ () const;	// returns a zero z-axis position
 
 
-    /* methods */
+    // methods:
 
 
     // copy method
@@ -83,7 +83,7 @@ class Point3D : public Point	// 3D Cartesian Point Class
 	private:
 
 
-	/* component(s) */
+	// component(s):
 
 
 	double z;	// z-axis coordinate
@@ -92,7 +92,7 @@ class Point3D : public Point	// 3D Cartesian Point Class
 	public:
 
 
-	/* (de)constructors */
+	// (de)constructors:
 
 
 	// default constructor
@@ -107,13 +107,13 @@ class Point3D : public Point	// 3D Cartesian Point Class
 	virtual ~Point3D ();
 
 
-	/* getters */
+	// getters:
 
 
 	virtual double getZ () const;	// returns the z-axis position
 
 
-	/* methods */
+	// methods:
 
 
 	// copy method
