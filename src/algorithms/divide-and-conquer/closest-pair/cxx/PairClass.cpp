@@ -24,8 +24,8 @@ References:
 // (de)constructors:
 
 
-Pair::Pair ()
 // default constructor, constructs an infinitely separated pair of points
+Pair::Pair ()
 {
   // gets the binary floating-point representation of positive infinity
   double inf = std::numeric_limits<double>::infinity();
@@ -39,8 +39,8 @@ Pair::Pair ()
 }
 
 
-Pair::Pair (Point* p, Point* q, double d) : distance(d)
 // constructs from a pair of (read-only) points and their distance
+Pair::Pair (Point* p, Point* q, double d) : distance(d)
 {
   if ( p -> compareTo(q) < 0 )
   {
@@ -67,8 +67,8 @@ Pair::~Pair () {}
 // getters:
 
 
-double Pair::getDistance () const
 // returns the separating distance of the points that comprise the pair
+double Pair::getDistance () const
 {
   return (this -> distance);
 }
@@ -77,8 +77,8 @@ double Pair::getDistance () const
 // methods:
 
 
-void Pair::copy (const Pair *pair)
 // implements a copy method for copying the components of pair objects
+void Pair::copy (const Pair *pair)
 {
   this -> first = pair -> first;
   this -> second = pair -> second;
@@ -86,8 +86,8 @@ void Pair::copy (const Pair *pair)
 }
 
 
-void Pair::print () const
 // prints info about the pair object
+void Pair::print () const
 {
   // prints the coordinates of the first point on the console
   std::cout << "first:" << std::endl;
@@ -185,8 +185,8 @@ bool Pair::equalTo (const Pair* pair) const
 // static methods contained in the pair namespace
 
 
-Pair* pair::min(Pair* first, Pair* second)
 // returns (reference to) the smallest of the two Pair objects
+Pair* pair::min(Pair* first, Pair* second)
 {
   if ( first -> compareTo(second) )
   {
