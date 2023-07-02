@@ -12,73 +12,73 @@
 class Pair	// closest pair class
 {
 
-	private:
+  private:
 
 
-	/* components */
+    /* components */
 
 
-	// it needs a handler to manage the memory of dynamically allocated points
-	Handler<Point*> handler;
+    // it needs a handler to manage the memory of dynamically allocated points
+    Handler<Point*> handler;
 
-	Point* first;		// first point that comprises the pair
-	Point* second;		// second point that comprises the pair
-	double distance;	// separating distance of the points
-
-
-	public:
+    Point* first;		// first point that comprises the pair
+    Point* second;		// second point that comprises the pair
+    double distance;		// separating distance of the points
 
 
-	/* (de)constructors */
+  public:
 
 
-	// default constructor
-	Pair ();
+    /* (de)constructors */
 
 
-	// constructs from a pair of points and their distance
-	Pair (Point* p, Point* q, double d);
+    // default constructor
+    Pair ();
 
 
-	// destructor
-	~Pair ();
+    // constructs from a pair of points and their distance
+    Pair (Point* p, Point* q, double d);
 
 
-	/* getters */
+    // destructor
+    ~Pair ();
 
 
-	// returns the separating distance of the points that comprise the pair
-	double getDistance () const;
+    /* getters */
 
 
-	/* methods */
+    // returns the separating distance of the points that comprise the pair
+    double getDistance () const;
 
 
-	// copies components from another pair
-	void copy (const Pair* pair);
+    /* methods */
 
 
-	// prints info about the closest pair
-	void print () const;
+    // copies components from another pair
+    void copy (const Pair* pair);
 
 
-	// returns true if the pairs have equidistant points
-	bool equidistant (const Pair* pair) const;
+    // prints info about the closest pair
+    void print () const;
 
 
-	// returns true if `this' pair is less than the other `pair'
-	int compareTo (const Pair* pair) const;
+    // returns true if the pairs have equidistant points
+    bool equidistant (const Pair* pair) const;
 
 
-	// returns true if `this' pair is equal to the other `pair'
-	bool equalTo (const Pair* pair) const;
+    // returns true if `this' pair is less than the other `pair'
+    int compareTo (const Pair* pair) const;
+
+
+    // returns true if `this' pair is equal to the other `pair'
+    bool equalTo (const Pair* pair) const;
 };
 
 
 namespace pair
 {
-	// returns reference to the smallest of the two pairs
-	Pair* min(Pair* first, Pair* second);
+  // returns reference to the smallest of the two pairs
+  Pair* min(Pair* first, Pair* second);
 }
 
 #endif
