@@ -31,7 +31,7 @@ import java.awt.AlphaComposite;
 public class Trail extends GameObject
 {
 
-  /* Trail Attributes */
+  // Trail Attributes:
 
 
   private Color color;			// trail color
@@ -43,7 +43,7 @@ public class Trail extends GameObject
   private Handler handler;		// fading handler
 
 
-  /* Constructors */
+  // Constructors:
 
 
   public Trail (int x, int y, ID id, Color color, boolean shape,
@@ -60,7 +60,7 @@ public class Trail extends GameObject
   }
 
 
-  /* Methods */
+  // Methods:
 
 
   // we need to define this method because objects derived from the Game Object class
