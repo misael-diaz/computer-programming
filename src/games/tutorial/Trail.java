@@ -79,7 +79,9 @@ public class Trail extends GameObject
       alpha = Game.clamp(alpha, 0, 1);
     }
     else
+    {
       this.garbage = true;
+    }
 
   }
 
@@ -94,9 +96,13 @@ public class Trail extends GameObject
 
     // renders trail according to its shape
     if (shape)
+    {
       g.fillOval(x, y, width, height);	// circle
+    }
     else
+    {
       g.fillRect(x, y, width, height);	// square
+    }
 
     // restores the alpha composite for other `solid' objects
     g2d.setComposite( fade(1) );
