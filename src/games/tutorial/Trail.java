@@ -118,16 +118,17 @@ public class Trail extends GameObject
 }
 
 /*
- * COMMENTS:
- * The `super' keyword is used here to invoke the constructor of the
- * parent class, which in this case refers to the GameObject class.
- *
- * Comments on fading or making transparent objets. After rendering
- * the trail (via the g.fillRect(x, y, width, height) call) we need to
- * restore the alpha composite value to `one' to render other non-trail
- * (or `solid') objects; otherwise we would be making transparent other
- * objects we do not intend to fade.
- *
- * Abstract methods of a super class must be defined by derived objects.
- *
+
+COMMENTS:
+The `super' keyword is used here to invoke the constructor of the
+parent class, which in this case refers to the GameObject class.
+
+Comments on fading or making transparent objets. After rendering
+the trail (via the g.fillRect(x, y, width, height) call) we need to
+restore the alpha composite value to `one' to render other non-trail
+(or `solid') objects; otherwise we would be making transparent other
+objects we do not intend to fade.
+
+Abstract methods of a super class must be defined by derived objects.
+
  */
