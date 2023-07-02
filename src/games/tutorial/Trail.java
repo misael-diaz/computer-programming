@@ -34,13 +34,13 @@ public class Trail extends GameObject
   /* Trail Attributes */
 
 
-  private Color color;		// trail color
-  private float alpha = 1;	// defines alpha composite
-  private float span;		// trail lifespan
+  private Color color;			// trail color
+  private float alpha = 1;		// defines alpha composite
+  private float span;			// trail lifespan
   private float min_span = 0.05f;	// minimum trail lifespan
   private float max_span = 1.00f;	// maximum trail lifespan
   private boolean shape;		// circle, otherwise rectangle
-  private Handler handler;	// fading handler
+  private Handler handler;		// fading handler
 
 
   /* Constructors */
