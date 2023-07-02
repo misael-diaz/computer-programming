@@ -27,8 +27,8 @@ import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.AlphaComposite;
 
-public class Trail extends GameObject
 // defines a basic trail
+public class Trail extends GameObject
 {
 
   /* Trail Attributes */
@@ -63,16 +63,15 @@ public class Trail extends GameObject
   /* Methods */
 
 
+  // we need to define this method because objects derived from the Game Object class
+  // must define it.
   public void shoot ()
-    // we need to define this method because objects derived from the
-    // Game Object class must define it.
   {
     return;
   }
 
 
-  public void tick ()
-    // initial tick method, fades trail until it disappears
+  public void tick ()	// initial tick method, fades trail until it disappears
   {
     if ( alpha > (1.0f - span) )
     {
@@ -84,8 +83,7 @@ public class Trail extends GameObject
 
   }
 
-  public void render (Graphics g)
-    // initial render method
+  public void render (Graphics g)	// initial render method
   {
     Graphics2D g2d = (Graphics2D) g;
 
@@ -104,16 +102,15 @@ public class Trail extends GameObject
     g2d.setComposite( fade(1) );
   }
 
+  // We need to define this since the class extends GameObject
+  // even if we are never going to use it, for the trail does not
+  // collide with other objects since it is an after image effect.
   public Rectangle getBounds()
-    // We need to define this since the class extends GameObject
-    // even if we are never going to use it, for the trail does not
-    // collide with other objects since it is an after image effect.
   {
     return null;
   }
 
-  private AlphaComposite fade (float alpha)
-    // fading method
+  private AlphaComposite fade (float alpha)	// fading method
   {
     int type = AlphaComposite.SRC_OVER;
     return ( AlphaComposite.getInstance(type, alpha) );
