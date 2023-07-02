@@ -15,7 +15,7 @@ class Pair	// closest pair class
   private:
 
 
-    /* components */
+    // components:
 
 
     // it needs a handler to manage the memory of dynamically allocated points
@@ -29,7 +29,7 @@ class Pair	// closest pair class
   public:
 
 
-    /* (de)constructors */
+    // (de)constructors:
 
 
     // default constructor
@@ -44,14 +44,14 @@ class Pair	// closest pair class
     ~Pair ();
 
 
-    /* getters */
+    // getters:
 
 
     // returns the separating distance of the points that comprise the pair
     double getDistance () const;
 
 
-    /* methods */
+    // methods:
 
 
     // copies components from another pair
