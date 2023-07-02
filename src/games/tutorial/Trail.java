@@ -50,10 +50,10 @@ public class Trail extends GameObject
       float span, int width, int height, Handler handler)
   {
     // creates trail object
-    super (x, y, id, width, height);
+    super(x, y, id, width, height);
 
     // defines its attributes
-    this.span = Game.clamp (span, min_span, max_span);
+    this.span = Game.clamp(span, min_span, max_span);
     this.shape = shape;
     this.color = color;
     this.handler = handler;
@@ -77,7 +77,7 @@ public class Trail extends GameObject
     if ( alpha > (1.0f - span) )
     {
       alpha -= min_span;
-      alpha = Game.clamp (alpha, 0, 1);
+      alpha = Game.clamp(alpha, 0, 1);
     }
     else
       this.garbage = true;
@@ -90,21 +90,21 @@ public class Trail extends GameObject
     Graphics2D g2d = (Graphics2D) g;
 
     // fades the trail by tweeking the alpha composite
-    g2d.setComposite ( fade(alpha) );
+    g2d.setComposite( fade(alpha) );
 
-    g.setColor (color);
+    g.setColor(color);
 
     // renders trail according to its shape
     if (shape)
-      g.fillOval (x, y, width, height);	// circle
+      g.fillOval(x, y, width, height);	// circle
     else
-      g.fillRect (x, y, width, height);	// square
+      g.fillRect(x, y, width, height);	// square
 
     // restores the alpha composite for other `solid' objects
-    g2d.setComposite ( fade(1) );
+    g2d.setComposite( fade(1) );
   }
 
-  public Rectangle getBounds ()
+  public Rectangle getBounds()
     // We need to define this since the class extends GameObject
     // even if we are never going to use it, for the trail does not
     // collide with other objects since it is an after image effect.
