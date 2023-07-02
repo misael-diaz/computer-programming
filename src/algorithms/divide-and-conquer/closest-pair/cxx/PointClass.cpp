@@ -21,10 +21,10 @@ References:
 #include "PointClass.h"
 
 
-/* Point Class */
+// Point Class:
 
 
-/* (de)constructors */
+// (de)constructors:
 
 
 Point::Point () : x(0), y(0) {}				// default constructor
@@ -36,7 +36,7 @@ Point::Point (double x, double y) : x(x), y(y) {}	// constructs via x, y coordin
 Point::~Point() {}					// destructor
 
 
-/* getters */
+// getters:
 
 
 double Point::getX () const				// returns the x-axis position
@@ -58,7 +58,7 @@ double Point::getZ () const
 }
 
 
-/* methods */
+// methods:
 
 
 // copies components from point objects
@@ -180,10 +180,10 @@ int Point::zPosCompareTo (const Point* p) const
 }
 
 
-/* Point3D Class */
+// Point3D Class:
 
 
-/* (de)constructors */
+// (de)constructors:
 
 
 // default constructor
@@ -198,7 +198,7 @@ Point3D::Point3D (double x, double y, double z) : Point(x, y), z(z) {}
 Point3D::~Point3D () {}
 
 
-/* getters */
+// getters:
 
 
 // Overrides Point::getZ() by returning the z-axis coordinate
@@ -208,7 +208,7 @@ double Point3D::getZ () const
 }
 
 
-/* methods */
+// methods:
 
 
 // copies components from point objects
@@ -324,7 +324,7 @@ int Point3D::zPosCompareTo (const Point* point) const
 }
 
 
-/* static methods defined in the point namespace */
+// static methods defined in the point namespace:
 
 
 // defines predicate method compare for x-y sorting of points
