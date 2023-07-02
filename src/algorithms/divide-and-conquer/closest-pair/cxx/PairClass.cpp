@@ -99,7 +99,7 @@ void Pair::print () const
 
   // prints the separating distance of the points on the console
   std::cout << std::scientific << std::setprecision(15)
-    << "distance: " << (this -> distance) << std::endl;
+	    << "distance: " << (this -> distance) << std::endl;
 }
 
 
