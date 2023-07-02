@@ -21,7 +21,7 @@ References:
 #include "PairClass.h"
 
 
-/* (de)constructors */
+// (de)constructors:
 
 
 Pair::Pair ()
@@ -67,7 +67,7 @@ Pair::Pair (Point* p, Point* q, double d) : distance(d)
 Pair::~Pair () {}
 
 
-/* getters */
+// getters:
 
 
 double Pair::getDistance () const
@@ -77,7 +77,7 @@ double Pair::getDistance () const
 }
 
 
-/* methods */
+// methods:
 
 
 void Pair::copy (const Pair *pair)
@@ -185,7 +185,7 @@ constructing a Pair object we need not to consider other cases.
 }
 
 
-/* static methods contained in the pair namespace */
+// static methods contained in the pair namespace
 
 
 Pair* pair::min(Pair* first, Pair* second)
