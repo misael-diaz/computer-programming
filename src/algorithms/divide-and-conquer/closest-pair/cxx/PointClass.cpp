@@ -69,18 +69,18 @@ void Point::copy (const Point* point)
 }
 
 
-/*
+// double Point::distance (const Point* point) const
+//
+// Synopsis:
+// Returns the squared distance between `this' point and the other point `point'.
+//
+// Input:
+// point		the other point object (read-only access)
+//
+// Output:
+// distance	the squared distance
 
-Synopsis:
-Returns the squared distance between `this' point and the other point `point'.
 
-Input:
-point		the other point object (read-only access)
-
-Output:
-distance	the squared distance
-
-*/
 double Point::distance (const Point* point) const
 {
   double x1 = (this -> x), x2 = (point -> x);
@@ -98,41 +98,41 @@ void Point::print () const
 }
 
 
-/*
+// bool Point::equalTo (const Point* point) const
+//
+// Synopsis:
+// Returns true if `this' point is equal to the other point `point', returns false
+// otherwise.
+//
+// Input:
+// point		the other point object (read-only access)
+//
+// Output:
+// equal		true if the points are equal, false otherwise
 
-Synopsis:
-Returns true if `this' point is equal to the other point `point', returns false
-otherwise.
 
-Input:
-point		the other point object (read-only access)
-
-Output:
-equal		true if the points are equal, false otherwise
-
-*/
 bool Point::equalTo (const Point* point) const
 {
   return ( (this -> x == point -> x) && (this -> y == point -> y) );
 }
 
 
-/*
+// int Point::compareTo (const Point* point) const
+//
+// Synopsis:
+// Returns true if `this' point is less than the other point `point', returns false
+// otherwise. Useful for sorting an array of Point objects primarily by their
+// x-axis coordinates and secondarily by their y-axis coordinates.
+//
+// Input:
+// point	the other point object (read-only access)
+//
+// Output:
+// compare	returns 0 if `this' point is equal to the other `point',
+// 		returns 1 if `this' point is greater than the other `point',
+// 		and returns -1 if `this' point is less than the other `point'
 
-Synopsis:
-Returns true if `this' point is less than the other point `point', returns false
-otherwise. Useful for sorting an array of Point objects primarily by their
-x-axis coordinates and secondarily by their y-axis coordinates.
 
-Input:
-point		the other point object (read-only access)
-
-Output:
-compare		returns 0 if `this' point is equal to the other `point',
-		returns 1 if `this' point is greater than the other `point',
-		and returns -1 if `this' point is less than the other `point'
-
-*/
 int Point::compareTo (const Point* point) const
 {
   if ( (this -> x) != (point -> x) )
