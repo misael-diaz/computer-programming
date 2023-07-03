@@ -1,8 +1,8 @@
 #ifndef GUARD_AC_COMPARATOR_FUN
 #define GUARD_AC_COMPARATOR_FUN
 
-template <typename T> int Comparator (T x1, T x2)
 // returns 0 if x1 == x2, returns 1 if x1 > x2, and returns -1 if x1 < x2
+template <typename T> int Comparator (T x1, T x2)
 {
   if (x1 == x2)
   {
