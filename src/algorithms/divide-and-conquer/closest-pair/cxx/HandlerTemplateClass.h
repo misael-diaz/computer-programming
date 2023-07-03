@@ -4,8 +4,8 @@
 #include <cstddef>	// provides NULL
 #include <list>		// provides std::list, a doubly linked-list
 
-template <typename T> class Handler
 // Generic Handler Class for handling dynamically allocated objects
+template <typename T> class Handler
 {
 
   private:
@@ -14,7 +14,7 @@ template <typename T> class Handler
     // component(s):
 
 
-    std::list<T> objects;		// objects placeholder
+    std::list<T> objects;			// objects placeholder
 
 
   public:
@@ -23,52 +23,46 @@ template <typename T> class Handler
     // (de)constructors:
 
 
-    Handler () {}			// default constructor
+    Handler () {}				// default constructor
 
 
-    ~Handler ()			// destructor
+    ~Handler ()					// destructor
     {
       destroy();
     }
 
 
-    const std::list<T>& getObjects () const
-      // returns a reference to the vector of point objects
+    const std::list<T>& getObjects () const	// returns reference to the objects list
     {
       return (this -> objects);
     }
 
 
-    size_t size () const
-      // returns the number of objects contained in the handler
+    size_t size () const			// returns the number of handled objects
     {
       return ( this -> objects.size() );
     }
 
 
-    void add (T object)
-      // adds object to the handler
+    void add (T object)				// adds object to the handler
     {
       this -> objects.push_back(object);
     }
 
 
-    void remove (T object)
-      // removes object from the handler
+    void remove (T object)			// removes object from the handler
     {
       this -> objects.remove(object);
     }
 
 
-    void erase ()
-      // erases all objects from the handler
+    void erase ()				// erases all objects from the handler
     {
       this -> destroy();
     }
 
 
-    bool contains (const T& target) const
-      // returns true if the target is present, returns false otherwise
+    bool contains (const T& target) const	// true (false) if target is (not) present
     {
       const std::list<T>& objects = this -> objects;
       for (T object : objects)
@@ -89,16 +83,14 @@ template <typename T> class Handler
     // implementations:
 
 
-    void destroy ()
-      // releases dynamically allocated objects from memory
+    void destroy ()				// releases allocated objects from memory
     {
       for (T obj : objects)
       {
-	delete obj;	// releases object from memory
-	obj = NULL;	// nullifies pointer to object
+	delete obj;
+	obj = NULL;
       }
 
-      // erases the nodes of the linked-list std::list
       objects.erase( objects.begin(), objects.end() );
     }
 };
