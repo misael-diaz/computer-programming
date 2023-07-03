@@ -11,7 +11,7 @@ template <typename T> class Handler
   private:
 
 
-    /* component(s) */
+    // component(s):
 
 
     std::list<T> objects;		// objects placeholder
@@ -20,7 +20,7 @@ template <typename T> class Handler
   public:
 
 
-    /* (de)constructors */
+    // (de)constructors:
 
 
     Handler () {}			// default constructor
@@ -86,7 +86,7 @@ template <typename T> class Handler
   private:
 
 
-    /* implementations */
+    // implementations:
 
 
     void destroy ()
