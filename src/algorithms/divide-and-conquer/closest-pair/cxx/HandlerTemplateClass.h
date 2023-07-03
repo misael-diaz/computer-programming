@@ -1,25 +1,6 @@
 #ifndef GUARD_AC_HANDLER_CLASS
 #define GUARD_AC_HANDLER_CLASS
 
-/*
-
-Algorithms and Complexity				   January 12, 2023
-IST 4310
-Prof M Diaz-Maldonado
-
-Synopsis:
-Defines the Generic Handler Class.
-
-Copyright (c) 2023 Misael Diaz-Maldonado
-This file is released under the GNU General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-References:
-[0] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
-
-*/
-
 #include <cstddef>	// provides NULL
 #include <list>		// provides std::list, a doubly linked-list
 
@@ -123,3 +104,22 @@ template <typename T> class Handler
 };
 
 #endif
+
+/*
+
+Algorithms and Complexity				   January 12, 2023
+IST 4310
+Prof M Diaz-Maldonado
+
+Synopsis:
+Defines the Generic Handler Class.
+
+Copyright (c) 2023 Misael Diaz-Maldonado
+This file is released under the GNU General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+References:
+[0] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
+
+*/
