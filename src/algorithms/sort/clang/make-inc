@@ -1,0 +1,33 @@
+#
+# Algorithms                                               August 04, 2023
+#
+# source: make-inc
+# author: @misael-diaz
+#
+# Synopsis:
+# Defines the include file for building the program with GNU make.
+#
+# Copyright (c) 2023 Misael Diaz-Maldonado
+# This file is released under the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+
+# clang compiler
+CC = gcc
+
+# options
+CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-missed=missed-opts.log
+CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-optimized=opts.log
+CCOPT = -g -Wall -Wextra -O0
+
+# sources
+TEST_SRC = test.c
+
+# objects
+TEST_OBJ = test.o
+OBJECTS = $(TEST_OBJ)
+
+# executables
+TEST_BIN = test.bin
+TESTS = $(TEST_BIN)
