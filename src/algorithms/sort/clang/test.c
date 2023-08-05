@@ -154,6 +154,17 @@ int64_t isearch (const uint64_t* x, int64_t b, int64_t e, uint64_t const target)
 }
 
 
+// shifts `numel' elements to the right from `inloc' position
+void shift (uint64_t* x, int64_t const numel, int64_t const inloc)
+{
+  for (int64_t j = 0; j != numel; ++j)
+  {
+    int64_t const k = inloc + ( numel - (j + 1) );
+    x[k + 1] = x[k];
+  }
+}
+
+
 // implements insertion sort (optimizations: gcc can vectorize the innermost for-loop)
 void isort (uint64_t* x, size_t const size)
 {
@@ -164,12 +175,8 @@ void isort (uint64_t* x, size_t const size)
     uint64_t const inelem = x[i];			// gets the insertion element
     int64_t const l = isearch(x, 0, idx, inelem);	// gets the target location
     int64_t const inloc = (l < 0)? -(l + 1) : (l + 1);	// sets the insertion location
-    size_t const numel = (i - inloc);			// gets the #elements to shift
-    for (size_t j = 0; j != numel; ++j)			// shifts to make inloc available
-    {
-      size_t const k = inloc + ( numel - (j + 1) );
-      x[k + 1] = x[k];
-    }
+    int64_t const numel = (idx - inloc);		// gets the #elements to shift
+    shift(x, numel, inloc);				// shifts to make inloc available
     x[inloc] = inelem;					// inserts at designated location
   }
 }
