@@ -17,9 +17,12 @@
 CC = gcc
 
 # options
-CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-missed=missed-opts.log
 CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-optimized=opts.log
+CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-missed=missed-opts.log
 CCOPT = -g -Wall -Wextra -O0
+
+# libraries
+LIBS = -lm
 
 # sources
 TEST_SRC = test.c
