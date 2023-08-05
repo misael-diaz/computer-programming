@@ -5,19 +5,24 @@
 #include <math.h>	// uses the rand() Pseudo Random Number Generator PRNG
 #include <time.h>	// uses time() to seed the PRNG
 
+#define RUNS 13
+#define REPS 1024
+#define iSIZE 16
 #define SIZE 0x0000000000010000
-#define EXEC_SANE_CHECKS true
+#define EXEC_SANE_CHECKS false
 #define WARNINGS false
 
 void test_search();
 void test_isearch();
 void test_isort();
+void complexity();
 
 int main ()
 {
   test_search();
   test_isearch();
   test_isort();
+  complexity();
   return 0;
 }
 
@@ -236,6 +241,91 @@ uint64_t* destroy (uint64_t* x)
   free(x);
   x = NULL;
   return x;
+}
+
+
+// gets the elapsed-time from the time difference in nanoseconds
+double getElapsedTime (const struct timespec* b, const struct timespec* e)
+{
+  double begin = ( (double) (b -> tv_nsec) ) + 1.0e9 * ( (double) (b -> tv_sec) );
+  double end   = ( (double) (e -> tv_nsec) ) + 1.0e9 * ( (double) (e -> tv_sec) );
+  return (end - begin);
+}
+
+
+// exports the average runtime of isort() as a function of the input size
+void complexity ()
+{
+  struct timespec* begin = malloc( sizeof(struct timespec) );
+  if (begin == NULL)
+  {
+    printf("complexity(): failed to allocate memory for the timespec struct\n");
+    return;
+  }
+
+  struct timespec* end = malloc( sizeof(struct timespec) );
+  if (end == NULL)
+  {
+    free(begin);
+    begin = NULL;
+    printf("complexity(): failed to allocate memory for the timespec struct\n");
+    return;
+  }
+
+  srand( time(NULL) );
+  size_t size = iSIZE;
+  double etimes[REPS];
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    uint64_t* x = create(size);
+    if (x == NULL)
+    {
+      free(begin);
+      free(end);
+      begin = NULL;
+      end = NULL;
+      printf("complexity(): failed to allocate memory for the array `x'\n");
+      return;
+    }
+
+    double etime = 0;
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      prns(x, size);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, begin);
+      isort(x, size);
+      clock_gettime(CLOCK_MONOTONIC_RAW, end);
+
+      etime += getElapsedTime(begin, end);
+    }
+
+    etimes[run] = etime / ( (double) REPS );
+
+    size *= 2;
+    x = destroy(x);
+  }
+
+  const char fname[] = "complexity.txt";
+  FILE* file = fopen(fname, "w");
+  if (file == NULL)
+  {
+    free(begin);
+    free(end);
+    begin = NULL;
+    end = NULL;
+    printf("complexity(): IO ERROR with file %s\n", fname);
+    return;
+  }
+
+  size = iSIZE;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    fprintf(file, "%16lu %.16e\n", size, etimes[run]);
+    size *= 2;
+  }
+
+  fclose(file);
 }
 
 
