@@ -5,8 +5,6 @@
 #include <math.h>	// uses the rand() Pseudo Random Number Generator PRNG
 #include <time.h>	// uses time() to seed the PRNG
 
-#define NUMEL 256
-#define SIZE ( NUMEL * sizeof(uint64_t) )
 #define EXEC_SANE_CHECKS true
 #define WARNINGS false
 
@@ -156,13 +154,14 @@ int64_t isearch (const uint64_t* x, int64_t b, int64_t e, uint64_t const target)
 
 
 // implements insertion sort (optimizations: gcc can vectorize the innermost for-loop)
-void isort (uint64_t* x)
+void isort (uint64_t* x, size_t const size)
 {
   // loop-invariant: elements in the asymmetric range [0, i) are sorted
-  for (size_t i = 1; i != NUMEL; ++i)
+  for (size_t i = 1; i != size; ++i)
   {
+    int64_t const idx = i;				// casts index explicitly
     uint64_t const inelem = x[i];			// gets the insertion element
-    int64_t const l = isearch(x, 0, i, inelem);		// gets the target location
+    int64_t const l = isearch(x, 0, idx, inelem);	// gets the target location
     int64_t const inloc = (l < 0)? -(l + 1) : (l + 1);	// sets the insertion location
     size_t const numel = (i - inloc);			// gets the #elements to shift
     for (size_t j = 0; j != numel; ++j)			// shifts to make inloc available
@@ -175,9 +174,9 @@ void isort (uint64_t* x)
 }
 
 
-void iota (uint64_t* x, uint64_t const start, uint64_t const stride)
+void iota (uint64_t* x, size_t const size, uint64_t const start, uint64_t const stride)
 {
-  for (size_t i = 0; i != NUMEL; ++i)
+  for (size_t i = 0; i != size; ++i)
   {
     x[i] = start + stride * i;
   }
@@ -185,9 +184,9 @@ void iota (uint64_t* x, uint64_t const start, uint64_t const stride)
 
 
 // fills the array with pseudo-random numbers
-void prns (uint64_t* x)
+void prns (uint64_t* x, size_t const size)
 {
-  for (size_t i = 0; i != NUMEL; ++i)
+  for (size_t i = 0; i != size; ++i)
   {
     x[i] = rand();
   }
@@ -195,15 +194,16 @@ void prns (uint64_t* x)
 
 
 // initializes the array `x'
-uint64_t* create ()
+uint64_t* create (size_t const size)
 {
-  if (NUMEL == 0x7fffffffffffffff)
+  if (size >= 0x7fffffffffffffff)
   {
-    printf("create(): reserved value\n");
+    printf("create(): reserved values\n");
     return NULL;
   }
 
-  uint64_t* x = malloc(SIZE);
+  size_t const bytes = size * sizeof(uint64_t);
+  uint64_t* x = malloc(bytes);
   if (x == NULL)
   {
     return NULL;
@@ -211,7 +211,7 @@ uint64_t* create ()
 
   uint64_t const start = 2;
   uint64_t const stride = 2;
-  iota(x, start, stride);
+  iota(x, size, start, stride);
 
   return x;
 }
@@ -233,17 +233,19 @@ uint64_t* destroy (uint64_t* x)
 
 void test_search ()
 {
-  uint64_t* x = create();
+  size_t const size = 256;
+  uint64_t* x = create(size);
   if (x == NULL)
   {
     return;
   }
 
   size_t fails = 0;
-  for (int64_t i = 0; i != NUMEL; ++i)
+  int64_t const numel = size;
+  for (int64_t i = 0; i != numel; ++i)
   {
     uint64_t const tgt = x[i];
-    int64_t const pos = search(x, 0, NUMEL, tgt);
+    int64_t const pos = search(x, 0, numel, tgt);
     if (pos != i)
     {
       ++fails;
@@ -260,10 +262,10 @@ void test_search ()
     printf("PASS\n");
   }
 
-  for (int64_t i = 0; i != NUMEL; ++i)
+  for (int64_t i = 0; i != numel; ++i)
   {
     uint64_t const tgt = (2 * i + 1);
-    int64_t const pos = search(x, 0, NUMEL, tgt);
+    int64_t const pos = search(x, 0, numel, tgt);
     if ( -(pos + 1) != i )
     {
       ++fails;
@@ -282,13 +284,13 @@ void test_search ()
 
   if (EXEC_SANE_CHECKS)
   {
-    iota(x, -1, -2);
+    iota(x, size, -1, -2);
 
     size_t fails = 0;
-    for (int64_t i = 0; i != NUMEL; ++i)
+    for (int64_t i = 0; i != numel; ++i)
     {
       uint64_t const tgt = i;
-      int64_t const pos = isearch(x, 0, NUMEL, tgt);
+      int64_t const pos = isearch(x, 0, numel, tgt);
       if (pos != ( (int64_t) 0x8000000000000000 ) )
       {
 	++fails;
@@ -312,17 +314,19 @@ void test_search ()
 
 void test_isearch ()
 {
-  uint64_t* x = create();
+  size_t const size = 256;
+  uint64_t* x = create(size);
   if (x == NULL)
   {
     return;
   }
 
   size_t fails = 0;
-  for (int64_t i = 0; i != NUMEL; ++i)
+  int64_t const numel = size;
+  for (int64_t i = 0; i != numel; ++i)
   {
     uint64_t const tgt = x[i];
-    int64_t const pos = isearch(x, 0, NUMEL, tgt);
+    int64_t const pos = isearch(x, 0, numel, tgt);
     if (pos != i)
     {
       ++fails;
@@ -339,10 +343,10 @@ void test_isearch ()
     printf("PASS\n");
   }
 
-  for (int64_t i = 0; i != NUMEL; ++i)
+  for (int64_t i = 0; i != numel; ++i)
   {
     uint64_t const tgt = (2 * i + 1);
-    int64_t const pos = isearch(x, 0, NUMEL, tgt);
+    int64_t const pos = isearch(x, 0, numel, tgt);
     if ( -(pos + 1) != i )
     {
       ++fails;
@@ -361,13 +365,14 @@ void test_isearch ()
 
   if (EXEC_SANE_CHECKS)
   {
-    iota(x, -1, -2);
+    iota(x, size, -1, -2);
 
     size_t fails = 0;
-    for (int64_t i = 0; i != NUMEL; ++i)
+    int64_t const numel = size;
+    for (int64_t i = 0; i != numel; ++i)
     {
       uint64_t const tgt = i;
-      int64_t const pos = isearch(x, 0, NUMEL, tgt);
+      int64_t const pos = isearch(x, 0, numel, tgt);
       if (pos != ( (int64_t) 0x8000000000000000 ) )
       {
 	++fails;
@@ -391,16 +396,17 @@ void test_isearch ()
 
 void test_isort ()
 {
-  uint64_t* x = create();
+  size_t const size = 256;
+  uint64_t* x = create(size);
   if (x == NULL)
   {
     return;
   }
 
-  isort(x);
+  isort(x, size);
 
   printf("test-isort[0]: ");
-  if ( !sorted(x, 0, NUMEL) )
+  if ( !sorted(x, 0, size) )
   {
     printf("FAIL\n");
   }
@@ -410,11 +416,11 @@ void test_isort ()
   }
 
   srand( time(NULL) );
-  prns(x);
-  isort(x);
+  prns(x, size);
+  isort(x, size);
 
   printf("test-isort[1]: ");
-  if ( !sorted(x, 0, NUMEL) )
+  if ( !sorted(x, 0, size) )
   {
     printf("FAIL\n");
   }
