@@ -1,7 +1,9 @@
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
+#include <stdbool.h>	// uses bool(ean) type
+#include <stdlib.h>	// uses dynamic memory (de)allocation via malloc() and free()
+#include <stdint.h>	// uses unsigned integers of 64-bits
+#include <stdio.h>	// does logging to the console
+#include <math.h>	// uses the rand() Pseudo Random Number Generator PRNG
+#include <time.h>	// uses time() to seed the PRNG
 
 #define NUMEL 256
 #define SIZE ( NUMEL * sizeof(uint64_t) )
@@ -10,20 +12,28 @@
 
 void test_search();
 void test_isearch();
+void test_isort();
 
 int main ()
 {
   test_search();
   test_isearch();
+  test_isort();
   return 0;
 }
 
 
 // returns true if the array is sorted (in ascending order), false otherwise
-bool sorted (const uint64_t* x)
+bool sorted (const uint64_t* x, int64_t const b, int64_t const e)
 {
   bool sorted = true;
-  for (size_t i = 0; i != (NUMEL - 1); ++i)
+  int64_t const numel = (e - b);
+  if ( (numel == 0) || (numel == 1) )
+  {
+    return sorted;
+  }
+
+  for (int64_t i = b; i != (e - 1); ++i)
   {
     if (x[i] > x[i + 1])
     {
@@ -56,7 +66,7 @@ int64_t search (const uint64_t* x, int64_t b, int64_t e, uint64_t const target)
 {
   if (EXEC_SANE_CHECKS)
   {
-    if ( !sorted(x) )
+    if ( !sorted(x, b, e) )
     {
       if (WARNINGS)
       {
@@ -112,7 +122,7 @@ int64_t isearch (const uint64_t* x, int64_t b, int64_t e, uint64_t const target)
 {
   if (EXEC_SANE_CHECKS)
   {
-    if ( !sorted(x) )
+    if ( !sorted(x, b, e) )
     {
       if (WARNINGS)
       {
@@ -145,6 +155,26 @@ int64_t isearch (const uint64_t* x, int64_t b, int64_t e, uint64_t const target)
 }
 
 
+// implements insertion sort (optimizations: gcc can vectorize the innermost for-loop)
+void isort (uint64_t* x)
+{
+  // loop-invariant: elements in the asymmetric range [0, i) are sorted
+  for (size_t i = 1; i != NUMEL; ++i)
+  {
+    uint64_t const inelem = x[i];			// gets the insertion element
+    int64_t const l = isearch(x, 0, i, inelem);		// gets the target location
+    int64_t const inloc = (l < 0)? -(l + 1) : (l + 1);	// sets the insertion location
+    size_t const numel = (i - inloc);			// gets the #elements to shift
+    for (size_t j = 0; j != numel; ++j)			// shifts to make inloc available
+    {
+      size_t const k = inloc + ( numel - (j + 1) );
+      x[k + 1] = x[k];
+    }
+    x[inloc] = inelem;					// inserts at designated location
+  }
+}
+
+
 void iota (uint64_t* x, uint64_t const start, uint64_t const stride)
 {
   for (size_t i = 0; i != NUMEL; ++i)
@@ -154,6 +184,17 @@ void iota (uint64_t* x, uint64_t const start, uint64_t const stride)
 }
 
 
+// fills the array with pseudo-random numbers
+void prns (uint64_t* x)
+{
+  for (size_t i = 0; i != NUMEL; ++i)
+  {
+    x[i] = rand();
+  }
+}
+
+
+// initializes the array `x'
 uint64_t* create ()
 {
   if (NUMEL == 0x7fffffffffffffff)
@@ -176,6 +217,7 @@ uint64_t* create ()
 }
 
 
+// destroys the array `x' (frees it from memory)
 uint64_t* destroy (uint64_t* x)
 {
   if (x == NULL)
@@ -341,6 +383,44 @@ void test_isearch ()
     {
       printf("PASS\n");
     }
+  }
+
+  x = destroy(x);
+}
+
+
+void test_isort ()
+{
+  uint64_t* x = create();
+  if (x == NULL)
+  {
+    return;
+  }
+
+  isort(x);
+
+  printf("test-isort[0]: ");
+  if ( !sorted(x, 0, NUMEL) )
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  srand( time(NULL) );
+  prns(x);
+  isort(x);
+
+  printf("test-isort[1]: ");
+  if ( !sorted(x, 0, NUMEL) )
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
   }
 
   x = destroy(x);

@@ -18,7 +18,7 @@ include make-inc
 all: $(TESTS)
 
 $(TEST_BIN): $(OBJECTS)
-	$(CC) $(CCOPT) $(OBJECTS) -o $(TEST_BIN)
+	$(CC) $(CCOPT) $(OBJECTS) -o $(TEST_BIN) $(LIBS)
 
 $(TEST_OBJ): $(TEST_SRC)
 	$(CC) $(CCOPT) -c $(TEST_SRC) -o $(TEST_OBJ)
