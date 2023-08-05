@@ -5,6 +5,7 @@
 #include <math.h>	// uses the rand() Pseudo Random Number Generator PRNG
 #include <time.h>	// uses time() to seed the PRNG
 
+#define SIZE 0x0000000000010000
 #define EXEC_SANE_CHECKS true
 #define WARNINGS false
 
@@ -396,17 +397,25 @@ void test_isearch ()
 
 void test_isort ()
 {
-  size_t const size = 256;
-  uint64_t* x = create(size);
-  if (x == NULL)
+  bool failed = false;
+  for (size_t size = 16; size != SIZE; size *= 2)
   {
-    return;
+    uint64_t* x = create(size);
+    if (x == NULL)
+    {
+      return;
+    }
+    isort(x, size);
+    if ( !sorted(x, 0, size) )
+    {
+      failed = true;
+      break;
+    }
+    x = destroy(x);
   }
-
-  isort(x, size);
 
   printf("test-isort[0]: ");
-  if ( !sorted(x, 0, size) )
+  if (failed)
   {
     printf("FAIL\n");
   }
@@ -415,12 +424,27 @@ void test_isort ()
     printf("PASS\n");
   }
 
-  srand( time(NULL) );
-  prns(x, size);
-  isort(x, size);
+  failed = false;
+  for (size_t size = 16; size != SIZE; size *= 2)
+  {
+    uint64_t* x = create(size);
+    if (x == NULL)
+    {
+      return;
+    }
+    srand( time(NULL) );
+    prns(x, size);
+    isort(x, size);
+    if ( !sorted(x, 0, size) )
+    {
+      failed = true;
+      break;
+    }
+    x = destroy(x);
+  }
 
   printf("test-isort[1]: ");
-  if ( !sorted(x, 0, size) )
+  if (failed)
   {
     printf("FAIL\n");
   }
@@ -428,8 +452,6 @@ void test_isort ()
   {
     printf("PASS\n");
   }
-
-  x = destroy(x);
 }
 
 
