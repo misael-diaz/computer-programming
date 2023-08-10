@@ -15,14 +15,14 @@
 void test_search();
 void test_isearch();
 void test_isort();
-void complexity();
+void complexity_isort();
 
 int main ()
 {
   test_search();
   test_isearch();
   test_isort();
-  complexity();
+  complexity_isort();
   return 0;
 }
 
@@ -254,7 +254,7 @@ double getElapsedTime (const struct timespec* b, const struct timespec* e)
 
 
 // exports the average runtime of isort() as a function of the input size
-void complexity ()
+void complexity_isort ()
 {
   struct timespec* begin = malloc( sizeof(struct timespec) );
   if (begin == NULL)
@@ -272,6 +272,7 @@ void complexity ()
     return;
   }
 
+  bool failed = false;
   srand( time(NULL) );
   size_t size = iSIZE;
   double etimes[REPS];
@@ -297,13 +298,45 @@ void complexity ()
       isort(x, size);
       clock_gettime(CLOCK_MONOTONIC_RAW, end);
 
+      if ( !sorted(x, 0, size) )
+      {
+	failed = true;
+	printf("complexity(): isort() implementation failed\n");
+	break;
+      }
+
       etime += getElapsedTime(begin, end);
+    }
+
+    if (failed)
+    {
+      x = destroy(x);
+      break;
     }
 
     etimes[run] = etime / ( (double) REPS );
 
     size *= 2;
     x = destroy(x);
+  }
+
+  printf("test-isort[2]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  if (failed)
+  {
+    free(begin);
+    free(end);
+    begin = NULL;
+    end = NULL;
+    return;
   }
 
   const char fname[] = "complexity.txt";
@@ -506,6 +539,7 @@ void test_isort ()
     if ( !sorted(x, 0, size) )
     {
       failed = true;
+      x = destroy(x);
       break;
     }
     x = destroy(x);
@@ -535,6 +569,7 @@ void test_isort ()
     if ( !sorted(x, 0, size) )
     {
       failed = true;
+      x = destroy(x);
       break;
     }
     x = destroy(x);
