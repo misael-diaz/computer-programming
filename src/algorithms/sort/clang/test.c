@@ -15,14 +15,14 @@
 void test_search();
 void test_isearch();
 void test_isort();
-void complexity();
+void complexity_isort();
 
 int main ()
 {
   test_search();
   test_isearch();
   test_isort();
-  complexity();
+  complexity_isort();
   return 0;
 }
 
@@ -254,7 +254,7 @@ double getElapsedTime (const struct timespec* b, const struct timespec* e)
 
 
 // exports the average runtime of isort() as a function of the input size
-void complexity ()
+void complexity_isort ()
 {
   struct timespec* begin = malloc( sizeof(struct timespec) );
   if (begin == NULL)
