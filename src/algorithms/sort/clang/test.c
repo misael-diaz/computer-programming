@@ -506,6 +506,7 @@ void test_isort ()
     if ( !sorted(x, 0, size) )
     {
       failed = true;
+      x = destroy(x);
       break;
     }
     x = destroy(x);
@@ -535,6 +536,7 @@ void test_isort ()
     if ( !sorted(x, 0, size) )
     {
       failed = true;
+      x = destroy(x);
       break;
     }
     x = destroy(x);
