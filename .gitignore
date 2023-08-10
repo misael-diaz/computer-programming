@@ -4,6 +4,7 @@
 *.swp
 *.txt
 *.err
+*.log
 *.o
 *graphs
 *benchmark
