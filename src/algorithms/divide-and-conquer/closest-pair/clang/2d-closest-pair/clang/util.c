@@ -569,7 +569,3 @@ References:
 [1] JJ McConnell, Analysis of Algorithms, second edition.
 
 */
-
-
-// TODO:
-// [x] check if sort() works for arrays of size 2
