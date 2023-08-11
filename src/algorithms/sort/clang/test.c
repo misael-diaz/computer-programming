@@ -745,6 +745,10 @@ void complexity_isort ()
     size *= 2;
   }
 
+  free(begin);
+  free(end);
+  begin = NULL;
+  end = NULL;
   fclose(file);
 }
 
@@ -829,6 +833,10 @@ void complexity_msort ()
     size *= 2;
   }
 
+  free(begin);
+  free(end);
+  begin = NULL;
+  end = NULL;
   fclose(file);
 }
 
