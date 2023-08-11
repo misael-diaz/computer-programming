@@ -572,4 +572,4 @@ References:
 
 
 // TODO:
-// [ ] check if sort() works for arrays of size 2
+// [x] check if sort() works for arrays of size 2
