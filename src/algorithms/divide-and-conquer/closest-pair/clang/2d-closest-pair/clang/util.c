@@ -4,13 +4,6 @@
 
 #include "util.h"
 
-// defines (internal) MACROS for succinctly declaring the comparator function
-
-#define COMP int(*comp)(const double* x,\
-			size_t const numel,\
-			size_t const first,\
-			size_t const second)
-
 
 // double urand (double size)
 //
@@ -99,7 +92,7 @@ static int compare (double const x1, double const x2)
 }
 
 
-// int xcompare (double* positions, size_t numel, size_t first, size_t second)
+// int xcompare (particle_t* particles, size_t first, size_t second)
 //
 // Synopsis:
 // Compares the `first' and `second' particles primarily with respect to their
@@ -108,8 +101,7 @@ static int compare (double const x1, double const x2)
 // a pair of particle objects.
 //
 // Inputs:
-// positions	array of particle positions of (at least) size 2 * numel
-// numel	the number of elements (or particles)
+// particles	container of the (x, y) positions of the particles
 // first	id of the first particle, where id is in the asymmetric range [0, numel)
 // second	id of the second particle, where id is in the arange [0, numel)
 //
@@ -117,13 +109,10 @@ static int compare (double const x1, double const x2)
 // xcompare	0 if first == second, 1 if first > second, and -1 otherwise (in essence)
 
 
-int xcompare (const double* positions,
-	      size_t const numel,
-	      size_t const first,
-	      size_t const second)
+int xcompare (const particle_t* particles, size_t const first, size_t const second)
 {
-  const double* x = positions;
-  const double* y = (positions + numel);
+  const double* x = particles -> x;
+  const double* y = particles -> y;
   double const x1 = x[first];
   double const x2 = x[second];
   double const y1 = y[first];
@@ -133,15 +122,14 @@ int xcompare (const double* positions,
 }
 
 
-// int ycompare (double* positions, size_t numel, size_t first, size_t second)
+// int ycompare (particle_t* particles, size_t first, size_t second)
 //
 // Synopsis:
 // As xcompare() but compares the `first' and `second' particles primarily with respect
 // to their `y' positions and secondarily with respect to their `x' positions.
 //
 // Inputs:
-// positions	array of particle positions of (at least) size 2 * numel
-// numel	the number of elements (or particles)
+// particles	container of the (x, y) positions of the particles
 // first	id of the first particle, where id is in the asymmetric range [0, numel)
 // second	id of the second particle, where id is in the arange [0, numel)
 //
@@ -149,13 +137,10 @@ int xcompare (const double* positions,
 // ycompare	0 if first == second, 1 if first > second, and -1 otherwise (in essence)
 
 
-int ycompare (const double* positions,
-	      size_t const numel,
-	      size_t const first,
-	      size_t const second)
+int ycompare (const particle_t* particles, size_t const first, size_t const second)
 {
-  const double* x = positions;
-  const double* y = (positions + numel);
+  const double* x = particles -> x;
+  const double* y = particles -> y;
   double const x1 = x[first];
   double const x2 = x[second];
   double const y1 = y[first];
@@ -165,7 +150,7 @@ int ycompare (const double* positions,
 }
 
 
-// bool sorted(double* positions, size_t numel, size_t b, size_t e, int (*comp) (...))
+// bool sorted(particle_t* particles, size_t b, size_t e, int (*comp) (...))
 //
 // Synopsis:
 // Returns true if the positions array slice delimited by the asymmetric range [b, e) is
@@ -173,8 +158,7 @@ int ycompare (const double* positions,
 // for comparing the particles by their positions.
 //
 // Inputs:
-// positions	array of particle positions of (at least) size 2 * numel
-// numel	the number of elements (or particles)
+// particles	container of the (x, y) positions of the particles
 // b		beginning of the array slice
 // e		end (non-inclusive) of the array slice
 // comp		comparator function, either xcompare() or ycompare()
@@ -183,11 +167,10 @@ int ycompare (const double* positions,
 // sorted	true if sorted, false otherwise
 
 
-bool sorted(const double* positions,
-	    size_t const numel,
+bool sorted(const particle_t* particles,
 	    size_t const b,
 	    size_t const e,
-	    COMP)
+	    int (*comp) (const particle_t* particles, size_t const i, size_t const j))
 {
   bool sorted = true;
   size_t const size = (e - b);
@@ -198,7 +181,7 @@ bool sorted(const double* positions,
 
   for (size_t i = b; i != (e - 1); ++i)
   {
-    if (comp(positions, numel, i + 1, i) == -1)
+    if (comp(particles, i + 1, i) == -1)
     {
       sorted = false;
       return sorted;
@@ -263,26 +246,27 @@ bool contains (const double* x, int64_t const b, int64_t const e, double const t
 }
 
 
-// int64_t search (double* positions, size_t numel, int (*comp) (...))
+// int64_t search (particle_t* particles, int (*comp) (...))
 //
 // Synopsis:
 // Performs a linear search for the target element. This method expects the target element
 // to be located at the position i = 2 * numel by design.
 //
 // Inputs:
-// positions	array of particle positions of (at least) size 2 * numel
-// numel	the number of elements (or particles)
+// particles	container of the (x, y) positions of the particles
 // comp		comparator function, either xcompare() or ycompare()
 //
 // Output:
 // pos		the positional index of the target element if present, -1 otherwise
 
 
-int64_t search (const double* positions, size_t const numel, COMP)
+int64_t search (const particle_t* particles,
+		int (*comp) (const particle_t* particles, size_t const i, size_t const j))
 {
+  size_t const numel = ( (size_t) *(particles -> numel) );
   for (size_t i = 0; i != numel; ++i)
   {
-    if (comp(positions, numel, i, 2 * numel) == 0)
+    if (comp(particles, i, 2 * numel) == 0)
     {
       return i;
     }
@@ -313,15 +297,14 @@ void copy (const double* restrict src, double* restrict dst, size_t const numel)
 }
 
 
-// void direct(double* positions, size_t numel, size_t first, size_t second, int (*comp))
+// void direct(particle_t* particles, size_t first, size_t second, int (*comp) (...))
 //
 // Synopsis:
 // Implements sort()'s direct solution, which consists of interchanging out-of-order
 // neighboring elements.
 //
 // Inputs:
-// positions	array of particle positions of (at least) size 2 * numel
-// numel	the number of elements (or particles)
+// particles	container of the (x, y) positions of the particles
 // first	id of the first particle, where id is in the asymmetric range [0, numel)
 // second	id of the second particle, where id is in the arange [0, numel)
 // comp		comparator function, either xcompare() or ycompare()
@@ -330,15 +313,14 @@ void copy (const double* restrict src, double* restrict dst, size_t const numel)
 // positions	the position array with the ordered pair comprised by `first' and `second'
 
 
-static void direct (double* positions,
-		    size_t const numel,
+static void direct (particle_t* particles,
 		    size_t const first,
 		    size_t const second,
-		    COMP)
+		    int (*comp) (const particle_t*, size_t const i, size_t const j))
 {
-  double* x = positions;
-  double* y = (positions + numel);
-  if (comp(positions, numel, second, first) == -1)
+  double* x = particles -> x;
+  double* y = particles -> y;
+  if (comp(particles, second, first) == -1)
   {
     double const xmin = x[second];
     x[second] = x[first];
@@ -351,30 +333,26 @@ static void direct (double* positions,
 }
 
 
-// void combine(double* positions, size_t size, size_t numel, size_t b, size_t e, (*comp))
+// void combine(particle_t* particles, size_t b, size_t e, int (*comp) (...))
 //
 // Synopsis:
 // Combines the left and right partitions in O(N) operations, where `N' is the number
 // of elements in the partition.
 //
 // Inputs:
-// positions	positions array to be sorted (in ascending order)
-// numel	the number of elements (or particles) same value as that given to sort()
-// size		is twice the number of elements
+// particles	container of the (x, y) positions of the particles
 // b		beginning of the partition
 // e		end (non-inclusive) of the partition
 // comp		comparator function, either xcompare() or ycompare()
 //
 // Output:
-// positions	the sorted positions partition [b, e)
+// particles	the sorted positions of the particles delimited by the partition [b, e)
 
 
-static void combine(double* positions,
-		    size_t const size,
-		    size_t const numel,
+static void combine(particle_t* particles,
 		    size_t const b,
 		    size_t const e,
-		    COMP)
+		    int (*comp) (const particle_t*, size_t const i, size_t const j))
 {
   size_t const beginLeft = b;
   size_t const endLeft = b + ( (e - b) / 2 );
@@ -382,16 +360,16 @@ static void combine(double* positions,
   size_t const endRight = e;
 
   size_t n = 0;
-  double* x = positions;
-  double* y = (x + numel);
-  double* xdst = (positions + size);
-  double* ydst = (xdst + numel);
+  double* x = particles -> x;
+  double* y = particles -> y;
+  double* xdst = particles -> xtmp;
+  double* ydst = particles -> ytmp;
   size_t iterLeft = beginLeft;
   size_t iterRight = beginRight;
   // copies elements in order into the temporary until either partition is depleted
   while (iterLeft != endLeft && iterRight != endRight)
   {
-    if (comp(positions, numel, iterLeft, iterRight) == -1)
+    if (comp(particles, iterLeft, iterRight) == -1)
     {
       xdst[n] = x[iterLeft];
       ydst[n] = y[iterLeft];
@@ -430,54 +408,50 @@ static void combine(double* positions,
 
   beg = iterRight;
   end = endRight;
-  x = positions;
   xsrc = (x + beg);
   copy(xsrc, xdst, end - beg);
 
   beg = iterRight;
   end = endRight;
-  y = (positions + numel);
   ysrc = (y + beg);
   copy(ysrc, ydst, end - beg);
 
   // commits the combined partition into the partition [b, e)
 
-  x = positions;
   xdst = (x + b);
-  xsrc = (positions + size);
+  xsrc = particles -> xtmp;
   copy(xsrc, xdst, e - b);
 
-  y = (positions + numel);
   ydst = (y + b);
-  ysrc = (positions + size + numel);
+  ysrc = particles -> ytmp;
   copy(ysrc, ydst, e - b);
 }
 
 
-// void sort (double* positions, size_t size, size_t numel, int (*comp) (...))
+// void sort (particle_t* particles, int (*comp) (...))
 //
 // Synopsis:
 // Iterative implementation of the merge sort algorithm.
 //
 // Inputs:
-// positions	positions array to be sorted (in ascending order)
-// numel	the number of elements (or particles)
-// size		is twice the number of elements
+// particles	container of the (x, y) positions of the particles
 // comp		comparator function, either xcompare() or ycompare()
 //
 // Output:
-// positions	the sorted positions array
+// particles	the particles sorted according to the supplied comparator
 
 
-void sort (double* positions, size_t const size, size_t const numel, COMP)
+void sort (particle_t* particles,
+	   int (*comp) (const particle_t* particles, size_t const i, size_t const j))
 {
   // orders particles in pairs (that is, in partitions of size 2):
 
+  size_t const numel = ( (size_t) *(particles -> numel) );
   for (size_t i = 0; i != numel; i += 2)
   {
     size_t const first = i;
     size_t const second = (i + 1);
-    direct(positions, numel, first, second, comp);
+    direct(particles, first, second, comp);
   }
 
   if (numel == 2)
@@ -493,59 +467,105 @@ void sort (double* positions, size_t const size, size_t const numel, COMP)
     {
       size_t const b = i;
       size_t const e = (i + stride);
-      combine(positions, size, numel, b, e, comp);
+      combine(particles, b, e, comp);
     }
   }
 
-  combine(positions, size, numel, 0, numel, comp);
+  combine(particles, 0, numel, comp);
 }
 
 
-// allocates memory and initializes the array of positions
-double* create (size_t const size)
+// allocates memory and initializes the particle positions
+particle_t* create (size_t const numel)
 {
   // performs sane checks:
 
-  if (size % 2)
+  if (numel % 2)
   {
-    printf("create(): expects the array size to be even\n");
+    printf("create(): expects the number of particles to be even\n");
     return NULL;
   }
 
-  if (size >= 0x7fffffffffffffff)
+  if (numel >= 0x7fffffffffffffff)
   {
     printf("create(): reserved values\n");
     return NULL;
   }
 
-  // allocates memory for the positions array:
+  // allocates memory for the particle data:
 
+  size_t const size_x = numel;
+  size_t const size_y = numel;
+  size_t const size_xtmp = numel;
+  size_t const size_ytmp = numel;
+  size_t const size_numel = 1;
+  size_t const size = size_x +
+		      size_y +
+		      size_xtmp +
+		      size_ytmp +
+		      size_numel;
   size_t const bytes = size * sizeof(double);
-  double* positions = malloc(bytes);
-  if (positions == NULL)
+  double* data = malloc(bytes);
+  if (data == NULL)
   {
+    printf("create(): failed to allocate memory for the particle data\n");
     return NULL;
   }
 
-  // initializes the positions array with zeros:
+  particle_t* particles = malloc( sizeof(particle_t) );
+  if (particles == NULL)
+  {
+    free(data);
+    data = NULL;
+    printf("create(): failed to allocate memory for the particle type\n");
+    return NULL;
+  }
 
-  zeros(positions, size);
+  // initializes the particle data:
 
-  return positions;
+  particles -> x = data;
+  particles -> y = particles -> x + size_x;
+  particles -> xtmp = particles -> y + size_y;
+  particles -> ytmp = particles -> xtmp + size_xtmp;
+  particles -> numel = particles -> ytmp + size_ytmp;
+  particles -> data = data;
+  data = NULL;
+
+  double* x = particles -> x;
+  double* y = particles -> y;
+  double* xtmp = particles -> xtmp;
+  double* ytmp = particles -> ytmp;
+
+  zeros(x, numel);
+  zeros(y, numel);
+  zeros(xtmp, numel);
+  zeros(ytmp, numel);
+
+  *(particles -> numel) = ( (double) numel );
+
+  return particles;
 }
 
 
-// destroys the positions array (frees it from memory)
-double* destroy (double* positions)
+// destroys the particles (frees it from memory)
+particle_t* destroy (particle_t* particles)
 {
-  if (positions == NULL)
+  if (particles == NULL)
   {
-    return positions;
+    return particles;
   }
 
-  free(positions);
-  positions = NULL;
-  return positions;
+  particles -> x = NULL;
+  particles -> y = NULL;
+  particles -> xtmp = NULL;
+  particles -> ytmp = NULL;
+  particles -> numel = NULL;
+
+  free(particles -> data);
+  particles -> data = NULL;
+  free(particles);
+  particles = NULL;
+  return particles;
 }
 
 
