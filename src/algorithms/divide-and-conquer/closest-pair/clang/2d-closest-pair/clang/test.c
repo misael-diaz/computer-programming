@@ -18,7 +18,7 @@ int main ()
 }
 
 
-// void generate (double* positions, size_t const numel)
+// void generate (particle_t* particles)
 //
 // Synopsis:
 // Generates (distinct) positions for `numel' particles. Stores the positions of the
@@ -26,15 +26,16 @@ int main ()
 // y axis in the arange [numel, 2 * numel). The expected time complexity is quadratic.
 //
 // Inputs:
-// positions		array of (at least) size (2 * numel)
-// numel		the number of elements (or particles)
+// particles	container of the x, y coordinates of the particles
 //
 // Output:
-// positions		array filled with (distinct) positions
+// particles	container with distinct x, y coordinates for the particles
 
 
-void generate (double* positions, size_t const numel)
+void generate (particle_t* particles)
 {
+  double* positions = particles -> x;
+  size_t const numel = ( (size_t) *(particles -> numel) );
   // the total number of x's and y's is 2 * numel
   for (size_t i = 0; i != (2 * numel); ++i)
   {
@@ -62,19 +63,45 @@ void test_sort ()
   size_t numel = iNUMEL;
   for (size_t run = 0; run != RUNS; ++run)
   {
-    size_t const size = (2 * numel);
-    double* original = create(2 * size);
-    double* positions = create(2 * size);
+    particle_t* original = create(numel);
+    if (original == NULL)
+    {
+      free(begin);
+      free(end);
+      begin = NULL;
+      end = NULL;
+      printf("test-sort(): failed to allocate memory for the particle positions\n");
+      return;
+    }
+
+    particle_t* particles = create(numel);
+    if (particles == NULL)
+    {
+      free(end);
+      free(begin);
+      free(original);
+      original = NULL;
+      begin = NULL;
+      end = NULL;
+      printf("test-sort(): failed to allocate memory for the particle positions\n");
+      return;
+    }
+
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      generate(original, numel);
-      copy(original, positions, size);
+      generate(original);
+      double* xdst = particles -> x;
+      double* ydst = particles -> y;
+      const double* xsrc = original -> x;
+      const double* ysrc = original -> y;
+      copy(xsrc, xdst, numel);
+      copy(ysrc, ydst, numel);
 
-      sort(positions, size, numel, xcompare);
+      sort(particles, xcompare);
 
       // complains if there are out-of-order elements after invoking sort():
 
-      if ( !sorted(positions, numel, 0, numel, xcompare) )
+      if ( !sorted(particles, 0, numel, xcompare) )
       {
 	failed = true;
 	printf("test-sort(): sort() method failed\n");
@@ -83,17 +110,14 @@ void test_sort ()
 
       // complains if sort() modified the actual positions (should only order them):
 
-      const double* xsrc = original;
-      const double* ysrc = (original + numel);
-      // writes the target element at the unused location (in the temporary placeholder)
-      double* xdst = (positions + size);
-      double* ydst = (positions + size + numel);
+      xdst = particles -> xtmp;
+      ydst = particles -> ytmp;
       // performs a linear search for the target element
       for (size_t i = 0; i != numel; ++i)
       {
 	xdst[0] = xsrc[i];
 	ydst[0] = ysrc[i];
-	if (search(positions, numel, xcompare) == -1)
+	if (search(particles, xcompare) == -1)
 	{
 	  failed = true;
 	  printf("test-sort(): the sort() method clobbered (some) particle positions\n");
@@ -110,12 +134,12 @@ void test_sort ()
     if (failed)
     {
       original = destroy(original);
-      positions = destroy(positions);
+      particles = destroy(particles);
       break;
     }
 
     original = destroy(original);
-    positions = destroy(positions);
+    particles = destroy(particles);
     numel *= 2;
   }
 
@@ -161,8 +185,7 @@ void complexity_sort ()
   size_t numel = iNUMEL;
   for (size_t run = 0; run != RUNS; ++run)
   {
-    size_t const size = (2 * numel);
-    double* original = create(2 * size);
+    particle_t* original = create(numel);
     if (original == NULL)
     {
       free(begin);
@@ -173,8 +196,8 @@ void complexity_sort ()
       return;
     }
 
-    double* positions = create(2 * size);
-    if (positions == NULL)
+    particle_t* particles = create(numel);
+    if (particles == NULL)
     {
       free(end);
       free(begin);
@@ -189,14 +212,19 @@ void complexity_sort ()
     double etime = 0;
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      generate(original, numel);
-      copy(original, positions, size);
+      generate(original);
+      double* xdst = particles -> x;
+      double* ydst = particles -> y;
+      const double* xsrc = original -> x;
+      const double* ysrc = original -> y;
+      copy(xsrc, xdst, numel);
+      copy(ysrc, ydst, numel);
 
       // gets the elapsed time of the sort() method
 
       clock_gettime(CLOCK_MONOTONIC_RAW, begin);
 
-      sort(positions, size, numel, xcompare);
+      sort(particles, xcompare);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, end);
 
@@ -204,7 +232,7 @@ void complexity_sort ()
 
       // complains if there are out-of-order elements after invoking sort():
 
-      if ( !sorted(positions, numel, 0, numel, xcompare) )
+      if ( !sorted(particles, 0, numel, xcompare) )
       {
 	failed = true;
 	printf("complexity-sort(): sort() method failed\n");
@@ -213,16 +241,14 @@ void complexity_sort ()
 
       // complains if sort() modified the actual positions (should only order them):
 
-      const double* xsrc = original;
-      const double* ysrc = (original + numel);
-      double* xdst = (positions + size);
-      double* ydst = (positions + size + numel);
+      xdst = particles -> xtmp;
+      ydst = particles -> ytmp;
       // performs a linear search for the target element
       for (size_t i = 0; i != numel; ++i)
       {
 	xdst[0] = xsrc[i];
 	ydst[0] = ysrc[i];
-	if (search(positions, numel, xcompare) == -1)
+	if (search(particles, xcompare) == -1)
 	{
 	  failed = true;
 	  printf("complexity-sort(): the sort() method clobbered particle positions\n");
@@ -243,14 +269,14 @@ void complexity_sort ()
       begin = NULL;
       end = NULL;
       original = destroy(original);
-      positions = destroy(positions);
+      particles = destroy(particles);
       break;
     }
 
     etimes[run] = etime / ( (double) REPS );	// gets the average elapsed time (nanosec)
 
     original = destroy(original);
-    positions = destroy(positions);
+    particles = destroy(particles);
     numel *= 2;
   }
 
