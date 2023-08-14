@@ -66,10 +66,6 @@ void test_sort ()
     particle_t* original = create(numel);
     if (original == NULL)
     {
-      free(begin);
-      free(end);
-      begin = NULL;
-      end = NULL;
       printf("test-sort(): failed to allocate memory for the particle positions\n");
       return;
     }
@@ -77,12 +73,8 @@ void test_sort ()
     particle_t* particles = create(numel);
     if (particles == NULL)
     {
-      free(end);
-      free(begin);
       free(original);
       original = NULL;
-      begin = NULL;
-      end = NULL;
       printf("test-sort(): failed to allocate memory for the particle positions\n");
       return;
     }
