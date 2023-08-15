@@ -498,10 +498,42 @@ void setClosestPair(pair_t* closestPair,
 }
 
 
+// implements a min() like method for pair objects
+void minClosestPair (pair_t* closestPair,
+		     const pair_t* closestPairLeft,
+		     const pair_t* closestPairRight)
+{
+  double dmin = INFINITY;
+  size_t first = 0xffffffffffffffff;
+  size_t second = 0xffffffffffffffff;
+  double const minDistLeft = closestPairLeft -> dist;
+  double const minDistRight = closestPairRight -> dist;
+  if (minDistLeft < minDistRight)
+  {
+    dmin = minDistLeft;
+    first = closestPairLeft -> first;
+    second = closestPairLeft -> second;
+  }
+  else
+  {
+    dmin = minDistRight;
+    first = closestPairRight -> first;
+    second = closestPairRight -> second;
+  }
+  setClosestPair(closestPair, first, second, dmin);
+}
+
+
 // allocates memory and initializes the particle positions
 particle_t* create (size_t const numel)
 {
   // performs sane checks:
+
+  if (numel == 0)
+  {
+    printf("create(): expects the number of particles to be finite\n");
+    return NULL;
+  }
 
   if (numel % 2)
   {
@@ -512,6 +544,13 @@ particle_t* create (size_t const numel)
   if (numel >= 0x7fffffffffffffff)
   {
     printf("create(): reserved values\n");
+    return NULL;
+  }
+
+  union { double data; uint64_t bin } mantissa = { .data = numel };
+  if ( (mantissa.bin & 0x000fffffffffffff) != 0 )
+  {
+    printf("create(): expects the number of particles to be a power of two\n");
     return NULL;
   }
 

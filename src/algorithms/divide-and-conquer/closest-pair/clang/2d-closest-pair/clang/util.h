@@ -38,6 +38,10 @@ void setClosestPair(pair_t* closestPair,
 		    size_t const first,
 		    size_t const second,
 		    double const dist);
+
+void minClosestPair(pair_t* closestPair,
+		    const pair_t* closestPairLeft,
+		    const pair_t* closestPairRight);
 #endif
 
 
