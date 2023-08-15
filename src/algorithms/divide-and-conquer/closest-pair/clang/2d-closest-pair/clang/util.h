@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <time.h>
+#include "pair.h"
 #include "particle.h"
 
 double urand(double const size);
@@ -32,6 +33,11 @@ int64_t search(const particle_t* particles,
 
 void sort(particle_t* particles,
 	  int (*comp) (const particle_t* particles, size_t const i, size_t const j));
+
+void setClosestPair(pair_t* closestPair,
+		    size_t const first,
+		    size_t const second,
+		    double const dist);
 #endif
 
 
