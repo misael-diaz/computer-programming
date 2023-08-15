@@ -31,7 +31,7 @@ bool contains(const double* x, int64_t const b, int64_t const e, double const tg
 int64_t search(const particle_t* particles,
 	       int (*comp) (const particle_t* particles, size_t const i, size_t const j));
 
-void sort(particle_t* particles,
+void sort(particle_t* particles, size_t const beg, size_t const end,
 	  int (*comp) (const particle_t* particles, size_t const i, size_t const j));
 
 void setClosestPair(pair_t* closestPair,

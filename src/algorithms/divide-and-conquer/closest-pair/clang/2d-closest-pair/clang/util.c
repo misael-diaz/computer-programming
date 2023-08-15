@@ -441,16 +441,17 @@ static void combine(particle_t* particles,
 // particles	the particles sorted according to the supplied comparator
 
 
-void sort (particle_t* particles,
+void sort (particle_t* particles, size_t const beg, size_t const end,
 	   int (*comp) (const particle_t* particles, size_t const i, size_t const j))
 {
   // orders particles in pairs (that is, in partitions of size 2):
 
-  size_t const numel = ( (size_t) *(particles -> numel) );
+  size_t const numel = (end - beg);
   for (size_t i = 0; i != numel; i += 2)
   {
-    size_t const first = i;
-    size_t const second = (i + 1);
+    size_t const offset = beg;
+    size_t const first = (i + offset);
+    size_t const second = ( (i + 1) + offset );
     direct(particles, first, second, comp);
   }
 
@@ -465,13 +466,14 @@ void sort (particle_t* particles,
   {
     for (size_t i = 0; i != numel; i += stride)
     {
-      size_t const b = i;
-      size_t const e = (i + stride);
+      size_t const offset = beg;
+      size_t const b = (i + offset);
+      size_t const e = ( (i + stride) + offset );
       combine(particles, b, e, comp);
     }
   }
 
-  combine(particles, 0, numel, comp);
+  combine(particles, beg, end, comp);
 }
 
 

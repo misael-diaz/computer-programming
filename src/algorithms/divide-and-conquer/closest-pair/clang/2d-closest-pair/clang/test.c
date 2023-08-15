@@ -187,7 +187,7 @@ void test_sort ()
       copy(xsrc, xdst, numel);
       copy(ysrc, ydst, numel);
 
-      sort(particles, xcompare);
+      sort(particles, 0, numel, xcompare);
 
       // complains if there are out-of-order elements after invoking sort():
 
@@ -314,7 +314,7 @@ void complexity_sort ()
 
       clock_gettime(CLOCK_MONOTONIC_RAW, begin);
 
-      sort(particles, xcompare);
+      sort(particles, 0, numel, xcompare);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, end);
 
