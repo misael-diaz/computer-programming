@@ -4,10 +4,12 @@
 typedef struct
 {
   // pointers (x and y (temporary) coordinates and the number of elements (or particles)):
+  double* id;
   double* x;
   double* y;
   double* xtmp;
   double* ytmp;
+  double* itmp;
   double* numel;
   // actual placeholder (allocated on the heap) for storing the particle coordinates:
   double* data;

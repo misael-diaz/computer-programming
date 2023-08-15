@@ -5,17 +5,27 @@
 #include "util.h"	// uses user-defined utilities to find the closest pair
 
 #define RUNS 16
-#define REPS 256
+#define REPS 1024
 #define iNUMEL 2
 
 void test_sort();
 void complexity_sort();
 void test_bruteForce();
+void test_recurse();
+void test_recurse1();
+void test_recurse2();
+void test_recurse3();
+void divide(particle_t* particles, size_t const b, size_t const e, pair_t* closestPair);
+void recurse(particle_t* particles, size_t const b, size_t const e, pair_t* closestPair);
 
 int main ()
 {
+  test_recurse();
+  test_recurse1();
+  test_recurse2();
+  test_recurse3();
   test_bruteForce();
-//test_sort();
+  test_sort();
 //complexity_sort();
   return 0;
 }
@@ -84,6 +94,7 @@ void initialize (particle_t* particles)
   {
     generate(particles);
   } while ( hasDuplicateClosestPairs(particles) );
+  iota(particles -> id, *particles -> numel);
 }
 
 
@@ -110,6 +121,253 @@ void bruteForce (const particle_t* particles, pair_t* closestPair)
     }
   }
   setClosestPair(closestPair, first, second, dmin);
+}
+
+
+// direct solution, updates the closest pair by considering a pair of particles
+void direct (const particle_t* particles,
+	     size_t const beg,
+	     size_t const end,
+	     pair_t* closestPair)
+{
+  size_t const offset = beg;
+  const double* x = (particles -> x + offset);
+  const double* y = (particles -> y + offset);
+  const double* id = (particles -> id + offset);
+  double const dist = (x[0] - x[1]) * (x[0] - x[1]) + (y[0] - y[1]) * (y[0] - y[1]);
+  double const dmin = closestPair -> dist;
+  if (dist < dmin)
+  {
+    size_t const first = id[0];
+    size_t const second = id[1];
+    setClosestPair(closestPair, first, second, dist);
+  }
+}
+
+
+
+// prunes elements from the combined partition prior to using brute force to obtain the
+// closest pair
+void xcombine (particle_t* particles,
+	       size_t const beg,
+	       size_t const end,
+	       pair_t* closestPair)
+{
+  size_t const numel = (end - beg);
+  size_t const beginLeft = beg;
+  size_t const endLeft = beg + (numel / 2);
+  size_t const beginRight = beg + (numel / 2);
+  size_t const endRight = beg + numel;
+
+  const double* x = particles -> x;
+  const double* y = particles -> y;
+  const double* id = particles -> id;
+
+  // prunes elements (too far to comprise the closest pair) from the left partition:
+
+  size_t bLeft = endLeft;
+  size_t const eLeft = endLeft;
+  double const dist = closestPair -> dist;
+  for (size_t i = 0; i != (endLeft - beginLeft); ++i)
+  {
+    size_t const j = ( endLeft - (i + 1) );
+    double const d = (x[j] - x[beginRight]) * (x[j] - x[beginRight]);
+    if (d < dist)
+    {
+      --bLeft;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  // prunes elements (too far to comprise the closest pair) from the right partition:
+
+  size_t const bRight = beginRight;
+  size_t eRight = beginRight;
+  for (size_t i = beginRight; i != endRight; ++i)
+  {
+    size_t const lastLeft = (endLeft - 1);
+    double const d = (x[i] - x[lastLeft]) * (x[i] - x[lastLeft]);
+    if (d < dist)
+    {
+      ++eRight;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  // uses brute force on the (pruned) combined partition:
+
+  double dmin = closestPair -> dist;
+  size_t first = closestPair -> first;
+  size_t second = closestPair -> second;
+  for (size_t i = bLeft; i != eLeft; ++i)
+  {
+    for (size_t j = bRight; j != eRight; ++j)
+    {
+      double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
+      if (d < dmin)
+      {
+	first = ( (size_t) id[i] );
+	second = ( (size_t) id[j] );
+	dmin = d;
+      }
+    }
+  }
+  setClosestPair(closestPair, first, second, dmin);
+}
+
+
+// as xcombine() but uses the y-component of the position vector to compute the distance
+void ycombine (particle_t* particles,
+	       size_t const beg,
+	       size_t const end,
+	       pair_t* closestPair)
+{
+  size_t const numel = (end - beg);
+  size_t const beginLeft = beg;
+  size_t const endLeft = beg + (numel / 2);
+  size_t const beginRight = beg + (numel / 2);
+  size_t const endRight = beg + numel;
+
+  const double* x = particles -> x;
+  const double* y = particles -> y;
+  const double* id = particles -> id;
+
+  // prunes elements (too far to comprise the closest pair) from the left partition:
+
+  size_t bLeft = endLeft;
+  size_t const eLeft = endLeft;
+  double const dist = closestPair -> dist;
+  for (size_t i = 0; i != (endLeft - beginLeft); ++i)
+  {
+    size_t const j = ( endLeft - (i + 1) );
+    double const d = (y[j] - y[beginRight]) * (y[j] - y[beginRight]);
+    if (d < dist)
+    {
+      --bLeft;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  // prunes elements (too far to comprise the closest pair) from the right partition:
+
+  size_t const bRight = beginRight;
+  size_t eRight = beginRight;
+  for (size_t i = beginRight; i != endRight; ++i)
+  {
+    size_t const lastLeft = (endLeft - 1);
+    double const d = (y[i] - y[lastLeft]) * (y[i] - y[lastLeft]);
+    if (d < dist)
+    {
+      ++eRight;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  // uses brute force on the (pruned) combined partition:
+
+  double dmin = closestPair -> dist;
+  size_t first = closestPair -> first;
+  size_t second = closestPair -> second;
+  for (size_t i = bLeft; i != eLeft; ++i)
+  {
+    for (size_t j = bRight; j != eRight; ++j)
+    {
+      double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
+      if (d < dmin)
+      {
+	first = ( (size_t) id[i] );
+	second = ( (size_t) id[j] );
+	dmin = d;
+      }
+    }
+  }
+  setClosestPair(closestPair, first, second, dmin);
+}
+
+
+// as recurse() but partitions the system in the y dimension
+void divide (particle_t* particles,
+	     size_t const beg,
+	     size_t const end,
+	     pair_t* closestPair)
+{
+  size_t const numel = (end - beg);
+  if (numel == 2)
+  {
+    direct(particles, beg, end, closestPair);
+  }
+  else
+  {
+    sort(particles, beg, end, ycompare);
+
+    size_t const beginLeft = beg;
+    size_t const endLeft = beg + (numel / 2);
+    size_t const size = ( (size_t) *(particles -> numel) );
+    pair_t closestPairLeft = { .first = size, .second = size, .dist = INFINITY };
+    recurse(particles, beginLeft, endLeft, &closestPairLeft);
+
+    size_t const beginRight = beg + (numel / 2);
+    size_t const endRight = beg + numel;
+    pair_t closestPairRight = { .first = size, .second = size, .dist = INFINITY };
+    recurse(particles, beginRight, endRight, &closestPairRight);
+
+    minClosestPair(closestPair, &closestPairLeft, &closestPairRight);
+
+    ycombine(particles, beg, end, closestPair);
+
+    // NOTE: we need to restore the x - y sorting because the xcombine() method at the
+    // level of the caller method recurse() expects it (as if we didn't call sort() here)
+    sort(particles, beg, end, xcompare);
+  }
+}
+
+
+// finds the closest pair recursively
+void recurse (particle_t* particles,
+	      size_t const beg,
+	      size_t const end,
+	      pair_t* closestPair)
+{
+  size_t const numel = (end - beg);
+  if (numel == 2)
+  {
+    direct(particles, beg, end, closestPair);
+  }
+  else
+  {
+    sort(particles, beg, end, xcompare);
+
+    size_t const beginLeft = beg;
+    size_t const endLeft = beg + (numel / 2);
+    size_t const size = ( (size_t) *(particles -> numel) );
+    pair_t closestPairLeft = { .first = size, .second = size, .dist = INFINITY };
+    divide(particles, beginLeft, endLeft, &closestPairLeft);
+
+    size_t const beginRight = beg + (numel / 2);
+    size_t const endRight = beg + numel;
+    pair_t closestPairRight = { .first = size, .second = size, .dist = INFINITY };
+    divide(particles, beginRight, endRight, &closestPairRight);
+
+    minClosestPair(closestPair, &closestPairLeft, &closestPairRight);
+
+    xcombine(particles, beg, end, closestPair);
+
+    // NOTE: we need to restore the y - x sorting because the ycombine() method at the
+    // level of the caller method divide() expects it (as if we didn't call sort() here)
+    sort(particles, beg, end, ycompare);
+  }
 }
 
 
@@ -144,6 +402,209 @@ void test_bruteForce ()
   free(closestPair);
   closestPair = NULL;
   particles = destroy(particles);
+}
+
+
+// tests the implementation with problem 2.3.1-1 of reference [1]
+void test_recurse ()
+{
+  // note that we have added four more elements to meet create()'s requirements
+  double x[] = {2,  4, 5, 10, 13, 15, 17, 19, 22, 25, 29, 30, 64, -64, -64,  64};
+  double y[] = {7, 13, 7,  5,  9,  5,  7, 10,  7, 10, 14,  2, 64,  64, -64, -64};
+  size_t const numel = ( sizeof(x) / sizeof(double) );
+  particle_t* particles = create(numel);
+  if (particles == NULL)
+  {
+    return;
+  }
+
+  double* xdst = particles -> x;
+  double* ydst = particles -> y;
+  const double *xsrc = x;
+  const double *ysrc = y;
+  copy(xsrc, xdst, numel);
+  copy(ysrc, ydst, numel);
+
+  pair_t closestPairBruteForce = {.first = numel, .second = numel, .dist = -INFINITY};
+  bruteForce(particles, &closestPairBruteForce);
+
+  pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
+  recurse(particles, 0, numel, &closestPairRecurse);
+
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
+
+  printf("test-recurse[0]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  particles = destroy(particles);
+}
+
+
+// tests the implementation with problem 2.3.1-2 of reference [1]
+void test_recurse1 ()
+{
+  // note that we have added four more elements to meet create()'s requirements
+  double x[] = {1,  1, 7, 9, 12, 13, 20, 22, 23, 25, 26, 31, 64, -64, -64,  64};
+  double y[] = {2, 11, 8, 9, 13,  4,  8,  3, 12, 14,  7, 10, 64,  64, -64, -64};
+  size_t const numel = ( sizeof(x) / sizeof(double) );
+  particle_t* particles = create(numel);
+  if (particles == NULL)
+  {
+    return;
+  }
+
+  double* xdst = particles -> x;
+  double* ydst = particles -> y;
+  const double *xsrc = x;
+  const double *ysrc = y;
+  copy(xsrc, xdst, numel);
+  copy(ysrc, ydst, numel);
+
+  pair_t closestPairBruteForce = {.first = numel, .second = numel, .dist = -INFINITY};
+  bruteForce(particles, &closestPairBruteForce);
+
+  pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
+  recurse(particles, 0, numel, &closestPairRecurse);
+
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
+
+  printf("test-recurse[1]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  particles = destroy(particles);
+}
+
+
+// tests the implementation with problem 2.3.1-3 of reference [1]
+void test_recurse2 ()
+{
+  // note that we have added four more elements to meet create()'s requirements
+  double x[] = {2,  2, 5,  9, 11, 15, 17, 18, 22, 25, 28, 30, 64, -64, -64,  64};
+  double y[] = {2, 12, 4, 11,  4, 14, 13,  7,  4,  7, 14,  2, 64,  64, -64, -64};
+  size_t const numel = ( sizeof(x) / sizeof(double) );
+  particle_t* particles = create(numel);
+  if (particles == NULL)
+  {
+    return;
+  }
+
+  double* xdst = particles -> x;
+  double* ydst = particles -> y;
+  const double *xsrc = x;
+  const double *ysrc = y;
+  copy(xsrc, xdst, numel);
+  copy(ysrc, ydst, numel);
+
+  pair_t closestPairBruteForce = {.first = numel, .second = numel, .dist = -INFINITY};
+  bruteForce(particles, &closestPairBruteForce);
+
+  pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
+  recurse(particles, 0, numel, &closestPairRecurse);
+
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
+
+  printf("test-recurse[2]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  particles = destroy(particles);
+}
+
+
+void test_recurse3 ()
+{
+  bool failed = false;
+  size_t numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    particle_t* particles = create(numel);
+    if (particles == NULL)
+    {
+      printf("test-recurse3(): failed to allocate memory for the particle positions\n");
+      return;
+    }
+
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      initialize(particles);
+      pair_t closestPairBruteForce = {.first = numel, .second = numel, .dist = -INFINITY};
+      bruteForce(particles, &closestPairBruteForce);
+
+      pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
+      recurse(particles, 0, numel, &closestPairRecurse);
+
+      if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+      {
+	logClosestPair(&closestPairBruteForce);
+	logClosestPair(&closestPairRecurse);
+	failed = true;
+	break;
+      }
+    }
+
+    if (failed)
+    {
+      particles = destroy(particles);
+      break;
+    }
+
+    particles = destroy(particles);
+    numel *= 2;
+  }
+
+  printf("test-recurse[3]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
 }
 
 
@@ -187,7 +648,9 @@ void test_sort ()
       copy(xsrc, xdst, numel);
       copy(ysrc, ydst, numel);
 
-      sort(particles, xcompare);
+      // note that on the previous iteration sort() moved the IDs so we need to set them
+      iota(particles -> id, numel);
+      sort(particles, 0, numel, xcompare);
 
       // complains if there are out-of-order elements after invoking sort():
 
@@ -213,6 +676,34 @@ void test_sort ()
 	  printf("test-sort(): the sort() method clobbered (some) particle positions\n");
 	  break;
 	}
+      }
+
+      // checks that we can sort the original position arrays with the IDs:
+
+      double diffs = 0;
+      const double* id = particles -> id;
+      for (size_t i = 0; i != numel; ++i)
+      {
+	double const x1 = particles -> x[i];
+	double const x2 = (original -> x[( (size_t) id[i] )]);
+	diffs += (x1 - x2) * (x1 - x2);
+      }
+
+      if (diffs != 0)
+      {
+	failed = true;
+      }
+
+      for (size_t i = 0; i != numel; ++i)
+      {
+	double const y1 = particles -> y[i];
+	double const y2 = (original -> y[( (size_t) id[i] )]);
+	diffs += (y1 - y2) * (y1 - y2);
+      }
+
+      if (diffs != 0)
+      {
+	failed = true;
       }
 
       if (failed)
@@ -314,7 +805,7 @@ void complexity_sort ()
 
       clock_gettime(CLOCK_MONOTONIC_RAW, begin);
 
-      sort(particles, xcompare);
+      sort(particles, 0, numel, xcompare);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, end);
 
@@ -428,3 +919,9 @@ References:
 [1] JJ McConnell, Analysis of Algorithms, second edition.
 
 */
+
+
+// TODO:
+// [x] fix the particle ID issue by tasking sort() with the manipulation of the IDs array
+// [x] add test that checks that the IDs of the closest pair found by the brute force
+//     and recursive algorithms match
