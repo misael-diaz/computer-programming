@@ -7,6 +7,7 @@
 #include "pair.h"
 #include "particle.h"
 
+void iota (double* x, size_t const size);
 double urand(double const size);
 double getElapsedTime(const struct timespec* b, const struct timespec* e);
 void copy(const double* restrict src, double* restrict dst, size_t const numel);
@@ -42,6 +43,9 @@ void setClosestPair(pair_t* closestPair,
 void minClosestPair(pair_t* closestPair,
 		    const pair_t* closestPairLeft,
 		    const pair_t* closestPairRight);
+
+bool isEqualClosestPair(const pair_t* closestPair1, const pair_t* closestPair2);
+void logClosestPair(const pair_t* closestPair1);
 #endif
 
 

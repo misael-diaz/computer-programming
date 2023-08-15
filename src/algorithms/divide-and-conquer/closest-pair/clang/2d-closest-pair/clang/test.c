@@ -25,7 +25,7 @@ int main ()
   test_recurse2();
   test_recurse3();
   test_bruteForce();
-//test_sort();
+  test_sort();
 //complexity_sort();
   return 0;
 }
@@ -94,6 +94,7 @@ void initialize (particle_t* particles)
   {
     generate(particles);
   } while ( hasDuplicateClosestPairs(particles) );
+  iota(particles -> id, *particles -> numel);
 }
 
 
@@ -132,12 +133,13 @@ void direct (const particle_t* particles,
   size_t const offset = beg;
   const double* x = (particles -> x + offset);
   const double* y = (particles -> y + offset);
+  const double* id = (particles -> id + offset);
   double const dist = (x[0] - x[1]) * (x[0] - x[1]) + (y[0] - y[1]) * (y[0] - y[1]);
   double const dmin = closestPair -> dist;
   if (dist < dmin)
   {
-    size_t const first = beg;		// NOTE: neither `first' nor `second' are the
-    size_t const second = (beg + 1);	// actual particle IDs yet in this implementation
+    size_t const first = id[0];
+    size_t const second = id[1];
     setClosestPair(closestPair, first, second, dist);
   }
 }
@@ -159,6 +161,7 @@ void xcombine (particle_t* particles,
 
   const double* x = particles -> x;
   const double* y = particles -> y;
+  const double* id = particles -> id;
 
   // prunes elements (too far to comprise the closest pair) from the left partition:
 
@@ -209,9 +212,8 @@ void xcombine (particle_t* particles,
       double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
       if (d < dmin)
       {
-	// NOTE: neither `first' and `second' are the particle IDs yet due to the sorting
-	first = i;
-	second = j;
+	first = ( (size_t) id[i] );
+	second = ( (size_t) id[j] );
 	dmin = d;
       }
     }
@@ -234,6 +236,7 @@ void ycombine (particle_t* particles,
 
   const double* x = particles -> x;
   const double* y = particles -> y;
+  const double* id = particles -> id;
 
   // prunes elements (too far to comprise the closest pair) from the left partition:
 
@@ -284,9 +287,8 @@ void ycombine (particle_t* particles,
       double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
       if (d < dmin)
       {
-	// NOTE: neither `first' and `second' are the particle IDs yet due to the sorting
-	first = i;
-	second = j;
+	first = ( (size_t) id[i] );
+	second = ( (size_t) id[j] );
 	dmin = d;
       }
     }
@@ -332,7 +334,7 @@ void divide (particle_t* particles,
 }
 
 
-// finds the closest pair recursively (incomplete implementation due to the IDs issue)
+// finds the closest pair recursively
 void recurse (particle_t* particles,
 	      size_t const beg,
 	      size_t const end,
@@ -429,7 +431,15 @@ void test_recurse ()
   pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
   recurse(particles, 0, numel, &closestPairRecurse);
 
-  bool failed = (closestPairRecurse.dist != closestPairBruteForce.dist)? true : false;
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
 
   printf("test-recurse[0]: ");
   if (failed)
@@ -471,7 +481,15 @@ void test_recurse1 ()
   pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
   recurse(particles, 0, numel, &closestPairRecurse);
 
-  bool failed = (closestPairRecurse.dist != closestPairBruteForce.dist)? true : false;
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
 
   printf("test-recurse[1]: ");
   if (failed)
@@ -513,7 +531,15 @@ void test_recurse2 ()
   pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
   recurse(particles, 0, numel, &closestPairRecurse);
 
-  bool failed = (closestPairRecurse.dist != closestPairBruteForce.dist)? true : false;
+  bool failed = true;
+  if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+  {
+    failed = true;
+  }
+  else
+  {
+    failed = false;
+  }
 
   printf("test-recurse[2]: ");
   if (failed)
@@ -551,8 +577,10 @@ void test_recurse3 ()
       pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
       recurse(particles, 0, numel, &closestPairRecurse);
 
-      if (closestPairRecurse.dist != closestPairBruteForce.dist)
+      if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
       {
+	logClosestPair(&closestPairBruteForce);
+	logClosestPair(&closestPairRecurse);
 	failed = true;
 	break;
       }
@@ -560,6 +588,7 @@ void test_recurse3 ()
 
     if (failed)
     {
+      particles = destroy(particles);
       break;
     }
 
@@ -619,6 +648,8 @@ void test_sort ()
       copy(xsrc, xdst, numel);
       copy(ysrc, ydst, numel);
 
+      // note that on the previous iteration sort() moved the IDs so we need to set them
+      iota(particles -> id, numel);
       sort(particles, 0, numel, xcompare);
 
       // complains if there are out-of-order elements after invoking sort():
@@ -645,6 +676,34 @@ void test_sort ()
 	  printf("test-sort(): the sort() method clobbered (some) particle positions\n");
 	  break;
 	}
+      }
+
+      // checks that we can sort the original position arrays with the IDs:
+
+      double diffs = 0;
+      const double* id = particles -> id;
+      for (size_t i = 0; i != numel; ++i)
+      {
+	double const x1 = particles -> x[i];
+	double const x2 = (original -> x[( (size_t) id[i] )]);
+	diffs += (x1 - x2) * (x1 - x2);
+      }
+
+      if (diffs != 0)
+      {
+	failed = true;
+      }
+
+      for (size_t i = 0; i != numel; ++i)
+      {
+	double const y1 = particles -> y[i];
+	double const y2 = (original -> y[( (size_t) id[i] )]);
+	diffs += (y1 - y2) * (y1 - y2);
+      }
+
+      if (diffs != 0)
+      {
+	failed = true;
       }
 
       if (failed)
@@ -863,6 +922,6 @@ References:
 
 
 // TODO:
-// [ ] fix the particle ID issue by tasking sort() with the manipulation of the IDs array
-// [ ] add test that checks that the IDs of the closest pair found by the brute force
+// [x] fix the particle ID issue by tasking sort() with the manipulation of the IDs array
+// [x] add test that checks that the IDs of the closest pair found by the brute force
 //     and recursive algorithms match

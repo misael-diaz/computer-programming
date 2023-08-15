@@ -61,6 +61,16 @@ static void zeros (double* x, size_t const size)
 }
 
 
+// implements a C++ like std::iota method
+void iota (double* x, size_t const size)
+{
+  for (size_t i = 0; i != size; ++i)
+  {
+    x[i] = ( (double) i );
+  }
+}
+
+
 // int compare (double x1, double x2)
 //
 // Synopsis:
@@ -320,6 +330,7 @@ static void direct (particle_t* particles,
 {
   double* x = particles -> x;
   double* y = particles -> y;
+  double* id = particles -> id;
   if (comp(particles, second, first) == -1)
   {
     double const xmin = x[second];
@@ -329,6 +340,10 @@ static void direct (particle_t* particles,
     double const ymin = y[second];
     y[second] = y[first];
     y[first] = ymin;
+
+    double const imin = id[second];
+    id[second] = id[first];
+    id[first] = imin;
   }
 }
 
@@ -362,8 +377,10 @@ static void combine(particle_t* particles,
   size_t n = 0;
   double* x = particles -> x;
   double* y = particles -> y;
+  double* id = particles -> id;
   double* xdst = particles -> xtmp;
   double* ydst = particles -> ytmp;
+  double* idst = particles -> itmp;
   size_t iterLeft = beginLeft;
   size_t iterRight = beginRight;
   // copies elements in order into the temporary until either partition is depleted
@@ -373,12 +390,14 @@ static void combine(particle_t* particles,
     {
       xdst[n] = x[iterLeft];
       ydst[n] = y[iterLeft];
+      idst[n] = id[iterLeft];
       ++iterLeft;
     }
     else
     {
       xdst[n] = x[iterRight];
       ydst[n] = y[iterRight];
+      idst[n] = id[iterRight];
       ++iterRight;
     }
     ++n;
@@ -388,6 +407,7 @@ static void combine(particle_t* particles,
 
   xdst += n;
   ydst += n;
+  idst += n;
 
   // copies whatever that remains from the left partition (could be empty)
 
@@ -399,10 +419,14 @@ static void combine(particle_t* particles,
   const double* ysrc = (y + beg);
   copy(ysrc, ydst, end - beg);
 
+  const double* isrc = (id + beg);
+  copy(isrc, idst, end - beg);
+
   // updates the number of elements written to the temporary
 
   xdst += (end - beg);
   ydst += (end - beg);
+  idst += (end - beg);
 
   // copies whatever that remains from the right partition (could be empty)
 
@@ -416,6 +440,11 @@ static void combine(particle_t* particles,
   ysrc = (y + beg);
   copy(ysrc, ydst, end - beg);
 
+  beg = iterRight;
+  end = endRight;
+  isrc = (id + beg);
+  copy(isrc, idst, end - beg);
+
   // commits the combined partition into the partition [b, e)
 
   xdst = (x + b);
@@ -425,6 +454,10 @@ static void combine(particle_t* particles,
   ydst = (y + b);
   ysrc = particles -> ytmp;
   copy(ysrc, ydst, e - b);
+
+  idst = (id + b);
+  isrc = particles -> itmp;
+  copy(isrc, idst, e - b);
 }
 
 
@@ -524,6 +557,31 @@ void minClosestPair (pair_t* closestPair,
 }
 
 
+// returns true if the closest pairs are equal, false otherwise
+bool isEqualClosestPair (const pair_t* closestPair1, const pair_t* closestPair2)
+{
+  double const i = closestPair1 -> first;
+  double const j = closestPair1 -> second;
+  double const d1 = closestPair1 -> dist;
+
+  double const n = closestPair2 -> first;
+  double const m = closestPair2 -> second;
+  double const d2 = closestPair2 -> dist;
+
+  return ( ( (i == n) && (j == m) && (d1 == d2) )? true : false );
+}
+
+
+// logs the properties of the closest pair on the console
+void logClosestPair (const pair_t* closestPair)
+{
+  double const first = closestPair -> first;
+  double const second = closestPair -> second;
+  double const distance = closestPair -> dist;
+  printf("first: %.0f second: %.0f distance: %e\n", first, second, distance);
+}
+
+
 // allocates memory and initializes the particle positions
 particle_t* create (size_t const numel)
 {
@@ -547,7 +605,7 @@ particle_t* create (size_t const numel)
     return NULL;
   }
 
-  union { double data; uint64_t bin } mantissa = { .data = numel };
+  union { double data; uint64_t bin; } mantissa = { .data = numel };
   if ( (mantissa.bin & 0x000fffffffffffff) != 0 )
   {
     printf("create(): expects the number of particles to be a power of two\n");
@@ -556,15 +614,19 @@ particle_t* create (size_t const numel)
 
   // allocates memory for the particle data:
 
+  size_t const size_id = numel;
   size_t const size_x = numel;
   size_t const size_y = numel;
   size_t const size_xtmp = numel;
   size_t const size_ytmp = numel;
+  size_t const size_itmp = numel;
   size_t const size_numel = 1;
-  size_t const size = size_x +
+  size_t const size = size_id +
+		      size_x +
 		      size_y +
 		      size_xtmp +
 		      size_ytmp +
+		      size_itmp +
 		      size_numel;
   size_t const bytes = size * sizeof(double);
   double* data = malloc(bytes);
@@ -585,23 +647,29 @@ particle_t* create (size_t const numel)
 
   // initializes the particle data:
 
-  particles -> x = data;
+  particles -> id = data;
+  particles -> x = particles -> id + size_id;
   particles -> y = particles -> x + size_x;
   particles -> xtmp = particles -> y + size_y;
   particles -> ytmp = particles -> xtmp + size_xtmp;
-  particles -> numel = particles -> ytmp + size_ytmp;
+  particles -> itmp = particles -> ytmp + size_ytmp;
+  particles -> numel = particles -> itmp + size_itmp;
   particles -> data = data;
   data = NULL;
 
+  double* id = particles -> id;
   double* x = particles -> x;
   double* y = particles -> y;
   double* xtmp = particles -> xtmp;
   double* ytmp = particles -> ytmp;
+  double* itmp = particles -> itmp;
 
+  iota(id, numel);
   zeros(x, numel);
   zeros(y, numel);
   zeros(xtmp, numel);
   zeros(ytmp, numel);
+  zeros(itmp, numel);
 
   *(particles -> numel) = ( (double) numel );
 
@@ -619,8 +687,10 @@ particle_t* destroy (particle_t* particles)
 
   particles -> x = NULL;
   particles -> y = NULL;
+  particles -> id = NULL;
   particles -> xtmp = NULL;
   particles -> ytmp = NULL;
+  particles -> itmp = NULL;
   particles -> numel = NULL;
 
   free(particles -> data);
