@@ -1,6 +1,7 @@
 #include <stdio.h>	// uses console logging and other output stream facilities
 #include <stdlib.h>	// uses uses dynamic memory (de)allocation via malloc() and free()
 #include <time.h>	// uses clock_gettime() to measure the elapsed time
+#include <math.h>	// uses sqrt() and the floating-point representation of INFINITY
 #include "util.h"	// uses user-defined utilities to find the closest pair
 
 #define RUNS 16
@@ -9,11 +10,13 @@
 
 void test_sort();
 void complexity_sort();
+void test_bruteForce();
 
 int main ()
 {
-  test_sort();
-  complexity_sort();
+  test_bruteForce();
+//test_sort();
+//complexity_sort();
   return 0;
 }
 
@@ -46,6 +49,101 @@ void generate (particle_t* particles)
     }
     positions[i] = r;
   }
+}
+
+
+// returns true if the system has duplicate closest pairs, false otherwise
+bool hasDuplicateClosestPairs (const particle_t* particles)
+{
+  double dmin1 = INFINITY;
+  double dmin2 = INFINITY;
+  const double* x = particles -> x;
+  const double* y = particles -> y;
+  size_t const numel = ( (size_t) *(particles -> numel) );
+  for (size_t i = 0; i != (numel - 1); ++i)
+  {
+    for (size_t j = (i + 1); j != numel; ++j)
+    {
+      double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
+      if (d <= dmin1)
+      {
+	dmin2 = dmin1;
+	dmin1 = d;
+      }
+    }
+  }
+  bool const hasDuplicateClosestPairs = ( (dmin1 == dmin2)? true : false );
+  return hasDuplicateClosestPairs;
+}
+
+
+// initializes the system so that there's only one closest pair
+void initialize (particle_t* particles)
+{
+  do
+  {
+    generate(particles);
+  } while ( hasDuplicateClosestPairs(particles) );
+}
+
+
+// applies the implementation of the brute force algorithm to find the closest pair
+void bruteForce (const particle_t* particles, pair_t* closestPair)
+{
+  double dmin = INFINITY;
+  const double* x = particles -> x;
+  const double* y = particles -> y;
+  size_t first = 0xffffffffffffffff;
+  size_t second = 0xffffffffffffffff;
+  size_t const numel = ( (size_t) *(particles -> numel) );
+  for (size_t i = 0; i != (numel - 1); ++i)
+  {
+    for (size_t j = (i + 1); j != numel; ++j)
+    {
+      double const d = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
+      if (d < dmin)
+      {
+	first = i;
+	second = j;
+	dmin = d;
+      }
+    }
+  }
+  setClosestPair(closestPair, first, second, dmin);
+}
+
+
+// tests the implementation of the brute force algorithm that finds the closest pair
+void test_bruteForce ()
+{
+  pair_t* closestPair = malloc( sizeof(pair_t) );
+  if (closestPair == NULL)
+  {
+    printf("test-bruteForce(): failed to allocate memory for the closest pair\n");
+    return;
+  }
+
+  size_t const numel = 256;
+  particle_t* particles = create(numel);
+  if (particles == NULL)
+  {
+      free(closestPair);
+      closestPair = NULL;
+      printf("test-bruteForce(): failed to allocate memory for the particle positions\n");
+      return;
+  }
+
+  initialize(particles);
+  bruteForce(particles, closestPair);
+
+  double const d = sqrt(closestPair -> dist);
+  size_t const first = closestPair -> first;
+  size_t const second = closestPair -> second;
+  printf("bruteForce(): first: %lu second: %lu min-distance: %e\n", first, second, d);
+
+  free(closestPair);
+  closestPair = NULL;
+  particles = destroy(particles);
 }
 
 

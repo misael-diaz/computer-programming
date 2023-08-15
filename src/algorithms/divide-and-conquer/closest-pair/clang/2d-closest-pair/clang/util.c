@@ -475,6 +475,27 @@ void sort (particle_t* particles,
 }
 
 
+// sets the closest pair (setter), the convention is that the smallest `id' is the first
+void setClosestPair(pair_t* closestPair,
+		    size_t const first,
+		    size_t const second,
+		    double const dist)
+{
+  if (first < second)
+  {
+    closestPair -> first = first;
+    closestPair -> second = second;
+    closestPair -> dist = dist;
+  }
+  else
+  {
+    closestPair -> first = second;
+    closestPair -> second = first;
+    closestPair -> dist = dist;
+  }
+}
+
+
 // allocates memory and initializes the particle positions
 particle_t* create (size_t const numel)
 {
