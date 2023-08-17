@@ -10,6 +10,7 @@
 
 void test_sort();
 void complexity_sort();
+void complexity_recurse();
 void test_bruteForce();
 void test_recurse();
 void test_recurse1();
@@ -26,7 +27,8 @@ int main ()
   test_recurse3();
   test_bruteForce();
   test_sort();
-//complexity_sort();
+  complexity_sort();
+  complexity_recurse();
   return 0;
 }
 
@@ -896,6 +898,95 @@ void complexity_sort ()
   end = NULL;
   fclose(file);
   printf("complexity-sort(): successful export of time complexity data to %s\n", fname);
+}
+
+
+void complexity_recurse ()
+{
+  double etimes[RUNS];
+  bool failed = false;
+  size_t numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    particle_t* particles = create(numel);
+    if (particles == NULL)
+    {
+      printf("complexity-recurse(): failed to allocate the particle positions\n");
+      return;
+    }
+
+    double etime = 0;
+    struct timespec end;
+    struct timespec begin;
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      initialize(particles);
+      pair_t closestPairBruteForce = {.first = numel, .second = numel, .dist = -INFINITY};
+      bruteForce(particles, &closestPairBruteForce);
+
+      pair_t closestPairRecurse = {.first = numel, .second = numel, .dist = +INFINITY};
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+
+      recurse(particles, 0, numel, &closestPairRecurse);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+      etime += getElapsedTime(&begin, &end);
+
+      if ( !isEqualClosestPair(&closestPairBruteForce, &closestPairRecurse) )
+      {
+	logClosestPair(&closestPairBruteForce);
+	logClosestPair(&closestPairRecurse);
+	failed = true;
+	break;
+      }
+    }
+
+    etimes[run] = etime / ( (double) REPS );	// gets the average elapsed time (nanosec)
+
+    if (failed)
+    {
+      particles = destroy(particles);
+      break;
+    }
+
+    particles = destroy(particles);
+    numel *= 2;
+  }
+
+  printf("test-complexity-recurse[0]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  if (failed)
+  {
+    return;
+  }
+
+  const char fname[] = "complexity-recurse.txt";
+  FILE* file = fopen(fname, "w");
+  if (file == NULL)
+  {
+    printf("complexity-recurse(): IO ERROR with file %s\n", fname);
+    return;
+  }
+
+  numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    fprintf(file, "%lu %.16e\n", numel, etimes[run]);
+    numel *= 2;
+  }
+
+  fclose(file);
+  printf("complexity-recurse(): successful export of time complexity data to %s\n", fname);
 }
 
 
