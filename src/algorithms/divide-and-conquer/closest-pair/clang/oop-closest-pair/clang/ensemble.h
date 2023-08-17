@@ -1,26 +1,26 @@
-#ifndef GUARD_AC_CLOSEST_PAIR_OOP_UTIL_H
-#define GUARD_AC_CLOSEST_PAIR_OOP_UTIL_H
+#ifndef GUARD_AC_CLOSEST_PAIR_OOP_ENSEMBLE_TYPE_H
+#define GUARD_AC_CLOSEST_PAIR_OOP_ENSEMBLE_TYPE_H
 
-#include "ensemble.h"
-#include "pair.h"
+#include "point.h"
 
-int search(const point_t* points, size_t const b, size_t const e, const point_t* target);
-double urand(double const size);
-ensemble_t* create(size_t const numel);
-ensemble_t* destroy(ensemble_t* ensemble);
-pair_t* deconstruct(pair_t* closestPair);
-pair_t* construct();
+typedef struct
+{
+  point_t* points;
+  point_t* temp;
+  size_t* numel;
+  void* data;
+} ensemble_t;
 
 #endif
 /*
 
 Algorithms and Complexity					August 16, 2023
 
-source: util.h
+source: ensemble.h
 author: @misael-diaz
 
 Synopsis:
-Header for the closest pair utilities.
+Defines the Ensemble (of points) type.
 
 Copyright (c) 2023 Misael Diaz-Maldonado
 This file is released under the GNU General Public License as published
