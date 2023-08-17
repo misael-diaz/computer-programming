@@ -14,8 +14,11 @@ int main ()
 }
 
 
-void generate (point_t* points, size_t const numel)
+void generate (ensemble_t* ensemble)
 {
+  size_t const numel = *(ensemble -> numel);
+  point_t* points = ensemble -> points;
+
   point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
@@ -32,11 +35,14 @@ void generate (point_t* points, size_t const numel)
 }
 
 
-bool hasDuplicateClosestPairs (const point_t* points, size_t const numel)
+bool hasDuplicateClosestPairs (const ensemble_t* ensemble)
 {
+  const point_t* points = ensemble -> points;
+  const point_t* point1 = points;
+
   double dmin1 = INFINITY;
   double dmin2 = INFINITY;
-  const point_t* point1 = points;
+  size_t const numel = *(ensemble -> numel);
   for (size_t i = 0; i != (numel - 1); ++i)
   {
     const point_t* point2 = (point1 + 1);
@@ -57,17 +63,20 @@ bool hasDuplicateClosestPairs (const point_t* points, size_t const numel)
 }
 
 
-void initialize (point_t* points, size_t const numel)
+void initialize (ensemble_t* ensemble)
 {
   do
   {
-    generate(points, numel);
-  } while ( hasDuplicateClosestPairs(points, numel) );
+    generate(ensemble);
+  } while ( hasDuplicateClosestPairs(ensemble) );
 }
 
 
-void bruteForce (const point_t* points, pair_t* closestPair, size_t const numel)
+void bruteForce (const ensemble_t* ensemble, pair_t* closestPair)
 {
+  size_t const numel = *(ensemble -> numel);
+  const point_t* points = ensemble -> points;
+
   size_t first = numel;
   size_t second = numel;
   double dmin = INFINITY;
@@ -101,21 +110,22 @@ void test_bruteForce ()
   }
 
   size_t const numel = iNUMEL;
-  point_t* points = create(numel);
-  initialize(points, numel);
+  ensemble_t* ensemble = create(numel);
+  initialize(ensemble);
 
-  point_t* point = points;
+  const point_t* points = ensemble -> points;
+  const point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
     point -> log(point);
     ++point;
   }
 
-  bruteForce(points, closestPair, numel);
+  bruteForce(ensemble, closestPair);
   printf("bruteForce(): ");
   closestPair -> log(closestPair);
 
-  points = destroy(points);
+  ensemble = destroy(ensemble);
   closestPair = deconstruct(closestPair);
 }
 

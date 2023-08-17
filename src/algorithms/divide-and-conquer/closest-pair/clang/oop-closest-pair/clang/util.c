@@ -185,7 +185,7 @@ pair_t* deconstruct (pair_t* closestPair)
 }
 
 
-point_t* create (size_t const numel)
+ensemble_t* create (size_t const numel)
 {
   if (numel == 0)
   {
@@ -212,28 +212,62 @@ point_t* create (size_t const numel)
     return NULL;
   }
 
-  point_t* points = malloc( numel * sizeof(point_t) );
-  if (points == NULL)
+  size_t const size_points = numel * sizeof(point_t);
+  size_t const size_temp = numel * sizeof(point_t);
+  size_t const size_numel = 1 * sizeof(size_t);
+  size_t const size = size_points +
+		      size_temp +
+		      size_numel;
+
+  void* data = malloc(size);
+  if (data == NULL)
   {
+    printf("create(): failed to allocate data placeholder\n");
     return NULL;
   }
 
-  init(points, numel);
+  ensemble_t* ensemble = malloc( sizeof(ensemble_t) );
+  if (ensemble == NULL)
+  {
+    free(data);
+    data = NULL;
+    return NULL;
+  }
 
-  return points;
+  ensemble -> points = ( (point_t*) data );
+  ensemble -> temp = ensemble -> points + numel;
+  ensemble -> numel = ( (size_t*) (ensemble -> temp + numel) );
+  ensemble -> data = data;
+  data = NULL;
+
+  point_t* points = ensemble -> points;
+  point_t* temp = ensemble -> temp;
+
+  init(points, numel);
+  init(temp, numel);
+
+  *(ensemble -> numel) = numel;
+
+  return ensemble;
 }
 
 
-point_t* destroy (point_t* points)
+ensemble_t* destroy (ensemble_t* ensemble)
 {
-  if (points == NULL)
+  if (ensemble == NULL)
   {
-    return points;
+    return ensemble;
   }
 
-  free(points);
-  points = NULL;
-  return points;
+  free(ensemble -> data);
+  ensemble -> data = NULL;
+  ensemble -> points = NULL;
+  ensemble -> temp = NULL;
+  ensemble -> numel = NULL;
+
+  free(ensemble);
+  ensemble = NULL;
+  return ensemble;
 }
 
 
