@@ -8,6 +8,7 @@ typedef struct
   size_t id;
   void (*set) (void* point, double const x, double const y, size_t const id);
   void (*log) (const void* point);
+  void (*clone) (void* dst, const void* src);
   double (*dist) (const void* point1, const void* point2);
 } point_t;
 

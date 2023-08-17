@@ -63,6 +63,16 @@ static void setter (void* vpoint, double const x, double const y, size_t const i
 }
 
 
+static void cloner (void* vdst, const void* vsrc)
+{
+  point_t* dst = vdst;
+  const point_t* src = vsrc;
+  dst -> x = src -> x;
+  dst -> y = src -> y;
+  dst -> id = src -> id;
+}
+
+
 static void logger (const void* vpoint)
 {
   const point_t* point = vpoint;
@@ -106,6 +116,19 @@ static double distance (const void* vpoint1, const void* vpoint2)
 }
 
 
+void copy (point_t* dst, const point_t* src, size_t const numel)
+{
+  point_t* idst = dst;
+  const point_t* isrc = src;
+  for (size_t i = 0; i != numel; ++i)
+  {
+    idst -> clone(idst, isrc);
+    ++idst;
+    ++isrc;
+  }
+}
+
+
 void init (point_t* points, size_t const numel)
 {
   point_t* point = points;
@@ -116,6 +139,7 @@ void init (point_t* points, size_t const numel)
     double const y = INFINITY;
     point -> set = setter;
     point -> log = logger;
+    point -> clone = cloner;
     point -> dist = distance;
     point -> set(point, x, y, id);
     ++point;
@@ -151,6 +175,125 @@ static void logClosestPair (const void* vclosestPair)
   double const second = closestPair -> second;
   double const distance = closestPair -> dist;
   printf("first: %.0f second: %.0f distance: %e\n", first, second, distance);
+}
+
+
+bool sorted (const ensemble_t* ensemble, size_t const beg, size_t const end,
+	    int (*comp) (const point_t* point1, const point_t* point2))
+{
+  bool sorted = true;
+  const point_t* points = ensemble -> points;
+  const point_t* point = points;
+  for (size_t i = beg; i != (end - 1); ++i)
+  {
+    const point_t* pnt1 = point;
+    const point_t* pnt2 = (point + 1);
+    if (comp(pnt2, pnt1) == -1)
+    {
+      sorted = false;
+      return sorted;
+    }
+    ++point;
+  }
+  return sorted;
+}
+
+
+void direct(ensemble_t* ensemble, size_t const beg, size_t const end,
+	    int (*comp) (const point_t* point1, const point_t* point2))
+{
+  size_t const offset = beg;
+  point_t* point1 = ensemble -> points + offset;
+  point_t* point2 = ensemble -> points + (offset + 1);
+
+  point_t* smallerPoint = ensemble -> temp;
+  if (comp(point2, point1) == -1)
+  {
+    smallerPoint -> clone(smallerPoint, point2);
+    point2 -> clone(point2, point1);
+    point1 -> clone(point1, smallerPoint);
+  }
+}
+
+
+void combine (ensemble_t* ensemble, size_t const beg, size_t const end,
+	      int (*comp) (const point_t* point1, const point_t* point2))
+{
+  size_t const beginLeft = beg;
+  size_t const endLeft = beg + ( (end - beg) / 2 );
+  size_t const beginRight = beg + ( (end - beg) / 2 );
+  size_t const endRight = end;
+
+  size_t iterLeft = beginLeft;
+  size_t iterRight = beginRight;
+  point_t* points = ensemble -> points;
+  point_t* dst = ensemble -> temp;
+  while ( (iterLeft != endLeft) && (iterRight != endRight) )
+  {
+    point_t* pointLeft = points + iterLeft;
+    point_t* pointRight = points + iterRight;
+    if (comp(pointLeft, pointRight) == -1)
+    {
+      point_t* smallerPoint = pointLeft;
+      dst -> clone(dst, smallerPoint);
+      ++iterLeft;
+    }
+    else
+    {
+      point_t* smallerPoint = pointRight;
+      dst -> clone(dst, smallerPoint);
+      ++iterRight;
+    }
+    ++dst;
+  }
+
+  size_t b = iterLeft;
+  size_t e = endLeft;
+  const point_t* src = (points + b);
+  copy(dst, src, e - b);
+
+  dst += (e - b);
+
+  b = iterRight;
+  e = endRight;
+  src = (points + b);
+  copy(dst, src, e - b);
+
+  dst = (points + beg);
+  src = ensemble -> temp;
+  copy(dst, src, end - beg);
+}
+
+
+void sort(ensemble_t* ensemble, size_t const beg, size_t const end,
+	  int (*comp) (const point_t* point1, const point_t* point2))
+{
+  size_t const numel = (end - beg);
+  for (size_t i = 0; i != numel; i += 2)
+  {
+    size_t const offset = beg;
+    size_t const b = (i + offset);
+    size_t const e = ( (i + 1) + offset);
+    direct(ensemble, b, e, comp);
+  }
+
+  if (numel == 2)
+  {
+    return;
+  }
+
+  for (size_t stride = 4; stride != numel; stride *= 2)
+  {
+    for (size_t i = 0; i != numel; i += stride)
+    {
+      size_t const offset = beg;
+      size_t const b = (i + offset);
+      size_t const e = ( (i + stride) + offset );
+      combine(ensemble, b, e, comp);
+    }
+  }
+
+  combine(ensemble, beg, end, comp);
 }
 
 
