@@ -3,12 +3,16 @@
 #include <math.h>
 #include "util.h"
 
-#define iNUMEL 8
+#define RUNS 16
+#define REPS 1024
+#define iNUMEL 2
 
+void test_sort();
 void test_bruteForce();
 
 int main ()
 {
+  test_sort();
   test_bruteForce();
   return 0;
 }
@@ -127,6 +131,49 @@ void test_bruteForce ()
 
   ensemble = destroy(ensemble);
   closestPair = deconstruct(closestPair);
+}
+
+
+void test_sort ()
+{
+  bool failed = false;
+  size_t numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    ensemble_t* ensemble = create(numel);
+
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      initialize(ensemble);
+
+      sort(ensemble, 0, numel, xcompare);
+
+      failed = !sorted(ensemble, 0, numel, xcompare);
+      if (failed)
+      {
+	break;
+      }
+    }
+
+    if (failed)
+    {
+      ensemble = destroy(ensemble);
+      break;
+    }
+
+    ensemble = destroy(ensemble);
+    numel *= 2;
+  }
+
+  printf("test-sort[0]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
 }
 
 
