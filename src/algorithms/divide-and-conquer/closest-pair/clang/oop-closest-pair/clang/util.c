@@ -6,6 +6,14 @@
 #include "util.h"
 
 
+double getElapsedTime (const struct timespec* b, const struct timespec* e)
+{
+  double begin = ( (double) (b -> tv_nsec) ) + 1.0e9 * ( (double) (b -> tv_sec) );
+  double end   = ( (double) (e -> tv_nsec) ) + 1.0e9 * ( (double) (e -> tv_sec) );
+  return (end - begin);
+}
+
+
 double urand (double const size)
 {
   double const lim = (size * size);
@@ -36,20 +44,20 @@ static int compare (double const x1, double const x2)
 
 int xcompare (const point_t* point1, const point_t* point2)
 {
-  double const x1 = point1 -> x;
-  double const y1 = point1 -> y;
-  double const x2 = point2 -> x;
-  double const y2 = point2 -> y;
+  double const x1 = point1 -> _x;
+  double const y1 = point1 -> _y;
+  double const x2 = point2 -> _x;
+  double const y2 = point2 -> _y;
   return ( (x1 != x2)? compare(x1, x2) : compare(y1, y2) );
 }
 
 
 int ycompare (const point_t* point1, const point_t* point2)
 {
-  double const x1 = point1 -> x;
-  double const y1 = point1 -> y;
-  double const x2 = point2 -> x;
-  double const y2 = point2 -> y;
+  double const x1 = point1 -> _x;
+  double const y1 = point1 -> _y;
+  double const x2 = point2 -> _x;
+  double const y2 = point2 -> _y;
   return ( (y1 != y2)? compare(y1, y2) : compare(x1, x2) );
 }
 
@@ -57,9 +65,16 @@ int ycompare (const point_t* point1, const point_t* point2)
 static void setter (void* vpoint, double const x, double const y, size_t const id)
 {
   point_t* point = vpoint;
-  point -> x = x;
-  point -> y = y;
-  point -> id = id;
+  point -> _x = x;
+  point -> _y = y;
+  point -> _id = id;
+}
+
+
+static size_t id_getter (const void* vpoint)
+{
+  const point_t* point = vpoint;
+  return (point -> _id);
 }
 
 
@@ -67,25 +82,25 @@ static void cloner (void* vdst, const void* vsrc)
 {
   point_t* dst = vdst;
   const point_t* src = vsrc;
-  dst -> x = src -> x;
-  dst -> y = src -> y;
-  dst -> id = src -> id;
+  dst -> _x = src -> _x;
+  dst -> _y = src -> _y;
+  dst -> _id = src -> _id;
 }
 
 
 static void logger (const void* vpoint)
 {
   const point_t* point = vpoint;
-  double const x = point -> x;
-  double const y = point -> y;
-  size_t const id = point -> id;
+  double const x = point -> _x;
+  double const y = point -> _y;
+  size_t const id = point -> _id;
   printf("x: %+e y: %+e id: %lu\n", x, y, id);
 }
 
 
 bool isEqual (const point_t* point1, const point_t* point2)
 {
-  return ( (xcompare(point1, point2) == 0) && (point1 -> id == point2 -> id) );
+  return ( (xcompare(point1, point2) == 0) && (point1 -> _id == point2 -> _id) );
 }
 
 
@@ -108,11 +123,31 @@ static double distance (const void* vpoint1, const void* vpoint2)
 {
   const point_t* point1 = vpoint1;
   const point_t* point2 = vpoint2;
-  double const x1 = point1 -> x;
-  double const y1 = point1 -> y;
-  double const x2 = point2 -> x;
-  double const y2 = point2 -> y;
+  double const x1 = point1 -> _x;
+  double const y1 = point1 -> _y;
+  double const x2 = point2 -> _x;
+  double const y2 = point2 -> _y;
   return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
+}
+
+
+static double distance_x (const void* vpoint1, const void* vpoint2)
+{
+  const point_t* point1 = vpoint1;
+  const point_t* point2 = vpoint2;
+  double const x1 = point1 -> _x;
+  double const x2 = point2 -> _x;
+  return ( (x1 - x2) * (x1 - x2) );
+}
+
+
+static double distance_y (const void* vpoint1, const void* vpoint2)
+{
+  const point_t* point1 = vpoint1;
+  const point_t* point2 = vpoint2;
+  double const y1 = point1 -> _y;
+  double const y2 = point2 -> _y;
+  return ( (y1 - y2) * (y1 - y2) );
 }
 
 
@@ -141,9 +176,33 @@ void init (point_t* points, size_t const numel)
     point -> log = logger;
     point -> clone = cloner;
     point -> dist = distance;
+    point -> dist_x = distance_x;
+    point -> dist_y = distance_y;
+    point -> getID = id_getter;
     point -> set(point, x, y, id);
     ++point;
   }
+}
+
+
+static size_t getFirstClosestPair (const void* vclosestPair)
+{
+  const pair_t* closestPair = vclosestPair;
+  return closestPair -> _first;
+}
+
+
+static size_t getSecondClosestPair (const void* vclosestPair)
+{
+  const pair_t* closestPair = vclosestPair;
+  return closestPair -> _second;
+}
+
+
+static double getDistanceClosestPair (const void* vclosestPair)
+{
+  const pair_t* closestPair = vclosestPair;
+  return closestPair -> _dist;
 }
 
 
@@ -155,26 +214,72 @@ static void setClosestPair (void* vclosestPair,
   pair_t* closestPair = vclosestPair;
   if (first < second)
   {
-    closestPair -> first = first;
-    closestPair -> second = second;
-    closestPair -> dist = dist;
+    closestPair -> _first = first;
+    closestPair -> _second = second;
+    closestPair -> _dist = dist;
   }
   else
   {
-    closestPair -> first = second;
-    closestPair -> second = first;
-    closestPair -> dist = dist;
+    closestPair -> _first = second;
+    closestPair -> _second = first;
+    closestPair -> _dist = dist;
   }
+}
+
+
+static void minClosestPair (void* vclosestPair,
+			    const void* vclosestPairLeft,
+			    const void* vclosestPairRight)
+{
+  pair_t* closestPair = vclosestPair;
+  const pair_t* closestPairLeft = vclosestPairLeft;
+  const pair_t* closestPairRight = vclosestPairRight;
+
+  double dmin = INFINITY;
+  size_t first = 0xffffffffffffffff;
+  size_t second = 0xffffffffffffffff;
+  double const minDistLeft = closestPairLeft -> _dist;
+  double const minDistRight = closestPairRight -> _dist;
+  if (minDistLeft < minDistRight)
+  {
+    dmin = minDistLeft;
+    first = closestPairLeft -> _first;
+    second = closestPairLeft -> _second;
+  }
+  else
+  {
+    dmin = minDistRight;
+    first = closestPairRight -> _first;
+    second = closestPairRight -> _second;
+  }
+  closestPair -> set(closestPair, first, second, dmin);
 }
 
 
 static void logClosestPair (const void* vclosestPair)
 {
   const pair_t* closestPair = vclosestPair;
-  double const first = closestPair -> first;
-  double const second = closestPair -> second;
-  double const distance = closestPair -> dist;
-  printf("first: %.0f second: %.0f distance: %e\n", first, second, distance);
+  size_t const first = closestPair -> _first;
+  size_t const second = closestPair -> _second;
+  double const distance = closestPair -> _dist;
+  printf("first: %lu second: %lu distance: %e\n", first, second, distance);
+}
+
+
+bool cmpClosestPair (const void* vclosestPair1, const void* vclosestPair2)
+{
+  const pair_t* closestPair1 = vclosestPair1;
+  const pair_t* closestPair2 = vclosestPair2;
+
+  size_t const i = closestPair1 -> _first;
+  size_t const j = closestPair1 -> _second;
+  double const d1 = closestPair1 -> _dist;
+
+  size_t const n = closestPair2 -> _first;
+  size_t const m = closestPair2 -> _second;
+  double const d2 = closestPair2 -> _dist;
+
+  return ( ( (i == n) && (j == m) && (d1 == d2) )? true : false );
 }
 
 
@@ -199,8 +304,8 @@ bool sorted (const ensemble_t* ensemble, size_t const beg, size_t const end,
 }
 
 
-void direct(ensemble_t* ensemble, size_t const beg, size_t const end,
-	    int (*comp) (const point_t* point1, const point_t* point2))
+static void direct (ensemble_t* ensemble, size_t const beg, size_t const end,
+		    int (*comp) (const point_t* point1, const point_t* point2))
 {
   size_t const offset = beg;
   point_t* point1 = ensemble -> points + offset;
@@ -216,8 +321,8 @@ void direct(ensemble_t* ensemble, size_t const beg, size_t const end,
 }
 
 
-void combine (ensemble_t* ensemble, size_t const beg, size_t const end,
-	      int (*comp) (const point_t* point1, const point_t* point2))
+static void combine(ensemble_t* ensemble, size_t const beg, size_t const end,
+		    int (*comp) (const point_t* point1, const point_t* point2))
 {
   size_t const beginLeft = beg;
   size_t const endLeft = beg + ( (end - beg) / 2 );
@@ -306,11 +411,16 @@ pair_t* construct ()
     return NULL;
   }
 
-  closestPair -> first = 0xffffffffffffffff;
-  closestPair -> second = 0xffffffffffffffff;
-  closestPair -> dist = INFINITY;
+  closestPair -> _first = 0xffffffffffffffff;
+  closestPair -> _second = 0xffffffffffffffff;
+  closestPair -> _dist = INFINITY;
   closestPair -> set = setClosestPair;
+  closestPair -> min = minClosestPair;
+  closestPair -> cmp = cmpClosestPair;
   closestPair -> log = logClosestPair;
+  closestPair -> getFirst = getFirstClosestPair;
+  closestPair -> getSecond = getSecondClosestPair;
+  closestPair -> getDistance = getDistanceClosestPair;
   return closestPair;
 }
 
