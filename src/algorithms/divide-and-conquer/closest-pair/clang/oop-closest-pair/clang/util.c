@@ -6,6 +6,14 @@
 #include "util.h"
 
 
+double getElapsedTime (const struct timespec* b, const struct timespec* e)
+{
+  double begin = ( (double) (b -> tv_nsec) ) + 1.0e9 * ( (double) (b -> tv_sec) );
+  double end   = ( (double) (e -> tv_nsec) ) + 1.0e9 * ( (double) (e -> tv_sec) );
+  return (end - begin);
+}
+
+
 double urand (double const size)
 {
   double const lim = (size * size);

@@ -9,11 +9,13 @@
 
 void test_sort();
 void test_bruteForce();
+void complexity_sort();
 
 int main ()
 {
-  test_sort();
-  test_bruteForce();
+//test_sort();
+//test_bruteForce();
+  complexity_sort();
   return 0;
 }
 
@@ -177,6 +179,83 @@ void test_sort ()
 }
 
 
+void complexity_sort ()
+{
+  bool failed = false;
+  double etimes[RUNS];
+  size_t numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    ensemble_t* ensemble = create(numel);
+
+    double etime = 0;
+    struct timespec end;
+    struct timespec begin;
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      initialize(ensemble);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+
+      sort(ensemble, 0, numel, xcompare);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+      etime += getElapsedTime(&begin, &end);
+
+      failed = !sorted(ensemble, 0, numel, xcompare);
+      if (failed)
+      {
+	break;
+      }
+    }
+
+    etimes[run] = etime / ( (double) REPS );
+
+    if (failed)
+    {
+      ensemble = destroy(ensemble);
+      break;
+    }
+
+    ensemble = destroy(ensemble);
+    numel *= 2;
+  }
+
+  printf("test-sort[1]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  if (failed)
+  {
+    return;
+  }
+
+  const char fname[] = "complexity-sort.txt";
+  FILE* file = fopen(fname, "w");
+
+  if (file == NULL)
+  {
+    printf("complexity-sort(): IO ERROR with file %s\n", fname);
+    return;
+  }
+
+  numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    fprintf(file, "%lu %.16e\n", numel, etimes[run]);
+    numel *= 2;
+  }
+
+  fclose(file);
+  printf("complexity-sort(): time complexity results have been writen to %s\n", fname);
+}
 /*
 
 Algorithms and Complexity					August 16, 2023
