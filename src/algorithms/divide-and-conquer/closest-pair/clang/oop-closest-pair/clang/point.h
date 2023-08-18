@@ -1,15 +1,23 @@
 #ifndef GUARD_AC_CLOSEST_PAIR_OOP_POINT_TYPE_H
 #define GUARD_AC_CLOSEST_PAIR_OOP_POINT_TYPE_H
 
+#define __POINT_ID_TYPE size_t
+#define __POINT_POSITION_TYPE double
+
 typedef struct
 {
-  double x;
-  double y;
-  size_t id;
+// private:
+  __POINT_POSITION_TYPE _x;
+  __POINT_POSITION_TYPE _y;
+  __POINT_ID_TYPE _id;
+// public:
+  size_t (*getID) (const void* point);
   void (*set) (void* point, double const x, double const y, size_t const id);
   void (*log) (const void* point);
   void (*clone) (void* dst, const void* src);
   double (*dist) (const void* point1, const void* point2);
+  double (*dist_x) (const void* point1, const void* point2);
+  double (*dist_y) (const void* point1, const void* point2);
 } point_t;
 
 #endif

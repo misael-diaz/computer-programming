@@ -1,12 +1,22 @@
 #ifndef GUARD_AC_CLOSEST_PAIR_OOP_PAIR_TYPE_H
 #define GUARD_AC_CLOSEST_PAIR_OOP_PAIR_TYPE_H
 
+#define __PAIR_ID_TYPE size_t
+#define __PAIR_DISTANCE_TYPE double
+
 typedef struct
 {
-  size_t first;
-  size_t second;
-  double dist;
+// private:
+  __PAIR_ID_TYPE _first;
+  __PAIR_ID_TYPE _second;
+  __PAIR_DISTANCE_TYPE _dist;
+// public:
+  size_t (*getFirst)(const void* closestPair);
+  size_t (*getSecond)(const void* closestPair);
+  double (*getDistance)(const void* closestPair);
   void (*set)(void* closestPair, size_t const first, size_t const second, double const d);
+  void (*min)(void* closestPair, const void* pair1, const void* pair2);
+  bool (*cmp)(const void* pair1, const void* pair2);
   void (*log)(const void* closestPair);
 } pair_t;
 
