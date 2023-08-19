@@ -74,8 +74,8 @@ public class Line
   public int loc (Coord c)
   {
     int x = c.getX(), y = c.getY();
-    int diff = dx * (y - y1) + dy * (x1 - x);
-    return Integer.signum(diff);
+    int loc = dx * (y - y1) + dy * (x1 - x);
+    return Integer.signum(loc);
   }
 
   // implementations:
