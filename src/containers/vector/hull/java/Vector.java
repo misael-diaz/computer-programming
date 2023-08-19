@@ -33,7 +33,7 @@ public class Vector
   private int begin;		// beginning of the placeholder (0)
   private int avail;		// available location for writing
   private int limit;		// size limit for storing data
-  private Coord [] data;	// data placeholder
+  private Coord[] data;		// data placeholder
 
 
   // constructors:
@@ -45,7 +45,7 @@ public class Vector
     this.begin = 0;
     this.avail = 0;
     this.limit = DEFAULT_SIZE_LIMIT;
-    this.data  = new Coord [limit];
+    this.data  = new Coord[limit];
   }
 
 
@@ -55,7 +55,7 @@ public class Vector
     this.begin = 0;
     this.avail = 0;
     this.limit = size;
-    this.data  = new Coord [size];
+    this.data  = new Coord[size];
   }
 
 
@@ -73,7 +73,7 @@ public class Vector
 
 
   // returns a clone of the data contained in vector
-  public Coord [] getData ()
+  public Coord[] getData ()
   {
     return Arrays.copyOfRange(data, begin, avail);
   }
@@ -181,7 +181,7 @@ public class Vector
   private void grow (Vector v)
   {
     int limit = v.limit;		// gets current size limit
-    Coord [] tmp = v.data.clone();	// copies data to temporary
+    Coord[] tmp = v.data.clone();	// copies data to temporary
 
     v.limit *= 2;			// doubles size limit
     v.data = new Coord[v.limit];	// doubles allocation
@@ -311,7 +311,7 @@ public class Vector
     vector.sort();	// sorts data contained in vector
 
 
-    Coord [] data = vector.getData();
+    Coord[] data = vector.getData();
     // prints the (sorted) coordinates on the console
     for (int i = 0; i != size; ++i)
     {
@@ -424,7 +424,7 @@ public class Vector
     // Displays Data on the Console
 
 
-    Coord [] data = vector.getData();
+    Coord[] data = vector.getData();
     // prints the (distinct set of) coordinates on the console
     for (int i = 0; i != size; ++i)
     {
