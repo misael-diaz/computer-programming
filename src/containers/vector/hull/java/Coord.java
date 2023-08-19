@@ -72,8 +72,10 @@ public class Coord implements Comparable<Coord>
 
   public static double distance (Coord coord1, Coord coord2)
   {
-    double x1 = coord1.x, y1 = coord1.y;
-    double x2 = coord2.x, y2 = coord2.y;
+    final double x1 = coord1.x;
+    final double y1 = coord1.y;
+    final double x2 = coord2.x;
+    final double y2 = coord2.y;
     return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
   }
 }
