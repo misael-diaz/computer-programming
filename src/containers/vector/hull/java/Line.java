@@ -86,11 +86,7 @@ public class Line
   {
     if (P.compareTo(Q) == 0)
     {
-      String errmsg = (
-	  "InvalidInput: Line(P, Q) constructor " +
-	  "cannot create line from a point (P == Q)"
-	  );
-
+      String errmsg = ("Line(P, Q) constructor cannot create line from a point (P == Q)");
       throw new IllegalArgumentException(errmsg);
     }
   }
