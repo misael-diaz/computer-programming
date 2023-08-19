@@ -228,14 +228,8 @@ public class Vector
   }
 
 
+  //Pushes coordinates unto the back of a vector, clears it, and checks that it is empty.
   private static void testClearMethod ()
-    /*
-
-       Synopsis:
-       Pushes coordinates unto the back of the vector, clears it, and
-       checks that it is empty.
-
-*/
   {
     int size = 32;
     Vector vector = new Vector();
@@ -261,14 +255,9 @@ public class Vector
   }
 
 
+  // Pushes random coordinates unto the back of a vector, sorts it in ascending order,
+  // and checks if the sorting was successful.
   private static void testSortMethod ()
-    /*
-
-       Synopsis:
-       Pushes random coordinates unto the back of the vector, sorts it
-       in ascending order, and checks if the sorting was successful.
-
-*/
   {
     int size = 8;
     Vector vector = new Vector(size);
@@ -378,13 +367,8 @@ public class Vector
   }
 
 
+  // Uses the search method to create a distinct set of (x, y) coordinates.
   private static void testSearchMethod ()
-    /*
-
-       Synopsis:
-       Uses search method to create a distinct set of (x, y) coordinates.
-
-*/
   {
     Vector vector = new Vector();	// creates (empty) vector
     Random random = new Random();	// creates (default) PRNG
