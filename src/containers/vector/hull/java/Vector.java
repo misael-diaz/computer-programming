@@ -6,492 +6,492 @@ import java.util.Comparator;
 public class Vector
 {
 
-	/* defines comparator for y-x sorting of coordinates */
+  /* defines comparator for y-x sorting of coordinates */
 
 
-	public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
-		if ( P.getY() != Q.getY() )
-			return ( P.getY() - Q.getY() );
-		else
-			return ( P.getX() - Q.getX() );
-	};
+  public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
+    if ( P.getY() != Q.getY() )
+      return ( P.getY() - Q.getY() );
+    else
+      return ( P.getX() - Q.getX() );
+  };
 
 
-	/* initializes parameters (not bound to objects of the class) */
+  /* initializes parameters (not bound to objects of the class) */
 
 
-	private static final int DEFAULT_SIZE_LIMIT = (0x00000010);
+  private static final int DEFAULT_SIZE_LIMIT = (0x00000010);
 
 
-	/* defines private data members */
+  /* defines private data members */
 
 
-	private int begin;	// beginning of the placeholder (0)
-	private int avail;	// available location for writing
-	private int limit;	// size limit for storing data
-	private Coord [] data;	// data placeholder
+  private int begin;	// beginning of the placeholder (0)
+  private int avail;	// available location for writing
+  private int limit;	// size limit for storing data
+  private Coord [] data;	// data placeholder
 
 
-	/* constructors */
+  /* constructors */
 
 
-	Vector ()
-	// default constructor: creates a vector of default size limit
-	{
-		this.begin = 0;
-		this.avail = 0;
-		this.limit = DEFAULT_SIZE_LIMIT;
-		this.data  = new Coord [limit];
-	}
+  Vector ()
+    // default constructor: creates a vector of default size limit
+  {
+    this.begin = 0;
+    this.avail = 0;
+    this.limit = DEFAULT_SIZE_LIMIT;
+    this.data  = new Coord [limit];
+  }
 
 
-	Vector (int size)
-	// constructs a vector with requested capacity for storage
-	{
-		this.begin = 0;
-		this.avail = 0;
-		this.limit = size;
-		this.data  = new Coord [size];
-	}
+  Vector (int size)
+    // constructs a vector with requested capacity for storage
+  {
+    this.begin = 0;
+    this.avail = 0;
+    this.limit = size;
+    this.data  = new Coord [size];
+  }
 
 
-	Vector (Vector vector)
-	// copy constructor
-	{
-		this.begin = 0;			// sets to default
-		this.avail = vector.size();	// gets the size
-		this.limit = vector.size();	// fits to size
-		this.data  = vector.getData();	// gets a copy of the data
-	}
+  Vector (Vector vector)
+    // copy constructor
+  {
+    this.begin = 0;			// sets to default
+    this.avail = vector.size();	// gets the size
+    this.limit = vector.size();	// fits to size
+    this.data  = vector.getData();	// gets a copy of the data
+  }
 
 
-	/* getters */
+  /* getters */
 
 
-	public Coord [] getData ()
-	// returns a clone of the data contained in vector
-	{
-		return Arrays.copyOfRange(data, begin, avail);
-	}
+  public Coord [] getData ()
+    // returns a clone of the data contained in vector
+  {
+    return Arrays.copyOfRange(data, begin, avail);
+  }
 
 
-	public Coord getData (int i)
-	// returns a copy of the ith element
-	{
-		return new Coord(this.data[i]);
-	}
+  public Coord getData (int i)
+    // returns a copy of the ith element
+  {
+    return new Coord(this.data[i]);
+  }
 
 
-	/* methods */
+  /* methods */
 
 
-	public void clear ()
-	// effectively clears the vector elements
-	{
-		this.avail = 0;
-	}
+  public void clear ()
+    // effectively clears the vector elements
+  {
+    this.avail = 0;
+  }
 
 
-	public int size ()
-	// returns the number of elements stored in the vector
-	{
-		return (this.avail - this.begin);
-	}
+  public int size ()
+    // returns the number of elements stored in the vector
+  {
+    return (this.avail - this.begin);
+  }
 
 
-	public int capacity ()
-	// returns the storage capacity of the vector
-	{
-		return (this.limit - this.begin);
-	}
+  public int capacity ()
+    // returns the storage capacity of the vector
+  {
+    return (this.limit - this.begin);
+  }
 
 
-	public void push_back (Coord x)
-	// pushes coordinates unto the back of vector
-	{
-		back_inserter (this, x);
-	}
-
-
-	public Vector bisect ()
-	// bisects vector, keeps first half and returns second half
-	{
-		/*
+  public void push_back (Coord x)
+    // pushes coordinates unto the back of vector
+  {
+    back_inserter (this, x);
+  }
+
+
+  public Vector bisect ()
+    // bisects vector, keeps first half and returns second half
+  {
+    /*
 
-		Computes the sizes of the first and second halves,
-		note that these differ when the (original) vector
-		stores an odd number of elements.
+       Computes the sizes of the first and second halves,
+       note that these differ when the (original) vector
+       stores an odd number of elements.
 
-		*/
-
-		int size = this.size();			// original size
-		int sizeHalf1 = (size / 2);		// first-half size
-		int sizeHalf2 = (size - sizeHalf1);	// second-half size
+*/
+
+    int size = this.size();			// original size
+    int sizeHalf1 = (size / 2);		// first-half size
+    int sizeHalf2 = (size - sizeHalf1);	// second-half size
 
-		// creates the (fitted-to-size) returned vector
-		Vector ret = new Vector(sizeHalf2);
-		// copies data in second half into the returned vector
-		for (int i = 0; i != sizeHalf2; ++i)
-			ret.data[i] = new Coord(this.data[i + sizeHalf1]);
+    // creates the (fitted-to-size) returned vector
+    Vector ret = new Vector(sizeHalf2);
+    // copies data in second half into the returned vector
+    for (int i = 0; i != sizeHalf2; ++i)
+      ret.data[i] = new Coord(this.data[i + sizeHalf1]);
 
-		// effectively deletes second half from (original) vector
-		this.avail = sizeHalf1;
-		// sets the size of the returned vector
-		ret.avail  = sizeHalf2;
-		// returns the vector that contains the second half
-		return ret;
-	}
+    // effectively deletes second half from (original) vector
+    this.avail = sizeHalf1;
+    // sets the size of the returned vector
+    ret.avail  = sizeHalf2;
+    // returns the vector that contains the second half
+    return ret;
+  }
 
 
-	public void sort ()
-	// delegates the task of sorting to the sort method of Arrays
-	{
-		Arrays.sort (this.data, this.begin, this.avail);
-	}
+  public void sort ()
+    // delegates the task of sorting to the sort method of Arrays
+  {
+    Arrays.sort (this.data, this.begin, this.avail);
+  }
 
 
-	public void sort (Comparator<Coord> comp)
-	// delegates the task of sorting to the sort method of Arrays
-	{
-		Arrays.sort (data, begin, avail, comp);
-	}
+  public void sort (Comparator<Coord> comp)
+    // delegates the task of sorting to the sort method of Arrays
+  {
+    Arrays.sort (data, begin, avail, comp);
+  }
 
 
-	public int search (Coord key)
-	// delegates the task to the Binary Search method of Arrays
-	{
-		return Arrays.binarySearch (data, begin, avail, key);
-	}
+  public int search (Coord key)
+    // delegates the task to the Binary Search method of Arrays
+  {
+    return Arrays.binarySearch (data, begin, avail, key);
+  }
 
 
-	public int search (Coord key, Comparator<Coord> comp)
-	// delegates the task to the Binary Search method of Arrays
-	{
-		return Arrays.binarySearch (data, begin, avail, key, comp);
-	}
+  public int search (Coord key, Comparator<Coord> comp)
+    // delegates the task to the Binary Search method of Arrays
+  {
+    return Arrays.binarySearch (data, begin, avail, key, comp);
+  }
 
 
-	public void print ()
-	// prints the (x, y) coordinates on the console
-	{
-		int size = this.size();
-		for (int i = 0; i != size; ++i)
-		{
-			Coord c = this.data[i];
-			String fmt = ("x, y = (%8d, %8d)\n");
-			System.out.printf(fmt, c.getX(), c.getY());
-		}
-	}
+  public void print ()
+    // prints the (x, y) coordinates on the console
+  {
+    int size = this.size();
+    for (int i = 0; i != size; ++i)
+    {
+      Coord c = this.data[i];
+      String fmt = ("x, y = (%8d, %8d)\n");
+      System.out.printf(fmt, c.getX(), c.getY());
+    }
+  }
 
 
-	/* implementations */
+  /* implementations */
 
 
-	private void back_inserter (Vector v, Coord x)
-	// pushes data into the back of vector
-	{
-		int avail = v.avail;	// gets vector size
-		int limit = v.limit;	// gets vector size limit
+  private void back_inserter (Vector v, Coord x)
+    // pushes data into the back of vector
+  {
+    int avail = v.avail;	// gets vector size
+    int limit = v.limit;	// gets vector size limit
 
-		if (avail == limit)	// checks if there's space left
-			grow (v);	// doubles the vector size limit
+    if (avail == limit)	// checks if there's space left
+      grow (v);	// doubles the vector size limit
 
-		v.data[avail] = x;	// writes at available location
-		++v.avail;		// increments vector size
-	}
+    v.data[avail] = x;	// writes at available location
+    ++v.avail;		// increments vector size
+  }
 
 
-	private void grow (Vector v)
-	// doubles the vector size
-	{
-		int limit = v.limit;		// gets current size limit
-		Coord [] tmp = v.data.clone();	// copies data to temporary
+  private void grow (Vector v)
+    // doubles the vector size
+  {
+    int limit = v.limit;		// gets current size limit
+    Coord [] tmp = v.data.clone();	// copies data to temporary
 
-		v.limit *= 2;			// doubles size limit
-		v.data = new Coord[v.limit];	// doubles allocation
-		for (int i = 0; i != limit; ++i)// restores data
-			v.data[i] = tmp[i];
-	}
+    v.limit *= 2;			// doubles size limit
+    v.data = new Coord[v.limit];	// doubles allocation
+    for (int i = 0; i != limit; ++i)// restores data
+      v.data[i] = tmp[i];
+  }
 
 
 
-	public static void main (String[] args)
-	// tests the methods of the vector class
-	{
-		testPushBackMethod();
-		testClearMethod();
-		testSortMethod();
-		testSearchMethod();
-		return;
-	}
+  public static void main (String[] args)
+    // tests the methods of the vector class
+  {
+    testPushBackMethod();
+    testClearMethod();
+    testSortMethod();
+    testSearchMethod();
+    return;
+  }
 
 
-	/* tests */
+  /* tests */
 
 
-	private static void testPushBackMethod ()
-	/*
+  private static void testPushBackMethod ()
+    /*
 
-	Synopsis:
-	Pushes coordinates unto the back of the vector and checks its size.
+       Synopsis:
+       Pushes coordinates unto the back of the vector and checks its size.
 
-	*/
-	{
-		int size = 32;
-		Vector vector = new Vector ();
-		for (int i = 0; i != size; ++i)
-			vector.push_back ( new Coord(i, i) );
+*/
+  {
+    int size = 32;
+    Vector vector = new Vector ();
+    for (int i = 0; i != size; ++i)
+      vector.push_back ( new Coord(i, i) );
 
-		System.out.printf("push-back-method-test: ");
-		// checks the vector size against the expected size
-		if (vector.size() != size)
-			System.out.println("FAIL");
-		else
-			System.out.println("pass");
-	}
+    System.out.printf("push-back-method-test: ");
+    // checks the vector size against the expected size
+    if (vector.size() != size)
+      System.out.println("FAIL");
+    else
+      System.out.println("pass");
+  }
 
 
-	private static void testClearMethod ()
-	/*
+  private static void testClearMethod ()
+    /*
 
-	Synopsis:
-	Pushes coordinates unto the back of the vector, clears it, and
-	checks that it is empty.
+       Synopsis:
+       Pushes coordinates unto the back of the vector, clears it, and
+       checks that it is empty.
 
-	*/
-	{
-		int size = 32;
-		Vector vector = new Vector ();
-		for (int i = 0; i != size; ++i)
-			vector.push_back ( new Coord(i, i) );
+*/
+  {
+    int size = 32;
+    Vector vector = new Vector ();
+    for (int i = 0; i != size; ++i)
+      vector.push_back ( new Coord(i, i) );
 
 
-		vector.clear ();	// clears vector
+    vector.clear ();	// clears vector
 
 
-		System.out.printf("clear-method-test: ");
-		// checks the vector size against the expected size
-		if (vector.size() != 0)
-			System.out.println("FAIL");
-		else
-			System.out.println("pass");
-	}
+    System.out.printf("clear-method-test: ");
+    // checks the vector size against the expected size
+    if (vector.size() != 0)
+      System.out.println("FAIL");
+    else
+      System.out.println("pass");
+  }
 
 
-	private static void testSortMethod ()
-	/*
+  private static void testSortMethod ()
+    /*
 
-	Synopsis:
-	Pushes random coordinates unto the back of the vector, sorts it
-	in ascending order, and checks if the sorting was successful.
+       Synopsis:
+       Pushes random coordinates unto the back of the vector, sorts it
+       in ascending order, and checks if the sorting was successful.
 
-	*/
-	{
-		int size = 8;
-		Vector vector = new Vector (size);
+*/
+  {
+    int size = 8;
+    Vector vector = new Vector (size);
 
-		/*
+    /*
 
-		NullPointerException Test: Sorts Empty Vector
+       NullPointerException Test: Sorts Empty Vector
 
-		Passes test if no exception is thrown when executed.
+       Passes test if no exception is thrown when executed.
 
-		Note that the exception should not occur because the sort
-		method of the vector class specifies the sorting range.
+       Note that the exception should not occur because the sort
+       method of the vector class specifies the sorting range.
 
-		*/
+*/
 
-		vector.sort();
+    vector.sort();
 
 
-		/* Pushes data unto back vector */
+    /* Pushes data unto back vector */
 
 
-		Random random = new Random ();
-		for (int i = 0; i != size; ++i)
-		// fills vector with random coordinates
-		{
-			int x = random.nextInt (size);
-			int y = random.nextInt (size);
-			Coord coord = new Coord (x, y);
-			vector.push_back (coord);
-		}
+    Random random = new Random ();
+    for (int i = 0; i != size; ++i)
+      // fills vector with random coordinates
+    {
+      int x = random.nextInt (size);
+      int y = random.nextInt (size);
+      Coord coord = new Coord (x, y);
+      vector.push_back (coord);
+    }
 
 
-		vector.sort();	// sorts data contained in vector
+    vector.sort();	// sorts data contained in vector
 
 
-		Coord [] data = vector.getData();
-		for (int i = 0; i != size; ++i)
-		// prints the (sorted) coordinates on the console
-		{
-			int x = data[i].getX();
-			int y = data[i].getY();
-			System.out.printf("x: %2d y: %2d\n", x, y);
-		}
+    Coord [] data = vector.getData();
+    for (int i = 0; i != size; ++i)
+      // prints the (sorted) coordinates on the console
+    {
+      int x = data[i].getX();
+      int y = data[i].getY();
+      System.out.printf("x: %2d y: %2d\n", x, y);
+    }
 
 
-		int failures = 0;
-		for (int i = 0; i != (size - 1); ++i)
-		// counts failures (not in ascending order instances)
-		{
-			Coord thisCoord = data[i], nextCoord = data[i + 1];
-			if (thisCoord.compareTo(nextCoord) > 0)
-				++failures;
-		}
+    int failures = 0;
+    for (int i = 0; i != (size - 1); ++i)
+      // counts failures (not in ascending order instances)
+    {
+      Coord thisCoord = data[i], nextCoord = data[i + 1];
+      if (thisCoord.compareTo(nextCoord) > 0)
+	++failures;
+    }
 
 
-		System.out.printf("sort-method-test[0]: ");
-		// checks if the sorting method failed (unexpectedly)
-		if (failures != 0)
-			System.out.println("FAIL");
-		else
-			System.out.println("pass");
+    System.out.printf("sort-method-test[0]: ");
+    // checks if the sorting method failed (unexpectedly)
+    if (failures != 0)
+      System.out.println("FAIL");
+    else
+      System.out.println("pass");
 
 
-		/* performs y - x sorting */
+    /* performs y - x sorting */
 
 
-		vector.sort(comparator);
-		data = vector.getData();
-		System.out.println("y-x sorting:");
-		for (int i = 0; i != size; ++i)
-		// prints the (sorted) coordinates on the console
-		{
-			int x = data[i].getX();
-			int y = data[i].getY();
-			System.out.printf("x: %2d y: %2d\n", x, y);
-		}
+    vector.sort(comparator);
+    data = vector.getData();
+    System.out.println("y-x sorting:");
+    for (int i = 0; i != size; ++i)
+      // prints the (sorted) coordinates on the console
+    {
+      int x = data[i].getX();
+      int y = data[i].getY();
+      System.out.printf("x: %2d y: %2d\n", x, y);
+    }
 
 
-		failures = 0;
-		for (int i = 0; i != (size - 1); ++i)
-		// counts failures (not in ascending order instances)
-		{
-			Coord thisCoord = data[i], nextCoord = data[i + 1];
-			if (comparator.compare(thisCoord, nextCoord) > 0)
-				++failures;
-		}
+    failures = 0;
+    for (int i = 0; i != (size - 1); ++i)
+      // counts failures (not in ascending order instances)
+    {
+      Coord thisCoord = data[i], nextCoord = data[i + 1];
+      if (comparator.compare(thisCoord, nextCoord) > 0)
+	++failures;
+    }
 
 
-		System.out.printf("sort-method-test[1]: ");
-		// checks if the sorting method failed (unexpectedly)
-		if (failures != 0)
-			System.out.println("FAIL\n");
-		else
-			System.out.println("pass\n");
-	}
+    System.out.printf("sort-method-test[1]: ");
+    // checks if the sorting method failed (unexpectedly)
+    if (failures != 0)
+      System.out.println("FAIL\n");
+    else
+      System.out.println("pass\n");
+  }
 
 
-	private static void testSearchMethod ()
-	/*
+  private static void testSearchMethod ()
+    /*
 
-	Synopsis:
-	Uses search method to create a distinct set of (x, y) coordinates.
+       Synopsis:
+       Uses search method to create a distinct set of (x, y) coordinates.
 
-	*/
-	{
-		Vector vector = new Vector ();	// creates (empty) vector
-		Random random = new Random ();	// creates (default) PRNG
+*/
+  {
+    Vector vector = new Vector ();	// creates (empty) vector
+    Random random = new Random ();	// creates (default) PRNG
 
 
-		/* creates data set from random data */
+    /* creates data set from random data */
 
 
-		int size = (0x00000010);
-		for (int i = 0; i != size; ++i)
-		// generates the distinct set of (x, y) coordinates
-		{
-			int x = random.nextInt(size);
-			int y = random.nextInt(size);
-			Coord c = new Coord (x, y);
-			while (vector.search(c) >= 0)
-			// generates a new coordinate if already in vector
-			{
-				x = random.nextInt(size);
-				y = random.nextInt(size);
-				c = new Coord (x, y);
-			}
-			// pushes (distinct) coordinate unto back of vector
-			vector.push_back(c);
-			// sorts to use binary search on next pass
-			vector.sort();
-		}
+    int size = (0x00000010);
+    for (int i = 0; i != size; ++i)
+      // generates the distinct set of (x, y) coordinates
+    {
+      int x = random.nextInt(size);
+      int y = random.nextInt(size);
+      Coord c = new Coord (x, y);
+      while (vector.search(c) >= 0)
+	// generates a new coordinate if already in vector
+      {
+	x = random.nextInt(size);
+	y = random.nextInt(size);
+	c = new Coord (x, y);
+      }
+      // pushes (distinct) coordinate unto back of vector
+      vector.push_back(c);
+      // sorts to use binary search on next pass
+      vector.sort();
+    }
 
 
-		/* Displays Data on the Console */
+    /* Displays Data on the Console */
 
 
-		Coord [] data = vector.getData();
-		for (int i = 0; i != size; ++i)
-		// prints the (distinct set of) coordinates on the console
-		{
-			int x = data[i].getX();
-			int y = data[i].getY();
-			System.out.printf("x: %2d y: %2d\n", x, y);
-		}
+    Coord [] data = vector.getData();
+    for (int i = 0; i != size; ++i)
+      // prints the (distinct set of) coordinates on the console
+    {
+      int x = data[i].getX();
+      int y = data[i].getY();
+      System.out.printf("x: %2d y: %2d\n", x, y);
+    }
 
 
-		/* Duplicates Test */
+    /* Duplicates Test */
 
 
-		int duplicates = 0;
-		for (int i = 0; i != (size - 1); ++i)
-		// counts duplicates by checking for equality
-		{
-			Coord thisCoord = data[i], nextCoord = data[i + 1];
-			if (thisCoord.compareTo(nextCoord) == 0)
-				++duplicates;
-		}
+    int duplicates = 0;
+    for (int i = 0; i != (size - 1); ++i)
+      // counts duplicates by checking for equality
+    {
+      Coord thisCoord = data[i], nextCoord = data[i + 1];
+      if (thisCoord.compareTo(nextCoord) == 0)
+	++duplicates;
+    }
 
-		System.out.printf("search-method-test[0]: ");
-		if (duplicates != 0)
-			System.out.println("FAIL");
-		else
-			System.out.println("pass");
+    System.out.printf("search-method-test[0]: ");
+    if (duplicates != 0)
+      System.out.println("FAIL");
+    else
+      System.out.println("pass");
 
 
-		/*
+    /*
 
-		Performs y - x sorting test:
+       Performs y - x sorting test:
 
-		Test consists on searching the x-y sorted data after the
-		vector has been y-x sorted. We increment the number of
-		failures every time the method fails to find an element.
+       Test consists on searching the x-y sorted data after the
+       vector has been y-x sorted. We increment the number of
+       failures every time the method fails to find an element.
 
-		Note that if the comparator is not supplied to the binary
-		search method, it will fail sometimes because the data has
-		been y-x sorted while the method assumes x-y sorting.
-		On the other hand, when the comparator is supplied the
-		search is successful.
+       Note that if the comparator is not supplied to the binary
+       search method, it will fail sometimes because the data has
+       been y-x sorted while the method assumes x-y sorting.
+       On the other hand, when the comparator is supplied the
+       search is successful.
 
-		*/
+*/
 
 
-		int failures = 0;		// initializes counter
-		data = vector.getData();	// gets x - y sorted data
-		vector.sort(comparator);	// does y - x sorting
-		for (int i = 0; i != size; ++i)
-		// searches the x-y sorted data in the y-x sorted vector
-		{
-			Coord c = data[i];
-			if (vector.search(c, comparator) < 0)
-				++failures;
-		}
+    int failures = 0;		// initializes counter
+    data = vector.getData();	// gets x - y sorted data
+    vector.sort(comparator);	// does y - x sorting
+    for (int i = 0; i != size; ++i)
+      // searches the x-y sorted data in the y-x sorted vector
+    {
+      Coord c = data[i];
+      if (vector.search(c, comparator) < 0)
+	++failures;
+    }
 
 
-		System.out.printf("search-method-test[1]: ");
-		/*
+    System.out.printf("search-method-test[1]: ");
+    /*
 
-		the number of failures should be zero because we are
-		searching for data that we know is contained in the vector
+       the number of failures should be zero because we are
+       searching for data that we know is contained in the vector
 
-		*/
-		if (failures != 0)
-			System.out.println("FAIL");
-		else
-			System.out.println("pass");
-	}
+*/
+    if (failures != 0)
+      System.out.println("FAIL");
+    else
+      System.out.println("pass");
+  }
 }
 
 /*
