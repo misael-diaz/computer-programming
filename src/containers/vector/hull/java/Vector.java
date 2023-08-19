@@ -136,7 +136,9 @@ public class Vector
     Vector ret = new Vector(sizeHalf2);
     // copies data in second half into the returned vector
     for (int i = 0; i != sizeHalf2; ++i)
+    {
       ret.data[i] = new Coord(this.data[i + sizeHalf1]);
+    }
 
     // effectively deletes second half from (original) vector
     this.avail = sizeHalf1;
@@ -214,7 +216,9 @@ public class Vector
     v.limit *= 2;			// doubles size limit
     v.data = new Coord[v.limit];	// doubles allocation
     for (int i = 0; i != limit; ++i)// restores data
+    {
       v.data[i] = tmp[i];
+    }
   }
 
 
@@ -244,7 +248,9 @@ public class Vector
     int size = 32;
     Vector vector = new Vector ();
     for (int i = 0; i != size; ++i)
+    {
       vector.push_back ( new Coord(i, i) );
+    }
 
     System.out.printf("push-back-method-test: ");
     // checks the vector size against the expected size
@@ -271,7 +277,9 @@ public class Vector
     int size = 32;
     Vector vector = new Vector ();
     for (int i = 0; i != size; ++i)
+    {
       vector.push_back ( new Coord(i, i) );
+    }
 
 
     vector.clear ();	// clears vector
@@ -320,8 +328,8 @@ public class Vector
 
 
     Random random = new Random ();
+    // fills vector with random coordinates
     for (int i = 0; i != size; ++i)
-      // fills vector with random coordinates
     {
       int x = random.nextInt (size);
       int y = random.nextInt (size);
@@ -334,8 +342,8 @@ public class Vector
 
 
     Coord [] data = vector.getData();
+    // prints the (sorted) coordinates on the console
     for (int i = 0; i != size; ++i)
-      // prints the (sorted) coordinates on the console
     {
       int x = data[i].getX();
       int y = data[i].getY();
