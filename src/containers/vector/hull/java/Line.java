@@ -91,7 +91,7 @@ public class Line
 	  "cannot create line from a point (P == Q)"
 	  );
 
-      throw new RuntimeException(errmsg);
+      throw new IllegalArgumentException(errmsg);
     }
   }
 }
