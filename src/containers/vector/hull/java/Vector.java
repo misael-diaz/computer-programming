@@ -113,7 +113,7 @@ public class Vector
   // pushes coordinates unto the back of vector
   public void push_back (Coord x)
   {
-    back_inserter(this, x);
+    this.back_inserter(x);
   }
 
 
@@ -162,32 +162,32 @@ public class Vector
 
 
   // pushes data into the back of vector
-  private void back_inserter (Vector v, Coord x)
+  private void back_inserter (Coord x)
   {
-    int avail = v.avail;	// gets vector size
-    int limit = v.limit;	// gets vector size limit
+    int avail = this.avail;	// gets vector size
+    int limit = this.limit;	// gets vector size limit
 
     if (avail == limit)	// checks if there's space left
     {
-      grow(v);	// doubles the vector size limit
+      this.grow();	// doubles the vector size limit
     }
 
-    v.data[avail] = x;	// writes at available location
-    ++v.avail;		// increments vector size
+    this.data[avail] = x;	// writes at available location
+    ++this.avail;		// increments vector size
   }
 
 
   // doubles the vector size
-  private void grow (Vector v)
+  private void grow ()
   {
-    int limit = v.limit;		// gets current size limit
-    Coord[] tmp = v.data.clone();	// copies data to temporary
+    int limit = this.limit;		// gets current size limit
+    Coord[] tmp = this.data.clone();	// copies data to temporary
 
-    v.limit *= 2;			// doubles size limit
-    v.data = new Coord[v.limit];	// doubles allocation
-    for (int i = 0; i != limit; ++i)// restores data
+    this.limit *= 2;			// doubles size limit
+    this.data = new Coord[this.limit];	// doubles allocation
+    for (int i = 0; i != limit; ++i)	// restores data
     {
-      v.data[i] = tmp[i];
+      this.data[i] = tmp[i];
     }
   }
 
