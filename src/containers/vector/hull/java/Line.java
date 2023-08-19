@@ -2,13 +2,13 @@
 public class Line
 {
 
-  /* data members */
+  // data members:
 
   private int x1, y1;	// coordinates of start point
   private int x2, y2;	// coordinates of end point
   private int dx, dy;	// differences dx = (x2 - x1)
 
-  /* constructors */
+  // constructors:
 
   Line ()
     // default constructor
@@ -59,7 +59,7 @@ public class Line
     this.dy = ln.dy;
   }
 
-  /* getters */
+  // getters:
 
   public int getdX()
   {
@@ -71,7 +71,7 @@ public class Line
     return this.dy;
   }
 
-  /* methods */
+  // methods:
 
   public int loc (Coord c)
     // returns 0 if point is on the line, 1 if above, and -1 if below
@@ -81,7 +81,7 @@ public class Line
     return Integer.signum(diff);
   }
 
-  /* implementations */
+  // implementations:
 
   private static void isInvalidInput (Coord P, Coord Q)
     // complains if P == Q, cannot create line from a point
