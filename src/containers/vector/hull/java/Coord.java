@@ -1,7 +1,6 @@
 // 2D Cartesian Coordinates Class
 public class Coord implements Comparable<Coord>
 {
-
   // data members:
 
   private int x;			// x-axis coordinate
@@ -54,7 +53,6 @@ public class Coord implements Comparable<Coord>
     }
   }
 
-
   public double distance (Coord coord)	// returns squared separation distance
   {
     final double x1 = this.x;
@@ -63,7 +61,6 @@ public class Coord implements Comparable<Coord>
     final double y2 = coord.y;
     return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
   }
-
 
 // public static double distance(Coord coord1, Coord coord2)
 //
@@ -82,7 +79,6 @@ public class Coord implements Comparable<Coord>
 // point numbers to represent the particle coordinates to avert (potential) overflows
 // owing to the limited range of numbers that can be represented with 32-bit signed
 // integers (just for the sake of being cautious).
-
 
   public static double distance (Coord coord1, Coord coord2)
   {
