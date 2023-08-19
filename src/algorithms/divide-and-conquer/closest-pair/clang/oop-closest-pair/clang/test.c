@@ -14,19 +14,21 @@ void test_recurse1();
 void test_recurse2();
 void test_recurse3();
 void complexity_sort();
+void complexity_recurse();
 
 void divide(ensemble_t* ens, size_t const beg, size_t const end, pair_t* closestPair);
 void recurse(ensemble_t* ens, size_t const beg, size_t const end, pair_t* closestPair);
 
 int main ()
 {
+  test_sort();
   test_recurse();
   test_recurse1();
   test_recurse2();
   test_recurse3();
-//test_bruteForce();
-//test_sort();
-//complexity_sort();
+  test_bruteForce();
+  complexity_sort();
+  complexity_recurse();
   return 0;
 }
 
@@ -748,6 +750,105 @@ void complexity_sort ()
   fclose(file);
   printf("complexity-sort(): time complexity results have been writen to %s\n", fname);
 }
+
+
+void complexity_recurse ()
+{
+  pair_t* closestPairBruteForce = construct();
+  if (closestPairBruteForce == NULL)
+  {
+    return;
+  }
+
+  pair_t* closestPairRecurse = construct();
+  if (closestPairRecurse == NULL)
+  {
+    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    return;
+  }
+
+  bool failed = false;
+  double etimes[RUNS];
+  size_t numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    double etime = 0;
+    struct timespec end;
+    struct timespec begin;
+    ensemble_t* ensemble = create(numel);
+    for (size_t rep = 0; rep != REPS; ++rep)
+    {
+      initialize(ensemble);
+
+      closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
+      bruteForce(ensemble, closestPairBruteForce);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+
+      closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
+      recurse(ensemble, 0, numel, closestPairRecurse);
+
+      clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+      etime += getElapsedTime(&begin, &end);
+
+      failed = !closestPairRecurse -> cmp(closestPairRecurse, closestPairBruteForce);
+      if (failed)
+      {
+	printf("bruteForce(): ");
+	closestPairBruteForce -> log(closestPairBruteForce);
+	printf("recurse(): ");
+	closestPairRecurse -> log(closestPairRecurse);
+	break;
+      }
+    }
+
+    etimes[run] = etime / ( (double) REPS );
+
+    if (failed)
+    {
+      ensemble = destroy(ensemble);
+      break;
+    }
+
+    ensemble = destroy(ensemble);
+    numel *= 2;
+  }
+
+  printf("test-recurse[4]: ");
+  if (failed)
+  {
+    printf("FAIL\n");
+  }
+  else
+  {
+    printf("PASS\n");
+  }
+
+  const char fname[] = "complexity-recurse.txt";
+  FILE* file = fopen(fname, "w");
+  if (file == NULL)
+  {
+    closestPairRecurse = deconstruct(closestPairRecurse);
+    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    printf("complexity-recurse(): IO ERROR with file %s\n", fname);
+    return;
+  }
+
+  numel = iNUMEL;
+  for (size_t run = 0; run != RUNS; ++run)
+  {
+    fprintf(file, "%lu %.16e\n", numel, etimes[run]);
+    numel *= 2;
+  }
+
+  fclose(file);
+  closestPairRecurse = deconstruct(closestPairRecurse);
+  closestPairBruteForce = deconstruct(closestPairBruteForce);
+  printf("complexity-recurse(): time complexity results have been writen to %s\n", fname);
+}
+
+
 /*
 
 Algorithms and Complexity					August 16, 2023
