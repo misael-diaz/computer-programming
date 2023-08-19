@@ -113,7 +113,7 @@ public class Vector
   // pushes coordinates unto the back of vector
   public void push_back (Coord x)
   {
-    back_inserter (this, x);
+    back_inserter(this, x);
   }
 
 
@@ -152,28 +152,28 @@ public class Vector
   // delegates the task of sorting to the sort method of Arrays
   public void sort ()
   {
-    Arrays.sort (this.data, this.begin, this.avail);
+    Arrays.sort(this.data, this.begin, this.avail);
   }
 
 
   // delegates the task of sorting to the sort method of Arrays
   public void sort (Comparator<Coord> comp)
   {
-    Arrays.sort (data, begin, avail, comp);
+    Arrays.sort(data, begin, avail, comp);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
   public int search (Coord key)
   {
-    return Arrays.binarySearch (data, begin, avail, key);
+    return Arrays.binarySearch(data, begin, avail, key);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
   public int search (Coord key, Comparator<Coord> comp)
   {
-    return Arrays.binarySearch (data, begin, avail, key, comp);
+    return Arrays.binarySearch(data, begin, avail, key, comp);
   }
 
 
@@ -200,7 +200,7 @@ public class Vector
     int limit = v.limit;	// gets vector size limit
 
     if (avail == limit)	// checks if there's space left
-      grow (v);	// doubles the vector size limit
+      grow(v);	// doubles the vector size limit
 
     v.data[avail] = x;	// writes at available location
     ++v.avail;		// increments vector size
@@ -246,10 +246,10 @@ public class Vector
 */
   {
     int size = 32;
-    Vector vector = new Vector ();
+    Vector vector = new Vector();
     for (int i = 0; i != size; ++i)
     {
-      vector.push_back ( new Coord(i, i) );
+      vector.push_back( new Coord(i, i) );
     }
 
     System.out.printf("push-back-method-test: ");
@@ -275,14 +275,14 @@ public class Vector
 */
   {
     int size = 32;
-    Vector vector = new Vector ();
+    Vector vector = new Vector();
     for (int i = 0; i != size; ++i)
     {
-      vector.push_back ( new Coord(i, i) );
+      vector.push_back( new Coord(i, i) );
     }
 
 
-    vector.clear ();	// clears vector
+    vector.clear();	// clears vector
 
 
     System.out.printf("clear-method-test: ");
@@ -308,7 +308,7 @@ public class Vector
 */
   {
     int size = 8;
-    Vector vector = new Vector (size);
+    Vector vector = new Vector(size);
 
     /*
 
@@ -327,14 +327,14 @@ public class Vector
     // Pushes data unto back vector
 
 
-    Random random = new Random ();
+    Random random = new Random();
     // fills vector with random coordinates
     for (int i = 0; i != size; ++i)
     {
-      int x = random.nextInt (size);
-      int y = random.nextInt (size);
-      Coord coord = new Coord (x, y);
-      vector.push_back (coord);
+      int x = random.nextInt(size);
+      int y = random.nextInt(size);
+      Coord coord = new Coord(x, y);
+      vector.push_back(coord);
     }
 
 
@@ -419,8 +419,8 @@ public class Vector
 
 */
   {
-    Vector vector = new Vector ();	// creates (empty) vector
-    Random random = new Random ();	// creates (default) PRNG
+    Vector vector = new Vector();	// creates (empty) vector
+    Random random = new Random();	// creates (default) PRNG
 
 
     // creates data set from random data
@@ -432,13 +432,13 @@ public class Vector
     {
       int x = random.nextInt(size);
       int y = random.nextInt(size);
-      Coord c = new Coord (x, y);
+      Coord c = new Coord(x, y);
       // generates a new coordinate if already in vector
       while (vector.search(c) >= 0)
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
-	c = new Coord (x, y);
+	c = new Coord(x, y);
       }
       // pushes (distinct) coordinate unto back of vector
       vector.push_back(c);
