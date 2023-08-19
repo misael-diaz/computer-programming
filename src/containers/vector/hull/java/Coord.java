@@ -1,5 +1,5 @@
-public class Coord implements Comparable<Coord>
 // 2D Cartesian Coordinates Class
+public class Coord implements Comparable<Coord>
 {
 
   // data members:
@@ -42,8 +42,7 @@ public class Coord implements Comparable<Coord>
   // methods:
 
   @Override
-  public int compareTo (Coord coord)
-  // implements comparable interface
+  public int compareTo (Coord coord)	// implements comparable interface
   {
     if (this.x != coord.x)
       return (this.x - coord.x);
