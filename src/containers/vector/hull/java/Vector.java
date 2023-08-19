@@ -1,14 +1,10 @@
-
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Comparator;
 
 public class Vector
 {
-
   // defines comparator for y-x sorting of coordinates
-
-
   public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
     if ( P.getY() != Q.getY() )
     {
@@ -22,8 +18,6 @@ public class Vector
 
 
   // initializes parameters (not bound to objects of the class)
-
-
   private static final int DEFAULT_SIZE_LIMIT = (0x00000010);
 
 
@@ -190,7 +184,6 @@ public class Vector
       this.data[i] = tmp[i];
     }
   }
-
 
 
   // tests the methods of the vector class
