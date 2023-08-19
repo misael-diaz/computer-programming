@@ -495,14 +495,6 @@ public class Vector
 }
 
 /*
- * TODO:
- * [x] overload the search method which accepts the y - x comparator as its
- *     input argument. Note that the binary search algorithm will assume a
- *     x - y ordering by default and because of that it can fail sometimes
- *     if the comparator is not given.
- *
- */
-/*
  * Algorithms and Complexity                            October 06, 2022
  * IST 4310
  * Prof. M. Diaz-Maldonado
