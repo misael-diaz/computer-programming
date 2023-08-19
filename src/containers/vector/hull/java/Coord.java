@@ -70,14 +70,11 @@ public class Coord implements Comparable<Coord>
 // signed integer type.
 
 
-  public static double distance (Coord i, Coord j)
+  public static double distance (Coord coord1, Coord coord2)
   {
-    // gets the (x, y) coordinates of the ith particle
-    double xi = i.x, yi = i.y;
-    // gets the (x, y) coordinates of the jth particle
-    double xj = j.x, yj = j.y;
-    // computes the squared of the distance of the particles
-    return ( (xi - xj) * (xi - xj) + (yi - yj) * (yi - yj) );
+    double x1 = coord1.x, y1 = coord1.y;
+    double x2 = coord2.x, y2 = coord2.y;
+    return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
   }
 }
 
