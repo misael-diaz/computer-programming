@@ -2,12 +2,12 @@ public class Coord implements Comparable<Coord>
 // 2D Cartesian Coordinates Class
 {
 
-	/* data members */
+	// data members:
 
 	private int x;		// x-axis coordinate
 	private int y;		// y-axis coordinate
 
-	/* constructors */
+	// constructors:
 
 	Coord ()		// default constructor
 	{
@@ -27,7 +27,7 @@ public class Coord implements Comparable<Coord>
 		this.y = c.y;
 	}
 
-	/* getters */
+	// getters:
 
 	public int getX ()	// returns copy of the x-axis coordinate
 	{
@@ -39,7 +39,7 @@ public class Coord implements Comparable<Coord>
 		return this.y;
 	}
 
-	/* methods */
+	// methods:
 
 	@Override
 	public int compareTo (Coord coord)
@@ -77,7 +77,7 @@ public class Coord implements Comparable<Coord>
 		double xi = i.x, yi = i.y;
 		// gets the (x, y) coordinates of the jth particle
 		double xj = j.x, yj = j.y;
-		/* computes the squared of the distance of the particles */
+		// computes the squared of the distance of the particles
 		return ( (xi - xj) * (xi - xj) + (yi - yj) * (yi - yj) );
 	}
 }
