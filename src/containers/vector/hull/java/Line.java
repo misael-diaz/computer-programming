@@ -4,14 +4,13 @@ public class Line
 
   // data members:
 
-  private int x1, y1;	// coordinates of start point
-  private int x2, y2;	// coordinates of end point
-  private int dx, dy;	// differences dx = (x2 - x1)
+  private int x1, y1;		// coordinates of start point
+  private int x2, y2;		// coordinates of end point
+  private int dx, dy;		// differences dx = (x2 - x1)
 
   // constructors:
 
-  Line ()
-    // default constructor
+  Line ()			// default constructor
   {
     this.x1 = 0;
     this.y1 = 0;
@@ -21,8 +20,7 @@ public class Line
     this.dy = 1;
   }
 
-  Line (Coord P, Coord Q)
-    // constructs a line from a pair of points
+  Line (Coord P, Coord Q)	// constructs a line from a pair of points
   {
     // complains if P == Q, for P != Q to create a line
     isInvalidInput(P, Q);
@@ -73,8 +71,8 @@ public class Line
 
   // methods:
 
+  // returns 0 if point is on the line, 1 if above, and -1 if below
   public int loc (Coord c)
-    // returns 0 if point is on the line, 1 if above, and -1 if below
   {
     int x = c.getX(), y = c.getY();
     int diff = dx * (y - y1) + dy * (x1 - x);
@@ -83,8 +81,8 @@ public class Line
 
   // implementations:
 
+  // complains if P == Q, cannot create line from a point
   private static void isInvalidInput (Coord P, Coord Q)
-    // complains if P == Q, cannot create line from a point
   {
     if (P.compareTo(Q) == 0)
     {
