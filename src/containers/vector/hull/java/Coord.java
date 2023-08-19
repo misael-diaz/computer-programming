@@ -55,6 +55,16 @@ public class Coord implements Comparable<Coord>
   }
 
 
+  public double distance (Coord coord)	// returns squared separation distance
+  {
+    final double x1 = this.x;
+    final double y1 = this.y;
+    final double x2 = coord.x;
+    final double y2 = coord.y;
+    return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
+  }
+
+
 // public static double distance(Coord coord1, Coord coord2)
 //
 // Synopsis:
