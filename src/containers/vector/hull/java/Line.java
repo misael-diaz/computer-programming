@@ -91,26 +91,20 @@ public class Line
   }
 }
 /*
- * Algorithms and Complexity                            October 19, 2022
- * IST 4310
- * Prof. M. Diaz-Maldonado
- *
- *
- * Synopsis:
- * Defines the Line Class used to identify edges of the Convex Hull.
- *
- *
- * Copyright (c) 2022 Misael Diaz-Maldonado
- * This file is released under the GNU General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- *
- * References:
- * [0] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
- * [1] Sorting Custom Objects Tutorial: (
- *      www.codejava.net/java-core/collections/
- *      sorting-arrays-examples-with-comparable-and-comparator
- * )
- *
- */
+
+Algorithms and Complexity                            October 19, 2022
+IST 4310
+Prof. M. Diaz-Maldonado
+
+Synopsis:
+Defines the Line Class used to identify edges of the Convex Hull.
+
+Copyright (c) 2022 Misael Diaz-Maldonado
+This file is released under the GNU General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+References:
+[0] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
+
+*/
