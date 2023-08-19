@@ -200,7 +200,9 @@ public class Vector
     int limit = v.limit;	// gets vector size limit
 
     if (avail == limit)	// checks if there's space left
+    {
       grow(v);	// doubles the vector size limit
+    }
 
     v.data[avail] = x;	// writes at available location
     ++v.avail;		// increments vector size
@@ -357,7 +359,9 @@ public class Vector
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (thisCoord.compareTo(nextCoord) > 0)
+      {
 	++failures;
+      }
     }
 
 
@@ -394,7 +398,9 @@ public class Vector
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (comparator.compare(thisCoord, nextCoord) > 0)
+      {
 	++failures;
+      }
     }
 
 
@@ -469,7 +475,9 @@ public class Vector
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (thisCoord.compareTo(nextCoord) == 0)
+      {
 	++duplicates;
+      }
     }
 
     System.out.printf("search-method-test[0]: ");
@@ -508,7 +516,9 @@ public class Vector
     {
       Coord c = data[i];
       if (vector.search(c, comparator) < 0)
+      {
 	++failures;
+      }
     }
 
 
