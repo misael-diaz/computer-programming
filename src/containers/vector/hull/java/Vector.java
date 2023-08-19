@@ -30,17 +30,17 @@ public class Vector
   // defines private data members:
 
 
-  private int begin;	// beginning of the placeholder (0)
-  private int avail;	// available location for writing
-  private int limit;	// size limit for storing data
+  private int begin;		// beginning of the placeholder (0)
+  private int avail;		// available location for writing
+  private int limit;		// size limit for storing data
   private Coord [] data;	// data placeholder
 
 
   // constructors:
 
 
+  // default constructor: creates a vector of default size limit
   Vector ()
-    // default constructor: creates a vector of default size limit
   {
     this.begin = 0;
     this.avail = 0;
@@ -49,8 +49,8 @@ public class Vector
   }
 
 
+  // constructs a vector with requested capacity for storage
   Vector (int size)
-    // constructs a vector with requested capacity for storage
   {
     this.begin = 0;
     this.avail = 0;
@@ -59,12 +59,12 @@ public class Vector
   }
 
 
+  // copy constructor
   Vector (Vector vector)
-    // copy constructor
   {
     this.begin = 0;			// sets to default
-    this.avail = vector.size();	// gets the size
-    this.limit = vector.size();	// fits to size
+    this.avail = vector.size();		// gets the size
+    this.limit = vector.size();		// fits to size
     this.data  = vector.getData();	// gets a copy of the data
   }
 
@@ -72,15 +72,15 @@ public class Vector
   // getters:
 
 
+  // returns a clone of the data contained in vector
   public Coord [] getData ()
-    // returns a clone of the data contained in vector
   {
     return Arrays.copyOfRange(data, begin, avail);
   }
 
 
+  // returns a copy of the ith element
   public Coord getData (int i)
-    // returns a copy of the ith element
   {
     return new Coord(this.data[i]);
   }
@@ -89,36 +89,36 @@ public class Vector
   // methods:
 
 
+  // effectively clears the vector elements
   public void clear ()
-    // effectively clears the vector elements
   {
     this.avail = 0;
   }
 
 
+  // returns the number of elements stored in the vector
   public int size ()
-    // returns the number of elements stored in the vector
   {
     return (this.avail - this.begin);
   }
 
 
+  // returns the storage capacity of the vector
   public int capacity ()
-    // returns the storage capacity of the vector
   {
     return (this.limit - this.begin);
   }
 
 
+  // pushes coordinates unto the back of vector
   public void push_back (Coord x)
-    // pushes coordinates unto the back of vector
   {
     back_inserter (this, x);
   }
 
 
+  // bisects vector, keeps first half and returns second half
   public Vector bisect ()
-    // bisects vector, keeps first half and returns second half
   {
     /*
 
@@ -147,36 +147,36 @@ public class Vector
   }
 
 
+  // delegates the task of sorting to the sort method of Arrays
   public void sort ()
-    // delegates the task of sorting to the sort method of Arrays
   {
     Arrays.sort (this.data, this.begin, this.avail);
   }
 
 
+  // delegates the task of sorting to the sort method of Arrays
   public void sort (Comparator<Coord> comp)
-    // delegates the task of sorting to the sort method of Arrays
   {
     Arrays.sort (data, begin, avail, comp);
   }
 
 
+  // delegates the task to the Binary Search method of Arrays
   public int search (Coord key)
-    // delegates the task to the Binary Search method of Arrays
   {
     return Arrays.binarySearch (data, begin, avail, key);
   }
 
 
+  // delegates the task to the Binary Search method of Arrays
   public int search (Coord key, Comparator<Coord> comp)
-    // delegates the task to the Binary Search method of Arrays
   {
     return Arrays.binarySearch (data, begin, avail, key, comp);
   }
 
 
+  // prints the (x, y) coordinates on the console
   public void print ()
-    // prints the (x, y) coordinates on the console
   {
     int size = this.size();
     for (int i = 0; i != size; ++i)
@@ -191,8 +191,8 @@ public class Vector
   // implementations:
 
 
+  // pushes data into the back of vector
   private void back_inserter (Vector v, Coord x)
-    // pushes data into the back of vector
   {
     int avail = v.avail;	// gets vector size
     int limit = v.limit;	// gets vector size limit
@@ -205,8 +205,8 @@ public class Vector
   }
 
 
+  // doubles the vector size
   private void grow (Vector v)
-    // doubles the vector size
   {
     int limit = v.limit;		// gets current size limit
     Coord [] tmp = v.data.clone();	// copies data to temporary
@@ -219,8 +219,8 @@ public class Vector
 
 
 
+  // tests the methods of the vector class
   public static void main (String[] args)
-    // tests the methods of the vector class
   {
     testPushBackMethod();
     testClearMethod();
@@ -344,8 +344,8 @@ public class Vector
 
 
     int failures = 0;
+    // counts failures (not in ascending order instances)
     for (int i = 0; i != (size - 1); ++i)
-      // counts failures (not in ascending order instances)
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (thisCoord.compareTo(nextCoord) > 0)
@@ -371,8 +371,8 @@ public class Vector
     vector.sort(comparator);
     data = vector.getData();
     System.out.println("y-x sorting:");
+    // prints the (sorted) coordinates on the console
     for (int i = 0; i != size; ++i)
-      // prints the (sorted) coordinates on the console
     {
       int x = data[i].getX();
       int y = data[i].getY();
@@ -381,8 +381,8 @@ public class Vector
 
 
     failures = 0;
+    // counts failures (not in ascending order instances)
     for (int i = 0; i != (size - 1); ++i)
-      // counts failures (not in ascending order instances)
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (comparator.compare(thisCoord, nextCoord) > 0)
@@ -419,14 +419,14 @@ public class Vector
 
 
     int size = (0x00000010);
+    // generates the distinct set of (x, y) coordinates
     for (int i = 0; i != size; ++i)
-      // generates the distinct set of (x, y) coordinates
     {
       int x = random.nextInt(size);
       int y = random.nextInt(size);
       Coord c = new Coord (x, y);
+      // generates a new coordinate if already in vector
       while (vector.search(c) >= 0)
-	// generates a new coordinate if already in vector
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
@@ -443,8 +443,8 @@ public class Vector
 
 
     Coord [] data = vector.getData();
+    // prints the (distinct set of) coordinates on the console
     for (int i = 0; i != size; ++i)
-      // prints the (distinct set of) coordinates on the console
     {
       int x = data[i].getX();
       int y = data[i].getY();
@@ -456,8 +456,8 @@ public class Vector
 
 
     int duplicates = 0;
+    // counts duplicates by checking for equality
     for (int i = 0; i != (size - 1); ++i)
-      // counts duplicates by checking for equality
     {
       Coord thisCoord = data[i], nextCoord = data[i + 1];
       if (thisCoord.compareTo(nextCoord) == 0)
@@ -495,8 +495,8 @@ public class Vector
     int failures = 0;		// initializes counter
     data = vector.getData();	// gets x - y sorted data
     vector.sort(comparator);	// does y - x sorting
+    // searches the x-y sorted data in the y-x sorted vector
     for (int i = 0; i != size; ++i)
-      // searches the x-y sorted data in the y-x sorted vector
     {
       Coord c = data[i];
       if (vector.search(c, comparator) < 0)
