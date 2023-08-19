@@ -98,9 +98,6 @@ by the Free Software Foundation, either version 3 of the License, or
 
 References:
 [0] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
-[1] Sorting Custom Objects Tutorial: (
-     www.codejava.net/java-core/collections/
-     sorting-arrays-examples-with-comparable-and-comparator
-)
+[1] www.codejava.net/java-core/collections/sorting-arrays-examples-with-comparable-and-comparator
 
 */
