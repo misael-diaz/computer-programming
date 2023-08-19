@@ -1,7 +1,5 @@
-
 public class Line
 {
-
   // data members:
 
   private int x1, y1;		// coordinates of start point
@@ -90,6 +88,8 @@ public class Line
     }
   }
 }
+
+
 /*
 
 Algorithms and Complexity                            October 19, 2022
