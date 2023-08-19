@@ -11,9 +11,13 @@ public class Vector
 
   public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
     if ( P.getY() != Q.getY() )
+    {
       return ( P.getY() - Q.getY() );
+    }
     else
+    {
       return ( P.getX() - Q.getX() );
+    }
   };
 
 
@@ -245,9 +249,13 @@ public class Vector
     System.out.printf("push-back-method-test: ");
     // checks the vector size against the expected size
     if (vector.size() != size)
+    {
       System.out.println("FAIL");
+    }
     else
+    {
       System.out.println("pass");
+    }
   }
 
 
@@ -272,9 +280,13 @@ public class Vector
     System.out.printf("clear-method-test: ");
     // checks the vector size against the expected size
     if (vector.size() != 0)
+    {
       System.out.println("FAIL");
+    }
     else
+    {
       System.out.println("pass");
+    }
   }
 
 
@@ -344,9 +356,13 @@ public class Vector
     System.out.printf("sort-method-test[0]: ");
     // checks if the sorting method failed (unexpectedly)
     if (failures != 0)
+    {
       System.out.println("FAIL");
+    }
     else
+    {
       System.out.println("pass");
+    }
 
 
     // performs y - x sorting
@@ -377,9 +393,13 @@ public class Vector
     System.out.printf("sort-method-test[1]: ");
     // checks if the sorting method failed (unexpectedly)
     if (failures != 0)
+    {
       System.out.println("FAIL\n");
+    }
     else
+    {
       System.out.println("pass\n");
+    }
   }
 
 
@@ -446,9 +466,13 @@ public class Vector
 
     System.out.printf("search-method-test[0]: ");
     if (duplicates != 0)
+    {
       System.out.println("FAIL");
+    }
     else
+    {
       System.out.println("pass");
+    }
 
 
     /*
@@ -488,9 +512,13 @@ public class Vector
 
 */
     if (failures != 0)
+    {
       System.out.println("FAIL");
+    }
     else
+    {
       System.out.println("pass");
+    }
   }
 }
 
