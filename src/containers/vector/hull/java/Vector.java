@@ -6,7 +6,7 @@ import java.util.Comparator;
 public class Vector
 {
 
-  /* defines comparator for y-x sorting of coordinates */
+  // defines comparator for y-x sorting of coordinates
 
 
   public static Comparator<Coord> comparator = (Coord P, Coord Q)->{
@@ -17,13 +17,13 @@ public class Vector
   };
 
 
-  /* initializes parameters (not bound to objects of the class) */
+  // initializes parameters (not bound to objects of the class)
 
 
   private static final int DEFAULT_SIZE_LIMIT = (0x00000010);
 
 
-  /* defines private data members */
+  // defines private data members:
 
 
   private int begin;	// beginning of the placeholder (0)
@@ -32,7 +32,7 @@ public class Vector
   private Coord [] data;	// data placeholder
 
 
-  /* constructors */
+  // constructors:
 
 
   Vector ()
@@ -65,7 +65,7 @@ public class Vector
   }
 
 
-  /* getters */
+  // getters:
 
 
   public Coord [] getData ()
@@ -82,7 +82,7 @@ public class Vector
   }
 
 
-  /* methods */
+  // methods:
 
 
   public void clear ()
@@ -184,7 +184,7 @@ public class Vector
   }
 
 
-  /* implementations */
+  // implementations:
 
 
   private void back_inserter (Vector v, Coord x)
@@ -226,7 +226,7 @@ public class Vector
   }
 
 
-  /* tests */
+  // tests:
 
 
   private static void testPushBackMethod ()
@@ -304,7 +304,7 @@ public class Vector
     vector.sort();
 
 
-    /* Pushes data unto back vector */
+    // Pushes data unto back vector
 
 
     Random random = new Random ();
@@ -349,7 +349,7 @@ public class Vector
       System.out.println("pass");
 
 
-    /* performs y - x sorting */
+    // performs y - x sorting
 
 
     vector.sort(comparator);
@@ -395,7 +395,7 @@ public class Vector
     Random random = new Random ();	// creates (default) PRNG
 
 
-    /* creates data set from random data */
+    // creates data set from random data
 
 
     int size = (0x00000010);
@@ -419,7 +419,7 @@ public class Vector
     }
 
 
-    /* Displays Data on the Console */
+    // Displays Data on the Console
 
 
     Coord [] data = vector.getData();
@@ -432,7 +432,7 @@ public class Vector
     }
 
 
-    /* Duplicates Test */
+    // Duplicates Test
 
 
     int duplicates = 0;
