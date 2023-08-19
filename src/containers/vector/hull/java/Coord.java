@@ -45,9 +45,13 @@ public class Coord implements Comparable<Coord>
   public int compareTo (Coord coord)	// implements comparable interface
   {
     if (this.x != coord.x)
+    {
       return (this.x - coord.x);
+    }
     else
+    {
       return (this.y - coord.y);
+    }
   }
 
 
