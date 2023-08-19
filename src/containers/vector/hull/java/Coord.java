@@ -51,25 +51,25 @@ public class Coord implements Comparable<Coord>
   }
 
 
-/*
+// public static double distance(Coord i, Coord j)
+//
+// Synopsis:
+// Returns the squared distance of a pair of particles (i, j).
+//
+// Inputs:
+// i		coordinates of the ith particle
+// j		coordinates of the jth particle
+//
+// Output:
+// d		squared distance of the ith and jth particles
+//
+// NOTES:
+// Omits the computation of the squared root for speed. And uses
+// doubles to represent the coordinates to avert overflows owing to
+// the limited range of numbers that can be represented with the
+// signed integer type.
 
-Synopsis:
-Returns the squared distance of a pair of particles (i, j).
 
-Inputs:
-i		coordinates of the ith particle
-j		coordinates of the jth particle
-
-Output:
-d		squared distance of the ith and jth particles
-
-NOTES:
-Omits the computation of the squared root for speed. And uses
-doubles to represent the coordinates to avert overflows owing to
-the limited range of numbers that can be represented with the
-signed integer type.
-
-*/
   public static double distance (Coord i, Coord j)
   {
     // gets the (x, y) coordinates of the ith particle
