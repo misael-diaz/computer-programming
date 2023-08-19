@@ -52,7 +52,6 @@ public class Coord implements Comparable<Coord>
 	}
 
 
-	public static double distance (Coord i, Coord j)
 	/*
 
 	Synopsis:
@@ -72,6 +71,7 @@ public class Coord implements Comparable<Coord>
 	signed integer type.
 
 	*/
+	public static double distance (Coord i, Coord j)
 	{
 		// gets the (x, y) coordinates of the ith particle
 		double xi = i.x, yi = i.y;
