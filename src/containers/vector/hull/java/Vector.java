@@ -117,38 +117,6 @@ public class Vector
   }
 
 
-  // bisects vector, keeps first half and returns second half
-  public Vector bisect ()
-  {
-    /*
-
-       Computes the sizes of the first and second halves,
-       note that these differ when the (original) vector
-       stores an odd number of elements.
-
-*/
-
-    int size = this.size();			// original size
-    int sizeHalf1 = (size / 2);		// first-half size
-    int sizeHalf2 = (size - sizeHalf1);	// second-half size
-
-    // creates the (fitted-to-size) returned vector
-    Vector ret = new Vector(sizeHalf2);
-    // copies data in second half into the returned vector
-    for (int i = 0; i != sizeHalf2; ++i)
-    {
-      ret.data[i] = new Coord(this.data[i + sizeHalf1]);
-    }
-
-    // effectively deletes second half from (original) vector
-    this.avail = sizeHalf1;
-    // sets the size of the returned vector
-    ret.avail  = sizeHalf2;
-    // returns the vector that contains the second half
-    return ret;
-  }
-
-
   // delegates the task of sorting to the sort method of Arrays
   public void sort ()
   {
