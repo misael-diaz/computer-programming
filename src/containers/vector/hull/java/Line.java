@@ -22,8 +22,7 @@ public class Line
 
   Line (Coord P, Coord Q)	// constructs a line from a pair of points
   {
-    // complains if P == Q, for P != Q to create a line
-    isInvalidInput(P, Q);
+    isInvalidInput(P, Q);	// complains if P == Q, for P != Q to create a line
 
     int x1 = P.getX(), y1 = P.getY();
     int x2 = Q.getX(), y2 = Q.getY();
