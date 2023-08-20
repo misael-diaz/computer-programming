@@ -446,12 +446,8 @@ public class Vector
 
 
     System.out.printf("search-method-test[1]: ");
-    /*
 
-       the number of failures should be zero because we are
-       searching for data that we know is contained in the vector
-
-*/
+    // #failures should be zero because we are searching for actually contained data
     if (failures != 0)
     {
       System.out.println("FAIL");
