@@ -69,7 +69,7 @@ public class Vector
   // returns a clone of the data contained in vector
   public Coord[] getData ()
   {
-    return Arrays.copyOfRange(data, begin, avail);
+    return Arrays.copyOfRange(this.data, this.begin, this.avail);
   }
 
 
@@ -121,21 +121,21 @@ public class Vector
   // delegates the task of sorting to the sort method of Arrays
   public void sort (Comparator<Coord> comp)
   {
-    Arrays.sort(data, begin, avail, comp);
+    Arrays.sort(this.data, this.begin, this.avail, comp);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
   public int search (Coord key)
   {
-    return Arrays.binarySearch(data, begin, avail, key);
+    return Arrays.binarySearch(this.data, this.begin, this.avail, key);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
   public int search (Coord key, Comparator<Coord> comp)
   {
-    return Arrays.binarySearch(data, begin, avail, key, comp);
+    return Arrays.binarySearch(this.data, this.begin, this.avail, key, comp);
   }
 
 
@@ -158,28 +158,25 @@ public class Vector
   // pushes data into the back of vector
   private void back_inserter (Coord x)
   {
-    int avail = this.avail;	// gets vector size
-    int limit = this.limit;	// gets vector size limit
-
-    if (avail == limit)	// checks if there's space left
+    if (this.avail == this.limit)	// checks if there's space left
     {
-      this.grow();	// doubles the vector size limit
+      this.grow();			// doubles the vector size limit
     }
 
-    this.data[avail] = x;	// writes at available location
-    ++this.avail;		// increments vector size
+    this.data[this.avail] = x;		// writes at available location
+    ++this.avail;			// increments vector size accordingly
   }
 
 
   // doubles the vector size
   private void grow ()
   {
-    int limit = this.limit;		// gets current size limit
+    int lim = this.limit;		// gets current size limit
     Coord[] tmp = this.data.clone();	// copies data to temporary
 
     this.limit *= 2;			// doubles size limit
     this.data = new Coord[this.limit];	// doubles allocation
-    for (int i = 0; i != limit; ++i)	// restores data
+    for (int i = 0; i != lim; ++i)	// restores data
     {
       this.data[i] = tmp[i];
     }
