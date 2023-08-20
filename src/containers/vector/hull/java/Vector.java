@@ -197,13 +197,8 @@ public class Vector
   // tests:
 
 
+  // Pushes coordinates unto the back of the vector and checks its size.
   private static void testPushBackMethod ()
-    /*
-
-       Synopsis:
-       Pushes coordinates unto the back of the vector and checks its size.
-
-*/
   {
     int size = 32;
     Vector vector = new Vector();
@@ -259,16 +254,9 @@ public class Vector
     int size = 8;
     Vector vector = new Vector(size);
 
-    /*
 
-       NullPointerException Test: Sorts Empty Vector
+    // NullPointerException Test: Sorts Empty Vector. Passes if no exception is thrown.
 
-       Passes test if no exception is thrown when executed.
-
-       Note that the exception should not occur because the sort
-       method of the vector class specifies the sorting range.
-
-*/
 
     vector.sort();
 
