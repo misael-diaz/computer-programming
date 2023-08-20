@@ -421,21 +421,17 @@ public class Vector
     }
 
 
-    /*
-
-       Performs y - x sorting test:
-
-       Test consists on searching the x-y sorted data after the
-       vector has been y-x sorted. We increment the number of
-       failures every time the method fails to find an element.
-
-       Note that if the comparator is not supplied to the binary
-       search method, it will fail sometimes because the data has
-       been y-x sorted while the method assumes x-y sorting.
-       On the other hand, when the comparator is supplied the
-       search is successful.
-
-*/
+    // Performs y - x sorting test:
+    //
+    // Test consists on searching the x-y sorted data after the
+    // vector has been y-x sorted. We increment the number of
+    // failures every time the method fails to find an element.
+    //
+    // Note that if the comparator is not supplied to the binary
+    // search method, it will fail sometimes because the data has
+    // been y-x sorted while the method assumes x-y sorting.
+    // On the other hand, when the comparator is supplied the
+    // search is successful.
 
 
     int failures = 0;		// initializes counter
