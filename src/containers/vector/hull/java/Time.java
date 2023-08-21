@@ -42,8 +42,8 @@ public class Time	// Time Complexity Experiment Class
 
     // computes the averages and return statistics
     double avg_etime = (etime / reps);
-    // NOTE: the brute force method does the same #operations
     double sz = size;
+    // NOTE: the brute force method does the same #operations
     double avg_operations = sz * sz * (sz - 1) / 2;
     double [] statistics = {avg_etime, avg_operations};
     return statistics;
