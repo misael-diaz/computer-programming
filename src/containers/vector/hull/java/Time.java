@@ -18,11 +18,10 @@ public class Time	// Time Complexity Experiment Class
     double operations = 0;
     for (int i = 0; i != reps; ++i)
     {
-      // Tries to obtain the convex hull from the dataset.
-      // If the dataset produces a "bad hull" it catches the
-      // exception thrown by the invoked method to produce a
-      // new dataset and tries again until an acceptable
-      // convex hull is found.
+      // NOTE:
+      // Tries to obtain the convex hull from the dataset. If the dataset produces a
+      // "bad hull" it catches the exception thrown by the invoked method to produce a
+      // new dataset and tries again until an acceptable convex hull is found.
       int sw = 1;
       Vector data = ConvexHull.genDataSet(size);
       while (sw != 0)
