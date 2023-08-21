@@ -4,7 +4,7 @@ import java.util.Random;
 public class ConvexHull
 {
 
-	/* elapsed-times (nanoseconds) */
+	// elapsed-times (nanoseconds):
 
 
 	public static double etimeBruteForce;
@@ -18,7 +18,7 @@ public class ConvexHull
 	}
 
 
-	/* implementations */
+	// implementations:
 
 
 	private static Vector genDataSet ()
@@ -252,7 +252,7 @@ public class ConvexHull
 				}
 
 
-				/* complains if it is a bad hull (line) */
+				// complains if it is a bad hull (line)
 
 
 				// complains if all the points form a line
@@ -316,7 +316,7 @@ public class ConvexHull
 	}
 
 
-	/* static methods */
+	// static methods:
 
 
 	public static Vector genDataSet (int size)
@@ -371,7 +371,7 @@ public class ConvexHull
 		// complains if there is no convex hull
 		isBadHull(points);
 
-		/* times the implementation that finds the convex hull */
+		// times the implementation that finds the convex hull
 
 		double start = System.nanoTime();
 		Vector vertices = bruteforce(points);
@@ -384,7 +384,7 @@ public class ConvexHull
 	}
 
 
-	/* tests */
+	// tests:
 
 
 	private static void testLineLocMethod ()
