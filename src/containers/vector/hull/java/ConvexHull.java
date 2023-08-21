@@ -1,24 +1,3 @@
-/*
- * Algorithms and Complexity                            October 19, 2022
- * IST 4310
- * Prof. M. Diaz-Maldonado
- *
- *
- * Synopsis:
- * Finds the Convex Hull from a set of 2D Cartesian coordinates.
- *
- *
- * Copyright (c) 2022 Misael Diaz-Maldonado
- * This file is released under the GNU General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- *
- * References:
- * [0] JJ McConnell, Analysis of Algorithms, 2nd edition, 2007
- * [1] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
- *
- */
 
 import java.util.Random;
 
@@ -444,6 +423,29 @@ public class ConvexHull
 		vertices.print();
 	}
 }
+
+
+/*
+ * Algorithms and Complexity                            October 19, 2022
+ * IST 4310
+ * Prof. M. Diaz-Maldonado
+ *
+ *
+ * Synopsis:
+ * Finds the Convex Hull from a set of 2D Cartesian coordinates.
+ *
+ *
+ * Copyright (c) 2022 Misael Diaz-Maldonado
+ * This file is released under the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ *
+ * References:
+ * [0] JJ McConnell, Analysis of Algorithms, 2nd edition, 2007
+ * [1] A Koenig and B Moo, Accelerated C++ Practical Programming by Example
+ *
+ */
 
 
 /*
