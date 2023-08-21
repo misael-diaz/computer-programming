@@ -62,7 +62,7 @@ public class Time	// Time Complexity Experiment Class
     for (int i = 0; i != runs; ++i)
     {
       // repeats the numeric experiment
-      double [] stat = replicateBruteForce (size);
+      double [] stat = replicateBruteForce(size);
       // gets the average elapsed time and #operations
       double etime = stat[0], count = stat[1];
       sizes[i] = ( (double) size );
