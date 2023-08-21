@@ -10,8 +10,8 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
+  // repeats the numeric experiment
   private static double [] replicateBruteForce (int size)
-    // repeats the numeric experiment
   {
     int reps = 64;
     double etime = 0;
@@ -56,8 +56,8 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
+  // obtains the elapsed-time and #operations with respect to size
   private static double [][] experimentsBruteForce ()
-    // obtains the elapsed-time and #operations with respect to size
   {
     int runs = 8;
     int size = 16;
@@ -82,8 +82,8 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
+  // exports the elapsed-time and #operations with respect to size
   private static void exportBruteForce ()
-    // exports the elapsed-time and #operations with respect to size
   {
     try
     {
