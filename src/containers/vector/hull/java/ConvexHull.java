@@ -21,8 +21,8 @@ public class ConvexHull
   // implementations:
 
 
+  // generates a data set of 2D Cartesian coordinates
   private static Vector genDataSet ()
-    // generates a data set of 2D Cartesian coordinates
   {
     /*
 
@@ -85,8 +85,8 @@ public class ConvexHull
   }
 
 
+  // returns true if the line PQ is an edge of the convex hull
   private static boolean isEdge (Vector points, Coord P, Coord Q)
-    // returns true if the line PQ is an edge of the convex hull
   {
     int size = points.size();	// gets the data size
     Line ln = new Line(P, Q);	// creates a line object
@@ -131,8 +131,8 @@ public class ConvexHull
   }
 
 
+  // returns true if all the vertices have been found
   private static boolean isClosed (Vector vertices, Coord P, Coord Q)
-    // returns true if all the vertices have been found
   {
     int pos1 = vertices.search(P), pos2 = vertices.search(Q);
     if (pos1 >= 0 && pos2 >= 0)
@@ -168,16 +168,16 @@ public class ConvexHull
   }
 
 
+  // complains if the data set does not contain a convex hull
   private static void BadHull () throws BadConvexHullException
-    // complains if the data set does not contain a convex hull
   {
     String errmsg = "BadHullError";
     throw new BadConvexHullException(errmsg);
   }
 
 
+  // complains if the data set does not contain a convex hull
   private static void BadHull (String errmsg) throws BadConvexHullException
-    // complains if the data set does not contain a convex hull
   {
     throw new BadConvexHullException(errmsg);
   }
@@ -280,8 +280,8 @@ public class ConvexHull
 	}
 
 
+	// adds vertices if line PQ is a hull edge
 	if (isEdge)
-	  // adds vertices if line PQ is a hull edge
 	{
 	  isBadHull(closed);
 	  closed = addVertex(vertices, P, Q);
@@ -291,8 +291,8 @@ public class ConvexHull
   }
 
 
+  // returns the vertices of the convex hull in a vector
   private static Vector bruteforce (Vector points)
-    // returns the vertices of the convex hull in a vector
   {
     // creates the placeholder for the vertices of the hull
     Vector vertices = new Vector ();
@@ -302,8 +302,8 @@ public class ConvexHull
     for (int i = 0; i != (size - 1); ++i)
     {
       Coord P = points.getData(i);
+      // stacks points P and Q if they form a hull edge
       for (int j = (i + 1); j != size; ++j)
-	// stacks points P and Q if they form a hull edge
       {
 	Coord Q = points.getData(j);
 
@@ -342,14 +342,14 @@ public class ConvexHull
     // defines limits for the particle coordinates
     int x_min = -size, x_max = size;
     int y_min = -size, y_max = size;
+    // generates the distinct set of (x, y) coordinates
     for (int i = 0; i != size; ++i)
-      // generates the distinct set of (x, y) coordinates
     {
       int x = x_min + random.nextInt(x_max - x_min);
       int y = y_min + random.nextInt(y_max - y_min);
       Coord c = new Coord (x, y);
+      // generates a new coordinate if already in vector
       while (vector.search(c) >= 0)
-	// generates a new coordinate if already in vector
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
@@ -365,8 +365,8 @@ public class ConvexHull
   }
 
 
+  // uses brute force to obtain the convex hull
   public static Vector BruteForce (Vector points) throws BadConvexHullException
-    // uses brute force to obtain the convex hull
   {
     // complains if there is no convex hull
     isBadHull(points);
@@ -387,8 +387,8 @@ public class ConvexHull
   // tests:
 
 
+  // tests if `Line.loc()' detects sign changes properly
   private static void testLineLocMethod ()
-    // tests if `Line.loc()' detects sign changes properly
   {
     int x1 = 0, y1 = 0;
     int x2 = 4, y2 = 4;
