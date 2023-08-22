@@ -55,6 +55,10 @@ public class ConvexHull
     // int [][] data = { {0, 0}, {0, 1}, {1, 1} };
 
 
+    // square (OK)
+    // int [][] data = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };
+
+
     // gets the shape of the datset
     int rows = data.length, cols = data[0].length;
     // gets the number of coordinates from the max dimension
@@ -205,6 +209,65 @@ public class ConvexHull
   }
 
 
+  private static void checkAngle (Vector U, Vector V) throws RejectedHullException
+  {
+    if (U.dot(V) > 0)
+    {
+      RejectHull("detected hull with interior angle less than 90 degrees");
+    }
+  }
+
+
+  // checks the interior angle of first vertex
+  private static void first (Stack vertices) throws RejectedHullException
+  {
+    final int last = (vertices.size() - 1);
+    final Coord A = vertices.getData(last);
+    final Coord B = vertices.getData(0);
+    final Coord C = vertices.getData(1);
+    final Vector BA = new Vector(B, A);
+    final Vector BC = new Vector(B, C);
+    checkAngle(BA, BC);
+  }
+
+
+  // checks the interior angles of the intermediate vertices
+  private static void middle (Stack vertices) throws RejectedHullException
+  {
+    for (int i = 1; i != (vertices.size() - 1); ++i)
+    {
+      final Coord A = vertices.getData(i - 1);
+      final Coord B = vertices.getData(i);
+      final Coord C = vertices.getData(i + 1);
+      final Vector BA = new Vector(B, A);
+      final Vector BC = new Vector(B, C);
+      checkAngle(BA, BC);
+    }
+  }
+
+
+  // checks the interior angle of the last vertex
+  private static void last (Stack vertices) throws RejectedHullException
+  {
+    final int last = (vertices.size() - 1);
+    final Coord A = vertices.getData(last - 1);
+    final Coord B = vertices.getData(last);
+    final Coord C = vertices.getData(0);
+    final Vector BA = new Vector(B, A);
+    final Vector BC = new Vector(B, C);
+    checkAngle(BA, BC);
+  }
+
+
+  // checks the interior angles of the hull, complains if there's an acute angle
+  private static void isRejectableHull (Stack vertices) throws RejectedHullException
+  {
+    first(vertices);
+    middle(vertices);
+    last(vertices);
+  }
+
+
   // returns the vertices of the convex hull in clockwise order
   private static Stack clockwise (Stack vertices)
   {
@@ -289,12 +352,9 @@ public class ConvexHull
       }
     }
 
-    if (vertices.size() == 3)
-    {
-      RejectHull("triangles do not meet the convex interior angle criterion");
-    }
-
     vertices = clockwise(vertices);
+
+    isRejectableHull(vertices);
 
     return vertices;
   }
@@ -434,7 +494,3 @@ detects if the convex hull has an interior angle of 180 degrees (bad).
 The Brute Force algorithm exhibits the expected cubic time complexity.
 
 */
-
-
-// TODO:
-// [x] consider removing isRejectableHull() to shorten the code
