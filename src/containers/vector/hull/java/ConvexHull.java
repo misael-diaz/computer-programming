@@ -134,19 +134,17 @@ public class ConvexHull
   }
 
 
+  // Synopsis:
+  // Pushes unique vertices unto the back of the vector of vertices. As
+  // a side effect, it sets the closed state of the convex hull. This
+  // happens when both points P and Q are already vertices of the convex
+  // hull. Generally this means that the algorithm has found all the
+  // vertices. The other possibility is that we have a bad convex hull
+  // with at least one internal angle equal to 180 degrees; this is the
+  // main reason for setting the closed state of the convex hull.
+
+
   private static boolean addVertex(Vector vertices, Coord P, Coord Q)
-    /*
-
-       Synopsis:
-       Pushes unique vertices unto the back of the vector of vertices. As
-       a side effect, it sets the closed state of the convex hull. This
-       happens when both points P and Q are already vertices of the convex
-       hull. Generally this means that the algorithm has found all the
-       vertices. The other possibility is that we have a bad convex hull
-       with at least one internal angle equal to 180 degrees; this is the
-       main reason for setting the closed state of the convex hull.
-
-*/
   {
     // checks if all the vertices have been found
     boolean closed = isClosed(vertices, P, Q);
