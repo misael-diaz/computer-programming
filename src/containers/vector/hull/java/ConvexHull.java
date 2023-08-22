@@ -47,12 +47,8 @@ public class ConvexHull
     };
 
 
-    /*
-
     // yields a Bad Convex Hull (complains as it should)
-    int [][] data = { {0, 0}, {2, 0}, {2, 2}, {1, 1} };
-
-*/
+    // int [][] data = { {0, 0}, {2, 0}, {2, 2}, {1, 1} };
 
 
     // gets the shape of the datset
@@ -188,7 +184,7 @@ public class ConvexHull
     boolean closed = false;
 
     // creates a placeholder for the vertices of the hull
-    Vector vertices = new Vector ();
+    Vector vertices = new Vector();
 
     int size = points.size();
     // considers all the possible edges, size * (size - 1) / 2
@@ -255,7 +251,7 @@ public class ConvexHull
   private static Vector bruteforce (Vector points)
   {
     // creates the placeholder for the vertices of the hull
-    Vector vertices = new Vector ();
+    Vector vertices = new Vector();
 
     int size = points.size();
     // considers all the possible edges, size * (size - 1) / 2
@@ -305,13 +301,13 @@ public class ConvexHull
     {
       int x = x_min + random.nextInt(x_max - x_min);
       int y = y_min + random.nextInt(y_max - y_min);
-      Coord c = new Coord (x, y);
+      Coord c = new Coord(x, y);
       // generates a new coordinate if already in vector
       while (vector.search(c) >= 0)
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
-	c = new Coord (x, y);
+	c = new Coord(x, y);
       }
       // pushes (distinct) coordinate unto back of vector
       vector.push_back(c);
@@ -376,7 +372,7 @@ public class ConvexHull
     // creates the data set of Cartesian coordinates
     Vector points = genDataSet();
     // finds the vertices of the convex hull with brute force
-    Vector vertices = bruteforce (points);
+    Vector vertices = bruteforce(points);
     // displays the coordinates of the vertices on the console
     vertices.print();
   }
