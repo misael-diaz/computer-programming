@@ -87,7 +87,9 @@ public class ConvexHull
       Coord R = points.getData(k);
       int sgn = ln.loc(R);
       if (sgn != 0)
+      {
 	isign = sgn;
+      }
       ++k;
     }
 
@@ -101,7 +103,9 @@ public class ConvexHull
       Coord R = points.getData(l);
       int sgn = ln.loc(R);
       if (sgn * isign < 0)
+      {
 	isEdge = false;
+      }
     }
 
     return isEdge;
@@ -113,9 +117,13 @@ public class ConvexHull
   {
     int pos1 = vertices.search(P), pos2 = vertices.search(Q);
     if (pos1 >= 0 && pos2 >= 0)
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
 
 
@@ -134,8 +142,15 @@ public class ConvexHull
     // checks if all the vertices have been found
     boolean closed = isClosed(vertices, P, Q);
     // pushes new vertices unto the back of the vector
-    if (vertices.search(P) < 0) vertices.push_back(P);
-    if (vertices.search(Q) < 0) vertices.push_back(Q);
+    if (vertices.search(P) < 0)
+    {
+      vertices.push_back(P);
+    }
+
+    if (vertices.search(Q) < 0)
+    {
+      vertices.push_back(Q);
+    }
     // sorts vector to support underlying binary search method
     vertices.sort();
     // returns the closed state for the next pass
@@ -168,7 +183,9 @@ public class ConvexHull
   private static void isRejectableHull (boolean isClosed) throws RejectedHullException
   {
     if (isClosed)
+    {
       BadHull("180AngleError");
+    }
   }
 
 
@@ -207,7 +224,9 @@ public class ConvexHull
 	  Coord R = points.getData(k);
 	  int sgn = ln.loc(R);
 	  if (sgn != 0)
+	  {
 	    isign = sgn;
+	  }
 	  ++k;
 	}
 
@@ -217,7 +236,9 @@ public class ConvexHull
 
 	// complains if all the points form a line
 	if (isign == 0)
+	{
 	  BadHull();
+	}
 
 
 	// Now that we have an initial sign we can
@@ -232,7 +253,9 @@ public class ConvexHull
 	  Coord R = points.getData(l);
 	  int sgn = ln.loc(R);
 	  if (sgn * isign < 0)
+	  {
 	    isEdge = false;
+	  }
 	}
 
 
@@ -264,7 +287,9 @@ public class ConvexHull
 	Coord Q = points.getData(j);
 
 	if ( isEdge(points, P, Q) )
+	{
 	  addVertex(vertices, P, Q);
+	}
       }
     }
 
