@@ -23,7 +23,7 @@ public class Time	// Time Complexity Experiment Class
       // "bad hull" it catches the exception thrown by the invoked method to produce a
       // new dataset and tries again until an acceptable convex hull is found.
       int sw = 1;
-      Vector data = ConvexHull.genDataSet(size);
+      Stack data = ConvexHull.genDataSet(size);
       while (sw != 0)
       {
 	try
@@ -31,7 +31,7 @@ public class Time	// Time Complexity Experiment Class
 	  ConvexHull.BruteForce(data);
 	  sw = 0;
 	}
-	catch (RuntimeException e)
+	catch (RejectedHullException e)
 	{
 	  data = ConvexHull.genDataSet(size);
 	}
