@@ -173,16 +173,14 @@ public class ConvexHull
   }
 
 
+  // Synopsis:
+  // Complains if both vertices P and Q are already in the stack of
+  // vertices. This means that there is at least a 180 degrees vertex.
+  // Note that our acceptable range for the internal angle of a vertex
+  // is [90, 180) degrees.
+
+
   private static void isRejectableHull (boolean isClosed) throws RejectedHullException
-    /*
-
-       Synopsis:
-       Complains if both vertices P and Q are already in the stack of
-       vertices. This means that there is at least a 180 degrees vertex.
-       Note that our acceptable range for the internal angle of a vertex
-       is [90, 180) degrees.
-
-*/
   {
     if (isClosed)
       BadHull("180AngleError");
