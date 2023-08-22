@@ -205,13 +205,20 @@ public class ConvexHull
   }
 
 
+  // private static Vector bruteforce (Vector points) throws RejectedHullException
+  //
   // Synopsis:
-  // Uses brute force to determine if the data set of coordinates
-  // does not contain a convex hull whose interior angles are in the
-  // range [90, 180) --- a bad convex hull.
+  // Uses brute force to obtain the convex hull from the dataset of points.
+  // Complains if it finds an invalid convex hull whose interior angles do not meet the
+  // convex angle criterion, not in the range range [90, 180).
+  //
+  // Input:
+  // points	dataset of points
+  //
+  // Output:
+  // vertices	the vertices of the convex hull
 
 
-  // returns the vertices of the convex hull in a vector
   private static Vector bruteforce (Vector points) throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
