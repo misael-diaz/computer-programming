@@ -205,6 +205,52 @@ public class ConvexHull
   }
 
 
+  // returns the vertices of the convex hull in clockwise order
+  private static Vector clockwise (Vector vertices)
+  {
+    vertices.sort();
+    final int size = vertices.size();
+    final int last = (size - 1);
+    final Coord P = vertices.getData(0);
+    final Coord Q = vertices.getData(last);
+    final Line line = new Line(P, Q);
+
+    Vector left = new Vector(size);
+    Vector right = new Vector(size);
+    // divides vertices into left and right partitions
+    for (int i = 0; i != size; ++i)
+    {
+      final Coord vertex = vertices.getData(i);
+      if (line.sign(vertex) < 0)
+      {
+	left.push_back(vertex);
+      }
+      else
+      {
+	right.push_back(vertex);
+      }
+    }
+
+    Vector clockwise = new Vector(size);
+    // stores the vertices in the right partition in order
+    for (int i = 0; i != right.size(); ++i)
+    {
+      final Coord vertex = right.getData(i);
+      clockwise.push_back(vertex);
+    }
+
+    // stores the vertices in the left partition in reverse order
+    for (int i = 0; i != left.size(); ++i)
+    {
+      final int j = ( left.size() - (i + 1) );
+      final Coord vertex = left.getData(j);
+      clockwise.push_back(vertex);
+    }
+
+    return clockwise;
+  }
+
+
   // private static Vector bruteforce (Vector points) throws RejectedHullException
   //
   // Synopsis:
@@ -216,7 +262,7 @@ public class ConvexHull
   // points	dataset of points
   //
   // Output:
-  // vertices	the vertices of the convex hull
+  // vertices	the vertices of the convex hull (in clockwise order)
 
 
   private static Vector bruteforce (Vector points) throws RejectedHullException
@@ -247,6 +293,8 @@ public class ConvexHull
     {
       RejectHull("triangles do not meet the convex interior angle criterion");
     }
+
+    vertices = clockwise(vertices);
 
     return vertices;
   }
