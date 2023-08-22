@@ -168,16 +168,8 @@ public class ConvexHull
   }
 
 
-  // complains if the data set does not contain a convex hull
-  private static void BadHull () throws RejectedHullException
-  {
-    String errmsg = "BadHullError";
-    throw new RejectedHullException(errmsg);
-  }
-
-
-  // complains if the data set does not contain a convex hull
-  private static void BadHull (String errmsg) throws RejectedHullException
+  // complains if the data set does not contain a (valid) convex hull
+  private static void RejectHull (String errmsg) throws RejectedHullException
   {
     throw new RejectedHullException(errmsg);
   }
@@ -194,7 +186,7 @@ public class ConvexHull
   {
     if (isClosed)
     {
-      BadHull("180AngleError");
+      RejectHull("180AngleError");
     }
   }
 
@@ -205,87 +197,13 @@ public class ConvexHull
   // range [90, 180) --- a bad convex hull.
 
 
-  private static void isRejectableHull (Vector points) throws RejectedHullException
-  {
-    // assumes that all the vertices have not been found
-    boolean closed = false;
-
-    // creates a placeholder for the vertices of the hull
-    Vector vertices = new Vector();
-
-    int size = points.size();
-    // considers all the possible edges, size * (size - 1) / 2
-    for (int i = 0; i != (size - 1); ++i)
-    {
-      Coord P = points.getData(i);
-      for (int j = (i + 1); j != size; ++j)
-      {
-	// creates the line PQ and checks if it is an edge of the convex hull
-
-	Coord Q = points.getData(j);
-	Line ln = new Line(P, Q);
-
-	// traverses the vector until we can initialize the sign with a non-zero value
-
-	int k = 0;
-	int isign = 0;
-	while (isign == 0 && k != size)
-	{
-	  Coord R = points.getData(k);
-	  int sgn = ln.loc(R);
-	  if (sgn != 0)
-	  {
-	    isign = sgn;
-	  }
-	  ++k;
-	}
-
-
-	// complains if it is a bad hull (line)
-
-
-	// complains if all the points form a line
-	if (isign == 0)
-	{
-	  BadHull();
-	}
-
-
-	// Now that we have an initial sign we can
-	// check for sign changes on the remainder
-	// of the vector. Note: the points P and Q
-	// form an edge if there are no sign changes.
-
-
-	boolean isEdge = true;
-	for (int l = k; l != size; ++l)
-	{
-	  Coord R = points.getData(l);
-	  int sgn = ln.loc(R);
-	  if (sgn * isign < 0)
-	  {
-	    isEdge = false;
-	  }
-	}
-
-
-	// adds vertices if line PQ is a hull edge
-	if (isEdge)
-	{
-	  isRejectableHull(closed);
-	  closed = addVertex(vertices, P, Q);
-	}
-      }
-    }
-  }
-
-
   // returns the vertices of the convex hull in a vector
   private static Vector bruteforce (Vector points) throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
     Vector vertices = new Vector();
 
+    boolean closed = false;
     int size = points.size();
     // considers all the possible edges, size * (size - 1) / 2
     for (int i = 0; i != (size - 1); ++i)
@@ -298,7 +216,8 @@ public class ConvexHull
 
 	if ( isEdge(points, P, Q) )
 	{
-	  addVertex(vertices, P, Q);
+	  isRejectableHull(closed);
+	  closed = addVertex(vertices, P, Q);
 	}
       }
     }
@@ -357,11 +276,7 @@ public class ConvexHull
   // uses brute force to obtain the convex hull
   public static Vector BruteForce (Vector points) throws RejectedHullException
   {
-    // complains if there is no convex hull
-    isRejectableHull(points);
-
     // times the implementation that finds the convex hull
-
     double start = System.nanoTime();
     Vector vertices = bruteforce(points);
     double end = System.nanoTime();
@@ -446,4 +361,4 @@ The Brute Force algorithm exhibits the expected cubic time complexity.
 
 
 // TODO:
-// [ ] consider removing isRejectableHull() to shorten the code
+// [x] consider removing isRejectableHull() to shorten the code
