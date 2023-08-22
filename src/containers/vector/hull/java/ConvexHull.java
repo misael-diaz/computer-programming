@@ -187,15 +187,13 @@ public class ConvexHull
   }
 
 
+  // Synopsis:
+  // Uses brute force to determine if the data set of coordinates
+  // does not contain a convex hull whose interior angles are in the
+  // range [90, 180) --- a bad convex hull.
+
+
   private static void isRejectableHull (Vector points) throws RejectedHullException
-    /*
-
-       Synopsis:
-       Uses brute force to determine if the data set of coordinates
-       does not contain a convex hull whose interior angles are in the
-       range [90, 180) --- a bad convex hull.
-
-*/
   {
     // assumes that all the vertices have not been found
     boolean closed = false;
@@ -210,23 +208,12 @@ public class ConvexHull
       Coord P = points.getData(i);
       for (int j = (i + 1); j != size; ++j)
       {
-
-	/*
-
-	   creates the line PQ and checks if it is an
-	   edge of the convex hull
-
-*/
+	// creates the line PQ and checks if it is an edge of the convex hull
 
 	Coord Q = points.getData(j);
 	Line ln = new Line(P, Q);
 
-	/*
-
-	   traverses the whole vector until we can
-	   initialize the sign with a non-zero value
-
-*/
+	// traverses the vector until we can initialize the sign with a non-zero value
 
 	int k = 0;
 	int isign = 0;
@@ -248,14 +235,10 @@ public class ConvexHull
 	  BadHull();
 
 
-	/*
-
-	   Now that we have an initial sign we can
-	   check for sign changes on the remainder
-	   of the vector. Note: the points P and Q
-	   form an edge if there are no sign changes.
-
-*/
+	// Now that we have an initial sign we can
+	// check for sign changes on the remainder
+	// of the vector. Note: the points P and Q
+	// form an edge if there are no sign changes.
 
 
 	boolean isEdge = true;
@@ -307,20 +290,18 @@ public class ConvexHull
   // static methods:
 
 
+  // Synopsis:
+  // Generates a distinct data set of coordinates by sampling values
+  // from a uniform pseudo-random number generator PRNG.
+  //
+  // Inputs:
+  // size		size of the data set (number of particles)
+  //
+  // Output:
+  // vector		a vector that stores the data set of coordinates
+
+
   public static Vector genDataSet (int size)
-    /*
-
-       Synopsis:
-       Generates a distinct data set of coordinates by sampling values
-       from a uniform pseudo-random number generator PRNG.
-
-       Inputs:
-       size		size of the data set (number of particles)
-
-       Output:
-       vector		a vector that stores the data set of coordinates
-
-*/
   {
     // creates a vector for storing the coordinates
     Vector vector = new Vector();
