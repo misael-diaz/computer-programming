@@ -183,7 +183,7 @@ public class ConvexHull
   }
 
 
-  private static void isBadHull (boolean isClosed) throws RejectedHullException
+  private static void isRejectableHull (boolean isClosed) throws RejectedHullException
     /*
 
        Synopsis:
@@ -199,7 +199,7 @@ public class ConvexHull
   }
 
 
-  private static void isBadHull (Vector points) throws RejectedHullException
+  private static void isRejectableHull (Vector points) throws RejectedHullException
     /*
 
        Synopsis:
@@ -283,7 +283,7 @@ public class ConvexHull
 	// adds vertices if line PQ is a hull edge
 	if (isEdge)
 	{
-	  isBadHull(closed);
+	  isRejectableHull(closed);
 	  closed = addVertex(vertices, P, Q);
 	}
       }
@@ -369,7 +369,7 @@ public class ConvexHull
   public static Vector BruteForce (Vector points) throws RejectedHullException
   {
     // complains if there is no convex hull
-    isBadHull(points);
+    isRejectableHull(points);
 
     // times the implementation that finds the convex hull
 
