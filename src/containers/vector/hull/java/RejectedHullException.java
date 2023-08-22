@@ -1,6 +1,6 @@
-public class BadConvexHullException extends Exception
+public class RejectedHullException extends Exception
 {
-  BadConvexHullException (String errmsg)
+  RejectedHullException (String errmsg)
   {
     super(errmsg);
   }
@@ -13,7 +13,7 @@ IST 4310
 Prof. M. Diaz-Maldonado
 
 Synopsis:
-Defines Bad Convex Hull Exception Class.
+Defines Rejected Hull Exception Class.
 
 Copyright (c) 2022 Misael Diaz-Maldonado
 This file is released under the GNU General Public License as published

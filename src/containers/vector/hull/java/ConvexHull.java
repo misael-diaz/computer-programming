@@ -169,21 +169,21 @@ public class ConvexHull
 
 
   // complains if the data set does not contain a convex hull
-  private static void BadHull () throws BadConvexHullException
+  private static void BadHull () throws RejectedHullException
   {
     String errmsg = "BadHullError";
-    throw new BadConvexHullException(errmsg);
+    throw new RejectedHullException(errmsg);
   }
 
 
   // complains if the data set does not contain a convex hull
-  private static void BadHull (String errmsg) throws BadConvexHullException
+  private static void BadHull (String errmsg) throws RejectedHullException
   {
-    throw new BadConvexHullException(errmsg);
+    throw new RejectedHullException(errmsg);
   }
 
 
-  private static void isBadHull (boolean isClosed) throws BadConvexHullException
+  private static void isBadHull (boolean isClosed) throws RejectedHullException
     /*
 
        Synopsis:
@@ -199,7 +199,7 @@ public class ConvexHull
   }
 
 
-  private static void isBadHull (Vector points) throws BadConvexHullException
+  private static void isBadHull (Vector points) throws RejectedHullException
     /*
 
        Synopsis:
@@ -366,7 +366,7 @@ public class ConvexHull
 
 
   // uses brute force to obtain the convex hull
-  public static Vector BruteForce (Vector points) throws BadConvexHullException
+  public static Vector BruteForce (Vector points) throws RejectedHullException
   {
     // complains if there is no convex hull
     isBadHull(points);
