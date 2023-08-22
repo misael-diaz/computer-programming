@@ -1,12 +1,8 @@
-
 import java.util.Random;
 
 public class ConvexHull
 {
-
   // elapsed-times (nanoseconds):
-
-
   public static double etimeBruteForce;
   public static double etimeRecursive;
 
@@ -55,7 +51,7 @@ public class ConvexHull
     // int [][] data = { {0, 0}, {1, 1}, {2, 2}, {3, 3} };
 
 
-    // triangle (code does fine OK)
+    // triangle (code does fine, finds the vertices and complains, OK)
     // int [][] data = { {0, 0}, {0, 1}, {1, 1} };
 
 
@@ -94,13 +90,14 @@ public class ConvexHull
     while (isign == 0 && k != size)
     {
       Coord R = points.getData(k);
-      isign = ln.loc(R);
+      isign = ln.sign(R);
       ++k;
     }
 
-    if (isign == 0 && k == size)
+
+    if (isign == 0)
     {
-      throw new RejectedHullException("no sign change");
+      RejectHull("there's no convex hull because there are no sign changes");
     }
 
 
@@ -111,7 +108,7 @@ public class ConvexHull
     for (int l = k; l != size; ++l)
     {
       Coord R = points.getData(l);
-      int sgn = ln.loc(R);
+      int sgn = ln.sign(R);
       if (sgn * isign < 0)
       {
 	isEdge = false;
@@ -137,14 +134,24 @@ public class ConvexHull
   }
 
 
+  // private static boolean addVertex(Vector vertices, Coord P, Coord Q)
+  //
   // Synopsis:
-  // Pushes unique vertices unto the back of the vector of vertices. As
-  // a side effect, it sets the closed state of the convex hull. This
-  // happens when both points P and Q are already vertices of the convex
-  // hull. Generally this means that the algorithm has found all the
-  // vertices. The other possibility is that we have a bad convex hull
-  // with at least one internal angle equal to 180 degrees; this is the
-  // main reason for setting the closed state of the convex hull.
+  // Pushes unique vertices unto the back of the vector of vertices. As a side effect, it
+  // sets the closed state of the convex hull. This happens when both points P and Q are
+  // already vertices of the convex hull. Generally this means that the algorithm has
+  // found all the vertices. The other possibility is that we have an invalid convex hull
+  // with at least one internal angle equal to 180 degrees; this is the main reason for
+  // setting the closed state of the convex hull.
+  //
+  // Inputs:
+  // vertices		placeholder for storing the vertices found thus far
+  // P			point P is a vertex since we have already asserted this
+  // Q			point Q is also vertex for the same reasons
+  //
+  // Output:
+  // vertices		the updated placeholder (could remain unchanged if we are done)
+  // closed		true if we have found all the vertices, false otherwise
 
 
   private static boolean addVertex(Vector vertices, Coord P, Coord Q)
@@ -168,124 +175,102 @@ public class ConvexHull
   }
 
 
-  // complains if the data set does not contain a convex hull
-  private static void BadHull () throws RejectedHullException
-  {
-    String errmsg = "BadHullError";
-    throw new RejectedHullException(errmsg);
-  }
-
-
-  // complains if the data set does not contain a convex hull
-  private static void BadHull (String errmsg) throws RejectedHullException
+  // complains if the data set does not contain a (valid) convex hull
+  private static void RejectHull (String errmsg) throws RejectedHullException
   {
     throw new RejectedHullException(errmsg);
   }
 
 
+  // private static void isRejectableHull (boolean isClosed) throws RejectedHullException
+  //
   // Synopsis:
-  // Complains if both vertices P and Q are already in the stack of
-  // vertices. This means that there is at least a 180 degrees vertex.
-  // Note that our acceptable range for the internal angle of a vertex
-  // is [90, 180) degrees.
+  // Complains if both vertices P and Q are already in the stack of vertices. This means
+  // that there is at least a 180 degrees vertex. Note that our acceptable range for the
+  // interior angle of a vertex is [90, 180) degrees.
+  //
+  // Input:
+  // isClosed	true if all vertices have been found yet here again, false otherwise
+  //
+  // Output:
+  // None
 
 
   private static void isRejectableHull (boolean isClosed) throws RejectedHullException
   {
     if (isClosed)
     {
-      BadHull("180AngleError");
+      RejectHull("180AngleError");
     }
   }
 
 
-  // Synopsis:
-  // Uses brute force to determine if the data set of coordinates
-  // does not contain a convex hull whose interior angles are in the
-  // range [90, 180) --- a bad convex hull.
-
-
-  private static void isRejectableHull (Vector points) throws RejectedHullException
+  // returns the vertices of the convex hull in clockwise order
+  private static Vector clockwise (Vector vertices)
   {
-    // assumes that all the vertices have not been found
-    boolean closed = false;
+    vertices.sort();
+    final int size = vertices.size();
+    final int last = (size - 1);
+    final Coord P = vertices.getData(0);
+    final Coord Q = vertices.getData(last);
+    final Line line = new Line(P, Q);
 
-    // creates a placeholder for the vertices of the hull
-    Vector vertices = new Vector();
-
-    int size = points.size();
-    // considers all the possible edges, size * (size - 1) / 2
-    for (int i = 0; i != (size - 1); ++i)
+    Vector left = new Vector(size);
+    Vector right = new Vector(size);
+    // divides vertices into left and right partitions
+    for (int i = 0; i != size; ++i)
     {
-      Coord P = points.getData(i);
-      for (int j = (i + 1); j != size; ++j)
+      final Coord vertex = vertices.getData(i);
+      if (line.sign(vertex) < 0)
       {
-	// creates the line PQ and checks if it is an edge of the convex hull
-
-	Coord Q = points.getData(j);
-	Line ln = new Line(P, Q);
-
-	// traverses the vector until we can initialize the sign with a non-zero value
-
-	int k = 0;
-	int isign = 0;
-	while (isign == 0 && k != size)
-	{
-	  Coord R = points.getData(k);
-	  int sgn = ln.loc(R);
-	  if (sgn != 0)
-	  {
-	    isign = sgn;
-	  }
-	  ++k;
-	}
-
-
-	// complains if it is a bad hull (line)
-
-
-	// complains if all the points form a line
-	if (isign == 0)
-	{
-	  BadHull();
-	}
-
-
-	// Now that we have an initial sign we can
-	// check for sign changes on the remainder
-	// of the vector. Note: the points P and Q
-	// form an edge if there are no sign changes.
-
-
-	boolean isEdge = true;
-	for (int l = k; l != size; ++l)
-	{
-	  Coord R = points.getData(l);
-	  int sgn = ln.loc(R);
-	  if (sgn * isign < 0)
-	  {
-	    isEdge = false;
-	  }
-	}
-
-
-	// adds vertices if line PQ is a hull edge
-	if (isEdge)
-	{
-	  isRejectableHull(closed);
-	  closed = addVertex(vertices, P, Q);
-	}
+	left.push_back(vertex);
+      }
+      else
+      {
+	right.push_back(vertex);
       }
     }
+
+    Vector clockwise = new Vector(size);
+    // stores the vertices in the right partition in order
+    for (int i = 0; i != right.size(); ++i)
+    {
+      final Coord vertex = right.getData(i);
+      clockwise.push_back(vertex);
+    }
+
+    // stores the vertices in the left partition in reverse order
+    for (int i = 0; i != left.size(); ++i)
+    {
+      final int j = ( left.size() - (i + 1) );
+      final Coord vertex = left.getData(j);
+      clockwise.push_back(vertex);
+    }
+
+    return clockwise;
   }
 
 
-  // returns the vertices of the convex hull in a vector
+  // private static Vector bruteforce (Vector points) throws RejectedHullException
+  //
+  // Synopsis:
+  // Uses brute force to obtain the convex hull from the dataset of points.
+  // Complains if it finds an invalid convex hull whose interior angles do not meet the
+  // convex angle criterion, not in the range range [90, 180).
+  //
+  // Input:
+  // points	dataset of points
+  //
+  // Output:
+  // vertices	the vertices of the convex hull (in clockwise order)
+
+
   private static Vector bruteforce (Vector points) throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
     Vector vertices = new Vector();
 
+    boolean closed = false;
     int size = points.size();
     // considers all the possible edges, size * (size - 1) / 2
     for (int i = 0; i != (size - 1); ++i)
@@ -298,10 +283,18 @@ public class ConvexHull
 
 	if ( isEdge(points, P, Q) )
 	{
-	  addVertex(vertices, P, Q);
+	  isRejectableHull(closed);
+	  closed = addVertex(vertices, P, Q);
 	}
       }
     }
+
+    if (vertices.size() == 3)
+    {
+      RejectHull("triangles do not meet the convex interior angle criterion");
+    }
+
+    vertices = clockwise(vertices);
 
     return vertices;
   }
@@ -310,15 +303,17 @@ public class ConvexHull
   // static methods:
 
 
+  // public static Vector genDataSet (int size)
+  //
   // Synopsis:
-  // Generates a distinct data set of coordinates by sampling values
-  // from a uniform pseudo-random number generator PRNG.
+  // Generates a distinct dataset of points by sampling values from a uniform pseudo
+  // random number generator PRNG.
   //
   // Inputs:
-  // size		size of the data set (number of particles)
+  // size		size of the dataset (or number of points)
   //
   // Output:
-  // vector		a vector that stores the data set of coordinates
+  // vector		the placeholder that stores the dataset
 
 
   public static Vector genDataSet (int size)
@@ -357,11 +352,7 @@ public class ConvexHull
   // uses brute force to obtain the convex hull
   public static Vector BruteForce (Vector points) throws RejectedHullException
   {
-    // complains if there is no convex hull
-    isRejectableHull(points);
-
     // times the implementation that finds the convex hull
-
     double start = System.nanoTime();
     Vector vertices = bruteforce(points);
     double end = System.nanoTime();
@@ -376,7 +367,7 @@ public class ConvexHull
   // tests:
 
 
-  // tests if `Line.loc()' detects sign changes properly
+  // tests if `Line.sign()' detects sign changes properly
   private static void testLineLocMethod ()
   {
     int x1 = 0, y1 = 0;
@@ -388,17 +379,17 @@ public class ConvexHull
 
     Line line = new Line(P, Q);
 
-    System.out.printf("on the line (0): %d\n", line.loc(R));
+    System.out.printf("on the line (0): %d\n", line.sign(R));
 
     xi = -1;
     yi = -2;
     Coord S = new Coord(xi, yi);
-    System.out.printf("below line (-1): %d\n", line.loc(S));
+    System.out.printf("below line (-1): %d\n", line.sign(S));
 
     xi = -2;
     yi = -1;
     Coord T = new Coord(xi, yi);
-    System.out.printf("above line (1): %d\n", line.loc(T));
+    System.out.printf("above line (1): %d\n", line.sign(T));
   }
 
 
@@ -446,4 +437,4 @@ The Brute Force algorithm exhibits the expected cubic time complexity.
 
 
 // TODO:
-// [ ] consider removing isRejectableHull() to shorten the code
+// [x] consider removing isRejectableHull() to shorten the code
