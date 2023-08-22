@@ -11,7 +11,7 @@ public class ConvexHull
   public static double etimeRecursive;
 
 
-  public static void main (String [] args)
+  public static void main (String [] args) throws RejectedHullException
   {
     testBruteForceMethod();
     return;
@@ -51,6 +51,14 @@ public class ConvexHull
     // int [][] data = { {0, 0}, {2, 0}, {2, 2}, {1, 1} };
 
 
+    // a line we expect this dataset to be rejected (and code does that OK)
+    // int [][] data = { {0, 0}, {1, 1}, {2, 2}, {3, 3} };
+
+
+    // triangle (code does fine OK)
+    // int [][] data = { {0, 0}, {0, 1}, {1, 1} };
+
+
     // gets the shape of the datset
     int rows = data.length, cols = data[0].length;
     // gets the number of coordinates from the max dimension
@@ -71,8 +79,9 @@ public class ConvexHull
 
 
   // returns true if the line PQ is an edge of the convex hull
-  private static boolean isEdge (Vector points, Coord P, Coord Q)
+  private static boolean isEdge (Vector ps, Coord P, Coord Q) throws RejectedHullException
   {
+    Vector points = ps;
     int size = points.size();	// gets the data size
     Line ln = new Line(P, Q);	// creates a line object
 
@@ -85,12 +94,13 @@ public class ConvexHull
     while (isign == 0 && k != size)
     {
       Coord R = points.getData(k);
-      int sgn = ln.loc(R);
-      if (sgn != 0)
-      {
-	isign = sgn;
-      }
+      isign = ln.loc(R);
       ++k;
+    }
+
+    if (isign == 0 && k == size)
+    {
+      throw new RejectedHullException("no sign change");
     }
 
 
@@ -271,7 +281,7 @@ public class ConvexHull
 
 
   // returns the vertices of the convex hull in a vector
-  private static Vector bruteforce (Vector points)
+  private static Vector bruteforce (Vector points) throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
     Vector vertices = new Vector();
@@ -392,7 +402,7 @@ public class ConvexHull
   }
 
 
-  private static void testBruteForceMethod ()
+  private static void testBruteForceMethod () throws RejectedHullException
   {
     // creates the data set of Cartesian coordinates
     Vector points = genDataSet();
