@@ -98,9 +98,10 @@ public class ConvexHull
       ++k;
     }
 
-    if (isign == 0 && k == size)
+
+    if (isign == 0)
     {
-      throw new RejectedHullException("no sign change");
+      RejectHull("there's no convex hull because there are no sign changes");
     }
 
 
