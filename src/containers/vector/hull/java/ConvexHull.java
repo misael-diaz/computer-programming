@@ -252,15 +252,17 @@ public class ConvexHull
   // static methods:
 
 
+  // public static Vector genDataSet (int size)
+  //
   // Synopsis:
-  // Generates a distinct data set of coordinates by sampling values
-  // from a uniform pseudo-random number generator PRNG.
+  // Generates a distinct dataset of points by sampling values from a uniform pseudo
+  // random number generator PRNG.
   //
   // Inputs:
-  // size		size of the data set (number of particles)
+  // size		size of the dataset (or number of points)
   //
   // Output:
-  // vector		a vector that stores the data set of coordinates
+  // vector		the placeholder that stores the dataset
 
 
   public static Vector genDataSet (int size)
