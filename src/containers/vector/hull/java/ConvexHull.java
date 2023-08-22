@@ -443,3 +443,7 @@ detects if the convex hull has an interior angle of 180 degrees (bad).
 The Brute Force algorithm exhibits the expected cubic time complexity.
 
 */
+
+
+// TODO:
+// [ ] consider removing isRejectableHull() to shorten the code
