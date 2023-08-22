@@ -1,12 +1,8 @@
-
 import java.util.Random;
 
 public class ConvexHull
 {
-
   // elapsed-times (nanoseconds):
-
-
   public static double etimeBruteForce;
   public static double etimeRecursive;
 
