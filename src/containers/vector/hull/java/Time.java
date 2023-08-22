@@ -31,7 +31,7 @@ public class Time	// Time Complexity Experiment Class
 	  ConvexHull.BruteForce(data);
 	  sw = 0;
 	}
-	catch (RuntimeException e)
+	catch (RejectedHullException e)
 	{
 	  data = ConvexHull.genDataSet(size);
 	}
