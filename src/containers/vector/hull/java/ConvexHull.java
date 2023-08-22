@@ -94,7 +94,7 @@ public class ConvexHull
     while (isign == 0 && k != size)
     {
       Coord R = points.getData(k);
-      isign = ln.loc(R);
+      isign = ln.sign(R);
       ++k;
     }
 
@@ -112,7 +112,7 @@ public class ConvexHull
     for (int l = k; l != size; ++l)
     {
       Coord R = points.getData(l);
-      int sgn = ln.loc(R);
+      int sgn = ln.sign(R);
       if (sgn * isign < 0)
       {
 	isEdge = false;
@@ -292,7 +292,7 @@ public class ConvexHull
   // tests:
 
 
-  // tests if `Line.loc()' detects sign changes properly
+  // tests if `Line.sign()' detects sign changes properly
   private static void testLineLocMethod ()
   {
     int x1 = 0, y1 = 0;
@@ -304,17 +304,17 @@ public class ConvexHull
 
     Line line = new Line(P, Q);
 
-    System.out.printf("on the line (0): %d\n", line.loc(R));
+    System.out.printf("on the line (0): %d\n", line.sign(R));
 
     xi = -1;
     yi = -2;
     Coord S = new Coord(xi, yi);
-    System.out.printf("below line (-1): %d\n", line.loc(S));
+    System.out.printf("below line (-1): %d\n", line.sign(S));
 
     xi = -2;
     yi = -1;
     Coord T = new Coord(xi, yi);
-    System.out.printf("above line (1): %d\n", line.loc(T));
+    System.out.printf("above line (1): %d\n", line.sign(T));
   }
 
 

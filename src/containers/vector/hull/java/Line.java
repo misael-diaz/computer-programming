@@ -69,7 +69,7 @@ public class Line
   // methods:
 
   // returns 0 if point is on the line, 1 if above, and -1 if below
-  public int loc (Coord c)
+  public int sign (Coord c)
   {
     int x = c.getX(), y = c.getY();
     int loc = dx * (y - y1) + dy * (x1 - x);
