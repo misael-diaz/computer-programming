@@ -91,12 +91,9 @@ public class ConvexHull
     int size = points.size();	// gets the data size
     Line ln = new Line(P, Q);	// creates a line object
 
-    /*
 
-       traverses the whole vector until we can initialize the
-       sign with a non-zero value
+    // traverses the vector until we can initialize sign with a non-zero value
 
-*/
 
     int k = 0;
     int isign = 0;
@@ -110,12 +107,7 @@ public class ConvexHull
     }
 
 
-    /*
-
-       Now that we have an initial sign we can check for sign
-       changes on the remainder of the vector.
-
-*/
+    // there's an initial sign so we can check for sign changes on the rest of the vector.
 
 
     boolean isEdge = true;
