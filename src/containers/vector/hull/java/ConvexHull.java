@@ -55,7 +55,7 @@ public class ConvexHull
     // int [][] data = { {0, 0}, {1, 1}, {2, 2}, {3, 3} };
 
 
-    // triangle (code does fine OK)
+    // triangle (code does fine, finds the vertices and complains, OK)
     // int [][] data = { {0, 0}, {0, 1}, {1, 1} };
 
 
@@ -221,6 +221,11 @@ public class ConvexHull
 	  closed = addVertex(vertices, P, Q);
 	}
       }
+    }
+
+    if (vertices.size() == 3)
+    {
+      RejectHull("triangles do not meet the convex interior angle criterion");
     }
 
     return vertices;
