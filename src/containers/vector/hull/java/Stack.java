@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Comparator;
 
-public class Vector
+public class Stack
 {
   // defines comparator for y-x sorting of coordinates
   public static Comparator<Coord> comparator = (Coord P, Coord Q) -> {
@@ -33,8 +33,8 @@ public class Vector
   // constructors:
 
 
-  // default constructor: creates a vector of default size limit
-  Vector ()
+  // default constructor: creates a stack of default size limit
+  Stack ()
   {
     this.begin = 0;
     this.avail = 0;
@@ -43,8 +43,8 @@ public class Vector
   }
 
 
-  // constructs a vector with requested capacity for storage
-  Vector (int size)
+  // constructs a stack with requested capacity for storage
+  Stack (int size)
   {
     this.begin = 0;
     this.avail = 0;
@@ -54,19 +54,19 @@ public class Vector
 
 
   // copy constructor
-  Vector (Vector vector)
+  Stack (Stack stack)
   {
     this.begin = 0;			// sets to default
-    this.avail = vector.size();		// gets the size
-    this.limit = vector.size();		// fits to size
-    this.data  = vector.getData();	// gets a copy of the data
+    this.avail = stack.size();		// gets the size
+    this.limit = stack.size();		// fits to size
+    this.data  = stack.getData();	// gets a copy of the data
   }
 
 
   // getters:
 
 
-  // returns a clone of the data contained in vector
+  // returns a clone of the data contained in stack
   public Coord[] getData ()
   {
     return Arrays.copyOfRange(this.data, this.begin, this.avail);
@@ -83,28 +83,28 @@ public class Vector
   // methods:
 
 
-  // effectively clears the vector elements
+  // effectively clears the stack elements
   public void clear ()
   {
     this.avail = 0;
   }
 
 
-  // returns the number of elements stored in the vector
+  // returns the number of elements stored in the stack
   public int size ()
   {
     return (this.avail - this.begin);
   }
 
 
-  // returns the storage capacity of the vector
+  // returns the storage capacity of the stack
   public int capacity ()
   {
     return (this.limit - this.begin);
   }
 
 
-  // pushes coordinates unto the back of vector
+  // pushes coordinates unto the back of stack
   public void push_back (Coord x)
   {
     this.back_inserter(x);
@@ -155,20 +155,20 @@ public class Vector
   // implementations:
 
 
-  // pushes data into the back of vector
+  // pushes data into the back of stack
   private void back_inserter (Coord x)
   {
     if (this.avail == this.limit)	// checks if there's space left
     {
-      this.grow();			// doubles the vector size limit
+      this.grow();			// doubles the stack size limit
     }
 
     this.data[this.avail] = x;		// writes at available location
-    ++this.avail;			// increments vector size accordingly
+    ++this.avail;			// increments stack size accordingly
   }
 
 
-  // doubles the vector size
+  // doubles the stack size
   private void grow ()
   {
     int lim = this.limit;		// gets current size limit
@@ -183,7 +183,7 @@ public class Vector
   }
 
 
-  // tests the methods of the vector class
+  // tests the methods of the stack class
   public static void main (String[] args)
   {
     testPushBackMethod();
@@ -197,19 +197,19 @@ public class Vector
   // tests:
 
 
-  // Pushes coordinates unto the back of the vector and checks its size.
+  // Pushes coordinates unto the back of the stack and checks its size.
   private static void testPushBackMethod ()
   {
     int size = 32;
-    Vector vector = new Vector();
+    Stack stack = new Stack();
     for (int i = 0; i != size; ++i)
     {
-      vector.push_back( new Coord(i, i) );
+      stack.push_back( new Coord(i, i) );
     }
 
     System.out.printf("push-back-method-test: ");
-    // checks the vector size against the expected size
-    if (vector.size() != size)
+    // checks the stack size against the expected size
+    if (stack.size() != size)
     {
       System.out.println("FAIL");
     }
@@ -220,23 +220,23 @@ public class Vector
   }
 
 
-  //Pushes coordinates unto the back of a vector, clears it, and checks that it is empty.
+  //Pushes coordinates unto the back of a stack, clears it, and checks that it is empty.
   private static void testClearMethod ()
   {
     int size = 32;
-    Vector vector = new Vector();
+    Stack stack = new Stack();
     for (int i = 0; i != size; ++i)
     {
-      vector.push_back( new Coord(i, i) );
+      stack.push_back( new Coord(i, i) );
     }
 
 
-    vector.clear();	// clears vector
+    stack.clear();	// clears stack
 
 
     System.out.printf("clear-method-test: ");
-    // checks the vector size against the expected size
-    if (vector.size() != 0)
+    // checks the stack size against the expected size
+    if (stack.size() != 0)
     {
       System.out.println("FAIL");
     }
@@ -247,38 +247,38 @@ public class Vector
   }
 
 
-  // Pushes random coordinates unto the back of a vector, sorts it in ascending order,
+  // Pushes random coordinates unto the back of a stack, sorts it in ascending order,
   // and checks if the sorting was successful.
   private static void testSortMethod ()
   {
     int size = 8;
-    Vector vector = new Vector(size);
+    Stack stack = new Stack(size);
 
 
-    // NullPointerException Test: Sorts Empty Vector. Passes if no exception is thrown.
+    // NullPointerException Test: Sorts Empty Stack. Passes if no exception is thrown.
 
 
-    vector.sort();
+    stack.sort();
 
 
-    // Pushes data unto back vector
+    // Pushes data unto back stack
 
 
     Random random = new Random();
-    // fills vector with random coordinates
+    // fills stack with random coordinates
     for (int i = 0; i != size; ++i)
     {
       int x = random.nextInt(size);
       int y = random.nextInt(size);
       Coord coord = new Coord(x, y);
-      vector.push_back(coord);
+      stack.push_back(coord);
     }
 
 
-    vector.sort();	// sorts data contained in vector
+    stack.sort();	// sorts data contained in stack
 
 
-    Coord[] data = vector.getData();
+    Coord[] data = stack.getData();
     // prints the (sorted) coordinates on the console
     for (int i = 0; i != size; ++i)
     {
@@ -315,8 +315,8 @@ public class Vector
     // performs y - x sorting
 
 
-    vector.sort(comparator);
-    data = vector.getData();
+    stack.sort(comparator);
+    data = stack.getData();
     System.out.println("y-x sorting:");
     // prints the (sorted) coordinates on the console
     for (int i = 0; i != size; ++i)
@@ -355,7 +355,7 @@ public class Vector
   // Uses the search method to create a distinct set of (x, y) coordinates.
   private static void testSearchMethod ()
   {
-    Vector vector = new Vector();	// creates (empty) vector
+    Stack stack = new Stack();	// creates (empty) stack
     Random random = new Random();	// creates (default) PRNG
 
 
@@ -369,24 +369,24 @@ public class Vector
       int x = random.nextInt(size);
       int y = random.nextInt(size);
       Coord c = new Coord(x, y);
-      // generates a new coordinate if already in vector
-      while (vector.search(c) >= 0)
+      // generates a new coordinate if already in stack
+      while (stack.search(c) >= 0)
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
 	c = new Coord(x, y);
       }
-      // pushes (distinct) coordinate unto back of vector
-      vector.push_back(c);
+      // pushes (distinct) coordinate unto back of stack
+      stack.push_back(c);
       // sorts to use binary search on next pass
-      vector.sort();
+      stack.sort();
     }
 
 
     // Displays Data on the Console
 
 
-    Coord[] data = vector.getData();
+    Coord[] data = stack.getData();
     // prints the (distinct set of) coordinates on the console
     for (int i = 0; i != size; ++i)
     {
@@ -423,7 +423,7 @@ public class Vector
 
     // Performs y - x sorting test:
     //
-    // The test consists on searching the x-y sorted data after the vector has been
+    // The test consists on searching the x-y sorted data after the stack has been
     // y-x sorted. We increment the number of failures every time the method fails to
     // find an element. Note that if the comparator is not supplied to the binary
     // search method, it will fail sometimes because the data has been y-x sorted while
@@ -432,13 +432,13 @@ public class Vector
 
 
     int failures = 0;		// initializes counter
-    data = vector.getData();	// gets x - y sorted data
-    vector.sort(comparator);	// does y - x sorting
-    // searches the x-y sorted data in the y-x sorted vector
+    data = stack.getData();	// gets x - y sorted data
+    stack.sort(comparator);	// does y - x sorting
+    // searches the x-y sorted data in the y-x sorted stack
     for (int i = 0; i != size; ++i)
     {
       Coord c = data[i];
-      if (vector.search(c, comparator) < 0)
+      if (stack.search(c, comparator) < 0)
       {
 	++failures;
       }
@@ -466,7 +466,7 @@ IST 4310
 Prof. M. Diaz-Maldonado
 
 Synopsis:
-Possible implementation of a vector of coordinates (x, y) in Java.
+Possible implementation of a stack of coordinates (x, y) in Java.
 
 Copyright (c) 2022 Misael Diaz-Maldonado
 This file is released under the GNU General Public License as published
