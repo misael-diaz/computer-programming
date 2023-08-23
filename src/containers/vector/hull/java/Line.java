@@ -18,7 +18,7 @@ public class Line
     this.dy = 1;
   }
 
-  Line (Coord P, Coord Q)	// constructs a line from a pair of points
+  Line (Point P, Point Q)	// constructs a line from a pair of points
   {
     isInvalidInput(P, Q);	// complains if P == Q, for P != Q to create a line
 
@@ -69,9 +69,9 @@ public class Line
   // methods:
 
   // returns 0 if point is on the line, 1 if above, and -1 if below
-  public int sign (Coord c)
+  public int sign (Point p)
   {
-    int x = c.getX(), y = c.getY();
+    int x = p.getX(), y = p.getY();
     int loc = dx * (y - y1) + dy * (x1 - x);
     return Integer.signum(loc);
   }
@@ -79,7 +79,7 @@ public class Line
   // implementations:
 
   // complains if P == Q, cannot create line from a point
-  private static void isInvalidInput (Coord P, Coord Q)
+  private static void isInvalidInput (Point P, Point Q)
   {
     if (P.compareTo(Q) == 0)
     {

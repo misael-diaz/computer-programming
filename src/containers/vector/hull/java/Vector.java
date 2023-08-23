@@ -3,7 +3,7 @@ public final class Vector
   final double x;
   final double y;
 
-  Vector (Coord P, Coord Q)
+  Vector (Point P, Point Q)
   {
     this.x = P.getX() - Q.getX();
     this.y = P.getY() - Q.getY();

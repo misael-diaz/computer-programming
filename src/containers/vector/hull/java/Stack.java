@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 public class Stack
 {
-  // defines comparator for y-x sorting of coordinates
-  public static Comparator<Coord> comparator = (Coord P, Coord Q) -> {
+  // defines comparator for y-x sorting of points
+  public static Comparator<Point> comparator = (Point P, Point Q) -> {
     if ( P.getY() != Q.getY() )
     {
       return ( P.getY() - Q.getY() );
@@ -27,7 +27,7 @@ public class Stack
   private int begin;		// beginning of the placeholder (0)
   private int avail;		// available location for writing
   private int limit;		// size limit for storing data
-  private Coord[] data;		// data placeholder
+  private Point[] data;		// data placeholder
 
 
   // constructors:
@@ -39,7 +39,7 @@ public class Stack
     this.begin = 0;
     this.avail = 0;
     this.limit = DEFAULT_SIZE_LIMIT;
-    this.data  = new Coord[limit];
+    this.data  = new Point[limit];
   }
 
 
@@ -49,7 +49,7 @@ public class Stack
     this.begin = 0;
     this.avail = 0;
     this.limit = size;
-    this.data  = new Coord[size];
+    this.data  = new Point[size];
   }
 
 
@@ -67,16 +67,16 @@ public class Stack
 
 
   // returns a clone of the data contained in stack
-  public Coord[] getData ()
+  public Point[] getData ()
   {
     return Arrays.copyOfRange(this.data, this.begin, this.avail);
   }
 
 
   // returns a copy of the ith element
-  public Coord getData (int i)
+  public Point getData (int i)
   {
-    return new Coord(this.data[i]);
+    return new Point(this.data[i]);
   }
 
 
@@ -104,10 +104,10 @@ public class Stack
   }
 
 
-  // pushes coordinates unto the back of stack
-  public void push_back (Coord x)
+  // pushes points unto the back of stack
+  public void push_back (Point p)
   {
-    this.back_inserter(x);
+    this.back_inserter(p);
   }
 
 
@@ -119,35 +119,35 @@ public class Stack
 
 
   // delegates the task of sorting to the sort method of Arrays
-  public void sort (Comparator<Coord> comp)
+  public void sort (Comparator<Point> comp)
   {
     Arrays.sort(this.data, this.begin, this.avail, comp);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
-  public int search (Coord key)
+  public int search (Point key)
   {
     return Arrays.binarySearch(this.data, this.begin, this.avail, key);
   }
 
 
   // delegates the task to the Binary Search method of Arrays
-  public int search (Coord key, Comparator<Coord> comp)
+  public int search (Point key, Comparator<Point> comp)
   {
     return Arrays.binarySearch(this.data, this.begin, this.avail, key, comp);
   }
 
 
-  // prints the (x, y) coordinates on the console
+  // prints the coordinates of the 2D points on the console
   public void print ()
   {
     int size = this.size();
     for (int i = 0; i != size; ++i)
     {
-      Coord c = this.data[i];
+      Point p = this.data[i];
       String fmt = ("x, y = (%8d, %8d)\n");
-      System.out.printf(fmt, c.getX(), c.getY());
+      System.out.printf(fmt, p.getX(), p.getY());
     }
   }
 
@@ -156,14 +156,14 @@ public class Stack
 
 
   // pushes data into the back of stack
-  private void back_inserter (Coord x)
+  private void back_inserter (Point p)
   {
     if (this.avail == this.limit)	// checks if there's space left
     {
       this.grow();			// doubles the stack size limit
     }
 
-    this.data[this.avail] = x;		// writes at available location
+    this.data[this.avail] = p;		// writes at available location
     ++this.avail;			// increments stack size accordingly
   }
 
@@ -172,10 +172,10 @@ public class Stack
   private void grow ()
   {
     int lim = this.limit;		// gets current size limit
-    Coord[] tmp = this.data.clone();	// copies data to temporary
+    Point[] tmp = this.data.clone();	// copies data to temporary
 
     this.limit *= 2;			// doubles size limit
-    this.data = new Coord[this.limit];	// doubles allocation
+    this.data = new Point[this.limit];	// doubles allocation
     for (int i = 0; i != lim; ++i)	// restores data
     {
       this.data[i] = tmp[i];
@@ -197,14 +197,14 @@ public class Stack
   // tests:
 
 
-  // Pushes coordinates unto the back of the stack and checks its size.
+  // Pushes points unto the back of the stack and checks its size.
   private static void testPushBackMethod ()
   {
     int size = 32;
     Stack stack = new Stack();
     for (int i = 0; i != size; ++i)
     {
-      stack.push_back( new Coord(i, i) );
+      stack.push_back( new Point(i, i) );
     }
 
     System.out.printf("push-back-method-test: ");
@@ -220,14 +220,14 @@ public class Stack
   }
 
 
-  //Pushes coordinates unto the back of a stack, clears it, and checks that it is empty.
+  //Pushes points unto the back of a stack, clears it, and checks that it is empty.
   private static void testClearMethod ()
   {
     int size = 32;
     Stack stack = new Stack();
     for (int i = 0; i != size; ++i)
     {
-      stack.push_back( new Coord(i, i) );
+      stack.push_back( new Point(i, i) );
     }
 
 
@@ -247,7 +247,7 @@ public class Stack
   }
 
 
-  // Pushes random coordinates unto the back of a stack, sorts it in ascending order,
+  // Pushes random points unto the back of a stack, sorts it in ascending order,
   // and checks if the sorting was successful.
   private static void testSortMethod ()
   {
@@ -265,21 +265,21 @@ public class Stack
 
 
     Random random = new Random();
-    // fills stack with random coordinates
+    // fills stack with random points
     for (int i = 0; i != size; ++i)
     {
       int x = random.nextInt(size);
       int y = random.nextInt(size);
-      Coord coord = new Coord(x, y);
-      stack.push_back(coord);
+      Point point = new Point(x, y);
+      stack.push_back(point);
     }
 
 
     stack.sort();	// sorts data contained in stack
 
 
-    Coord[] data = stack.getData();
-    // prints the (sorted) coordinates on the console
+    Point[] data = stack.getData();
+    // prints the (sorted) points on the console
     for (int i = 0; i != size; ++i)
     {
       int x = data[i].getX();
@@ -292,8 +292,8 @@ public class Stack
     // counts failures (not in ascending order instances)
     for (int i = 0; i != (size - 1); ++i)
     {
-      Coord thisCoord = data[i], nextCoord = data[i + 1];
-      if (thisCoord.compareTo(nextCoord) > 0)
+      Point thisPoint = data[i], nextPoint = data[i + 1];
+      if (thisPoint.compareTo(nextPoint) > 0)
       {
 	++failures;
       }
@@ -318,7 +318,7 @@ public class Stack
     stack.sort(comparator);
     data = stack.getData();
     System.out.println("y-x sorting:");
-    // prints the (sorted) coordinates on the console
+    // prints the (sorted) points on the console
     for (int i = 0; i != size; ++i)
     {
       int x = data[i].getX();
@@ -331,8 +331,8 @@ public class Stack
     // counts failures (not in ascending order instances)
     for (int i = 0; i != (size - 1); ++i)
     {
-      Coord thisCoord = data[i], nextCoord = data[i + 1];
-      if (comparator.compare(thisCoord, nextCoord) > 0)
+      Point thisPoint = data[i], nextPoint = data[i + 1];
+      if (comparator.compare(thisPoint, nextPoint) > 0)
       {
 	++failures;
       }
@@ -352,7 +352,7 @@ public class Stack
   }
 
 
-  // Uses the search method to create a distinct set of (x, y) coordinates.
+  // Uses the search method to create a distinct set of 2D points.
   private static void testSearchMethod ()
   {
     Stack stack = new Stack();	// creates (empty) stack
@@ -363,21 +363,21 @@ public class Stack
 
 
     int size = (0x00000010);
-    // generates the distinct set of (x, y) coordinates
+    // generates the distinct set of 2D points
     for (int i = 0; i != size; ++i)
     {
       int x = random.nextInt(size);
       int y = random.nextInt(size);
-      Coord c = new Coord(x, y);
-      // generates a new coordinate if already in stack
-      while (stack.search(c) >= 0)
+      Point p = new Point(x, y);
+      // generates a new point if already in stack
+      while (stack.search(p) >= 0)
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
-	c = new Coord(x, y);
+	p = new Point(x, y);
       }
-      // pushes (distinct) coordinate unto back of stack
-      stack.push_back(c);
+      // pushes (distinct) point unto back of stack
+      stack.push_back(p);
       // sorts to use binary search on next pass
       stack.sort();
     }
@@ -386,8 +386,8 @@ public class Stack
     // Displays Data on the Console
 
 
-    Coord[] data = stack.getData();
-    // prints the (distinct set of) coordinates on the console
+    Point[] data = stack.getData();
+    // prints the (distinct set of) points on the console
     for (int i = 0; i != size; ++i)
     {
       int x = data[i].getX();
@@ -403,8 +403,8 @@ public class Stack
     // counts duplicates by checking for equality
     for (int i = 0; i != (size - 1); ++i)
     {
-      Coord thisCoord = data[i], nextCoord = data[i + 1];
-      if (thisCoord.compareTo(nextCoord) == 0)
+      Point thisPoint = data[i], nextPoint = data[i + 1];
+      if (thisPoint.compareTo(nextPoint) == 0)
       {
 	++duplicates;
       }
@@ -437,8 +437,8 @@ public class Stack
     // searches the x-y sorted data in the y-x sorted stack
     for (int i = 0; i != size; ++i)
     {
-      Coord c = data[i];
-      if (stack.search(c, comparator) < 0)
+      Point p = data[i];
+      if (stack.search(p, comparator) < 0)
       {
 	++failures;
       }
@@ -466,7 +466,7 @@ IST 4310
 Prof. M. Diaz-Maldonado
 
 Synopsis:
-Possible implementation of a stack of coordinates (x, y) in Java.
+Possible implementation of a stack of 2D Points in Java.
 
 Copyright (c) 2022 Misael Diaz-Maldonado
 This file is released under the GNU General Public License as published
