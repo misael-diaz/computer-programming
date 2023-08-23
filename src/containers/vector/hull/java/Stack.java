@@ -59,7 +59,7 @@ public class Stack
     this.begin = 0;			// sets to default
     this.avail = stack.size();		// gets the size
     this.limit = stack.size();		// fits to size
-    this.data  = stack.getData();	// gets a copy of the data
+    this.data  = stack.get();		// gets a copy of the data
   }
 
 
@@ -67,14 +67,14 @@ public class Stack
 
 
   // returns a clone of the data contained in stack
-  public Point[] getData ()
+  public Point[] get ()
   {
     return Arrays.copyOfRange(this.data, this.begin, this.avail);
   }
 
 
   // returns a copy of the ith element
-  public Point getData (int i)
+  public Point get (int i)
   {
     return new Point(this.data[i]);
   }
@@ -278,7 +278,7 @@ public class Stack
     stack.sort();	// sorts data contained in stack
 
 
-    Point[] data = stack.getData();
+    Point[] data = stack.get();
     // prints the (sorted) points on the console
     for (int i = 0; i != size; ++i)
     {
@@ -316,7 +316,7 @@ public class Stack
 
 
     stack.sort(comparator);
-    data = stack.getData();
+    data = stack.get();
     System.out.println("y-x sorting:");
     // prints the (sorted) points on the console
     for (int i = 0; i != size; ++i)
@@ -386,7 +386,7 @@ public class Stack
     // Displays Data on the Console
 
 
-    Point[] data = stack.getData();
+    Point[] data = stack.get();
     // prints the (distinct set of) points on the console
     for (int i = 0; i != size; ++i)
     {
@@ -432,7 +432,7 @@ public class Stack
 
 
     int failures = 0;		// initializes counter
-    data = stack.getData();	// gets x - y sorted data
+    data = stack.get();		// gets x - y sorted data
     stack.sort(comparator);	// does y - x sorting
     // searches the x-y sorted data in the y-x sorted stack
     for (int i = 0; i != size; ++i)

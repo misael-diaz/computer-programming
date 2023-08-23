@@ -93,7 +93,7 @@ public class ConvexHull
     int isign = 0;
     while (isign == 0 && k != size)
     {
-      Point R = points.getData(k);
+      Point R = points.get(k);
       isign = ln.sign(R);
       ++k;
     }
@@ -111,7 +111,7 @@ public class ConvexHull
     boolean isEdge = true;
     for (int l = k; l != size; ++l)
     {
-      Point R = points.getData(l);
+      Point R = points.get(l);
       int sgn = ln.sign(R);
       if (sgn * isign < 0)
       {
@@ -222,9 +222,9 @@ public class ConvexHull
   private static void first (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
-    final Point A = vertices.getData(last);
-    final Point B = vertices.getData(0);
-    final Point C = vertices.getData(1);
+    final Point A = vertices.get(last);
+    final Point B = vertices.get(0);
+    final Point C = vertices.get(1);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
     checkAngle(BA, BC);
@@ -236,9 +236,9 @@ public class ConvexHull
   {
     for (int i = 1; i != (vertices.size() - 1); ++i)
     {
-      final Point A = vertices.getData(i - 1);
-      final Point B = vertices.getData(i);
-      final Point C = vertices.getData(i + 1);
+      final Point A = vertices.get(i - 1);
+      final Point B = vertices.get(i);
+      final Point C = vertices.get(i + 1);
       final Vector BA = new Vector(B, A);
       final Vector BC = new Vector(B, C);
       checkAngle(BA, BC);
@@ -250,9 +250,9 @@ public class ConvexHull
   private static void last (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
-    final Point A = vertices.getData(last - 1);
-    final Point B = vertices.getData(last);
-    final Point C = vertices.getData(0);
+    final Point A = vertices.get(last - 1);
+    final Point B = vertices.get(last);
+    final Point C = vertices.get(0);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
     checkAngle(BA, BC);
@@ -274,8 +274,8 @@ public class ConvexHull
     vertices.sort();
     final int size = vertices.size();
     final int last = (size - 1);
-    final Point P = vertices.getData(0);
-    final Point Q = vertices.getData(last);
+    final Point P = vertices.get(0);
+    final Point Q = vertices.get(last);
     final Line line = new Line(P, Q);
 
     Stack left = new Stack(size);
@@ -283,7 +283,7 @@ public class ConvexHull
     // divides vertices into left and right partitions
     for (int i = 0; i != size; ++i)
     {
-      final Point vertex = vertices.getData(i);
+      final Point vertex = vertices.get(i);
       if (line.sign(vertex) < 0)
       {
 	left.push_back(vertex);
@@ -298,7 +298,7 @@ public class ConvexHull
     // stores the vertices in the right partition in order
     for (int i = 0; i != right.size(); ++i)
     {
-      final Point vertex = right.getData(i);
+      final Point vertex = right.get(i);
       clockwise.push_back(vertex);
     }
 
@@ -306,7 +306,7 @@ public class ConvexHull
     for (int i = 0; i != left.size(); ++i)
     {
       final int j = ( left.size() - (i + 1) );
-      final Point vertex = left.getData(j);
+      final Point vertex = left.get(j);
       clockwise.push_back(vertex);
     }
 
@@ -338,11 +338,11 @@ public class ConvexHull
     // considers all the possible edges, size * (size - 1) / 2
     for (int i = 0; i != (size - 1); ++i)
     {
-      Point P = points.getData(i);
+      Point P = points.get(i);
       // stacks points P and Q if they form a hull edge
       for (int j = (i + 1); j != size; ++j)
       {
-	Point Q = points.getData(j);
+	Point Q = points.get(j);
 
 	if ( isEdge(points, P, Q) )
 	{
