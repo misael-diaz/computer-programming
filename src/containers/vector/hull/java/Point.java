@@ -1,5 +1,5 @@
-// 2D Cartesian Coordinates Class
-public class Coord implements Comparable<Coord>
+// 2D Point Class
+public class Point implements Comparable<Point>
 {
   // data members:
 
@@ -8,22 +8,22 @@ public class Coord implements Comparable<Coord>
 
   // constructors:
 
-  Coord ()				// default constructor
+  Point ()				// default constructor
   {
     this.x = 0;
     this.y = 0;
   }
 
-  Coord (int x, int y)			// constructs from (x, y) coordinates
+  Point (int x, int y)			// constructs from (x, y) coordinates
   {
     this.x = x;
     this.y = y;
   }
 
-  Coord (Coord c)			// copy constructor
+  Point (Point p)			// copy constructor
   {
-    this.x = c.x;
-    this.y = c.y;
+    this.x = p.x;
+    this.y = p.y;
   }
 
   // getters:
@@ -41,51 +41,51 @@ public class Coord implements Comparable<Coord>
   // methods:
 
   @Override
-  public int compareTo (Coord coord)	// implements comparable interface
+  public int compareTo (Point point)	// implements comparable interface
   {
-    if (this.x != coord.x)
+    if (this.x != point.x)
     {
-      return (this.x - coord.x);
+      return (this.x - point.x);
     }
     else
     {
-      return (this.y - coord.y);
+      return (this.y - point.y);
     }
   }
 
-  public double distance (Coord coord)	// returns squared separation distance
+  public double distance (Point point)	// returns squared separation distance
   {
     final double x1 = this.x;
     final double y1 = this.y;
-    final double x2 = coord.x;
-    final double y2 = coord.y;
+    final double x2 = point.x;
+    final double y2 = point.y;
     return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
   }
 
-// public static double distance(Coord coord1, Coord coord2)
+// public static double distance(Point point1, Point point2)
 //
 // Synopsis:
-// Returns the squared distance of a pair of particles.
+// Returns the squared distance of a pair of points.
 //
 // Inputs:
-// coord1	coordinates of the first particle
-// coord2	coordinates of the second particle
+// point1	first particle
+// point2	second particle
 //
 // Output:
 // d		squared separation distance
 //
 // NOTES:
 // Omits the computation of the squared root for speed. And uses double precision floating
-// point numbers to represent the particle coordinates to avert (potential) overflows
+// point numbers to represent the point coordinates to avert (potential) overflows
 // owing to the limited range of numbers that can be represented with 32-bit signed
 // integers (just for the sake of being cautious).
 
-  public static double distance (Coord coord1, Coord coord2)
+  public static double distance (Point point1, Point point2)
   {
-    final double x1 = coord1.x;
-    final double y1 = coord1.y;
-    final double x2 = coord2.x;
-    final double y2 = coord2.y;
+    final double x1 = point1.x;
+    final double y1 = point1.y;
+    final double x2 = point2.x;
+    final double y2 = point2.y;
     return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
   }
 }
@@ -98,7 +98,7 @@ IST 4310
 Prof. M. Diaz-Maldonado
 
 Synopsis:
-Possible implementation of a 2D Cartesian Coordinates Class.
+Possible implementation of a 2D Point Class.
 
 Copyright (c) 2022 Misael Diaz-Maldonado
 This file is released under the GNU General Public License as published

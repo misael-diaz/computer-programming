@@ -17,7 +17,7 @@ public class ConvexHull
   // implementations:
 
 
-  // generates a data set of 2D Cartesian coordinates
+  // generates a data set of 2D Points
   private static Stack genDataSet ()
   {
     // initializes the dataset of problem 2.4.1-1
@@ -61,17 +61,17 @@ public class ConvexHull
 
     // gets the shape of the datset
     int rows = data.length, cols = data[0].length;
-    // gets the number of coordinates from the max dimension
+    // gets the number of points from the max dimension
     int size = (rows > cols)? rows : cols;
 
     Stack points = new Stack(size);
-    // stacks the dataset of coordinates on the stack
+    // stacks the dataset of points on the stack
     for (int i = 0; i != size; ++i)
     {
       int x = data[i][0];
       int y = data[i][1];
-      Coord c = new Coord(x, y);
-      points.push_back(c);
+      Point p = new Point(x, y);
+      points.push_back(p);
     }
 
     return points;
@@ -79,7 +79,7 @@ public class ConvexHull
 
 
   // returns true if the line PQ is an edge of the convex hull
-  private static boolean isEdge (Stack ps, Coord P, Coord Q) throws RejectedHullException
+  private static boolean isEdge (Stack ps, Point P, Point Q) throws RejectedHullException
   {
     Stack points = ps;
     int size = points.size();	// gets the data size
@@ -93,7 +93,7 @@ public class ConvexHull
     int isign = 0;
     while (isign == 0 && k != size)
     {
-      Coord R = points.getData(k);
+      Point R = points.get(k);
       isign = ln.sign(R);
       ++k;
     }
@@ -111,7 +111,7 @@ public class ConvexHull
     boolean isEdge = true;
     for (int l = k; l != size; ++l)
     {
-      Coord R = points.getData(l);
+      Point R = points.get(l);
       int sgn = ln.sign(R);
       if (sgn * isign < 0)
       {
@@ -124,7 +124,7 @@ public class ConvexHull
 
 
   // returns true if all the vertices have been found
-  private static boolean isClosed (Stack vertices, Coord P, Coord Q)
+  private static boolean isClosed (Stack vertices, Point P, Point Q)
   {
     int pos1 = vertices.search(P), pos2 = vertices.search(Q);
     if (pos1 >= 0 && pos2 >= 0)
@@ -138,7 +138,7 @@ public class ConvexHull
   }
 
 
-  // private static boolean addVertex(Stack vertices, Coord P, Coord Q)
+  // private static boolean addVertex(Stack vertices, Point P, Point Q)
   //
   // Synopsis:
   // Pushes unique vertices unto the back of the stack of vertices. As a side effect, it
@@ -158,7 +158,7 @@ public class ConvexHull
   // closed		true if we have found all the vertices, false otherwise
 
 
-  private static boolean addVertex(Stack vertices, Coord P, Coord Q)
+  private static boolean addVertex(Stack vertices, Point P, Point Q)
   {
     // checks if all the vertices have been found
     boolean closed = isClosed(vertices, P, Q);
@@ -222,9 +222,9 @@ public class ConvexHull
   private static void first (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
-    final Coord A = vertices.getData(last);
-    final Coord B = vertices.getData(0);
-    final Coord C = vertices.getData(1);
+    final Point A = vertices.get(last);
+    final Point B = vertices.get(0);
+    final Point C = vertices.get(1);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
     checkAngle(BA, BC);
@@ -236,9 +236,9 @@ public class ConvexHull
   {
     for (int i = 1; i != (vertices.size() - 1); ++i)
     {
-      final Coord A = vertices.getData(i - 1);
-      final Coord B = vertices.getData(i);
-      final Coord C = vertices.getData(i + 1);
+      final Point A = vertices.get(i - 1);
+      final Point B = vertices.get(i);
+      final Point C = vertices.get(i + 1);
       final Vector BA = new Vector(B, A);
       final Vector BC = new Vector(B, C);
       checkAngle(BA, BC);
@@ -250,9 +250,9 @@ public class ConvexHull
   private static void last (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
-    final Coord A = vertices.getData(last - 1);
-    final Coord B = vertices.getData(last);
-    final Coord C = vertices.getData(0);
+    final Point A = vertices.get(last - 1);
+    final Point B = vertices.get(last);
+    final Point C = vertices.get(0);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
     checkAngle(BA, BC);
@@ -274,8 +274,8 @@ public class ConvexHull
     vertices.sort();
     final int size = vertices.size();
     final int last = (size - 1);
-    final Coord P = vertices.getData(0);
-    final Coord Q = vertices.getData(last);
+    final Point P = vertices.get(0);
+    final Point Q = vertices.get(last);
     final Line line = new Line(P, Q);
 
     Stack left = new Stack(size);
@@ -283,7 +283,7 @@ public class ConvexHull
     // divides vertices into left and right partitions
     for (int i = 0; i != size; ++i)
     {
-      final Coord vertex = vertices.getData(i);
+      final Point vertex = vertices.get(i);
       if (line.sign(vertex) < 0)
       {
 	left.push_back(vertex);
@@ -298,7 +298,7 @@ public class ConvexHull
     // stores the vertices in the right partition in order
     for (int i = 0; i != right.size(); ++i)
     {
-      final Coord vertex = right.getData(i);
+      final Point vertex = right.get(i);
       clockwise.push_back(vertex);
     }
 
@@ -306,7 +306,7 @@ public class ConvexHull
     for (int i = 0; i != left.size(); ++i)
     {
       final int j = ( left.size() - (i + 1) );
-      final Coord vertex = left.getData(j);
+      final Point vertex = left.get(j);
       clockwise.push_back(vertex);
     }
 
@@ -338,11 +338,11 @@ public class ConvexHull
     // considers all the possible edges, size * (size - 1) / 2
     for (int i = 0; i != (size - 1); ++i)
     {
-      Coord P = points.getData(i);
+      Point P = points.get(i);
       // stacks points P and Q if they form a hull edge
       for (int j = (i + 1); j != size; ++j)
       {
-	Coord Q = points.getData(j);
+	Point Q = points.get(j);
 
 	if ( isEdge(points, P, Q) )
 	{
@@ -378,29 +378,29 @@ public class ConvexHull
 
   public static Stack genDataSet (int size)
   {
-    // creates a stack for storing the coordinates
+    // creates a stack for storing the points
     Stack stack = new Stack();
     // creates a pseudo-random number generator PRNG
     //long seed = System.nanoTime();
     Random random = new Random();
-    // defines limits for the particle coordinates
+    // defines limits for the point coordinates
     int x_min = -size, x_max = size;
     int y_min = -size, y_max = size;
-    // generates the distinct set of (x, y) coordinates
+    // generates the distinct set of 2D points
     for (int i = 0; i != size; ++i)
     {
       int x = x_min + random.nextInt(x_max - x_min);
       int y = y_min + random.nextInt(y_max - y_min);
-      Coord c = new Coord(x, y);
-      // generates a new coordinate if already in stack
-      while (stack.search(c) >= 0)
+      Point p = new Point(x, y);
+      // generates a new point if already in stack
+      while (stack.search(p) >= 0)
       {
 	x = random.nextInt(size);
 	y = random.nextInt(size);
-	c = new Coord(x, y);
+	p = new Point(x, y);
       }
-      // pushes (distinct) coordinate unto back of stack
-      stack.push_back(c);
+      // pushes (distinct) point unto back of stack
+      stack.push_back(p);
       // sorts to use binary search on next pass
       stack.sort();
     }
@@ -410,7 +410,7 @@ public class ConvexHull
 
 
   // uses brute force to obtain the convex hull
-  public static Stack BruteForce (Stack points) throws RejectedHullException
+  public static Stack bruteForce (Stack points) throws RejectedHullException
   {
     // times the implementation that finds the convex hull
     double start = System.nanoTime();
@@ -433,9 +433,9 @@ public class ConvexHull
     int x1 = 0, y1 = 0;
     int x2 = 4, y2 = 4;
     int xi = -1, yi = -1;
-    Coord P = new Coord(x1, y1);
-    Coord Q = new Coord(x2, y2);
-    Coord R = new Coord(xi, yi);
+    Point P = new Point(x1, y1);
+    Point Q = new Point(x2, y2);
+    Point R = new Point(xi, yi);
 
     Line line = new Line(P, Q);
 
@@ -443,19 +443,19 @@ public class ConvexHull
 
     xi = -1;
     yi = -2;
-    Coord S = new Coord(xi, yi);
+    Point S = new Point(xi, yi);
     System.out.printf("below line (-1): %d\n", line.sign(S));
 
     xi = -2;
     yi = -1;
-    Coord T = new Coord(xi, yi);
+    Point T = new Point(xi, yi);
     System.out.printf("above line (1): %d\n", line.sign(T));
   }
 
 
   private static void testBruteForceMethod () throws RejectedHullException
   {
-    // creates the data set of Cartesian coordinates
+    // creates the data set of 2D Points
     Stack points = genDataSet();
     // finds the vertices of the convex hull with brute force
     Stack vertices = bruteforce(points);
