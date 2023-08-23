@@ -410,7 +410,7 @@ public class ConvexHull
 
 
   // uses brute force to obtain the convex hull
-  public static Stack BruteForce (Stack points) throws RejectedHullException
+  public static Stack bruteForce (Stack points) throws RejectedHullException
   {
     // times the implementation that finds the convex hull
     double start = System.nanoTime();
