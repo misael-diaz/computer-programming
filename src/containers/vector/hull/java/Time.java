@@ -4,14 +4,17 @@ import java.io.FileNotFoundException;
 public class Time	// Time Complexity Experiment Class
 {
 
-  public static void main (String [] args)
+  public static void main (String [] args) throws FileNotFoundException
   {
-    exportBruteForce();	// exports time complexity results
+    Time time = new Time();
+    // exports time complexity results
+    time.exportBruteForce();
+    time.exportDivideAndConquer();
   }
 
 
   // repeats the numeric experiment
-  private static double [] replicateBruteForce (int size)
+  private double [] replicateBruteForce (int size)
   {
     int reps = 64;
     double etime = 0;
@@ -24,20 +27,22 @@ public class Time	// Time Complexity Experiment Class
       // new dataset and tries again until an acceptable convex hull is found.
       int sw = 1;
       Stack data = ConvexHull.genDataSet(size);
+      ConvexHull hull = new ConvexHull(data);
       while (sw != 0)
       {
 	try
 	{
-	  ConvexHull.bruteForce(data);
+	  hull.bruteForce();
 	  sw = 0;
 	}
 	catch (RejectedHullException e)
 	{
 	  data = ConvexHull.genDataSet(size);
+	  hull = new ConvexHull(data);
 	}
       }
       // updates the elapsed-time
-      etime += ConvexHull.etimeBruteForce;
+      etime += hull.getElapsedTime();
     }
 
     // computes the averages and return statistics
@@ -51,10 +56,10 @@ public class Time	// Time Complexity Experiment Class
 
 
   // obtains the elapsed-time and #operations with respect to size
-  private static double [][] experimentsBruteForce ()
+  private double [][] experimentsBruteForce ()
   {
-    int runs = 8;
     int size = 16;
+    final int runs = 8;
     double [][] statistics = new double[3][runs];
     double [] sizes = statistics[0];
     double [] etimes = statistics[1];
@@ -77,32 +82,93 @@ public class Time	// Time Complexity Experiment Class
 
 
   // exports the elapsed-time and #operations with respect to size
-  private static void exportBruteForce ()
+  private void exportBruteForce () throws FileNotFoundException
   {
-    try
+    final String file = ("timeBruteForce.dat");
+    PrintWriter out = new PrintWriter(file);
+    // conducts the experiments
+    final double [][] stats = experimentsBruteForce();
+    // gets the number of experiments (or runs)
+    final int runs = stats[1].length;
+    for (int i = 0; i != runs; ++i)
     {
-      String file = ("timeBruteForce.dat");
-      PrintWriter out = new PrintWriter(file);
-      // conducts the experiments
-      double [][] stats = experimentsBruteForce();
-      // gets the number of experiments (or runs)
-      int runs = stats[1].length;
-      for (int i = 0; i != runs; ++i)
+      // gets size, elapsed-time, and #operations
+      final double size  = stats[0][i];
+      final double etime = stats[1][i];
+      final double opers = stats[2][i];
+      // writes data to file in tabulated format
+      final String fmt = ("%.16e %.16e %.16e\n");
+      out.printf(fmt, size, etime, opers);
+    }
+    out.close();
+  }
+
+
+  private double replicateDivideAndConquer (int size)
+  {
+    double etime = 0;
+    final int reps = 1024;
+    for (int i = 0; i != reps; ++i)
+    {
+      int sw = 1;
+      Stack data = ConvexHull.genDataSet(size);
+      ConvexHull hull = new ConvexHull(data);
+      while (sw != 0)
       {
-	// gets size, elapsed-time, and #operations
-	double size  = stats[0][i];
-	double etime = stats[1][i];
-	double opers = stats[2][i];
-	// writes data to file in tabulated format
-	String fmt = ("%16.8e %16.8e %16.8e\n");
-	out.printf(fmt, size, etime, opers);
+	try
+	{
+	  hull.bruteForce();
+	  sw = 0;
+	}
+	catch (RejectedHullException e)
+	{
+	  data = ConvexHull.genDataSet(size);
+	  hull = new ConvexHull(data);
+	}
       }
-      out.close();
+      hull.convexHull();
+      etime += hull.getElapsedTime();
     }
-    catch (FileNotFoundException err)
+
+    final double avg_elapsedTimes = ( etime / ( (double) reps ) );
+    final double statistics = avg_elapsedTimes;
+    return statistics;
+  }
+
+
+  private double [][] experimentsDivideAndConquer ()
+  {
+    int size = 8;
+    final int runs = 8;
+    double [][] statistics = new double[2][runs];
+    double [] sizes = statistics[0];
+    double [] elapsedTimes = statistics[1];
+    for (int i = 0; i != runs; ++i)
     {
-      err.printStackTrace();
+      double elapsedTime = replicateDivideAndConquer(size);
+      sizes[i] = ( (double) size );
+      elapsedTimes[i] = elapsedTime;
+      size *= 2;
     }
+
+    return statistics;
+  }
+
+
+  private void exportDivideAndConquer () throws FileNotFoundException
+  {
+    final String file = ("timeDivideAndConquer.dat");
+    PrintWriter out = new PrintWriter(file);
+    final double [][] stats = experimentsDivideAndConquer();
+    final int runs = stats[1].length;
+    for (int i = 0; i != runs; ++i)
+    {
+      final double size = stats[0][i];
+      final double elapsedTime = stats[1][i];
+      final String fmt = ("%.16e %.16e\n");
+      out.printf(fmt, size, elapsedTime);
+    }
+    out.close();
   }
 }
 
