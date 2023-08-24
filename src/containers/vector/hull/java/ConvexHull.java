@@ -9,7 +9,9 @@ public class ConvexHull
 
   public static void main (String [] args) throws RejectedHullException
   {
+    test();
     testBruteForceMethod();
+    testDivideAndConquerMethod();
     return;
   }
 
@@ -41,6 +43,12 @@ public class ConvexHull
       {12,  5}, {12, 14}, {16,  9}, {18, 12}, {18, 17},
       {19,  4}, {19,  6}, {21, 15}, {22, 20}, {23,  9}
     };
+
+
+    // this dataset contains a convex hull with some vertical edges
+    // int [][]  data = {
+    //   {-8, -7}, {-8, -1}, {-5, +5}, {-2, +0}, {+0, -2}, {+0, +7}, {+7, -7}, {+7, +7}
+    // };
 
 
     // yields a Bad Convex Hull (complains as it should)
@@ -328,7 +336,7 @@ public class ConvexHull
   // vertices	the vertices of the convex hull (in clockwise order)
 
 
-  private static Stack bruteforce (Stack points) throws RejectedHullException
+  private static Stack bruteforce (final Stack points) throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
     Stack vertices = new Stack();
@@ -410,7 +418,7 @@ public class ConvexHull
 
 
   // uses brute force to obtain the convex hull
-  public static Stack bruteForce (Stack points) throws RejectedHullException
+  public static Stack bruteForce (final Stack points) throws RejectedHullException
   {
     // times the implementation that finds the convex hull
     double start = System.nanoTime();
@@ -421,6 +429,217 @@ public class ConvexHull
     etimeBruteForce = (end - start);
 
     return vertices;
+  }
+
+
+  // returns a sorted stack of convex hull vertices
+  private static Stack direct (final Stack points)
+  {
+    // we have asserted that there are only two points in the stack
+    Stack vertices = new Stack();
+    final Point P = points.get(0);
+    final Point Q = points.get(1);
+    if (P.compareTo(Q) < 0)
+    {
+      vertices.push_back(P);
+      vertices.push_back(Q);
+    }
+    else
+    {
+      vertices.push_back(Q);
+      vertices.push_back(P);
+    }
+
+    return vertices;
+  }
+
+
+  private static Stack combine (final Stack left, final Stack right)
+  {
+    final int sz = left.size() + right.size();
+
+    int beginLeft = 0;
+    int endLeft = left.size();
+    int beginRight = 0;
+    int endRight = right.size();
+
+    Stack vertices = new Stack(sz);
+    // combines the left and right in order:
+    while ( (beginLeft != endLeft) && (beginRight != endRight) )
+    {
+      final Point P = left.get(beginLeft);
+      final Point Q = right.get(beginRight);
+      if (P.compareTo(Q) == 0)
+      {
+	vertices.push_back(P);
+	++beginLeft;
+	++beginRight;
+      }
+      else if (P.compareTo(Q) < 0)
+      {
+	vertices.push_back(P);
+	++beginLeft;
+      }
+      else
+      {
+	vertices.push_back(Q);
+	++beginRight;
+      }
+    }
+
+    // stacks whatever that remains from the left and right:
+
+    for (int i = beginLeft; i != endLeft; ++i)
+    {
+      final Point vertex = left.get(i);
+      vertices.push_back(vertex);
+    }
+
+    for (int i = beginRight; i != endRight; ++i)
+    {
+      final Point vertex = right.get(i);
+      vertices.push_back(vertex);
+    }
+
+    return vertices;
+  }
+
+
+  // returns the pivot point farthest from the baseline PQ
+  private static Point pivot (final Stack points)
+  {
+    final int last = (points.size() - 1);
+    final Point P = points.get(0);
+    final Point Q = points.get(last);
+    final Vector PQ = new Vector(P, Q);
+
+    int id = -1;
+    double dmax = Double.NEGATIVE_INFINITY;
+    for (int i = 1; i != last; ++i)
+    {
+      final Point R = points.get(i);
+      final Vector PR = new Vector(P, R);
+      final double d = Vector.trans(PQ, PR);
+      if (d > dmax)
+      {
+	dmax = d;
+	id = i;
+      }
+    }
+
+    final Point pivot = points.get(id);
+    return pivot;
+  }
+
+
+  // divides into "left" and "right" partitions at the pivotal point
+  private static void divide (final Stack points, Stack left, Stack right)
+  {
+    final int size = points.size();
+    final int last = (size - 1);
+    final Point P = points.get(0);
+    final Point Q = points.get(last);
+    final Point pivot = pivot(points);
+
+    left.push_back(P);
+    // pushes points in the same direction as the pivot (above or below the baseline)
+    for (int i = 1; i != last; ++i)
+    {
+      final Line baseline = new Line(P, Q);
+      final int sign = baseline.sign(pivot);
+      final Point point = points.get(i);
+      final Line line = new Line(P, pivot);
+      if ( (line.getdX() != 0) && (line.sign(point) == sign) )
+      {
+	left.push_back(point);
+      }
+    }
+    left.push_back(pivot);
+
+    right.push_back(Q);
+    for (int i = 1; i != last; ++i)
+    {
+      final Line baseline = new Line(P, Q);
+      final int sign = baseline.sign(pivot);
+      final Point point = points.get(i);
+      final Line line = new Line(Q, pivot);
+      if ( (line.getdX() != 0) && (line.sign(point) == sign) )
+      {
+	right.push_back(point);
+      }
+    }
+    right.push_back(pivot);
+  }
+
+
+  // looks recursively for the vertices of the convex hull
+  private static Stack recurse (final Stack points)
+  {
+    final int size = points.size();
+    if (size == 2)
+    {
+      return direct(points);
+    }
+    else
+    {
+      Stack left = new Stack(size);
+      Stack right = new Stack(size);
+      divide(points, left, right);
+      Stack leftVertices = recurse(left);
+      Stack rightVertices = recurse(right);
+      return combine(leftVertices, rightVertices);
+    }
+  }
+
+
+  // implements the divide and conquer method that finds the vertices of the convex hull
+  public static Stack convexHull (Stack points)
+  {
+    // sorts the points to support the divide and conquer algorithm:
+
+    points.sort();
+
+    // constructs the baseline for the first division:
+
+    final int size = points.size();
+    final int last = (size - 1);
+    final Point P = points.get(0);
+    final Point Q = points.get(last);
+    final Line baseline = new Line(P, Q);
+
+    // divides into left and right partitions:
+
+    Stack left = new Stack(size);
+    // stacks points below the baseline including the vertices P and Q
+    for (int i = 0; i != size; ++i)
+    {
+      final Point point = points.get(i);
+      final int sign = baseline.sign(point);
+      if (sign <= 0)
+      {
+	left.push_back(point);
+      }
+    }
+
+    Stack right = new Stack(size);
+    // stacks points above the baseline including the vertices P and Q
+    for (int i = 0; i != size; ++i)
+    {
+      final Point point = points.get(i);
+      final int sign = baseline.sign(point);
+      if (sign >= 0)
+      {
+	right.push_back(point);
+      }
+    }
+
+    // applies the divide and conquer scheme on each partition:
+
+    Stack verticesLeft = recurse(left);
+    Stack verticesRight = recurse(right);
+
+    // combines and yields the vertices of the convex hull in clockwise order
+    return clockwise( combine(verticesLeft, verticesRight) );
   }
 
 
@@ -460,7 +679,82 @@ public class ConvexHull
     // finds the vertices of the convex hull with brute force
     Stack vertices = bruteforce(points);
     // displays the coordinates of the vertices on the console
+    System.out.println("BruteForce:");
     vertices.print();
+  }
+
+
+  private static void testDivideAndConquerMethod () throws RejectedHullException
+  {
+    Stack points = genDataSet();
+    Stack verticesBruteForce = bruteforce(points);
+    System.out.println("BruteForce:");
+    verticesBruteForce.print();
+
+    Stack vertices = convexHull(points);
+    System.out.println("Divide-And-Conquer:");
+    vertices.print();
+  }
+
+
+  private static void test ()
+  {
+    int size = 8;
+    final int runs = 8;
+    final int reps = 256;
+    boolean failed = false;
+    for (int run = 0; run != runs; ++run)
+    {
+      for (int rep = 0; rep != reps; ++rep)
+      {
+	int sw = 1;
+	Stack points = genDataSet(size);
+	Stack verticesBruteForce = new Stack(size);
+	while (sw == 1)
+	{
+	  try
+	  {
+	    verticesBruteForce = bruteforce(points);
+	    sw = 0;
+	  }
+	  catch (RejectedHullException e)
+	  {
+	    points = genDataSet(size);
+	  }
+	}
+
+	Stack vertices = convexHull(points);
+
+	failed = !Stack.isEqual(verticesBruteForce, vertices);
+	if (failed)
+	{
+	  System.out.println("BruteForce:");
+	  verticesBruteForce.print();
+	  System.out.println("Divide-And-Conquer:");
+	  vertices.print();
+	  System.out.println("points:");
+	  points.print();
+	  break;
+	}
+      }
+
+      if (failed)
+      {
+	break;
+      }
+
+      size *= 2;
+    }
+
+    System.out.print("test: ");
+    if (failed)
+    {
+      System.out.println("FAIL");
+    }
+    else
+    {
+      System.out.println("PASS");
+    }
   }
 }
 

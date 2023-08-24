@@ -183,6 +183,36 @@ public class Stack
   }
 
 
+  public static boolean isEqual (final Stack first, final Stack second)
+  {
+    boolean isEqual = false;
+    if ( first.size() != second.size() )
+    {
+      return isEqual;
+    }
+
+    isEqual = true;
+    Stack f = new Stack(first);
+    Stack s = new Stack(second);
+
+    f.sort();
+    s.sort();
+    for (int i = 0; i != f.size(); ++i)
+    {
+      final Point P = f.get(i);
+      final Point Q = s.get(i);
+      if (P.compareTo(Q) != 0)
+      {
+	isEqual = false;
+	break;
+      }
+    }
+
+    return isEqual;
+  }
+
+
+
   // tests the methods of the stack class
   public static void main (String[] args)
   {
