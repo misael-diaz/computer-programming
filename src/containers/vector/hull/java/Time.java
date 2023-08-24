@@ -84,20 +84,20 @@ public class Time	// Time Complexity Experiment Class
   // exports the elapsed-time and #operations with respect to size
   private void exportBruteForce () throws FileNotFoundException
   {
-    String file = ("timeBruteForce.dat");
+    final String file = ("timeBruteForce.dat");
     PrintWriter out = new PrintWriter(file);
     // conducts the experiments
-    double [][] stats = experimentsBruteForce();
+    final double [][] stats = experimentsBruteForce();
     // gets the number of experiments (or runs)
-    int runs = stats[1].length;
+    final int runs = stats[1].length;
     for (int i = 0; i != runs; ++i)
     {
       // gets size, elapsed-time, and #operations
-      double size  = stats[0][i];
-      double etime = stats[1][i];
-      double opers = stats[2][i];
+      final double size  = stats[0][i];
+      final double etime = stats[1][i];
+      final double opers = stats[2][i];
       // writes data to file in tabulated format
-      String fmt = ("%16.8e %16.8e %16.8e\n");
+      final String fmt = ("%16.8e %16.8e %16.8e\n");
       out.printf(fmt, size, etime, opers);
     }
     out.close();
@@ -157,10 +157,10 @@ public class Time	// Time Complexity Experiment Class
 
   private void exportDivideAndConquer () throws FileNotFoundException
   {
-    String file = ("timeDivideAndConquer.dat");
+    final String file = ("timeDivideAndConquer.dat");
     PrintWriter out = new PrintWriter(file);
-    double [][] stats = experimentsDivideAndConquer();
-    int runs = stats[1].length;
+    final double [][] stats = experimentsDivideAndConquer();
+    final int runs = stats[1].length;
     for (int i = 0; i != runs; ++i)
     {
       final double size = stats[0][i];
