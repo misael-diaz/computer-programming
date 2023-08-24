@@ -4,10 +4,12 @@ import java.io.FileNotFoundException;
 public class Time	// Time Complexity Experiment Class
 {
 
-  public static void main (String [] args)
+  public static void main (String [] args) throws FileNotFoundException
   {
     Time time = new Time();
-    time.exportBruteForce();	// exports time complexity results
+    // exports time complexity results
+    time.exportBruteForce();
+    time.exportDivideAndConquer();
   }
 
 
@@ -106,6 +108,79 @@ public class Time	// Time Complexity Experiment Class
     {
       err.printStackTrace();
     }
+  }
+
+
+  private double replicateDivideAndConquer (int size)
+  {
+    double etime = 0;
+    final int reps = 1024;
+    for (int i = 0; i != reps; ++i)
+    {
+      int sw = 1;
+      Stack data = ConvexHull.genDataSet(size);
+      ConvexHull hull = new ConvexHull(data);
+      while (sw != 0)
+      {
+	try
+	{
+	  hull.bruteForce();
+	  sw = 0;
+	}
+	catch (RejectedHullException e)
+	{
+	  data = ConvexHull.genDataSet(size);
+	  hull = new ConvexHull(data);
+	}
+      }
+      hull.convexHull();
+      etime += hull.getElapsedTime();
+    }
+
+    final double avg_elapsedTimes = ( etime / ( (double) reps ) );
+    final double statistics = avg_elapsedTimes;
+    return statistics;
+  }
+
+
+  private double [][] experimentsDivideAndConquer ()
+  {
+    int size = 8;
+    final int runs = 8;
+    double [][] statistics = new double[2][runs];
+    double [] sizes = statistics[0];
+    double [] elapsedTimes = statistics[1];
+    for (int i = 0; i != runs; ++i)
+    {
+      double elapsedTime = replicateDivideAndConquer(size);
+      sizes[i] = ( (double) size );
+      elapsedTimes[i] = elapsedTime;
+      size *= 2;
+    }
+
+    return statistics;
+  }
+
+
+  private void exportDivideAndConquer () throws FileNotFoundException
+  {
+    String file = ("timeDivideAndConquer.dat");
+    PrintWriter out = new PrintWriter(file);
+    // conducts the experiments
+    double [][] stats = experimentsBruteForce();
+    // gets the number of experiments (or runs)
+    int runs = stats[1].length;
+    for (int i = 0; i != runs; ++i)
+    {
+      // gets size, elapsed-time, and #operations
+      double size  = stats[0][i];
+      double etime = stats[1][i];
+      double opers = stats[2][i];
+      // writes data to file in tabulated format
+      String fmt = ("%16.8e %16.8e %16.8e\n");
+      out.printf(fmt, size, etime, opers);
+    }
+    out.close();
   }
 }
 
