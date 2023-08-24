@@ -58,8 +58,8 @@ public class Time	// Time Complexity Experiment Class
   // obtains the elapsed-time and #operations with respect to size
   private double [][] experimentsBruteForce ()
   {
-    int runs = 8;
     int size = 16;
+    final int runs = 8;
     double [][] statistics = new double[3][runs];
     double [] sizes = statistics[0];
     double [] etimes = statistics[1];
