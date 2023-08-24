@@ -21,7 +21,13 @@ all: $(TESTS)
 $(TEST_BIN): $(OBJECTS)
 	$(CC) $(CCOPT) $(OBJECTS) -o $(TEST_BIN) $(LIBS)
 
-$(UTIL_OBJ): $(UTIL_SRC)
+$(POINT_OBJ): $(POINT_SRC)
+	$(CC) $(CCOPT) -c $(POINT_SRC) -o $(POINT_OBJ)
+
+$(PAIR_OBJ): $(POINT_OBJ) $(PAIR_SRC)
+	$(CC) $(CCOPT) -c $(PAIR_SRC) -o $(PAIR_OBJ)
+
+$(UTIL_OBJ): $(POINT_OBJ) $(PAIR_OBJ) $(UTIL_SRC)
 	$(CC) $(CCOPT) -c $(UTIL_SRC) -o $(UTIL_OBJ)
 
 $(TEST_OBJ): $(UTIL_OBJ) $(TEST_SRC)

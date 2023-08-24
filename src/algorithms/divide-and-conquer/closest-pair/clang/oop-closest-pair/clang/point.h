@@ -20,6 +20,13 @@ typedef struct
   double (*dist_y) (const void* point1, const void* point2);
 } point_t;
 
+typedef struct
+{
+  void (*initializer) (point_t* points, size_t const numel);
+  int  (*xcomparator) (const point_t* point1, const point_t* point2);
+  int  (*ycomparator) (const point_t* point1, const point_t* point2);
+} point_namespace_t;
+
 #endif
 /*
 

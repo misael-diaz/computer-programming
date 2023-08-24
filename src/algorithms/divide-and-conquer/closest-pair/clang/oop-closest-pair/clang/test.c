@@ -7,6 +7,9 @@
 #define REPS 1024
 #define iNUMEL 2
 
+extern point_namespace_t const point;
+extern pair_namespace_t const pair;
+
 void test_sort();
 void test_bruteForce();
 void test_recurse();
@@ -314,16 +317,16 @@ void divide (ensemble_t* ensemble,
   }
   else
   {
-    sort(ensemble, beg, end, ycompare);
+    sort(ensemble, beg, end, point.ycomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
-    pair_t* closestPairLeft = construct();
+    pair_t* closestPairLeft = pair.create();
     recurse(ensemble, beginLeft, endLeft, closestPairLeft);
 
     size_t const beginRight = beg + (numel / 2);
     size_t const endRight = beg + numel;
-    pair_t* closestPairRight = construct();
+    pair_t* closestPairRight = pair.create();
     recurse(ensemble, beginRight, endRight, closestPairRight);
 
     closestPair -> min(closestPair, closestPairLeft, closestPairRight);
@@ -332,10 +335,10 @@ void divide (ensemble_t* ensemble,
 
     // NOTE: we need to restore the x - y sorting because the xcombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, xcompare);
+    sort(ensemble, beg, end, point.xcomparator);
 
-    closestPairLeft = deconstruct(closestPairLeft);
-    closestPairRight = deconstruct(closestPairRight);
+    closestPairLeft = pair.destroy(closestPairLeft);
+    closestPairRight = pair.destroy(closestPairRight);
   }
 }
 
@@ -352,16 +355,16 @@ void recurse (ensemble_t* ensemble,
   }
   else
   {
-    sort(ensemble, beg, end, xcompare);
+    sort(ensemble, beg, end, point.xcomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
-    pair_t* closestPairLeft = construct();
+    pair_t* closestPairLeft = pair.create();
     divide(ensemble, beginLeft, endLeft, closestPairLeft);
 
     size_t const beginRight = beg + (numel / 2);
     size_t const endRight = beg + numel;
-    pair_t* closestPairRight = construct();
+    pair_t* closestPairRight = pair.create();
     divide(ensemble, beginRight, endRight, closestPairRight);
 
     closestPair -> min(closestPair, closestPairLeft, closestPairRight);
@@ -370,17 +373,17 @@ void recurse (ensemble_t* ensemble,
 
     // NOTE: we need to restore the y - x sorting because the ycombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, ycompare);
+    sort(ensemble, beg, end, point.ycomparator);
 
-    closestPairLeft = deconstruct(closestPairLeft);
-    closestPairRight = deconstruct(closestPairRight);
+    closestPairLeft = pair.destroy(closestPairLeft);
+    closestPairRight = pair.destroy(closestPairRight);
   }
 }
 
 
 void test_bruteForce ()
 {
-  pair_t* closestPair = construct();
+  pair_t* closestPair = pair.create();
   if (closestPair == NULL)
   {
     return;
@@ -403,7 +406,7 @@ void test_bruteForce ()
   closestPair -> log(closestPair);
 
   ensemble = destroy(ensemble);
-  closestPair = deconstruct(closestPair);
+  closestPair = pair.destroy(closestPair);
 }
 
 
@@ -415,16 +418,16 @@ void test_recurse ()
   double y[] = {7, 13, 7,  5,  9,  5,  7, 10,  7, 10, 14,  2, 64,  64, -64, -64};
   size_t const numel = ( sizeof(x) / sizeof(double) );
 
-  pair_t* closestPairBruteForce = construct();
+  pair_t* closestPairBruteForce = pair.create();
   if (closestPairBruteForce == NULL)
   {
     return;
   }
 
-  pair_t* closestPairRecurse = construct();
+  pair_t* closestPairRecurse = pair.create();
   if (closestPairRecurse == NULL)
   {
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     return;
   }
 
@@ -455,8 +458,8 @@ void test_recurse ()
   }
 
   ensemble = destroy(ensemble);
-  closestPairBruteForce = deconstruct(closestPairBruteForce);
-  closestPairRecurse = deconstruct(closestPairRecurse);
+  closestPairBruteForce = pair.destroy(closestPairBruteForce);
+  closestPairRecurse = pair.destroy(closestPairRecurse);
 }
 
 
@@ -467,16 +470,16 @@ void test_recurse1 ()
   double y[] = {2, 11, 8, 9, 13,  4,  8,  3, 12, 14,  7, 10, 64,  64, -64, -64};
   size_t const numel = ( sizeof(x) / sizeof(double) );
 
-  pair_t* closestPairBruteForce = construct();
+  pair_t* closestPairBruteForce = pair.create();
   if (closestPairBruteForce == NULL)
   {
     return;
   }
 
-  pair_t* closestPairRecurse = construct();
+  pair_t* closestPairRecurse = pair.create();
   if (closestPairRecurse == NULL)
   {
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     return;
   }
 
@@ -507,8 +510,8 @@ void test_recurse1 ()
   }
 
   ensemble = destroy(ensemble);
-  closestPairBruteForce = deconstruct(closestPairBruteForce);
-  closestPairRecurse = deconstruct(closestPairRecurse);
+  closestPairBruteForce = pair.destroy(closestPairBruteForce);
+  closestPairRecurse = pair.destroy(closestPairRecurse);
 }
 
 
@@ -519,16 +522,16 @@ void test_recurse2 ()
   double y[] = {2, 12, 4, 11,  4, 14, 13,  7,  4,  7, 14,  2, 64,  64, -64, -64};
   size_t const numel = ( sizeof(x) / sizeof(double) );
 
-  pair_t* closestPairBruteForce = construct();
+  pair_t* closestPairBruteForce = pair.create();
   if (closestPairBruteForce == NULL)
   {
     return;
   }
 
-  pair_t* closestPairRecurse = construct();
+  pair_t* closestPairRecurse = pair.create();
   if (closestPairRecurse == NULL)
   {
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     return;
   }
 
@@ -559,23 +562,23 @@ void test_recurse2 ()
   }
 
   ensemble = destroy(ensemble);
-  closestPairBruteForce = deconstruct(closestPairBruteForce);
-  closestPairRecurse = deconstruct(closestPairRecurse);
+  closestPairBruteForce = pair.destroy(closestPairBruteForce);
+  closestPairRecurse = pair.destroy(closestPairRecurse);
 }
 
 
 void test_recurse3 ()
 {
-  pair_t* closestPairBruteForce = construct();
+  pair_t* closestPairBruteForce = pair.create();
   if (closestPairBruteForce == NULL)
   {
     return;
   }
 
-  pair_t* closestPairRecurse = construct();
+  pair_t* closestPairRecurse = pair.create();
   if (closestPairRecurse == NULL)
   {
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     return;
   }
 
@@ -625,8 +628,8 @@ void test_recurse3 ()
     printf("PASS\n");
   }
 
-  closestPairBruteForce = deconstruct(closestPairBruteForce);
-  closestPairRecurse = deconstruct(closestPairRecurse);
+  closestPairBruteForce = pair.destroy(closestPairBruteForce);
+  closestPairRecurse = pair.destroy(closestPairRecurse);
 }
 
 
@@ -642,9 +645,9 @@ void test_sort ()
     {
       initialize(ensemble);
 
-      sort(ensemble, 0, numel, xcompare);
+      sort(ensemble, 0, numel, point.xcomparator);
 
-      failed = !sorted(ensemble, 0, numel, xcompare);
+      failed = !sorted(ensemble, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;
@@ -691,13 +694,13 @@ void complexity_sort ()
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 
-      sort(ensemble, 0, numel, xcompare);
+      sort(ensemble, 0, numel, point.xcomparator);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
       etime += getElapsedTime(&begin, &end);
 
-      failed = !sorted(ensemble, 0, numel, xcompare);
+      failed = !sorted(ensemble, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;
@@ -754,16 +757,16 @@ void complexity_sort ()
 
 void complexity_recurse ()
 {
-  pair_t* closestPairBruteForce = construct();
+  pair_t* closestPairBruteForce = pair.create();
   if (closestPairBruteForce == NULL)
   {
     return;
   }
 
-  pair_t* closestPairRecurse = construct();
+  pair_t* closestPairRecurse = pair.create();
   if (closestPairRecurse == NULL)
   {
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     return;
   }
 
@@ -829,8 +832,8 @@ void complexity_recurse ()
   FILE* file = fopen(fname, "w");
   if (file == NULL)
   {
-    closestPairRecurse = deconstruct(closestPairRecurse);
-    closestPairBruteForce = deconstruct(closestPairBruteForce);
+    closestPairRecurse = pair.destroy(closestPairRecurse);
+    closestPairBruteForce = pair.destroy(closestPairBruteForce);
     printf("complexity-recurse(): IO ERROR with file %s\n", fname);
     return;
   }
@@ -843,8 +846,8 @@ void complexity_recurse ()
   }
 
   fclose(file);
-  closestPairRecurse = deconstruct(closestPairRecurse);
-  closestPairBruteForce = deconstruct(closestPairBruteForce);
+  closestPairRecurse = pair.destroy(closestPairRecurse);
+  closestPairBruteForce = pair.destroy(closestPairBruteForce);
   printf("complexity-recurse(): time complexity results have been writen to %s\n", fname);
 }
 
