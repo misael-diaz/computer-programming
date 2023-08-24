@@ -97,7 +97,7 @@ public class Time	// Time Complexity Experiment Class
       final double etime = stats[1][i];
       final double opers = stats[2][i];
       // writes data to file in tabulated format
-      final String fmt = ("%16.8e %16.8e %16.8e\n");
+      final String fmt = ("%.16e %.16e %.16e\n");
       out.printf(fmt, size, etime, opers);
     }
     out.close();
