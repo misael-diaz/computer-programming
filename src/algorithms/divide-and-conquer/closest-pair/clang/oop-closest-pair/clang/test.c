@@ -7,6 +7,8 @@
 #define REPS 1024
 #define iNUMEL 2
 
+extern point_namespace_t const point;
+
 void test_sort();
 void test_bruteForce();
 void test_recurse();
@@ -314,7 +316,7 @@ void divide (ensemble_t* ensemble,
   }
   else
   {
-    sort(ensemble, beg, end, ycompare);
+    sort(ensemble, beg, end, point.ycomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
@@ -332,7 +334,7 @@ void divide (ensemble_t* ensemble,
 
     // NOTE: we need to restore the x - y sorting because the xcombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, xcompare);
+    sort(ensemble, beg, end, point.xcomparator);
 
     closestPairLeft = deconstruct(closestPairLeft);
     closestPairRight = deconstruct(closestPairRight);
@@ -352,7 +354,7 @@ void recurse (ensemble_t* ensemble,
   }
   else
   {
-    sort(ensemble, beg, end, xcompare);
+    sort(ensemble, beg, end, point.xcomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
@@ -370,7 +372,7 @@ void recurse (ensemble_t* ensemble,
 
     // NOTE: we need to restore the y - x sorting because the ycombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, ycompare);
+    sort(ensemble, beg, end, point.ycomparator);
 
     closestPairLeft = deconstruct(closestPairLeft);
     closestPairRight = deconstruct(closestPairRight);
@@ -642,9 +644,9 @@ void test_sort ()
     {
       initialize(ensemble);
 
-      sort(ensemble, 0, numel, xcompare);
+      sort(ensemble, 0, numel, point.xcomparator);
 
-      failed = !sorted(ensemble, 0, numel, xcompare);
+      failed = !sorted(ensemble, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;
@@ -691,13 +693,13 @@ void complexity_sort ()
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 
-      sort(ensemble, 0, numel, xcompare);
+      sort(ensemble, 0, numel, point.xcomparator);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
       etime += getElapsedTime(&begin, &end);
 
-      failed = !sorted(ensemble, 0, numel, xcompare);
+      failed = !sorted(ensemble, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;

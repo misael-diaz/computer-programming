@@ -26,12 +26,14 @@ LIBS = -lm
 
 # sources
 UTIL_SRC = util.c
+POINT_SRC = point.c
 TEST_SRC = test.c
 
 # objects
 UTIL_OBJ = util.o
+POINT_OBJ = point.o
 TEST_OBJ = test.o
-OBJECTS = $(UTIL_OBJ) $(TEST_OBJ)
+OBJECTS = $(POINT_OBJ) $(UTIL_OBJ) $(TEST_OBJ)
 
 # executables
 TEST_BIN = test.bin

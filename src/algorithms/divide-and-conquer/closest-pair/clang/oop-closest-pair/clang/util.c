@@ -25,129 +25,19 @@ double urand (double const size)
 }
 
 
-static int compare (double const x1, double const x2)
-{
-  if (x1 == x2)
-  {
-    return 0;
-  }
-  else if (x1 > x2)
-  {
-    return 1;
-  }
-  else
-  {
-    return -1;
-  }
-}
-
-
-int xcompare (const point_t* point1, const point_t* point2)
-{
-  double const x1 = point1 -> _x;
-  double const y1 = point1 -> _y;
-  double const x2 = point2 -> _x;
-  double const y2 = point2 -> _y;
-  return ( (x1 != x2)? compare(x1, x2) : compare(y1, y2) );
-}
-
-
-int ycompare (const point_t* point1, const point_t* point2)
-{
-  double const x1 = point1 -> _x;
-  double const y1 = point1 -> _y;
-  double const x2 = point2 -> _x;
-  double const y2 = point2 -> _y;
-  return ( (y1 != y2)? compare(y1, y2) : compare(x1, x2) );
-}
-
-
-static void setter (void* vpoint, double const x, double const y, size_t const id)
-{
-  point_t* point = vpoint;
-  point -> _x = x;
-  point -> _y = y;
-  point -> _id = id;
-}
-
-
-static size_t id_getter (const void* vpoint)
-{
-  const point_t* point = vpoint;
-  return (point -> _id);
-}
-
-
-static void cloner (void* vdst, const void* vsrc)
-{
-  point_t* dst = vdst;
-  const point_t* src = vsrc;
-  dst -> _x = src -> _x;
-  dst -> _y = src -> _y;
-  dst -> _id = src -> _id;
-}
-
-
-static void logger (const void* vpoint)
-{
-  const point_t* point = vpoint;
-  double const x = point -> _x;
-  double const y = point -> _y;
-  size_t const id = point -> _id;
-  printf("x: %+e y: %+e id: %lu\n", x, y, id);
-}
-
-
-bool isEqual (const point_t* point1, const point_t* point2)
-{
-  return ( (xcompare(point1, point2) == 0) && (point1 -> _id == point2 -> _id) );
-}
-
-
 int search (const point_t* points, size_t const b, size_t const e, const point_t* target)
 {
-  const point_t* point = points;
+  const point_t* pnt = points;
+  extern point_namespace_t const point;
   for (size_t i = b; i != e; ++i)
   {
-    if (xcompare(point, target) == 0)
+    if (point.xcomparator(pnt, target) == 0)
     {
       return i;
     }
-    ++point;
+    ++pnt;
   }
   return -1;
-}
-
-
-static double distance (const void* vpoint1, const void* vpoint2)
-{
-  const point_t* point1 = vpoint1;
-  const point_t* point2 = vpoint2;
-  double const x1 = point1 -> _x;
-  double const y1 = point1 -> _y;
-  double const x2 = point2 -> _x;
-  double const y2 = point2 -> _y;
-  return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
-}
-
-
-static double distance_x (const void* vpoint1, const void* vpoint2)
-{
-  const point_t* point1 = vpoint1;
-  const point_t* point2 = vpoint2;
-  double const x1 = point1 -> _x;
-  double const x2 = point2 -> _x;
-  return ( (x1 - x2) * (x1 - x2) );
-}
-
-
-static double distance_y (const void* vpoint1, const void* vpoint2)
-{
-  const point_t* point1 = vpoint1;
-  const point_t* point2 = vpoint2;
-  double const y1 = point1 -> _y;
-  double const y2 = point2 -> _y;
-  return ( (y1 - y2) * (y1 - y2) );
 }
 
 
@@ -160,27 +50,6 @@ void copy (point_t* dst, const point_t* src, size_t const numel)
     idst -> clone(idst, isrc);
     ++idst;
     ++isrc;
-  }
-}
-
-
-void init (point_t* points, size_t const numel)
-{
-  point_t* point = points;
-  for (size_t i = 0; i != numel; ++i)
-  {
-    size_t const id = i;
-    double const x = INFINITY;
-    double const y = INFINITY;
-    point -> set = setter;
-    point -> log = logger;
-    point -> clone = cloner;
-    point -> dist = distance;
-    point -> dist_x = distance_x;
-    point -> dist_y = distance_y;
-    point -> getID = id_getter;
-    point -> set(point, x, y, id);
-    ++point;
   }
 }
 
@@ -496,8 +365,9 @@ ensemble_t* create (size_t const numel)
   point_t* points = ensemble -> points;
   point_t* temp = ensemble -> temp;
 
-  init(points, numel);
-  init(temp, numel);
+  extern point_namespace_t const point;
+  point.initializer(points, numel);
+  point.initializer(temp, numel);
 
   *(ensemble -> numel) = numel;
 

@@ -8,8 +8,6 @@
 double getElapsedTime (const struct timespec* b, const struct timespec* e);
 int search(const point_t* points, size_t const b, size_t const e, const point_t* target);
 double urand(double const size);
-int xcompare (const point_t* p, const point_t* q);
-int ycompare (const point_t* p, const point_t* q);
 bool sorted(const ensemble_t* ensemble, size_t const b, size_t const e,
 	    int (*comp) (const point_t* p, const point_t* q));
 void sort(ensemble_t* ensemble, size_t const b, size_t const e,
