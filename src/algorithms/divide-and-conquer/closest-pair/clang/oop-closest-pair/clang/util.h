@@ -14,8 +14,6 @@ void sort(ensemble_t* ensemble, size_t const b, size_t const e,
 	  int (*comp) (const point_t* p, const point_t* q));
 ensemble_t* create(size_t const numel);
 ensemble_t* destroy(ensemble_t* ensemble);
-pair_t* deconstruct(pair_t* closestPair);
-pair_t* construct();
 
 #endif
 /*

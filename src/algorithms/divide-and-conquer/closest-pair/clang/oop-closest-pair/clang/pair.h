@@ -20,6 +20,12 @@ typedef struct
   void (*log)(const void* closestPair);
 } pair_t;
 
+typedef struct
+{
+  pair_t* (*create) ();
+  pair_t* (*destroy) (pair_t* closestPair);
+} pair_namespace_t;
+
 #endif
 
 
