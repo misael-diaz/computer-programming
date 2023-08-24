@@ -613,6 +613,7 @@ public class ConvexHull
   {
     // sorts the points to support the divide and conquer algorithm:
 
+    final double start = System.nanoTime();
     Stack points = new Stack(this.data);
     points.sort();
 
@@ -656,7 +657,10 @@ public class ConvexHull
     Stack verticesRight = this.recurse(right);
 
     // combines and yields the vertices of the convex hull in clockwise order
-    return this.clockwise( this.combine(verticesLeft, verticesRight) );
+    final Stack vertices = this.clockwise( this.combine(verticesLeft, verticesRight) );
+    final double end = System.nanoTime();
+    this.elapsedTime = (end - start);
+    return vertices;
   }
 
 
