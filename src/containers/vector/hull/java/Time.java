@@ -6,12 +6,13 @@ public class Time	// Time Complexity Experiment Class
 
   public static void main (String [] args)
   {
-    exportBruteForce();	// exports time complexity results
+    Time time = new Time();
+    time.exportBruteForce();	// exports time complexity results
   }
 
 
   // repeats the numeric experiment
-  private static double [] replicateBruteForce (int size)
+  private double [] replicateBruteForce (int size)
   {
     int reps = 64;
     double etime = 0;
@@ -53,7 +54,7 @@ public class Time	// Time Complexity Experiment Class
 
 
   // obtains the elapsed-time and #operations with respect to size
-  private static double [][] experimentsBruteForce ()
+  private double [][] experimentsBruteForce ()
   {
     int runs = 8;
     int size = 16;
@@ -79,7 +80,7 @@ public class Time	// Time Complexity Experiment Class
 
 
   // exports the elapsed-time and #operations with respect to size
-  private static void exportBruteForce ()
+  private void exportBruteForce ()
   {
     try
     {
