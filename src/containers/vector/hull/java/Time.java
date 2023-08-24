@@ -82,32 +82,25 @@ public class Time	// Time Complexity Experiment Class
 
 
   // exports the elapsed-time and #operations with respect to size
-  private void exportBruteForce ()
+  private void exportBruteForce () throws FileNotFoundException
   {
-    try
+    String file = ("timeBruteForce.dat");
+    PrintWriter out = new PrintWriter(file);
+    // conducts the experiments
+    double [][] stats = experimentsBruteForce();
+    // gets the number of experiments (or runs)
+    int runs = stats[1].length;
+    for (int i = 0; i != runs; ++i)
     {
-      String file = ("timeBruteForce.dat");
-      PrintWriter out = new PrintWriter(file);
-      // conducts the experiments
-      double [][] stats = experimentsBruteForce();
-      // gets the number of experiments (or runs)
-      int runs = stats[1].length;
-      for (int i = 0; i != runs; ++i)
-      {
-	// gets size, elapsed-time, and #operations
-	double size  = stats[0][i];
-	double etime = stats[1][i];
-	double opers = stats[2][i];
-	// writes data to file in tabulated format
-	String fmt = ("%16.8e %16.8e %16.8e\n");
-	out.printf(fmt, size, etime, opers);
-      }
-      out.close();
+      // gets size, elapsed-time, and #operations
+      double size  = stats[0][i];
+      double etime = stats[1][i];
+      double opers = stats[2][i];
+      // writes data to file in tabulated format
+      String fmt = ("%16.8e %16.8e %16.8e\n");
+      out.printf(fmt, size, etime, opers);
     }
-    catch (FileNotFoundException err)
-    {
-      err.printStackTrace();
-    }
+    out.close();
   }
 
 
