@@ -24,20 +24,22 @@ public class Time	// Time Complexity Experiment Class
       // new dataset and tries again until an acceptable convex hull is found.
       int sw = 1;
       Stack data = ConvexHull.genDataSet(size);
+      ConvexHull hull = new ConvexHull(data);
       while (sw != 0)
       {
 	try
 	{
-	  ConvexHull.bruteForce(data);
+	  hull.bruteForce();
 	  sw = 0;
 	}
 	catch (RejectedHullException e)
 	{
 	  data = ConvexHull.genDataSet(size);
+	  hull = new ConvexHull(data);
 	}
       }
       // updates the elapsed-time
-      etime += ConvexHull.etimeBruteForce;
+      etime += hull.getElapsedTime();
     }
 
     // computes the averages and return statistics

@@ -2,9 +2,21 @@ import java.util.Random;
 
 public class ConvexHull
 {
-  // elapsed-times (nanoseconds):
-  public static double etimeBruteForce;
-  public static double etimeRecursive;
+  private double elapsedTime;		// elapsed-time (nanoseconds)
+  private final Stack data;		// points dataset
+
+
+  ConvexHull (Stack data)
+  {
+    this.data = new Stack(data);
+    this.elapsedTime = Double.NEGATIVE_INFINITY;
+  }
+
+
+  public double getElapsedTime ()
+  {
+    return this.elapsedTime;
+  }
 
 
   public static void main (String [] args) throws RejectedHullException
@@ -87,11 +99,11 @@ public class ConvexHull
 
 
   // returns true if the line PQ is an edge of the convex hull
-  private static boolean isEdge (Stack ps, Point P, Point Q) throws RejectedHullException
+  private boolean isEdge (Point P, Point Q) throws RejectedHullException
   {
-    Stack points = ps;
-    int size = points.size();	// gets the data size
-    Line ln = new Line(P, Q);	// creates a line object
+    final Stack points = this.data;
+    final int size = this.data.size();	// gets the data size
+    Line ln = new Line(P, Q);		// creates a line object
 
 
     // traverses the stack until we can initialize sign with a non-zero value
@@ -109,7 +121,7 @@ public class ConvexHull
 
     if (isign == 0)
     {
-      RejectHull("there's no convex hull because there are no sign changes");
+      this.RejectHull("there's no convex hull because there are no sign changes");
     }
 
 
@@ -132,7 +144,7 @@ public class ConvexHull
 
 
   // returns true if all the vertices have been found
-  private static boolean isClosed (Stack vertices, Point P, Point Q)
+  private boolean isClosed (Stack vertices, Point P, Point Q)
   {
     int pos1 = vertices.search(P), pos2 = vertices.search(Q);
     if (pos1 >= 0 && pos2 >= 0)
@@ -146,7 +158,7 @@ public class ConvexHull
   }
 
 
-  // private static boolean addVertex(Stack vertices, Point P, Point Q)
+  // private boolean addVertex(Stack vertices, Point P, Point Q)
   //
   // Synopsis:
   // Pushes unique vertices unto the back of the stack of vertices. As a side effect, it
@@ -166,10 +178,10 @@ public class ConvexHull
   // closed		true if we have found all the vertices, false otherwise
 
 
-  private static boolean addVertex(Stack vertices, Point P, Point Q)
+  private boolean addVertex(Stack vertices, Point P, Point Q)
   {
     // checks if all the vertices have been found
-    boolean closed = isClosed(vertices, P, Q);
+    boolean closed = this.isClosed(vertices, P, Q);
     // pushes new vertices unto the back of the stack
     if (vertices.search(P) < 0)
     {
@@ -188,13 +200,13 @@ public class ConvexHull
 
 
   // complains if the data set does not contain a (valid) convex hull
-  private static void RejectHull (String errmsg) throws RejectedHullException
+  private void RejectHull (String errmsg) throws RejectedHullException
   {
     throw new RejectedHullException(errmsg);
   }
 
 
-  // private static void isRejectableHull (boolean isClosed) throws RejectedHullException
+  // private void isRejectableHull (boolean isClosed) throws RejectedHullException
   //
   // Synopsis:
   // Complains if both vertices P and Q are already in the stack of vertices. This means
@@ -208,26 +220,26 @@ public class ConvexHull
   // None
 
 
-  private static void isRejectableHull (boolean isClosed) throws RejectedHullException
+  private void isRejectableHull (boolean isClosed) throws RejectedHullException
   {
     if (isClosed)
     {
-      RejectHull("180AngleError");
+      this.RejectHull("180AngleError");
     }
   }
 
 
-  private static void checkAngle (Vector U, Vector V) throws RejectedHullException
+  private void checkAngle (Vector U, Vector V) throws RejectedHullException
   {
     if (U.dot(V) > 0)
     {
-      RejectHull("detected hull with interior angle less than 90 degrees");
+      this.RejectHull("detected hull with interior angle less than 90 degrees");
     }
   }
 
 
   // checks the interior angle of first vertex
-  private static void first (Stack vertices) throws RejectedHullException
+  private void first (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
     final Point A = vertices.get(last);
@@ -235,12 +247,12 @@ public class ConvexHull
     final Point C = vertices.get(1);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
-    checkAngle(BA, BC);
+    this.checkAngle(BA, BC);
   }
 
 
   // checks the interior angles of the intermediate vertices
-  private static void middle (Stack vertices) throws RejectedHullException
+  private void middle (Stack vertices) throws RejectedHullException
   {
     for (int i = 1; i != (vertices.size() - 1); ++i)
     {
@@ -249,13 +261,13 @@ public class ConvexHull
       final Point C = vertices.get(i + 1);
       final Vector BA = new Vector(B, A);
       final Vector BC = new Vector(B, C);
-      checkAngle(BA, BC);
+      this.checkAngle(BA, BC);
     }
   }
 
 
   // checks the interior angle of the last vertex
-  private static void last (Stack vertices) throws RejectedHullException
+  private void last (Stack vertices) throws RejectedHullException
   {
     final int last = (vertices.size() - 1);
     final Point A = vertices.get(last - 1);
@@ -263,21 +275,21 @@ public class ConvexHull
     final Point C = vertices.get(0);
     final Vector BA = new Vector(B, A);
     final Vector BC = new Vector(B, C);
-    checkAngle(BA, BC);
+    this.checkAngle(BA, BC);
   }
 
 
   // checks the interior angles of the hull, complains if there's an acute angle
-  private static void isRejectableHull (Stack vertices) throws RejectedHullException
+  private void isRejectableHull (Stack vertices) throws RejectedHullException
   {
-    first(vertices);
-    middle(vertices);
-    last(vertices);
+    this.first(vertices);
+    this.middle(vertices);
+    this.last(vertices);
   }
 
 
   // returns the vertices of the convex hull in clockwise order
-  private static Stack clockwise (Stack vertices)
+  private Stack clockwise (Stack vertices)
   {
     vertices.sort();
     final int size = vertices.size();
@@ -322,7 +334,7 @@ public class ConvexHull
   }
 
 
-  // private static Stack bruteforce (Stack points) throws RejectedHullException
+  // private Stack bruteforce (Stack points) throws RejectedHullException
   //
   // Synopsis:
   // Uses brute force to obtain the convex hull from the dataset of points.
@@ -336,33 +348,34 @@ public class ConvexHull
   // vertices	the vertices of the convex hull (in clockwise order)
 
 
-  private static Stack bruteforce (final Stack points) throws RejectedHullException
+  private Stack bruteforce () throws RejectedHullException
   {
     // creates the placeholder for the vertices of the hull
     Stack vertices = new Stack();
 
     boolean closed = false;
-    int size = points.size();
+    final Stack points = this.data;
+    final int size = this.data.size();
     // considers all the possible edges, size * (size - 1) / 2
     for (int i = 0; i != (size - 1); ++i)
     {
-      Point P = points.get(i);
+      final Point P = points.get(i);
       // stacks points P and Q if they form a hull edge
       for (int j = (i + 1); j != size; ++j)
       {
-	Point Q = points.get(j);
+	final Point Q = points.get(j);
 
-	if ( isEdge(points, P, Q) )
+	if ( this.isEdge(P, Q) )
 	{
-	  isRejectableHull(closed);
-	  closed = addVertex(vertices, P, Q);
+	  this.isRejectableHull(closed);
+	  closed = this.addVertex(vertices, P, Q);
 	}
       }
     }
 
-    vertices = clockwise(vertices);
+    vertices = this.clockwise(vertices);
 
-    isRejectableHull(vertices);
+    this.isRejectableHull(vertices);
 
     return vertices;
   }
@@ -418,22 +431,22 @@ public class ConvexHull
 
 
   // uses brute force to obtain the convex hull
-  public static Stack bruteForce (final Stack points) throws RejectedHullException
+  public Stack bruteForce () throws RejectedHullException
   {
     // times the implementation that finds the convex hull
     double start = System.nanoTime();
-    Stack vertices = bruteforce(points);
+    Stack vertices = this.bruteforce();
     double end = System.nanoTime();
 
     // computes the elapsed time in nanoseconds
-    etimeBruteForce = (end - start);
+    this.elapsedTime = (end - start);
 
     return vertices;
   }
 
 
   // returns a sorted stack of convex hull vertices
-  private static Stack direct (final Stack points)
+  private Stack direct (final Stack points)
   {
     // we have asserted that there are only two points in the stack
     Stack vertices = new Stack();
@@ -454,7 +467,7 @@ public class ConvexHull
   }
 
 
-  private static Stack combine (final Stack left, final Stack right)
+  private Stack combine (final Stack left, final Stack right)
   {
     final int sz = left.size() + right.size();
 
@@ -506,7 +519,7 @@ public class ConvexHull
 
 
   // returns the pivot point farthest from the baseline PQ
-  private static Point pivot (final Stack points)
+  private Point pivot (final Stack points)
   {
     final int last = (points.size() - 1);
     final Point P = points.get(0);
@@ -533,13 +546,13 @@ public class ConvexHull
 
 
   // divides into "left" and "right" partitions at the pivotal point
-  private static void divide (final Stack points, Stack left, Stack right)
+  private void divide (final Stack points, Stack left, Stack right)
   {
     final int size = points.size();
     final int last = (size - 1);
     final Point P = points.get(0);
     final Point Q = points.get(last);
-    final Point pivot = pivot(points);
+    final Point pivot = this.pivot(points);
 
     left.push_back(P);
     // pushes points in the same direction as the pivot (above or below the baseline)
@@ -573,30 +586,31 @@ public class ConvexHull
 
 
   // looks recursively for the vertices of the convex hull
-  private static Stack recurse (final Stack points)
+  private Stack recurse (final Stack points)
   {
     final int size = points.size();
     if (size == 2)
     {
-      return direct(points);
+      return this.direct(points);
     }
     else
     {
       Stack left = new Stack(size);
       Stack right = new Stack(size);
-      divide(points, left, right);
-      Stack leftVertices = recurse(left);
-      Stack rightVertices = recurse(right);
-      return combine(leftVertices, rightVertices);
+      this.divide(points, left, right);
+      Stack leftVertices = this.recurse(left);
+      Stack rightVertices = this.recurse(right);
+      return this.combine(leftVertices, rightVertices);
     }
   }
 
 
   // implements the divide and conquer method that finds the vertices of the convex hull
-  public static Stack convexHull (Stack points)
+  public Stack convexHull ()
   {
     // sorts the points to support the divide and conquer algorithm:
 
+    Stack points = new Stack(this.data);
     points.sort();
 
     // constructs the baseline for the first division:
@@ -635,11 +649,11 @@ public class ConvexHull
 
     // applies the divide and conquer scheme on each partition:
 
-    Stack verticesLeft = recurse(left);
-    Stack verticesRight = recurse(right);
+    Stack verticesLeft = this.recurse(left);
+    Stack verticesRight = this.recurse(right);
 
     // combines and yields the vertices of the convex hull in clockwise order
-    return clockwise( combine(verticesLeft, verticesRight) );
+    return this.clockwise( this.combine(verticesLeft, verticesRight) );
   }
 
 
@@ -676,8 +690,9 @@ public class ConvexHull
   {
     // creates the data set of 2D Points
     Stack points = genDataSet();
+    ConvexHull hull = new ConvexHull(points);
     // finds the vertices of the convex hull with brute force
-    Stack vertices = bruteforce(points);
+    Stack vertices = hull.bruteforce();
     // displays the coordinates of the vertices on the console
     System.out.println("BruteForce:");
     vertices.print();
@@ -687,11 +702,12 @@ public class ConvexHull
   private static void testDivideAndConquerMethod () throws RejectedHullException
   {
     Stack points = genDataSet();
-    Stack verticesBruteForce = bruteforce(points);
+    ConvexHull hull = new ConvexHull(points);
+    Stack verticesBruteForce = hull.bruteforce();
     System.out.println("BruteForce:");
     verticesBruteForce.print();
 
-    Stack vertices = convexHull(points);
+    Stack vertices = hull.convexHull();
     System.out.println("Divide-And-Conquer:");
     vertices.print();
   }
@@ -709,21 +725,23 @@ public class ConvexHull
       {
 	int sw = 1;
 	Stack points = genDataSet(size);
+	ConvexHull hull = new ConvexHull(points);
 	Stack verticesBruteForce = new Stack(size);
 	while (sw == 1)
 	{
 	  try
 	  {
-	    verticesBruteForce = bruteforce(points);
+	    verticesBruteForce = hull.bruteforce();
 	    sw = 0;
 	  }
 	  catch (RejectedHullException e)
 	  {
 	    points = genDataSet(size);
+	    hull = new ConvexHull(points);
 	  }
 	}
 
-	Stack vertices = convexHull(points);
+	Stack vertices = hull.convexHull();
 
 	failed = !Stack.isEqual(verticesBruteForce, vertices);
 	if (failed)
