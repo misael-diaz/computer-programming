@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 public class Time	// Time Complexity Experiment Class
 {
 
-  public static void main (String [] args) throws FileNotFoundException
+  public static void main (String [] args) throws FileNotFoundException,
+						  ImplementErrorException
   {
     Time time = new Time();
     // exports time complexity results
@@ -104,7 +105,7 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
-  private double replicateDivideAndConquer (int size)
+  private double replicateDivideAndConquer (int size) throws ImplementErrorException
   {
     double etime = 0;
     final int reps = 1024;
@@ -112,12 +113,13 @@ public class Time	// Time Complexity Experiment Class
     {
       int sw = 1;
       Stack data = ConvexHull.genDataSet(size);
+      Stack verticesBruteForce = new Stack(size);
       ConvexHull hull = new ConvexHull(data);
       while (sw != 0)
       {
 	try
 	{
-	  hull.bruteForce();
+	  verticesBruteForce = hull.bruteForce();
 	  sw = 0;
 	}
 	catch (RejectedHullException e)
@@ -126,8 +128,13 @@ public class Time	// Time Complexity Experiment Class
 	  hull = new ConvexHull(data);
 	}
       }
-      hull.convexHull();
+      final Stack vertices = hull.convexHull();
       etime += hull.getElapsedTime();
+
+      if ( !Stack.isEqual(vertices, verticesBruteForce) )
+      {
+	throw new ImplementErrorException("DivideAndConquer(): hulls do not match");
+      }
     }
 
     final double avg_elapsedTimes = ( etime / ( (double) reps ) );
@@ -136,10 +143,10 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
-  private double [][] experimentsDivideAndConquer ()
+  private double [][] experimentsDivideAndConquer () throws ImplementErrorException
   {
     int size = 8;
-    final int runs = 8;
+    final int runs = 14;
     double [][] statistics = new double[2][runs];
     double [] sizes = statistics[0];
     double [] elapsedTimes = statistics[1];
@@ -155,7 +162,8 @@ public class Time	// Time Complexity Experiment Class
   }
 
 
-  private void exportDivideAndConquer () throws FileNotFoundException
+  private void exportDivideAndConquer () throws FileNotFoundException,
+						ImplementErrorException
   {
     final String file = ("timeDivideAndConquer.dat");
     PrintWriter out = new PrintWriter(file);
