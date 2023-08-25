@@ -1,0 +1,50 @@
+#
+# Algorithms and Complexity				August 24, 2023
+#
+# source: make-inc
+# author: @misael-diaz
+#
+# Synopsis:
+# Defines the include file for building the program with GNU make.
+#
+# Copyright (c) 2023 Misael Diaz-Maldonado
+# This file is released under the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+
+# clang compiler
+CC = gcc
+
+# options
+CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-optimized=opts.log
+CCOPT = -mavx2 -O2 -ftree-vectorize -fopt-info-missed=missed-opts.log
+CCOPT = -g -Wall -Wextra -O0
+
+# libraries
+LIBS = -lm
+
+# headers
+POINT_H = point.h
+PAIR_H = pair.h
+ENSEMBLE_H = ensemble.h
+UTIL_H = util.h
+
+# sources
+POINT_C = point.c
+PAIR_C = pair.c
+ENSEMBLE_C = ensemble.c
+UTIL_C = util.c
+TEST_C = test.c
+
+# objects
+POINT_O = point.o
+PAIR_O = pair.o
+ENSEMBLE_O = ensemble.o
+UTIL_O = util.o
+TEST_O = test.o
+OBJECTS = $(POINT_O) $(PAIR_O) $(ENSEMBLE_O) $(UTIL_O) $(TEST_O)
+
+# executables
+TEST_BIN = test.bin
+TESTS = $(TEST_BIN)
