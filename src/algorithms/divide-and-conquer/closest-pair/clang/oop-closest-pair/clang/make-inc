@@ -27,15 +27,17 @@ LIBS = -lm
 # sources
 POINT_SRC = point.c
 PAIR_SRC = pair.c
+ENSEMBLE_SRC = ensemble.c
 UTIL_SRC = util.c
 TEST_SRC = test.c
 
 # objects
 POINT_OBJ = point.o
 PAIR_OBJ = pair.o
+ENSEMBLE_OBJ = ensemble.o
 UTIL_OBJ = util.o
 TEST_OBJ = test.o
-OBJECTS = $(POINT_OBJ) $(PAIR_OBJ) $(UTIL_OBJ) $(TEST_OBJ)
+OBJECTS = $(POINT_OBJ) $(PAIR_OBJ) $(ENSEMBLE_OBJ) $(UTIL_OBJ) $(TEST_OBJ)
 
 # executables
 TEST_BIN = test.bin

@@ -11,6 +11,12 @@ typedef struct
   void* data;
 } ensemble_t;
 
+typedef struct
+{
+  ensemble_t* (*create) (size_t const numel);
+  ensemble_t* (*destroy) (ensemble_t* ensemble);
+} ensemble_namespace_t;
+
 #endif
 /*
 

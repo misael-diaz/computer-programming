@@ -8,6 +8,7 @@
 #define iNUMEL 2
 
 extern point_namespace_t const point;
+extern ensemble_namespace_t const ensemble;
 extern pair_namespace_t const pair;
 
 void test_sort();
@@ -36,10 +37,10 @@ int main ()
 }
 
 
-void generate (ensemble_t* ensemble)
+void generate (ensemble_t* ens)
 {
-  size_t const numel = *(ensemble -> numel);
-  point_t* points = ensemble -> points;
+  size_t const numel = *(ens -> numel);
+  point_t* points = ens -> points;
 
   point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
@@ -57,14 +58,14 @@ void generate (ensemble_t* ensemble)
 }
 
 
-bool hasDuplicateClosestPairs (const ensemble_t* ensemble)
+bool hasDuplicateClosestPairs (const ensemble_t* ens)
 {
-  const point_t* points = ensemble -> points;
+  const point_t* points = ens -> points;
   const point_t* point1 = points;
 
   double dmin1 = INFINITY;
   double dmin2 = INFINITY;
-  size_t const numel = *(ensemble -> numel);
+  size_t const numel = *(ens -> numel);
   for (size_t i = 0; i != (numel - 1); ++i)
   {
     const point_t* point2 = (point1 + 1);
@@ -85,19 +86,19 @@ bool hasDuplicateClosestPairs (const ensemble_t* ensemble)
 }
 
 
-void initialize (ensemble_t* ensemble)
+void initialize (ensemble_t* ens)
 {
   do
   {
-    generate(ensemble);
-  } while ( hasDuplicateClosestPairs(ensemble) );
+    generate(ens);
+  } while ( hasDuplicateClosestPairs(ens) );
 }
 
 
-void bruteForce (const ensemble_t* ensemble, pair_t* closestPair)
+void bruteForce (const ensemble_t* ens, pair_t* closestPair)
 {
-  size_t const numel = *(ensemble -> numel);
-  const point_t* points = ensemble -> points;
+  size_t const numel = *(ens -> numel);
+  const point_t* points = ens -> points;
 
   size_t first = numel;
   size_t second = numel;
@@ -123,13 +124,13 @@ void bruteForce (const ensemble_t* ensemble, pair_t* closestPair)
 }
 
 
-void direct (const ensemble_t* ensemble,
+void direct (const ensemble_t* ens,
              size_t const beg,
              size_t const end,
              pair_t* closestPair)
 {
   size_t const offset = beg;
-  const point_t* points = ensemble -> points + offset;
+  const point_t* points = ens -> points + offset;
   const point_t* point1 = points;
   const point_t* point2 = points + 1;
   double const dist = point1 -> dist(point1, point2);
@@ -143,7 +144,7 @@ void direct (const ensemble_t* ensemble,
 }
 
 
-void xcombine (ensemble_t* ensemble,
+void xcombine (ensemble_t* ens,
 	       size_t const beg,
 	       size_t const end,
 	       pair_t* closestPair)
@@ -158,7 +159,7 @@ void xcombine (ensemble_t* ensemble,
 
   size_t bLeft = endLeft;
   size_t const eLeft = endLeft;
-  const point_t* points = ensemble -> points;
+  const point_t* points = ens -> points;
   double const dist = closestPair -> getDistance(closestPair);
   for (size_t i = 0; i != (endLeft - beginLeft); ++i)
   {
@@ -224,7 +225,7 @@ void xcombine (ensemble_t* ensemble,
 
 
 // as xcombine() but uses the y-axis distances to determine too far elements
-void ycombine (ensemble_t* ensemble,
+void ycombine (ensemble_t* ens,
 	       size_t const beg,
 	       size_t const end,
 	       pair_t* closestPair)
@@ -239,7 +240,7 @@ void ycombine (ensemble_t* ensemble,
 
   size_t bLeft = endLeft;
   size_t const eLeft = endLeft;
-  const point_t* points = ensemble -> points;
+  const point_t* points = ens -> points;
   double const dist = closestPair -> getDistance(closestPair);
   for (size_t i = 0; i != (endLeft - beginLeft); ++i)
   {
@@ -305,7 +306,7 @@ void ycombine (ensemble_t* ensemble,
 
 
 // as recurse() but partitions the system in the y dimension
-void divide (ensemble_t* ensemble,
+void divide (ensemble_t* ens,
 	     size_t const beg,
 	     size_t const end,
 	     pair_t* closestPair)
@@ -313,29 +314,29 @@ void divide (ensemble_t* ensemble,
   size_t const numel = (end - beg);
   if (numel == 2)
   {
-    direct(ensemble, beg, end, closestPair);
+    direct(ens, beg, end, closestPair);
   }
   else
   {
-    sort(ensemble, beg, end, point.ycomparator);
+    sort(ens, beg, end, point.ycomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
     pair_t* closestPairLeft = pair.create();
-    recurse(ensemble, beginLeft, endLeft, closestPairLeft);
+    recurse(ens, beginLeft, endLeft, closestPairLeft);
 
     size_t const beginRight = beg + (numel / 2);
     size_t const endRight = beg + numel;
     pair_t* closestPairRight = pair.create();
-    recurse(ensemble, beginRight, endRight, closestPairRight);
+    recurse(ens, beginRight, endRight, closestPairRight);
 
     closestPair -> min(closestPair, closestPairLeft, closestPairRight);
 
-    ycombine(ensemble, beg, end, closestPair);
+    ycombine(ens, beg, end, closestPair);
 
     // NOTE: we need to restore the x - y sorting because the xcombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, point.xcomparator);
+    sort(ens, beg, end, point.xcomparator);
 
     closestPairLeft = pair.destroy(closestPairLeft);
     closestPairRight = pair.destroy(closestPairRight);
@@ -343,7 +344,7 @@ void divide (ensemble_t* ensemble,
 }
 
 
-void recurse (ensemble_t* ensemble,
+void recurse (ensemble_t* ens,
 	      size_t const beg,
 	      size_t const end,
 	      pair_t* closestPair)
@@ -351,29 +352,29 @@ void recurse (ensemble_t* ensemble,
   size_t const numel = (end - beg);
   if (numel == 2)
   {
-    direct(ensemble, beg, end, closestPair);
+    direct(ens, beg, end, closestPair);
   }
   else
   {
-    sort(ensemble, beg, end, point.xcomparator);
+    sort(ens, beg, end, point.xcomparator);
 
     size_t const beginLeft = beg;
     size_t const endLeft = beg + (numel / 2);
     pair_t* closestPairLeft = pair.create();
-    divide(ensemble, beginLeft, endLeft, closestPairLeft);
+    divide(ens, beginLeft, endLeft, closestPairLeft);
 
     size_t const beginRight = beg + (numel / 2);
     size_t const endRight = beg + numel;
     pair_t* closestPairRight = pair.create();
-    divide(ensemble, beginRight, endRight, closestPairRight);
+    divide(ens, beginRight, endRight, closestPairRight);
 
     closestPair -> min(closestPair, closestPairLeft, closestPairRight);
 
-    xcombine(ensemble, beg, end, closestPair);
+    xcombine(ens, beg, end, closestPair);
 
     // NOTE: we need to restore the y - x sorting because the ycombine() method at the
     // level of the caller method recurse() expects it (as if we didn't call sort() here)
-    sort(ensemble, beg, end, point.ycomparator);
+    sort(ens, beg, end, point.ycomparator);
 
     closestPairLeft = pair.destroy(closestPairLeft);
     closestPairRight = pair.destroy(closestPairRight);
@@ -390,10 +391,10 @@ void test_bruteForce ()
   }
 
   size_t const numel = iNUMEL;
-  ensemble_t* ensemble = create(numel);
-  initialize(ensemble);
+  ensemble_t* ens = ensemble.create(numel);
+  initialize(ens);
 
-  const point_t* points = ensemble -> points;
+  const point_t* points = ens -> points;
   const point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
@@ -401,11 +402,11 @@ void test_bruteForce ()
     ++point;
   }
 
-  bruteForce(ensemble, closestPair);
+  bruteForce(ens, closestPair);
   printf("bruteForce(): ");
   closestPair -> log(closestPair);
 
-  ensemble = destroy(ensemble);
+  ens = ensemble.destroy(ens);
   closestPair = pair.destroy(closestPair);
 }
 
@@ -431,8 +432,8 @@ void test_recurse ()
     return;
   }
 
-  ensemble_t* ensemble = create(numel);
-  point_t* points = ensemble -> points;
+  ensemble_t* ens = ensemble.create(numel);
+  point_t* points = ens -> points;
   point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
@@ -441,10 +442,10 @@ void test_recurse ()
   }
 
   closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
-  bruteForce(ensemble, closestPairBruteForce);
+  bruteForce(ens, closestPairBruteForce);
 
   closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
-  recurse(ensemble, 0, numel, closestPairRecurse);
+  recurse(ens, 0, numel, closestPairRecurse);
 
   bool failed = !closestPairRecurse -> cmp(closestPairRecurse, closestPairBruteForce);
   printf("test-recurse[0]: ");
@@ -457,7 +458,7 @@ void test_recurse ()
     printf("PASS\n");
   }
 
-  ensemble = destroy(ensemble);
+  ens = ensemble.destroy(ens);
   closestPairBruteForce = pair.destroy(closestPairBruteForce);
   closestPairRecurse = pair.destroy(closestPairRecurse);
 }
@@ -483,8 +484,8 @@ void test_recurse1 ()
     return;
   }
 
-  ensemble_t* ensemble = create(numel);
-  point_t* points = ensemble -> points;
+  ensemble_t* ens = ensemble.create(numel);
+  point_t* points = ens -> points;
   point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
@@ -493,10 +494,10 @@ void test_recurse1 ()
   }
 
   closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
-  bruteForce(ensemble, closestPairBruteForce);
+  bruteForce(ens, closestPairBruteForce);
 
   closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
-  recurse(ensemble, 0, numel, closestPairRecurse);
+  recurse(ens, 0, numel, closestPairRecurse);
 
   bool failed = !closestPairRecurse -> cmp(closestPairRecurse, closestPairBruteForce);
   printf("test-recurse[1]: ");
@@ -509,7 +510,7 @@ void test_recurse1 ()
     printf("PASS\n");
   }
 
-  ensemble = destroy(ensemble);
+  ens = ensemble.destroy(ens);
   closestPairBruteForce = pair.destroy(closestPairBruteForce);
   closestPairRecurse = pair.destroy(closestPairRecurse);
 }
@@ -535,8 +536,8 @@ void test_recurse2 ()
     return;
   }
 
-  ensemble_t* ensemble = create(numel);
-  point_t* points = ensemble -> points;
+  ensemble_t* ens = ensemble.create(numel);
+  point_t* points = ens -> points;
   point_t* point = points;
   for (size_t i = 0; i != numel; ++i)
   {
@@ -545,10 +546,10 @@ void test_recurse2 ()
   }
 
   closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
-  bruteForce(ensemble, closestPairBruteForce);
+  bruteForce(ens, closestPairBruteForce);
 
   closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
-  recurse(ensemble, 0, numel, closestPairRecurse);
+  recurse(ens, 0, numel, closestPairRecurse);
 
   bool failed = !closestPairRecurse -> cmp(closestPairRecurse, closestPairBruteForce);
   printf("test-recurse[2]: ");
@@ -561,7 +562,7 @@ void test_recurse2 ()
     printf("PASS\n");
   }
 
-  ensemble = destroy(ensemble);
+  ens = ensemble.destroy(ens);
   closestPairBruteForce = pair.destroy(closestPairBruteForce);
   closestPairRecurse = pair.destroy(closestPairRecurse);
 }
@@ -586,16 +587,16 @@ void test_recurse3 ()
   size_t numel = iNUMEL;
   for (size_t run = 0; run != RUNS; ++run)
   {
-    ensemble_t* ensemble = create(numel);
+    ensemble_t* ens = ensemble.create(numel);
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      initialize(ensemble);
+      initialize(ens);
 
       closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
-      bruteForce(ensemble, closestPairBruteForce);
+      bruteForce(ens, closestPairBruteForce);
 
       closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
-      recurse(ensemble, 0, numel, closestPairRecurse);
+      recurse(ens, 0, numel, closestPairRecurse);
 
       failed = !closestPairRecurse -> cmp(closestPairRecurse, closestPairBruteForce);
       if (failed)
@@ -610,11 +611,11 @@ void test_recurse3 ()
 
     if (failed)
     {
-      ensemble = destroy(ensemble);
+      ens = ensemble.destroy(ens);
       break;
     }
 
-    ensemble = destroy(ensemble);
+    ens = ensemble.destroy(ens);
     numel *= 2;
   }
 
@@ -639,15 +640,15 @@ void test_sort ()
   size_t numel = iNUMEL;
   for (size_t run = 0; run != RUNS; ++run)
   {
-    ensemble_t* ensemble = create(numel);
+    ensemble_t* ens = ensemble.create(numel);
 
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      initialize(ensemble);
+      initialize(ens);
 
-      sort(ensemble, 0, numel, point.xcomparator);
+      sort(ens, 0, numel, point.xcomparator);
 
-      failed = !sorted(ensemble, 0, numel, point.xcomparator);
+      failed = !sorted(ens, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;
@@ -656,11 +657,11 @@ void test_sort ()
 
     if (failed)
     {
-      ensemble = destroy(ensemble);
+      ens = ensemble.destroy(ens);
       break;
     }
 
-    ensemble = destroy(ensemble);
+    ens = ensemble.destroy(ens);
     numel *= 2;
   }
 
@@ -683,24 +684,24 @@ void complexity_sort ()
   size_t numel = iNUMEL;
   for (size_t run = 0; run != RUNS; ++run)
   {
-    ensemble_t* ensemble = create(numel);
+    ensemble_t* ens = ensemble.create(numel);
 
     double etime = 0;
     struct timespec end;
     struct timespec begin;
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      initialize(ensemble);
+      initialize(ens);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 
-      sort(ensemble, 0, numel, point.xcomparator);
+      sort(ens, 0, numel, point.xcomparator);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
       etime += getElapsedTime(&begin, &end);
 
-      failed = !sorted(ensemble, 0, numel, point.xcomparator);
+      failed = !sorted(ens, 0, numel, point.xcomparator);
       if (failed)
       {
 	break;
@@ -711,11 +712,11 @@ void complexity_sort ()
 
     if (failed)
     {
-      ensemble = destroy(ensemble);
+      ens = ensemble.destroy(ens);
       break;
     }
 
-    ensemble = destroy(ensemble);
+    ens = ensemble.destroy(ens);
     numel *= 2;
   }
 
@@ -778,18 +779,18 @@ void complexity_recurse ()
     double etime = 0;
     struct timespec end;
     struct timespec begin;
-    ensemble_t* ensemble = create(numel);
+    ensemble_t* ens = ensemble.create(numel);
     for (size_t rep = 0; rep != REPS; ++rep)
     {
-      initialize(ensemble);
+      initialize(ens);
 
       closestPairBruteForce -> set(closestPairBruteForce, numel, numel, INFINITY);
-      bruteForce(ensemble, closestPairBruteForce);
+      bruteForce(ens, closestPairBruteForce);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 
       closestPairRecurse -> set(closestPairRecurse, numel, numel, INFINITY);
-      recurse(ensemble, 0, numel, closestPairRecurse);
+      recurse(ens, 0, numel, closestPairRecurse);
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
@@ -810,11 +811,11 @@ void complexity_recurse ()
 
     if (failed)
     {
-      ensemble = destroy(ensemble);
+      ens = ensemble.destroy(ens);
       break;
     }
 
-    ensemble = destroy(ensemble);
+    ens = ensemble.destroy(ens);
     numel *= 2;
   }
 
